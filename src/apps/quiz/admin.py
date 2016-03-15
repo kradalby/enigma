@@ -1,6 +1,8 @@
 from django.contrib import admin
 
-from .models import Question, Questionnaire
+from .models import *
 
-admin.site.register(Question)
-admin.site.register(Questionnaire)
+admin.site.register(Test)
+admin.site.register(MultipleChoiceQuestion)
+admin.site.register(MultipleChoiceQuestionWithImage)
+admin.site.register(LandmarkQuestion)

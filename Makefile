@@ -17,7 +17,7 @@ app:
 	../../venv/bin/python ../manage.py startapp ${app}
 
 sync:
-	venv/bin/python src/manage.py makemigrations
+	venv/bin/python src/manage.py makemigrations quiz
 	venv/bin/python src/manage.py migrate
 
 superuser:

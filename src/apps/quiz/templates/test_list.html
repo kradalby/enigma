@@ -4,10 +4,10 @@
         <h1 class="jumbotron-heading">Quizes</h1>
 
         <div class="row">
-            {% for questionnaire in questionnaires %}
+            {% for test in tests %}
             <div class="card">
                 <img data-src="holder.js/100px280/thumb" alt="Card image cap">
-                <p class="card-text">{{ questionnaire.headline }}</p>
+                <p class="card-text">{{ test.headline }}</p>
             </div>
             {% endfor %}
         </div>

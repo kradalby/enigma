@@ -1,7 +1,7 @@
 from django.shortcuts import render
 
-from .models import Questionnaire
+from .models import Test
 
 def index (request):
-    questionnaires = Questionnaire.objects.all()
-    return render(request, 'questionnaire_list.html', locals())
+    tests = Test.objects.all()
+    return render(request, 'test_list.html', locals())
