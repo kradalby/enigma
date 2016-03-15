@@ -1,5 +1,7 @@
 from django.shortcuts import render
 
+from .models import Questionnaire
 
 def index (request):
-     return render(request, 'frontpage/index.html')
+    questionnaires = Questionnaire.objects.all()
+    return render(request, 'questionnaire_list.html', locals())
