@@ -6,6 +6,7 @@ build:
     - script:
         name: install make
         code: |
+          sudo apt-get update
           sudo apt-get install make -y
     - script:
         name: setup virtual env
