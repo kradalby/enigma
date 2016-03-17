@@ -6,6 +6,7 @@ build:
     - script:
         name: install requirements
         code: |
+          sudo apt-get update
           sudo sh ./scripts/bootstrap.sh
     - script:
         name: setup virtual env
