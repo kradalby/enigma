@@ -4,7 +4,18 @@ services:
 build:
   steps:
     - script:
-        name: echo python information
+        name: install make
+        code: |
+          sudo apt-get install make -y
+    - script:
+        name: setup virtual env
         code: |
           . .env
-          make dev sync
+    - script:
+        name: create dev env
+        code: |
+          make dev
+    - script:
+        name: sync database
+        code: |
+          make sync
