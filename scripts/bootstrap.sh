@@ -10,6 +10,7 @@ apt-get install -y libevent-dev
 apt-get install -y make                        # In order to use Makefile
 apt-get install -y libpq-dev                   # Required for psycopg2 drivers
 apt-get install -y libjpeg-dev                 # Required for pillow
+apt-get install -y gcc                         # Required for pillow
 #apt-get install -y nginx                       # A proper web server
 #apt-get install -y build-essential             # Required for supervisord
 #apt-get install -y supervisor                  # Run uwsgi in the background
