@@ -6,7 +6,7 @@ build:
     - script:
         name: install requirements
         code: |
-          sh ./scripts/bootstrap.sh
+          sudo sh ./scripts/bootstrap.sh
     - script:
         name: setup virtual env
         code: |
