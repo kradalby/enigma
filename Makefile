@@ -1,7 +1,8 @@
 help:
 	@echo 'help         - shows this help message'
-	@echo 'dev          - installs dev requirements and sets up dev environment'
 	@echo 'db           - resets the database and creates a superuser'
+	@echo 'dev          - installs dev requirements and sets up dev environment'
+	@echo 'herokusetup  - sets up environment to work with heroku'
 	@echo 'run          - runs the server'
 	@echo 'sync         - syncs and migrates the database'
 	@echo 'superuser    - creates a superuser'
@@ -29,5 +30,8 @@ sync:
 
 superuser:
 	venv/bin/python src/manage.py createsuperuser
+
+herokusetup:
+	wget -O- https://toolbelt.heroku.com/install-ubuntu.sh | sh
     
-.PHONY: dev run app superuser sync db
+.PHONY: dev run app superuser sync db herokusetup

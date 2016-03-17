@@ -1,0 +1,10 @@
+box: python:3.4-slim
+services:
+    - postgres
+build:
+  steps:
+    - script:
+        name: echo python information
+        code: |
+          . .env
+          make dev sync
