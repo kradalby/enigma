@@ -7,7 +7,6 @@ class TestUnit(models.Model):
         return self.question
         
     class Meta:
-        abstract = True
         ordering = ('question',)
     
 class MultipleChoiceQuestion(TestUnit):
@@ -27,7 +26,9 @@ class LandmarkQuestion(TestUnit):
     
 class Test(models.Model):
     headline = models.CharField(max_length=255)
-    test_units = models.ManyToManyField(TestUnit)
+    multiple_choice_questions = models.ManyToManyField(MultipleChoiceQuestion, related_name="multiple_choice_questions")
+    multiple_choice_questions_with_image = models.ManyToManyField(MultipleChoiceQuestionWithImage, related_name="multiple_choice_questions_with_image")
+    landmark_questions = models.ManyToManyField(LandmarkQuestion, related_name="landmark_questions")
     
     def __str__(self):
         return self.headline

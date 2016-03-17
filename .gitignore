@@ -5,3 +5,4 @@ venv/
 **/migrations/*.py
 *.db
 .vagrant/
+upload/
