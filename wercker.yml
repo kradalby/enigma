@@ -4,10 +4,9 @@ services:
 build:
   steps:
     - script:
-        name: install make
+        name: install requirements
         code: |
-          sudo apt-get update
-          sudo apt-get install make -y
+          sh ./scripts/bootstrap.sh
     - script:
         name: setup virtual env
         code: |
