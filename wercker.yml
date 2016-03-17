@@ -13,6 +13,10 @@ build:
         code: |
           . .env
     - script:
+        name: update setuptools
+        code: |
+          sudo pip install -U setuptools
+    - script:
         name: create dev env
         code: |
           make dev
