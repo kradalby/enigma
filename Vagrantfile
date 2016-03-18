@@ -9,6 +9,7 @@ Vagrant.configure(2) do |config|
     vb.memory = "1024"
   end
 
+  config.ssh.shell = "bash -c 'BASH_ENV=/etc/profile exec bash'"
   config.vm.provision :shell, :path => "scripts/bootstrap.sh" 
   config.vm.provision :shell, :inline => 'echo "cd /vagrant;. .env;" >> /home/vagrant/.bashrc'
 end
