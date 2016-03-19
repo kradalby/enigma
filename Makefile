@@ -21,14 +21,14 @@ db:
 
 dev:
 	@echo "from settings.development import *" > src/settings/local.py
-	venv/bin/pip install -r requirements/dev.txt --upgrade
+	venv/bin/pip install -r requirements.txt --upgrade
 
 herokusetup:
 	wget -O- https://toolbelt.heroku.com/install-ubuntu.sh | sh
     
 prod:
 	@echo "from settings.production import *" > src/settings/local.py
-	venv/bin/pip install -r requirements/prod.txt --upgrade
+	venv/bin/pip install -r requirements.txt --upgrade
 	venv/bin/python src/manage.py collectstatic --noinput
 
 run:
