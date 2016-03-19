@@ -24,3 +24,9 @@ build:
         name: sync database
         code: |
           make sync
+deploy:
+  steps:
+    - heroku-deploy:
+        key: $HEROKU_KEY
+        user: $HEROKU_USER
+        app-name: $HEROKU_APP_NAME
