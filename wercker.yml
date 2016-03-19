@@ -30,3 +30,4 @@ deploy:
         key: $HEROKU_KEY
         user: $HEROKU_USER
         app-name: $HEROKU_APP_NAME
+        key-name: HEROKU_KEY_PAIR
