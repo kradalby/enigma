@@ -1,1 +1,1 @@
-web: gunicorn src.wsgi:application --pythonpath src --log-file - 
+web: make herokurun
