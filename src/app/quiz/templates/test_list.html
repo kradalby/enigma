@@ -1,5 +1,4 @@
 {% extends "base.html" %}
-{% load testunit_as_html %}
 {% block content %}
 <div class="album text-muted">
     <div class="container">
@@ -8,10 +7,7 @@
             {% for test in tests %}
             <div class="card">
                 <img data-src="holder.js/100px280/thumb" alt="Card image cap">
-                <p class="card-text">{{ test }}</p>
-                {% for test_unit in test.test_units.all %}
-                    <p class="card-text">A - {{ test_unit.correct_answer }}</p>
-                {% endfor %}
+                <p class="text-center lead"><a href="{% url 'single_test' test.id %}">{{ test }}</a></p>
             </div>
             {% endfor %}
         </div>

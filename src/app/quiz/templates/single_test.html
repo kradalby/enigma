@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+{% load testunit_as_html %}
+{% block content %}
+<style>
+    input {
+        visibility:hidden;
+    }
+</style>
+
+<div class="container">
+    <h3>
+        {{ test }}
+    </h3>
+    {% for question in questions %}
+    <div class="center-block">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h3 class="panel-title">
+                    {{ question }}
+                </h3>
+            </div>
+            <div class="panel-body">
+                    {{ question | as_html | safe }}
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+{% endblock %}
+
+{% block end %}
+<script>
+$('input:radio').click(function(ev){
+    ev.stopPropagation();
+}).parent().click(function(ev){
+    ev.preventDefault();
+    $(this).children('input').click();
+    $(this).addClass('active').siblings().removeClass('active');
+});
+</script>
+{% endblock %}
