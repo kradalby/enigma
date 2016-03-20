@@ -3,6 +3,7 @@ help:
 	@echo 'app          - creates a new application. Usage: make app app=myappname'
 	@echo 'db           - resets the database and creates a superuser'
 	@echo 'dev          - installs dev requirements and sets up dev environment'
+	@echo 'herokurun    - rule for running environment on heroku'
 	@echo 'herokusetup  - sets up environment to work with heroku'
 	@echo 'prod         - installs prod requirements and sets up prod environment'
 	@echo 'run          - runs the server'
@@ -26,6 +27,9 @@ dev:
 herokusetup:
 	wget -O- https://toolbelt.heroku.com/install-ubuntu.sh | sh
     
+herokurun: prod sync
+	gunicorn src.wsgi:application --pythonpath src --log-file - 
+    
 prod:
 	@echo "from settings.production import *" > src/settings/local.py
 	venv/bin/pip install -r requirements.txt --upgrade
@@ -41,4 +45,4 @@ sync:
 superuser:
 	venv/bin/python src/manage.py createsuperuser
     
-.PHONY: app db dev herokusetup prod run sync superuser
+.PHONY: app db dev herokurun herokusetup prod run sync superuser
