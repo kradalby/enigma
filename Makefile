@@ -1,5 +1,5 @@
-PYTHON:=$(shell type -p venv/bin/python || echo python)
-PIP:=$(shell type -p venv/bin/pip || echo pip)
+PYTHON:=$(shell which python)
+PIP:=$(shell which pip)
 
 help:
 	@echo 'help         - shows this help message'
