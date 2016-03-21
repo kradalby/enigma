@@ -6,6 +6,7 @@ help:
 	@echo 'app          - creates a new application. Usage: make app app=myappname'
 	@echo 'db           - resets the database and creates a superuser'
 	@echo 'dev          - installs dev requirements and sets up dev environment'
+	@echo 'fixtures     - adds fixtures (dummy data) to database'
 	@echo 'herokurun    - rule for running environment on heroku'
 	@echo 'herokusetup  - sets up environment to work with heroku'
 	@echo 'prod         - installs prod requirements and sets up prod environment'
@@ -27,10 +28,14 @@ dev:
 	@echo "from settings.development import *" > src/settings/local.py
 	$(PIP) install -r requirements.txt --upgrade
 
+fixtures:
+	$(PYTHON) src/manage.py loaddata src/app/quiz/fixtures/001_users.json
+	$(PYTHON) src/manage.py loaddata src/app/quiz/fixtures/002_trondheimquiz.json
+
 herokusetup:
 	wget -O- https://toolbelt.heroku.com/install-ubuntu.sh | sh
     
-herokurun: prod sync
+herokurun: prod sync fixtures
 	gunicorn src.wsgi:application --pythonpath src --log-file - 
     
 prod:
@@ -48,4 +53,4 @@ sync:
 superuser:
 	$(PYTHON) src/manage.py createsuperuser
     
-.PHONY: app db dev herokurun herokusetup prod run sync superuser
+.PHONY: app db dev fixtures herokurun herokusetup prod run sync superuser
