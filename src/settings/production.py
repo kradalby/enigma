@@ -1,4 +1,4 @@
-DEBUG = True
+DEBUG = False
 
 '''DATABASES = {
     'default': {
@@ -15,7 +15,7 @@ import dj_database_url
 db_from_env = dj_database_url.config(conn_max_age=500)
 DATABASES['default'].update(db_from_env)'''
 
-from settings.base import BASE_DIR
+from settings.base import *
 import os
 
 DATABASES = {
