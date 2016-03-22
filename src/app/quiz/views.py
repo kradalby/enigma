@@ -1,5 +1,4 @@
 from django.shortcuts import render, get_object_or_404
-from random import shuffle
 
 from .models import *
 
@@ -16,7 +15,6 @@ def single_test (request, test_id):
     landmark = test.landmark_questions.all()
     questions = [multiple_choice, multiple_choice_image, landmark]
     questions = [item for sublist in questions for item in sublist]
-    shuffle(questions)
     return render(request, 'single_test.html', {
         "test" : test,
         "questions" : questions

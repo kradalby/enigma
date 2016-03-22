@@ -1,5 +1,6 @@
 {% extends "base.html" %}
 {% load testunit_as_html %}
+{% load shuffle %}
 {% block content %}
 <style>
     input {
@@ -15,7 +16,7 @@
     <h3>
         {{ test }}
     </h3>
-    {% for question in questions %}
+    {% for question in questions|shuffle %}
     <div class="center-block">
         <div class="panel panel-default">
             <div class="panel-heading">
