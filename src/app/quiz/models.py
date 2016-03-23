@@ -44,11 +44,20 @@ class MultipleChoiceQuestionWithImage(MultipleChoiceQuestion):
         html = """
         <div><img src="%s" /></div>
         """ % (self.image.url)
-        return super(MultipleChoiceQuestionWithImage, self).as_html() + html
+        return html + super(MultipleChoiceQuestionWithImage, self).as_html()
     
 class LandmarkQuestion(TestUnit):
     original_image = models.ImageField(upload_to=image_directory_path)
     landmark_drawing = models.ImageField(upload_to=image_directory_path)
+    
+    def as_html(self):
+        html = """
+        <div class="landmark-container">
+            <img class="landmark" src="%s" />
+            <img class="landmark hide" src="%s" />
+        </div>
+        """ % (self.original_image.url, self.landmark_drawing.url)
+        return html
     
 class Test(models.Model):
     headline = models.CharField(max_length=255)
