@@ -7,3 +7,4 @@ venv/
 .vagrant/
 upload/
 src/staticfiles/
+src/settings/local.py
