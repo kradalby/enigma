@@ -27,18 +27,29 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a class="navbar-brand" href="#">MedImgQuiz</a>
+                <a class="navbar-brand" href="/">MedImgQuiz</a>
             </div>
-
+            
             <!-- Collect the nav links, forms, and other content for toggling -->
             <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                 <ul class="nav navbar-nav navbar-right">
-                    <li><a href="/admin">Admin</a></li>
-                    <li class="dropdown">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Settings <span class="caret"></span></a>
-                        <ul class="dropdown-menu">
-                            <li><a href="#">Log out</a></li>
-                        </ul>
+                    {% if user.is_staff %}
+                    <li>
+                        <a href="/admin">
+                            Admin
+                        </a>
+                    </li>
+                    {% endif %}
+                    <li>
+                        {% if user.is_authenticated  %}
+                        <a href="{% url 'django.contrib.auth.views.logout' %}">
+                            Log out
+                        </a>
+                        {% else %}
+                        <a href="{% url 'django.contrib.auth.views.login' %}">
+                            Log in
+                        </a>
+                        {% endif %}
                     </li>
                 </ul>
             </div>
@@ -47,6 +58,7 @@
 
     {% block content %} This is hidden candy that only you, as developer, are able to see. APPRECIATE! {% endblock %}
 
+    {% block footer %}
     <footer class="text-muted">
         <div class="container">
             <p class="pull-xs-right">
@@ -55,6 +67,7 @@
             <p>Medical Imaging Quiz &copy; Marte Nordrik Hallan.</p>
         </div>
     </footer>
+    {% endblock %}
 
     {% endblock %}
 
