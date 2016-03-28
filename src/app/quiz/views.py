@@ -1,4 +1,4 @@
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render, get_object_or_404, redirect
 
 from .models import *
 
@@ -19,3 +19,9 @@ def single_test (request, test_id):
         "test" : test,
         "questions" : questions
     })
+    
+def submit_test(request, test_id):
+    if not request.method == 'POST':
+        return redirect('/')
+    test = get_object_or_404(Test, pk=test_id)
+    return redirect('/')

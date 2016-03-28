@@ -1,3 +1,4 @@
+from django.contrib.auth.models import User
 from django.db import models
 from random import shuffle
 
@@ -70,3 +71,8 @@ class Test(models.Model):
         
     class Meta:
         ordering = ('headline',)
+        
+class TestResult(models.Model):
+    test = models.ForeignKey(Test)
+    correct_answer = models.BooleanField()
+    user = models.ForeignKey(User)
