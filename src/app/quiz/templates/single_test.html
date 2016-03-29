@@ -3,22 +3,12 @@
 {% load shuffle %}
 {% block content %}
 <style>
-    input {
+    input[type=radio] {
         visibility:hidden;
     }
     
     img {
         max-width: 100%;
-    }
-    
-    .landmark-container {
-        position: relative;
-    }
-    
-    .landmark-container img.landmark {
-        position: absolute;
-        top: 0;
-        left: 0;
     }
     
     img.hide {
@@ -27,23 +17,27 @@
 </style>
 
 <div class="container">
-    <h3>
-        {{ test }}
-    </h3>
-    {% for question in questions|shuffle %}
-    <div class="center-block">
-        <div class="panel panel-default">
-            <div class="panel-heading">
-                <h3 class="panel-title">
-                    {{ question }}
-                </h3>
-            </div>
-            <div class="panel-body">
-                    {{ question | as_html | safe }}
+    <form action="/submit/{{ test.id }}" method="post">
+        {% csrf_token %}
+        <h3>
+            {{ test }}
+        </h3>
+        {% for question in questions|shuffle %}
+        <div class="center-block">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h3 class="panel-title">
+                        {{ question }}
+                    </h3>
+                </div>
+                <div class="panel-body">
+                        {{ question | as_html | safe }}
+                </div>
             </div>
         </div>
-    </div>
-    {% endfor %}
+        {% endfor %}
+        <input type="submit" class="btn btn-success" value="Answer">
+    </form>
 </div>
 {% endblock %}
 

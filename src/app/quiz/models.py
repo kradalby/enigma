@@ -3,7 +3,7 @@ from django.db import models
 from random import shuffle
 
 class TestUnit(models.Model):
-    question = models.CharField(max_length = 255, verbose_name = "Question", blank = True)
+    question = models.CharField(max_length = 255, verbose_name = "Question", blank = True, unique = True)
     
     def __str__(self):
         return self.question
@@ -19,7 +19,7 @@ class MultipleChoiceQuestion(TestUnit):
     wrong_answer_1 = models.CharField(max_length = 255, verbose_name = "Wrong answer")
     wrong_answer_2 = models.CharField(max_length = 255, verbose_name = "Wrong answer")
     
-    def as_html(self):
+    def as_html(self, key_prefix="mpc"):
         html = '<div><ul class="list-group">'
         alternatives = [self.correct_answer, self.wrong_answer_1, self.wrong_answer_2]
         shuffle(alternatives)
@@ -27,11 +27,11 @@ class MultipleChoiceQuestion(TestUnit):
         for alternative in alternatives:
             html += """
             <li class="list-group-item">
-                <input type='radio' name='%s' id="%s"/>
+                <input type='radio' name='%s-%s' value="%s"/>
                 <label for='%s'>%s</label>
                 <div class="highlight"></div>
             </li>
-            """ % (self, alternative, alternative, alternative)
+            """ % (key_prefix, self, alternative, alternative, alternative)
         html += "</ul></div>"
         return html
 
@@ -45,7 +45,7 @@ class MultipleChoiceQuestionWithImage(MultipleChoiceQuestion):
         html = """
         <div><img src="%s" /></div>
         """ % (self.image.url)
-        return html + super(MultipleChoiceQuestionWithImage, self).as_html()
+        return html + super(MultipleChoiceQuestionWithImage, self).as_html("mpci")
     
 class LandmarkQuestion(TestUnit):
     original_image = models.ImageField(upload_to=image_directory_path)
@@ -74,5 +74,10 @@ class Test(models.Model):
         
 class TestResult(models.Model):
     test = models.ForeignKey(Test)
-    correct_answer = models.BooleanField()
     user = models.ForeignKey(User)
+    answered = models.DateField(auto_now=True)
+    
+class TestUnitResult(models.Model):
+    test_unit = models.ForeignKey(TestUnit)
+    correct_answer = models.BooleanField()
+    test_result = models.ForeignKey(TestResult)
