@@ -69,6 +69,9 @@ class Test(models.Model):
     def __str__(self):
         return self.headline
         
+    def answered_by_user(self, user):
+        return TestResult.objects.filter(test = self, user = user).first()
+        
     class Meta:
         ordering = ('headline',)
         
@@ -76,6 +79,9 @@ class TestResult(models.Model):
     test = models.ForeignKey(Test)
     user = models.ForeignKey(User)
     answered = models.DateField(auto_now=True)
+    
+    def test_unit_results(self):
+        return TestUnitResult.objects.filter(test_result = self)
     
 class TestUnitResult(models.Model):
     test_unit = models.ForeignKey(TestUnit)

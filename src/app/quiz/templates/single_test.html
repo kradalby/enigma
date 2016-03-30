@@ -17,6 +17,22 @@
 </style>
 
 <div class="container">
+    {% if answers %}
+        {% for answer in answers.test_unit_results %}
+        <div class="center-block">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h3 class="panel-title">
+                        {{ answer.test_unit }}
+                    </h3>
+                </div>
+                <div class="panel-body">
+                        {{ answer.correct_answer }}
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    {% else %}
     <form action="/submit/{{ test.id }}" method="post">
         {% csrf_token %}
         <h3>
@@ -38,6 +54,7 @@
         {% endfor %}
         <input type="submit" class="btn btn-success" value="Answer">
     </form>
+    {% endif %}
 </div>
 {% endblock %}
 

@@ -14,14 +14,17 @@ def index (request):
 @login_required
 def single_test (request, test_id):
     test = get_object_or_404(Test, pk=test_id)
+    already_answered = test.answered_by_user(request.user)
     multiple_choice = test.multiple_choice_questions.all()
     multiple_choice_image = test.multiple_choice_questions_with_image.all()
     landmark = test.landmark_questions.all()
     questions = [multiple_choice, multiple_choice_image, landmark]
     questions = [item for sublist in questions for item in sublist]
+    print(already_answered)
     return render(request, 'single_test.html', {
         "test" : test,
-        "questions" : questions
+        "questions" : questions,
+        "answers" : already_answered
     })
 
 def _add_test_result(question_type, question, testresult, answer):
