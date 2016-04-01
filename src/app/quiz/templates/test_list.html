@@ -1,16 +1,37 @@
 {% extends "base.html" %}
 {% block content %}
+<style>
+    li:hover{
+         background-color: #fcfcfc;
+         cursor: pointer; 
+    }
+    
+    li{
+        font-family: 'Lato',Arial,sans-serif;
+    }
+    
+</style>
 <div class="album text-muted">
     <div class="container">
-        <h1 class="jumbotron-heading">Quizes</h1>
+        <h1 class="jumbotron-heading">Tests</h1>
         <div class="row">
+            <ul class="list-group">
             {% for test in tests %}
-            <div class="card">
-                <img data-src="holder.js/100px280/thumb" alt="Card image cap">
-                <p class="text-center lead"><a href="{% url 'single_test' test.id %}">{{ test }}</a></p>
-            </div>
+                <li class="list-group-item">
+                    <a style="text-decoration: none" href="{% url 'single_test' test.id %}">{{ test }}</a>
+                </li>
             {% endfor %}
+            </ul>
         </div>
     </div>
 </div>
+{% endblock %}
+
+{% block end %}
+<script>
+$("li").click(function(){
+   window.location=$(this).find("a").attr("href"); 
+   return false;
+});
+</script>
 {% endblock %}
