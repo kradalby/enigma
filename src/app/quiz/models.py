@@ -61,19 +61,19 @@ class LandmarkQuestion(TestUnit):
         return html
     
 class Test(models.Model):
-    headline = models.CharField(max_length=255)
+    name = models.CharField(max_length=255)
     multiple_choice_questions = models.ManyToManyField(MultipleChoiceQuestion, related_name="multiple_choice_questions", blank=True)
     multiple_choice_questions_with_image = models.ManyToManyField(MultipleChoiceQuestionWithImage, related_name="multiple_choice_questions_with_image", blank=True)
     landmark_questions = models.ManyToManyField(LandmarkQuestion, related_name="landmark_questions", blank=True)
     
     def __str__(self):
-        return self.headline
+        return self.name
         
     def answered_by_user(self, user):
         return TestResult.objects.filter(test = self, user = user).first()
         
     class Meta:
-        ordering = ('headline',)
+        ordering = ('name',)
         
 class TestResult(models.Model):
     test = models.ForeignKey(Test)
