@@ -1,0 +1,64 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div style="padding: 20px;"></div>
+<div class="container">
+    <h1>
+        Test: {{ test.name }}
+    </h1>
+    
+    <hr/>
+    
+    <div>
+        <h2>Multiple choice questions</h2>
+        <ul>
+            {% for question in test.multiple_choice_questions %}
+                <li>
+                    {{ question }}
+                </li>
+            {% empty %}
+                <li>
+                    No multiple choice questions added.
+                </li>
+            {% endfor %}
+        </ul>
+        <a href="mpc" class="btn btn-default">Add new multiple choice question</a>
+    </div>
+    
+    <hr/>
+    
+    <div>
+        <h2>Multiple choice questions with image</h2>
+        <ul>
+            {% for question in test.multiple_choice_questions_with_image %}
+                <li>
+                    {{ question }}
+                </li>
+            {% empty %}
+                <li>
+                    No multiple choice questions with image added.
+                </li>
+            {% endfor %}
+        </ul>
+        <a href="mpci" class="btn btn-default">Add new multiple choice question with image</a>
+    </div>
+    
+    <hr/>
+    
+    <div>
+        <h2>Landmark questions</h2>
+        <ul>
+            {% for question in test.landmark_questions %}
+                <li>
+                    {{ question }}
+                </li>
+            {% empty %}
+                <li>
+                    No landmark question added.
+                </li>
+            {% endfor %}
+        </ul>
+        <a href="landmark" class="btn btn-default">Add new landmark question</a>
+    </div>
+</div>
+{% endblock %}

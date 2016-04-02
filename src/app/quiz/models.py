@@ -21,7 +21,7 @@ class Test(models.Model):
         return LandmarkQuestion.objects.filter(test = self)
         
 class TestUnit(models.Model):
-    question = models.CharField(max_length = 255, verbose_name = "Question", blank = True, unique = True)
+    question = models.CharField(max_length = 255, verbose_name = "Question", blank = True)
     
     def __str__(self):
         return self.question

@@ -2,12 +2,12 @@ from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 
-from .models import *
+from ..models import *
 
 @login_required
 def index (request):
     tests = Test.objects.all()
-    return render(request, 'test_list.html', {
+    return render(request, 'quiz/site/test_list.html', {
         "tests" : tests
     })
    
@@ -21,7 +21,7 @@ def single_test (request, test_id):
     questions = [multiple_choice, multiple_choice_image, landmark]
     questions = [item for sublist in questions for item in sublist]
     print(already_answered)
-    return render(request, 'single_test.html', {
+    return render(request, 'quiz/site/single_test.html', {
         "test" : test,
         "questions" : questions,
         "answers" : already_answered
