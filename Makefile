@@ -20,7 +20,8 @@ app:
        
 db:
 	rm src/project.db -f
-	find src/ -type d -name 'migrations' -exec rm -f {} \;
+	#find src/ -type d -name 'migrations' -exec rm -f {} \;
+	rm src/app/quiz/migrations -rf
 	$(MAKE) sync
 	echo "from django.contrib.auth.models import User; User.objects.create_superuser('admin', 'admin@example.com', 'question')" | $(PYTHON) src/manage.py shell
 
@@ -35,7 +36,7 @@ fixtures:
 herokusetup:
 	wget -O- https://toolbelt.heroku.com/install-ubuntu.sh | sh
     
-herokurun: prod sync fixtures
+herokurun: prod sync
 	gunicorn src.wsgi:application --pythonpath src --log-file - 
     
 prod:
