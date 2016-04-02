@@ -1,13 +1,18 @@
 {% extends "base.html" %}
+{% load test_answers %}
 {% block content %}
 <style>
     li:hover{
-         background-color: #fcfcfc;
+         background-color: #fafafa;
          cursor: pointer; 
     }
     
     li{
         font-family: 'Lato',Arial,sans-serif;
+    }
+    
+    .badge-success {
+        background-color: #468847;
     }
     
 </style>
@@ -18,7 +23,21 @@
             <ul class="list-group">
             {% for test in tests %}
                 <li class="list-group-item">
-                    <a style="text-decoration: none" href="{% url 'single_test' test.id %}">{{ test }}</a>
+                    <a style="text-decoration: none" href="{% url 'single_test' test.id %}">
+                        {{ test }}
+                    </a>
+                    {% has_been_answered test as test_answered_by_current_user %}
+                    <div class="text-right">
+                        {% if test_answered_by_current_user %}
+                            Answered: 
+                            <span class="badge badge-success">
+                                {{test_answered_by_current_user.correct_answers|length}}/
+                                {{test_answered_by_current_user.test_unit_results|length}}
+                            </span>
+                        {% else %}
+                            Not answered yet. 
+                        {% endif %}
+                    </div>
                 </li>
             {% endfor %}
             </ul>

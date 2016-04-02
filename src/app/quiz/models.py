@@ -10,7 +10,7 @@ class Test(models.Model):
         
     def answered_by_user(self, user):
         return TestResult.objects.filter(test = self, user = user).first()
-        
+                
     def multiple_choice_questions(self):
         return MultipleChoiceQuestion.objects.filter(test = self)
         
@@ -108,6 +108,14 @@ class TestResult(models.Model):
     
     def test_unit_results(self):
         return TestUnitResult.objects.filter(test_result = self)
+        
+    def correct_answers(self):
+        test_units = self.test_unit_results()
+        return [x for x in test_units if x.correct_answer]
+        
+    def incorrect_answers(self):
+        test_units = self.test_unit_results()
+        return [x for x in test_units if not x.correct_answer]
     
 class TestUnitResult(models.Model):
     test_unit = models.ForeignKey(TestUnit)
