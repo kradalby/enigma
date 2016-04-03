@@ -83,8 +83,14 @@ def add_landmark_to_test(request, test_id):
         "form" : form
     })
     
+@staff_member_required
 def list_tests(request):
     tests = Test.objects.all()
     return render(request, 'quiz/admin/test_list.html', {
         "tests" : tests
     })
+   
+@staff_member_required 
+def delete_test_results(request):
+    TestResult.objects.all().delete()
+    return HttpResponseRedirect('/admin/')

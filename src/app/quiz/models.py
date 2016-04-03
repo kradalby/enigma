@@ -95,10 +95,13 @@ class LandmarkQuestion(TestUnit):
     def as_html(self):
         html = """
         <div class="landmark-container">
-            <img class="landmark" src="%s" />
-            <img class="landmark hide" src="%s" />
+            <canvas id="viewport" width="681" height="618"></canvas>
+            <input type="hidden" id="landmark_answer" name="landmark-%s" value="{}">
         </div>
-        """ % (self.original_image.url, self.landmark_drawing.url)
+        <script>
+            landmark("%s", "%s", 681, 618);
+        </script>
+        """ % (self.question, self.original_image.url, self.landmark_drawing.url)
         return html
         
 class TestResult(models.Model):

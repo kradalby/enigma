@@ -13,4 +13,5 @@ urlpatterns = patterns('app.quiz.views',
     url(r'^admin/test/(?P<test_id>\d+)/mpci$', "admin.add_mpci_to_test", name='admin_add_mpci_to_test'),
     url(r'^admin/test/(?P<test_id>\d+)/landmark$', "admin.add_landmark_to_test", name='admin_add_landmark_to_test'),
     url(r'^admin/test/list$', "admin.list_tests", name='admin_list_tests'),
+    url(r'^admin/testresult/delete$', "admin.delete_test_results", name='admin_delete_test_results'),
 )

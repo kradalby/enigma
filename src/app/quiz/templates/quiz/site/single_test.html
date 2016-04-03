@@ -1,6 +1,12 @@
 {% extends "base.html" %}
 {% load testunit_as_html %}
 {% load shuffle %}
+{% load staticfiles %}
+
+{% block extrahead %}
+    <script src="{% static "js/landmark.js" %}"></script>
+{% endblock %}
+
 {% block content %}
 <style>
     input[type=radio] {

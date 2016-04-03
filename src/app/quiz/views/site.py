@@ -50,4 +50,12 @@ def submit_test(request, test_id):
         elif testunit_name.startswith("mpci-"):
             question = testunit_name.split("-", 1)[1]
             _add_test_result(MultipleChoiceQuestionWithImage, question, testresult, answer)
+        elif testunit_name.startswith("landmark-"):
+            question = testunit_name.split("-", 1)[1]
+            test_unit_result = TestUnitResult()
+            test_unit_result.test_result = testresult
+            test_unit_result.test_unit = LandmarkQuestion.objects.get(question=question)
+            test_unit_result.correct_answer = answer != None and answer != "{}"
+            test_unit_result.save()
+           
     return redirect('/')
