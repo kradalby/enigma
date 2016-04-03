@@ -34,6 +34,7 @@ fixtures:
 	$(PYTHON) src/manage.py loaddata src/app/quiz/fixtures/002_trondheimquiz.json
     
 herokurun: prod sync
+	echo "from django.contrib.auth.models import User; User.objects.create_superuser('admin', 'admin@example.com', 'question')" | $(PYTHON) src/manage.py shell
 	gunicorn src.wsgi:application --pythonpath src --log-file - 
 
 herokusetup:
