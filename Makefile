@@ -26,21 +26,21 @@ db:
 	echo "from django.contrib.auth.models import User; User.objects.create_superuser('admin', 'admin@example.com', 'question')" | $(PYTHON) src/manage.py shell
 
 dev:
-	@echo "from settings.development import *" > src/settings/local.py
+	echo "from settings.development import *" > src/settings/local.py
 	$(PIP) install -r requirements.txt --upgrade
 
 fixtures:
 	$(PYTHON) src/manage.py loaddata src/app/quiz/fixtures/001_users.json
 	$(PYTHON) src/manage.py loaddata src/app/quiz/fixtures/002_trondheimquiz.json
+    
+herokurun: prod sync
+	gunicorn src.wsgi:application --pythonpath src --log-file - 
 
 herokusetup:
 	wget -O- https://toolbelt.heroku.com/install-ubuntu.sh | sh
     
-herokurun: prod sync
-	gunicorn src.wsgi:application --pythonpath src --log-file - 
-    
 prod:
-	@echo "from settings.production import *" > src/settings/local.py
+	echo "from settings.production import *" > src/settings/local.py
 	$(PIP) install -r requirements.txt --upgrade
 	$(PYTHON) src/manage.py collectstatic --noinput
 
