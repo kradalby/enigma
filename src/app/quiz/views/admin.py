@@ -74,14 +74,25 @@ def add_landmark_to_test(request, test_id):
             question = form.save(commit=False)
             question.test_id = test_id
             question.save()
-            return HttpResponseRedirect('/admin/test/' + str(test.id))
+            return HttpResponseRedirect('draw/' + str(question.id))
     else:
         form = LandmarkQuestionForm()
 
-    return render(request, 'quiz/admin/add_question_to_test.html', {
+    return render(request, 'quiz/admin/new_landmark_question.html', {
         "test" : test,
         "form" : form
     })
+    
+def draw_landmark(request, test_id, question_id):
+    test = Test.objects.get(id=test_id)
+    question = LandmarkQuestion.objects.get(id=question_id)
+    if request.method == 'POST':
+        return HttpResponseRedirect('/admin/test/' + test_id)
+    return render(request, 'quiz/admin/draw_landmark.html', {
+        "test" : test,
+        "question" : question
+    })
+    
     
 @staff_member_required
 def list_tests(request):

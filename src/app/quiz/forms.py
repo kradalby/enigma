@@ -19,4 +19,4 @@ class MultipleChoiceQuestionWithImageForm(ModelForm):
 class LandmarkQuestionForm(ModelForm):
     class Meta:
         model = LandmarkQuestion
-        fields = ["question", "original_image", "landmark_drawing",]
+        fields = ["question", "original_image", ]

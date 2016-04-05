@@ -89,7 +89,7 @@ class MultipleChoiceQuestionWithImage(TestUnit):
     
 class LandmarkQuestion(TestUnit):
     original_image = models.ImageField(upload_to=image_directory_path)
-    landmark_drawing = models.ImageField(upload_to=image_directory_path)
+    landmark_drawing = models.ImageField(upload_to=image_directory_path, blank=True)
     test = models.ForeignKey(Test)
     
     def as_html(self):

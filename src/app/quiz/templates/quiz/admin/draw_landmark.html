@@ -1,0 +1,56 @@
+{% extends "base.html" %}
+{% load staticfiles %}
+
+{% block content %}
+<style>
+    .btn {
+        display:inline-block;
+        min-width: 150px;
+        width: 80px;
+        padding:5px 10px;
+    }
+    
+    #left-column {
+        max-width: 100%;
+        overflow:hidden;
+        text-overflow:ellipsis;
+        -ms-text-overflow:ellipsis;
+        float: left;
+    }
+    #right-column {
+        overflow:hidden;
+        text-overflow:ellipsis;
+        -ms-text-overflow:ellipsis;
+        text-align: right;
+    }
+    
+</style>
+<div class="container">
+    <div id="left-column">
+        <div id="canvasDiv"></div>
+    </div>
+    <div id="right-column">
+        <div id="buttons">
+            <button type="button" class="btn btn-primary" onclick="drawLandmark.setColor(0)">Paint</button>
+            <button type="button" class="btn btn-success" onclick="drawLandmark.setColor(1)">Paint</button>
+            <button type="button" class="btn btn-info" onclick="drawLandmark.setColor(2)">Paint</button>
+            <button type="button" class="btn btn-warning" onclick="drawLandmark.setColor(3)">Paint</button>
+            <button type="button" class="btn btn-danger" onclick="drawLandmark.setColor(4)">Paint</button>
+        </div>
+        <div id="clear-buttons">
+            <button type="button" class="btn btn-primary" onclick="drawLandmark.clearColor(0)">Remove</button>
+            <button type="button" class="btn btn-success" onclick="drawLandmark.clearColor(1)">Remove</button>
+            <button type="button" class="btn btn-info" onclick="drawLandmark.clearColor(2)">Remove</button>
+            <button type="button" class="btn btn-warning" onclick="drawLandmark.clearColor(3)">Remove</button>
+            <button type="button" class="btn btn-danger" onclick="drawLandmark.clearColor(4)">Remove</button>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript" src="{% static "js/draw-landmark.js" %}"></script>
+<script type="text/javascript">
+    {% with image=question.original_image %}
+    drawLandmark.init("{{image.url}}", {{image.height}}, {{image.width}});
+    {% endwith %}
+</script>
+{% endblock %}
