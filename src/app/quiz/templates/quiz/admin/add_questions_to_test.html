@@ -1,6 +1,11 @@
 {% extends "base.html" %}
 
 {% block content %}
+<style>
+    .red{
+        color: red;
+    }
+</style>
 <div style="padding: 20px;"></div>
 <div class="container">
     <div class="page-header">
@@ -14,6 +19,9 @@
         <ul>
             {% for question in test.multiple_choice_questions %}
                 <li>
+                    <a href="mpc/{{ question.id }}/delete">
+                        <span class="glyphicon glyphicon-remove red" aria-hidden="true"></span>
+                    </a>
                     {{ question }}
                 </li>
             {% empty %}
@@ -32,6 +40,9 @@
         <ul>
             {% for question in test.multiple_choice_questions_with_image %}
                 <li>
+                    <a href="mpci/{{ question.id }}/delete">
+                        <span class="glyphicon glyphicon-remove red" aria-hidden="true"></span>
+                    </a>
                     {{ question }}
                 </li>
             {% empty %}
@@ -50,6 +61,9 @@
         <ul>
             {% for question in test.landmark_questions %}
                 <li>
+                    <a href="landmark/{{ question.id }}/delete">
+                        <span class="glyphicon glyphicon-remove red" aria-hidden="true"></span>
+                    </a>
                     {{ question }}
                 </li>
             {% empty %}

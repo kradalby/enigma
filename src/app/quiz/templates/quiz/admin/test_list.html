@@ -99,8 +99,14 @@
                         </a>
                     </div>
                     <div class="cell">
-                        <span class="glyphicon glyphicon-remove red" aria-hidden="true"> Delete</span>
+                        <a href="/admin/test/{{test.id}}/delete">
+                            <span class="glyphicon glyphicon-remove red" aria-hidden="true"> Delete</span>
+                        </a>
                     </div>
+                </div>
+            {% empty %}
+                <div class="cell">
+                    No tests created.
                 </div>
             {% endfor %}
         </div>

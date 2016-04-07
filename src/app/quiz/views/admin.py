@@ -126,3 +126,31 @@ def add_landmark_regions(request, test_id, question_id):
     test = Test.objects.get(id=test_id)
     question = LandmarkQuestion.objects.get(id=question_id)
     
+@staff_member_required
+def delete_landmark_question(request, test_id, question_id):
+    question = LandmarkQuestion.objects.get(id=question_id)
+    if question:
+        question.delete()
+    return HttpResponseRedirect('/admin/test/' + str(test_id))
+    
+@staff_member_required
+def delete_test(request, test_id):
+    test = Test.objects.get(id=test_id)
+    if test:
+        test.delete()
+    return HttpResponseRedirect('/admin/test/list')
+    
+@staff_member_required
+def delete_multiple_choice_question(request, test_id, question_id):
+    question = MultipleChoiceQuestion.objects.get(id=question_id)
+    if question:
+        question.delete()
+    return HttpResponseRedirect('/admin/test/' + str(test_id))
+    
+@staff_member_required
+def delete_multiple_choice_question_with_image(request, test_id, question_id):
+    question = MultipleChoiceQuestionWithImage.objects.get(id=question_id)
+    if question:
+        question.delete()
+    return HttpResponseRedirect('/admin/test/' + str(test_id))
+    
