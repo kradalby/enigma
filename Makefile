@@ -30,10 +30,9 @@ dev:
 	$(PIP) install -r requirements.txt --upgrade
 
 fixtures:
-	$(PYTHON) src/manage.py loaddata src/app/quiz/fixtures/001_users.json
-	$(PYTHON) src/manage.py loaddata src/app/quiz/fixtures/002_trondheimquiz.json
+	$(PYTHON) src/manage.py loaddata src/fixtures/demo_data.json
     
-herokurun: prod sync
+herokurun: prod sync fixtures
 	echo "from django.contrib.auth.models import User; User.objects.create_superuser('admin', 'admin@example.com', 'question')" | $(PYTHON) src/manage.py shell
 	gunicorn src.wsgi:application --pythonpath src --log-file - 
 
