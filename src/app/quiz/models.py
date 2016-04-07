@@ -92,6 +92,9 @@ class LandmarkQuestion(TestUnit):
     landmark_drawing = models.ImageField(upload_to=image_directory_path, blank=True)
     test = models.ForeignKey(Test)
     
+    def regions(self):
+        return LandmarkRegion.objects.filter(landmark_question=self)
+    
     def as_html(self):
         html = """
         <div class="landmark-container">
@@ -103,6 +106,11 @@ class LandmarkQuestion(TestUnit):
         </script>
         """ % (self.question, self.original_image.url, self.landmark_drawing.url)
         return html
+        
+class LandmarkRegion(models.Model):
+    landmark_question = models.ForeignKey(LandmarkQuestion)
+    color = models.CharField(max_length=50)
+    name = models.CharField(max_length=255)
         
 class TestResult(models.Model):
     test = models.ForeignKey(Test)

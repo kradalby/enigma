@@ -6,17 +6,7 @@ var drawLandmark = (function () {
 		canvasWidth,
 		canvasHeight,
         lineWidth = 5,
-        colors = [
-            /*"#cb3594", // purple
-            "#659b41", // green
-            "#ffcf33", // yellow
-            "#986928", // brown*/
-            "#337ab7", // blue
-            "#5cb85c", // green
-            "#5bc0de", // light blue
-            "#f0ad4e", // orange
-            "#d9534f" // red
-        ],
+        colors = [],
 		outlineImage = new Image(),
 		clickX = [],
 		clickY = [],
@@ -42,9 +32,15 @@ var drawLandmark = (function () {
 			}
 
 			clearCanvas();
+            drawLandmarkOutline();
+            updateHiddenImageData();
+			clearCanvas();
             drawOriginalImage();
-
-			// For each point drawn
+            drawLandmarkOutline();
+		},
+        
+        drawLandmarkOutline = function(){
+            // For each point drawn
 			for (var i = 0; i < clickX.length; i += 1) {
 				// Set the drawing path
 				context.beginPath();
@@ -64,12 +60,11 @@ var drawLandmark = (function () {
 				context.stroke();
 			}
 			context.closePath();
-			//context.globalCompositeOperation = "source-over";// To erase instead of draw over with white
 			context.restore();
 
 			// Overlay a crayon texture (if the current tool is crayon)
 			context.globalAlpha = 1; // No IE support
-		},
+        },
 
 		// Adds a point to the drawing array.
 		// @param x
@@ -132,13 +127,15 @@ var drawLandmark = (function () {
             createUserEvents();
 		},
         
+        addColor = function(color){
+            colors.push(color);
+        },
+        
         setColor = function(colorIndex){
-            console.log("change color", colorIndex)
             curColor = colors[colorIndex];
         },
         
         clearColor = function(colorIndex){
-            console.log("Removing color by index", colorIndex);
             var colorToRemove = colors[colorIndex];
             for(var i = clickColor.length - 1; i >= 0; i--) {
                 if(clickColor[i] === colorToRemove) {
@@ -149,6 +146,11 @@ var drawLandmark = (function () {
                 }
             }
             redraw();
+        },
+        
+        updateHiddenImageData = function(){
+            var imageData = document.getElementById('canvas').toDataURL("image/png");
+            document.getElementById('hidden-image-data').value = imageData;
         },
 
 		// Creates a canvas element, loads images, adds events, and draws the canvas for the first time.
@@ -176,6 +178,7 @@ var drawLandmark = (function () {
 	return {
 		init: init,
         setColor : setColor,
-        clearColor : clearColor
+        clearColor : clearColor,
+        addColor : addColor
 	};
 }());

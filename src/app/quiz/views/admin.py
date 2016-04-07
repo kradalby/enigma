@@ -1,6 +1,10 @@
+from django.core.files.base import ContentFile
 from django.contrib.admin.views.decorators import staff_member_required
 from django.shortcuts import render
 from django.http import HttpResponseRedirect
+import re
+import base64
+import os
 
 from ..forms import *
 from ..models import *
@@ -83,10 +87,21 @@ def add_landmark_to_test(request, test_id):
         "form" : form
     })
     
+@staff_member_required
 def draw_landmark(request, test_id, question_id):
     test = Test.objects.get(id=test_id)
     question = LandmarkQuestion.objects.get(id=question_id)
     if request.method == 'POST':
+        dataUrlPattern = re.compile('data:image/(png|jpeg);base64,(.*)$')
+        image_data = request.POST.get('hidden-image-data')
+        image_data = dataUrlPattern.match(image_data).group(2)
+
+        if (image_data == None or len(image_data) == 0):
+            # TODO: PRINT ERROR MESSAGE HERE
+            pass
+        image_data = base64.b64decode(image_data)
+        question.landmark_drawing = ContentFile(image_data, 'solution-' + os.path.basename( question.original_image.name ))
+        question.save()
         return HttpResponseRedirect('/admin/test/' + test_id)
     return render(request, 'quiz/admin/draw_landmark.html', {
         "test" : test,
@@ -105,3 +120,9 @@ def list_tests(request):
 def delete_test_results(request):
     TestResult.objects.all().delete()
     return HttpResponseRedirect('/admin/')
+    
+@staff_member_required
+def add_landmark_regions(request, test_id, question_id):
+    test = Test.objects.get(id=test_id)
+    question = LandmarkQuestion.objects.get(id=question_id)
+    
