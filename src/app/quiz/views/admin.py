@@ -102,6 +102,13 @@ def draw_landmark(request, test_id, question_id):
         image_data = base64.b64decode(image_data)
         question.landmark_drawing = ContentFile(image_data, 'solution-' + os.path.basename( question.original_image.name ))
         question.save()
+        for k,v in request.POST.items():
+            if k.startswith('#') and len(k) == 7:
+                region = LandmarkRegion()
+                region.color = k
+                region.name = v
+                region.landmark_question = question
+                region.save()
         return HttpResponseRedirect('/admin/test/' + test_id)
     return render(request, 'quiz/admin/draw_landmark.html', {
         "test" : test,

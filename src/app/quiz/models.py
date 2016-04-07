@@ -99,7 +99,7 @@ class LandmarkQuestion(TestUnit):
         html = """
         <div class="landmark-container">
             <canvas id="viewport" width="681" height="618"></canvas>
-            <input type="hidden" id="landmark_answer" name="landmark-%s" value="{}">
+            <input type="hidden" id="landmark_answer" name="landmark_question-%s" value="{}">
         </div>
         <script>
             landmark("%s", "%s", 681, 618);
