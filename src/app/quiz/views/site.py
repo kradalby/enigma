@@ -35,11 +35,14 @@ def _add_test_result(question_type, question, testresult, answer):
     test_unit_result.save()
     
 def _colors_match(json_color, target_color):
-    selected_color = json.loads(json_color)
-    red = selected_color["red"]
-    green = selected_color["green"]
-    blue = selected_color["blue"]
-    return '#' + format(red, 'x') + format(green, 'x') + format(blue, 'x') == target_color
+    try:
+        selected_color = json.loads(json_color)
+        red = selected_color["red"]
+        green = selected_color["green"]
+        blue = selected_color["blue"]
+        return '#' + format(red, 'x') + format(green, 'x') + format(blue, 'x') == target_color
+    except KeyError:
+        return False
 
 @login_required    
 def submit_test(request, test_id):
@@ -67,7 +70,6 @@ def submit_test(request, test_id):
                 if k == "landmark_region-%s" % question_model.id:
                     region = question_model.regions().get(color=v)
                     test_unit_result.correct_answer = _colors_match(answer, v)
-            #test_unit_result.correct_answer = answer != None and answer != "{}"
             test_unit_result.save()
            
     return redirect('/')

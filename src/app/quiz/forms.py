@@ -20,3 +20,7 @@ class LandmarkQuestionForm(ModelForm):
     class Meta:
         model = LandmarkQuestion
         fields = ["question", "original_image", ]
+        
+    def __init__(self, *args, **kwargs):
+        super(LandmarkQuestionForm, self).__init__(*args, **kwargs)
+        self.fields['question'].label = "Name"

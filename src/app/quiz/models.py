@@ -8,6 +8,9 @@ class Test(models.Model):
     def __str__(self):
         return self.name
         
+    def test_unit_count(self):
+        return len(TestUnit.objects.filter(test = self))
+        
     def answered_by_user(self, user):
         return TestResult.objects.filter(test = self, user = user).first()
                 
@@ -21,7 +24,8 @@ class Test(models.Model):
         return LandmarkQuestion.objects.filter(test = self)
         
 class TestUnit(models.Model):
-    question = models.CharField(max_length = 255, verbose_name = "Question", blank = True)
+    question = models.CharField(max_length = 255, verbose_name = "Question")
+    test = models.ForeignKey(Test)
     
     def __str__(self):
         return self.question
@@ -36,7 +40,6 @@ class MultipleChoiceQuestion(TestUnit):
     correct_answer = models.CharField(max_length = 255, verbose_name = "Correct answer")
     wrong_answer_1 = models.CharField(max_length = 255, verbose_name = "Wrong answer")
     wrong_answer_2 = models.CharField(max_length = 255, verbose_name = "Wrong answer")
-    test = models.ForeignKey(Test)
     
     def as_html(self):
         html = '<div><ul class="list-group">'
@@ -61,7 +64,6 @@ class MultipleChoiceQuestionWithImage(TestUnit):
     correct_answer = models.CharField(max_length = 255, verbose_name = "Correct answer")
     wrong_answer_1 = models.CharField(max_length = 255, verbose_name = "Wrong answer")
     wrong_answer_2 = models.CharField(max_length = 255, verbose_name = "Wrong answer")
-    test = models.ForeignKey(Test)
     image = models.ImageField(upload_to=image_directory_path)
     
     def as_html(self):
@@ -90,7 +92,6 @@ class MultipleChoiceQuestionWithImage(TestUnit):
 class LandmarkQuestion(TestUnit):
     original_image = models.ImageField(upload_to=image_directory_path)
     landmark_drawing = models.ImageField(upload_to=image_directory_path, blank=True)
-    test = models.ForeignKey(Test)
     
     def regions(self):
         return LandmarkRegion.objects.filter(landmark_question=self)

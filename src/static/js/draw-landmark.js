@@ -157,6 +157,14 @@ var drawLandmark = (function () {
 		init = function (image, height, width) {
             canvasHeight = height;
             canvasWidth = width;
+            
+            // Ensure canvas is not too wide
+            var leftColumnWidth = 800;
+            if(canvasWidth > leftColumnWidth){
+                var shrinkRatio = canvasWidth / leftColumnWidth;
+                canvasWidth /= shrinkRatio;
+                canvasHeight /= shrinkRatio;
+            }
 
 			// Create the canvas (Neccessary for IE because it doesn't know what a canvas element is)
 			canvas = document.createElement('canvas');
