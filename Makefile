@@ -32,7 +32,7 @@ dev:
 fixtures:
 	$(PYTHON) src/manage.py loaddata src/fixtures/demo_data.json
     
-herokurun: prod sync fixtures
+herokurun: prod sync
 	echo "from django.contrib.auth.models import User; User.objects.create_superuser('admin', 'admin@example.com', 'question')" | $(PYTHON) src/manage.py shell
 	gunicorn src.wsgi:application --pythonpath src --log-file - 
 
