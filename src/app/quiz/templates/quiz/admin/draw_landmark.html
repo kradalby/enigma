@@ -83,19 +83,19 @@
             "#986928", // brown
         ],
         maxColors = colors.length,
-        html = `
-            <div>
-                <div class="buttons">
-                    <button type="button" class="btn" style="background-color:{1}" onclick="drawLandmark.setColor({0})">Select color</button>
-                    <button type="button" class="btn" style="background-color:{1}" onclick="drawLandmark.clearColor({0})">Clear color</button>
-                </div>
-                <label for="region{0}">
-                    Region name:
-                    <input type="text" name="{1}" id="region{0}" />
-                </label>
-            </div>
-            <hr/>
-        `;
+        html =
+        "    <div>" +
+        "        <div class='buttons'>" +
+        "            <button type='button' class='btn' style='background-color:{1}' onclick='drawLandmark.setColor({0})'>Select color</button>" +
+        "            <button type='button' class='btn' style='background-color:{1}' onclick='drawLandmark.clearColor({0})'>Clear color</button>" +
+        "        </div>" +
+        "        <label for='region{0}'>" +
+        "            Region name:" +
+        "            <input type='text' name='{1}' id='region{0}' />" +
+        "        </label>" +
+        "    </div>" +
+        "    <hr/>"
+        ;
     
     function addColor(){
         if(currentColors >= maxColors){
