@@ -15,8 +15,8 @@ help:
 	@echo 'superuser    - creates a superuser'
 
 app:
-	cd src/apps; \
-	../../$(PYTHON) ../manage.py startapp ${app}
+	cd src/app; \
+	$(PYTHON) ../manage.py startapp ${app}
        
 db:
 	rm src/project.db -f
