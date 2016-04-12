@@ -20,8 +20,7 @@ app:
        
 db:
 	rm src/project.db -f
-	#find src/ -type d -name 'migrations' -exec rm -f {} \;
-	rm src/app/quiz/migrations -rf
+	find src/ -path "*/migrations/*.py" -not -name "__init__.py" -delete
 	$(MAKE) sync
 	echo "from django.contrib.auth.models import User; User.objects.create_superuser('admin', 'admin@example.com', 'question')" | $(PYTHON) src/manage.py shell
 
@@ -48,7 +47,7 @@ run:
 	$(PYTHON) src/manage.py runserver $(shell ifconfig eth0 | grep -Eo 'inet (addr:)?([0-9]*\.){3}[0-9]*' | grep -Eo '([0-9]*\.){3}[0-9]*' | grep -v '127.0.0.1' | awk '{print $1}'):8000
 
 sync:
-	$(PYTHON) src/manage.py makemigrations quiz
+	$(PYTHON) src/manage.py makemigrations quiz userprofile course
 	$(PYTHON) src/manage.py migrate
 
 superuser:
