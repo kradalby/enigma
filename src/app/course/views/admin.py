@@ -2,9 +2,9 @@ from django.contrib import messages
 from django.contrib.admin.views.decorators import staff_member_required
 from django.core.exceptions import ObjectDoesNotExist
 from django.db import transaction
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 
-from ..forms import CourseForm
+from ..forms import CourseForm, EditCourseForm
 from ..models import Course
 
 from app.userprofile.views import create_users
@@ -43,3 +43,27 @@ def delete_course(request, course_id):
     except ObjectDoesNotExist:
         messages.warning(request, 'The course has already been deleted. You may have clicked twice.')
     return redirect(list_courses)
+    
+@staff_member_required
+def view_course(request, course_id):
+    course = Course.objects.get(id = course_id)
+    return render(request, 'course/admin/view_course.html',{
+        'course' : course
+    })
+
+@staff_member_required    
+def edit_course(request, course_id):
+    course = get_object_or_404(Course, id=course_id)
+    form = EditCourseForm(request.POST or None, instance=course)
+    if request.method == 'POST':
+        if form.is_valid():
+            course = form.save()
+            messages.success(request, 'Successfully changed name of course to %s.' % course.name)
+            return redirect(view_course, course_id=course.id)
+    else:
+        form = EditCourseForm()
+
+    return render(request, 'course/admin/edit_course.html',{
+        'form' : form,
+        'course' : course
+    })
