@@ -1,9 +1,12 @@
 from django.contrib.auth.models import User
 from django.db import models
 from random import shuffle
+
+from app.course.models import Course
     
 class Test(models.Model):
     name = models.CharField(max_length=255)
+    course = models.ForeignKey(Course)
     
     def __str__(self):
         return self.name

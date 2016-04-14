@@ -17,7 +17,7 @@
 <body>
     <div id="page-content">
         {% block body %}
-        <nav class="navbar navbar-default">
+        <nav class="navbar navbar-default navbar-fixed">
             <div class="container-fluid">
                 <!-- Brand and toggle get grouped for better mobile display -->
                 <div class="navbar-header">
@@ -57,7 +57,7 @@
             </div>
         </nav>
         
-        <div class="main-content">
+        <div class="row">
         {% block content %} This is hidden candy that only you, as developer, are able to see. APPRECIATE! {% endblock %}
         </div>
 

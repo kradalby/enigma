@@ -15,6 +15,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     
+    'app.base',
     'app.course',
     'app.userprofile',
     'app.quiz'

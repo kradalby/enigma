@@ -1,6 +1,7 @@
 from django.core.files.base import ContentFile
 from django.contrib.admin.views.decorators import staff_member_required
-from django.shortcuts import render
+from django.contrib import messages
+from django.shortcuts import render, redirect
 from django.http import HttpResponseRedirect
 import re
 import base64
@@ -8,10 +9,6 @@ import os
 
 from ..forms import *
 from ..models import *
-
-@staff_member_required
-def index (request):
-    return render(request, 'quiz/admin/index.html')
   
 @staff_member_required
 def new_test(request):
@@ -126,7 +123,8 @@ def list_tests(request):
 @staff_member_required 
 def delete_test_results(request):
     TestResult.objects.all().delete()
-    return HttpResponseRedirect('/admin/')
+    messages.success(request, 'Successfully deleted all test results.')
+    return redirect('/admin')
     
 @staff_member_required
 def add_landmark_regions(request, test_id, question_id):

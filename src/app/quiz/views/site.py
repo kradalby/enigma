@@ -4,13 +4,6 @@ from django.contrib.auth.decorators import login_required
 import json
 
 from ..models import *
-
-@login_required
-def index (request):
-    tests = Test.objects.all()
-    return render(request, 'quiz/site/test_list.html', {
-        "tests" : tests
-    })
    
 @login_required
 def single_test (request, test_id):

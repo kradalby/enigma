@@ -1,0 +1,43 @@
+{% extends "base/admin/admin_base.html" %}
+
+{% block sidebar %}
+<ul class="nav nav-sidebar">
+    <li>
+        <b>COURSES</b>
+    </li>
+    <li>
+        <a href="{% url 'admin_new_course' %}">New course</a>
+    </li>
+    <hr/>
+    <li>
+        <b>TESTS</b>
+    </li>
+    <li>
+        <a href="{% url 'admin_new_test' %}">New test</a>
+    </li>
+    <li>
+        <a href="{% url 'admin_list_tests' %}">List existing test</a>
+    </li>
+    <hr/>
+    <li>
+        <b>TEST RESULTS</b>
+    </li>
+    <li>
+        <a href="{% url 'admin_delete_test_results' %}">Delete all existing test results</a>
+    </li>
+</ul>
+    {% block sidebar-extra %}
+    {% endblock %}
+{% endblock %}
+
+{% block admincontent %}
+<style>
+    .placeholder {
+        padding-left: 20px;
+    }
+</style>
+<h1 class="page-header">Dashboard</h1>
+<div class="row placeholder">
+    Select something in the sidebar.
+</div>
+{% endblock %}

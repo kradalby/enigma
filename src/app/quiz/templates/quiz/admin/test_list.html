@@ -1,6 +1,6 @@
-{% extends "base.html" %}
+{% extends "base/admin/index.html" %}
 
-{% block content %}
+{% block admincontent %}
 <style>
     body{
         font-family: 'Helvetica Neue', Helvetica, Arial;
@@ -38,21 +38,21 @@
         color: green;
     }
     
-    .row{
+    .table-row{
         display: table-row;
         background: #f6f6f6;
     }
     
-    .row:nth-of-type(odd){
+    .table-row:nth-of-type(odd){
         background: #e9e9e9;
     }
     
-    .row.blue{
+    .table-row.blue{
         background: #59b0e9
     }
     
     @media screen and (max-width: 580px){
-        .row{
+        .table-row{
             padding: 8px 0;
             display: block;
         }
@@ -70,46 +70,43 @@
         }
     }
 </style>
-<div style="padding: 20px;"></div>
-<div class="container">
-    <h1>
-        Tests
-    </h1>
-    <div class="table-wrapper">
-        <div class="table">
-            <div class="row header blue">
+<h1 class="page-header">
+    Tests
+</h1>
+<div class="table-wrapper">
+    <div class="table">
+        <div class="table-row header blue">
+            <div class="cell">
+                Test name
+            </div>
+            <div class="cell">
+                Edit test
+            </div>
+            <div class="cell">
+                Delete test
+            </div>
+        </div>
+        {% for test in tests %}
+            <div class="table-row">
                 <div class="cell">
-                    Test name
+                    {{ test.name }}
                 </div>
                 <div class="cell">
-                    Edit test
+                    <a href="/admin/test/{{test.id}}">
+                        <span class="glyphicon glyphicon-pencil" aria-hidden="true"> Edit</span>
+                    </a>
                 </div>
                 <div class="cell">
-                    Delete test
+                    <a href="/admin/test/{{test.id}}/delete">
+                        <span class="glyphicon glyphicon-remove red" aria-hidden="true"> Delete</span>
+                    </a>
                 </div>
             </div>
-            {% for test in tests %}
-                <div class="row">
-                    <div class="cell">
-                        {{ test.name }}
-                    </div>
-                    <div class="cell">
-                        <a href="/admin/test/{{test.id}}">
-                            <span class="glyphicon glyphicon-pencil" aria-hidden="true"> Edit</span>
-                        </a>
-                    </div>
-                    <div class="cell">
-                        <a href="/admin/test/{{test.id}}/delete">
-                            <span class="glyphicon glyphicon-remove red" aria-hidden="true"> Delete</span>
-                        </a>
-                    </div>
-                </div>
-            {% empty %}
-                <div class="cell">
-                    No tests created.
-                </div>
-            {% endfor %}
-        </div>
+        {% empty %}
+            <div class="cell">
+                No tests created.
+            </div>
+        {% endfor %}
     </div>
 </div>
 {% endblock %}
