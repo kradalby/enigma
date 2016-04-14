@@ -10,3 +10,4 @@ class EditCourseForm(ModelForm):
     class Meta:
         model = Course
         fields = ['name',]
+    

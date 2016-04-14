@@ -7,4 +7,5 @@ urlpatterns = patterns('app.course.views',
     url(r'^admin/delete/(?P<course_id>\d+)/$', "admin.delete_course", name='admin_delete_course'),
     url(r'^admin/(?P<course_id>\d+)/$', "admin.view_course", name='admin_view_course'),
     url(r'^admin/(?P<course_id>\d+)/edit/$', "admin.edit_course", name='admin_edit_course'),
+    url(r'^admin/(?P<course_id>\d+)/adduser/$', "admin.add_user_to_course", name='admin_add_user_to_course'),
 )

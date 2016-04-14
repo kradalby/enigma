@@ -16,7 +16,7 @@ def new_course(request):
         form = CourseForm(request.POST)
         if form.is_valid():
             course = form.save()
-            create_users(amount = course.participants, prefix = course.id)
+            create_users(amount = course.participants, course = course)
             messages.success(request, 'Successfully created new course: %s.' % course.name)
             return redirect(list_courses)
     else:
@@ -67,3 +67,10 @@ def edit_course(request, course_id):
         'form' : form,
         'course' : course
     })
+    
+@staff_member_required
+def add_user_to_course(request, course_id):
+    course = get_object_or_404(Course, id=course_id)
+    create_users(amount = 1, course = course)
+    messages.success(request, 'Successfully added user to %s.' % course.name)
+    return redirect(view_course, course_id=course_id)

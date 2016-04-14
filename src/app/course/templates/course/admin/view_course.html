@@ -7,6 +7,6 @@
 </h1>
 <div class="row">
     <a href="{% url 'admin_edit_course' course.id %}" class="btn btn-primary btn-lg">Edit name</a>
-    <a href="#" class="btn btn-primary btn-lg">Add users</a>
+    <a href="{% url 'admin_add_user_to_course' course.id %}" class="btn btn-primary btn-lg">Add users</a>
 </div>
 {% endblock %}
