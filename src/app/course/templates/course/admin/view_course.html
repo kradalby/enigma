@@ -9,4 +9,14 @@
     <a href="{% url 'admin_edit_course' course.id %}" class="btn btn-primary btn-lg">Edit name</a>
     <a href="{% url 'admin_add_user_to_course' course.id %}" class="btn btn-primary btn-lg">Add users</a>
 </div>
+<h2>
+    Participants: {{ course.participants }}
+</h2>
+<div class="row">
+    {% for participant in participants %}
+        <p>
+            {{ participant }}
+        </p>
+    {% endfor %}
+</div>
 {% endblock %}

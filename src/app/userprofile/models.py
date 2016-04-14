@@ -6,3 +6,6 @@ from app.course.models import Course
 class UserProfile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     course = models.ForeignKey(Course)
+    
+    def __str__(self):
+        return self.user.username

@@ -7,6 +7,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from ..forms import CourseForm, EditCourseForm
 from ..models import Course
 
+from app.userprofile.models import UserProfile
 from app.userprofile.views import create_users
 
 @transaction.atomic
@@ -36,7 +37,7 @@ def list_courses(request):
 @staff_member_required
 def delete_course(request, course_id):
     try:
-        course = Course.objects.get(id = course_id)
+        course = get_object_or_404(Course, id = course_id)
         course_name = course.name
         course.delete()
         messages.success(request, 'Successfully deleted course: %s.' % course_name)
@@ -46,9 +47,11 @@ def delete_course(request, course_id):
     
 @staff_member_required
 def view_course(request, course_id):
-    course = Course.objects.get(id = course_id)
+    course = get_object_or_404(Course, id = course_id)
+    participants = UserProfile.objects.filter(course = course)
     return render(request, 'course/admin/view_course.html',{
-        'course' : course
+        'course' : course,
+        'participants' : participants
     })
 
 @staff_member_required    
@@ -72,5 +75,7 @@ def edit_course(request, course_id):
 def add_user_to_course(request, course_id):
     course = get_object_or_404(Course, id=course_id)
     create_users(amount = 1, course = course)
+    course.participants += 1
+    course.save()
     messages.success(request, 'Successfully added user to %s.' % course.name)
     return redirect(view_course, course_id=course_id)
