@@ -7,6 +7,7 @@ urlpatterns = [
     url(r'^', include('app.base.urls')),
     url(r'^test/', include('app.quiz.urls')),
     url(r'^course/', include('app.course.urls')),
+    url(r'^userprofile/', include('app.userprofile.urls')),
     url(r'^accounts/login/$', auth_views.login),
     url(r'^accounts/logout/$', auth_views.logout),
 ]

@@ -1,7 +1,14 @@
 {% extends "base/admin/index.html" %}
 
 {% block admincontent %}
-<div style="padding: 20px;"></div>
+<style>
+    .red{
+        color: red;
+    }
+    td{
+        padding: 5px;
+    }
+</style>
 <h1>
     {{ course.name }}
 </h1>
@@ -13,10 +20,31 @@
     Participants: {{ course.participants }}
 </h2>
 <div class="row">
-    {% for participant in participants %}
-        <p>
-            {{ participant }}
-        </p>
-    {% endfor %}
+    <table>
+        <tr>
+            <th>Username</th>
+            <th>Has logged in</th>
+            <th>Delete user</th>
+        </tr>
+        {% for participant in participants %}
+            <tr>
+                <td>
+                    {{ participant }}
+                </td>
+                <td>
+                    {% if participant.last_login %}
+                        Yes
+                    {% else %}
+                        No
+                    {% endif %}
+                </td>
+                <td>
+                    <a href="{% url 'admin_delete_userprofile' participant.id course.id %}">
+                        <span class="glyphicon glyphicon-remove red" aria-hidden="true"> Delete
+                    </a>
+                </td>
+            </tr>
+        {% endfor %}
+    </table>
 </div>
 {% endblock %}
