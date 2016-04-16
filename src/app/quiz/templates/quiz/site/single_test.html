@@ -17,6 +17,10 @@
         max-width: 100%;
     }
     
+    canvas {
+        max-width: 100%;
+    }
+    
     img.hide {
         opacity: 0;
     }
@@ -45,7 +49,7 @@
         </div>
         {% endfor %}
     {% else %}
-    <form action="/submit/{{ test.id }}/" method="post">
+    <form action="{% url 'submit_test' test.id %}" method="post">
         {% csrf_token %}
         <h3>
             {{ test }}

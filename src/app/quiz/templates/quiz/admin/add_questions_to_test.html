@@ -1,77 +1,75 @@
-{% extends "base.html" %}
+{% extends "base/admin/index.html" %}
 
-{% block content %}
+{% block admincontent %}
 <style>
     .red{
         color: red;
     }
 </style>
-<div class="container">
-    <div class="page-header">
-        <h1>
-            <small>Test: </small> {{ test.name }}
-        </h1>
-    </div>
-    
-    <div>
-        <h2>Multiple choice questions</h2>
-        <ul>
-            {% for question in test.multiple_choice_questions %}
-                <li>
-                    <a href="mpc/{{ question.id }}/delete">
-                        <span class="glyphicon glyphicon-remove red" aria-hidden="true"></span>
-                    </a>
-                    {{ question }}
-                </li>
-            {% empty %}
-                <li>
-                    No multiple choice questions added.
-                </li>
-            {% endfor %}
-        </ul>
-        <a href="mpc" class="btn btn-default">Add new multiple choice question</a>
-    </div>
-    
-    <hr/>
-    
-    <div>
-        <h2>Multiple choice questions with image</h2>
-        <ul>
-            {% for question in test.multiple_choice_questions_with_image %}
-                <li>
-                    <a href="mpci/{{ question.id }}/delete">
-                        <span class="glyphicon glyphicon-remove red" aria-hidden="true"></span>
-                    </a>
-                    {{ question }}
-                </li>
-            {% empty %}
-                <li>
-                    No multiple choice questions with image added.
-                </li>
-            {% endfor %}
-        </ul>
-        <a href="mpci" class="btn btn-default">Add new multiple choice question with image</a>
-    </div>
-    
-    <hr/>
-    
-    <div>
-        <h2>Landmark questions</h2>
-        <ul>
-            {% for question in test.landmark_questions %}
-                <li>
-                    <a href="landmark/{{ question.id }}/delete">
-                        <span class="glyphicon glyphicon-remove red" aria-hidden="true"></span>
-                    </a>
-                    {{ question }}
-                </li>
-            {% empty %}
-                <li>
-                    No landmark question added.
-                </li>
-            {% endfor %}
-        </ul>
-        <a href="landmark" class="btn btn-default">Add new landmark question</a>
-    </div>
+<div class="page-header">
+    <h1>
+        <small>Test: </small> {{ test.name }}
+    </h1>
+</div>
+
+<div>
+    <h2>Multiple choice questions</h2>
+    <ul>
+        {% for question in test.multiple_choice_questions %}
+            <li>
+                <a href="mpc/{{ question.id }}/delete">
+                    <span class="glyphicon glyphicon-remove red" aria-hidden="true"></span>
+                </a>
+                {{ question }}
+            </li>
+        {% empty %}
+            <li>
+                No multiple choice questions added.
+            </li>
+        {% endfor %}
+    </ul>
+    <a href="mpc" class="btn btn-default">Add new multiple choice question</a>
+</div>
+
+<hr/>
+
+<div>
+    <h2>Multiple choice questions with image</h2>
+    <ul>
+        {% for question in test.multiple_choice_questions_with_image %}
+            <li>
+                <a href="mpci/{{ question.id }}/delete">
+                    <span class="glyphicon glyphicon-remove red" aria-hidden="true"></span>
+                </a>
+                {{ question }}
+            </li>
+        {% empty %}
+            <li>
+                No multiple choice questions with image added.
+            </li>
+        {% endfor %}
+    </ul>
+    <a href="mpci" class="btn btn-default">Add new multiple choice question with image</a>
+</div>
+
+<hr/>
+
+<div>
+    <h2>Landmark questions</h2>
+    <ul>
+        {% for question in test.landmark_questions %}
+            <li>
+                <a href="landmark/{{ question.id }}/delete">
+                    <span class="glyphicon glyphicon-remove red" aria-hidden="true"></span>
+                </a>
+                {{ question }}
+            </li>
+        {% empty %}
+            <li>
+                No landmark question added.
+            </li>
+        {% endfor %}
+    </ul>
+    <a href="landmark" class="btn btn-default">Add new landmark question</a>
 </div>
 {% endblock %}

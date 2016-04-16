@@ -1,11 +1,12 @@
+from django.core.exceptions import ObjectDoesNotExist
 from django.core.files.base import ContentFile
 from django.contrib.admin.views.decorators import staff_member_required
 from django.contrib import messages
 from django.shortcuts import render, redirect
-from django.http import HttpResponseRedirect
 import re
 import base64
 import os
+
 
 from ..forms import *
 from ..models import *
@@ -16,7 +17,7 @@ def new_test(request):
         form = TestForm(request.POST)
         if form.is_valid():
             test = form.save()
-            return HttpResponseRedirect('/admin/test/' + str(test.id))
+            return redirect(add_questions_to_test, test.id)
     else:
         form = TestForm()
 
@@ -38,7 +39,7 @@ def add_mpc_to_test(request, test_id):
             question = form.save(commit=False)
             question.test_id = test_id
             question.save()
-            return HttpResponseRedirect('/admin/test/' + str(test.id))
+            return redirect(add_questions_to_test, test.id)
     else:
         form = MultipleChoiceQuestionForm()
 
@@ -56,7 +57,7 @@ def add_mpci_to_test(request, test_id):
             question = form.save(commit=False)
             question.test_id = test_id
             question.save()
-            return HttpResponseRedirect('/admin/test/' + str(test.id))
+            return redirect(add_questions_to_test, test.id)
     else:
         form = MultipleChoiceQuestionWithImageForm()
 
@@ -75,7 +76,7 @@ def add_landmark_to_test(request, test_id):
             question = form.save(commit=False)
             question.test_id = test_id
             question.save()
-            return HttpResponseRedirect('draw/' + str(question.id))
+            return redirect(draw_landmark, test.id, question.id)
     else:
         form = LandmarkQuestionForm()
 
@@ -106,7 +107,7 @@ def draw_landmark(request, test_id, question_id):
                 region.name = v
                 region.landmark_question = question
                 region.save()
-        return HttpResponseRedirect('/admin/test/' + test_id)
+        return redirect(add_questions_to_test, test.id)
     return render(request, 'quiz/admin/draw_landmark.html', {
         "test" : test,
         "question" : question
@@ -133,29 +134,45 @@ def add_landmark_regions(request, test_id, question_id):
     
 @staff_member_required
 def delete_landmark_question(request, test_id, question_id):
-    question = LandmarkQuestion.objects.get(id=question_id)
-    if question:
+    try:
+        question = LandmarkQuestion.objects.get(id=question_id)
+        question_text = question.question
         question.delete()
-    return HttpResponseRedirect('/admin/test/' + str(test_id))
+        messages.success(request, 'Successfully deleted question: %s.' % question_text)
+    except ObjectDoesNotExist:
+        messages.warning(request, 'The question has already been deleted. You may have clicked twice.')
+    return redirect(add_questions_to_test, test_id)
     
 @staff_member_required
 def delete_test(request, test_id):
-    test = Test.objects.get(id=test_id)
-    if test:
+    try:
+        test = Test.objects.get(id=test_id)
+        test_name = test.name
         test.delete()
-    return HttpResponseRedirect('/admin/test/list')
+        messages.success(request, 'Successfully deleted test: %s.' % test_name)
+    except ObjectDoesNotExist:
+        messages.warning(request, 'The test has already been deleted. You may have clicked twice.')
+    return redirect(list_tests)
     
 @staff_member_required
 def delete_multiple_choice_question(request, test_id, question_id):
-    question = MultipleChoiceQuestion.objects.get(id=question_id)
-    if question:
+    try:
+        question = MultipleChoiceQuestion.objects.get(id=question_id)
+        question_text = question.question
         question.delete()
-    return HttpResponseRedirect('/admin/test/' + str(test_id))
+        messages.success(request, 'Successfully deleted question: %s.' % question_text)
+    except ObjectDoesNotExist:
+        messages.warning(request, 'The question has already been deleted. You may have clicked twice.')
+    return redirect(add_questions_to_test, test_id)
     
 @staff_member_required
 def delete_multiple_choice_question_with_image(request, test_id, question_id):
-    question = MultipleChoiceQuestionWithImage.objects.get(id=question_id)
-    if question:
+    try:
+        question = MultipleChoiceQuestionWithImage.objects.get(id=question_id)
+        question_text = question.question
         question.delete()
-    return HttpResponseRedirect('/admin/test/' + str(test_id))
+        messages.success(request, 'Successfully deleted question: %s.' % question_text)
+    except ObjectDoesNotExist:
+        messages.warning(request, 'The question has already been deleted. You may have clicked twice.')
+    return redirect(add_questions_to_test, test_id)
     

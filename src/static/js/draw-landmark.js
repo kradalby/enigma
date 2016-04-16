@@ -71,27 +71,45 @@ var drawLandmark = (function () {
 		// @param y
 		// @param dragging
 		addClick = function (x, y, dragging) {
-
 			clickX.push(x);
 			clickY.push(y);
 			clickColor.push(curColor);
 			clickDrag.push(dragging);
 		},
+            
+        relativeMouseCoordinates = function(event){
+            var totalOffsetX = 0;
+            var totalOffsetY = 0;
+            var canvasX = 0;
+            var canvasY = 0;
+            var currentElement = canvas;
+
+            do{
+                totalOffsetX += currentElement.offsetLeft - currentElement.scrollLeft;
+                totalOffsetY += currentElement.offsetTop - currentElement.scrollTop;
+            }
+            while(currentElement = currentElement.offsetParent)
+
+            canvasX = event.pageX - totalOffsetX;
+            canvasY = event.pageY - totalOffsetY;
+
+            return {x:canvasX, y:canvasY}
+        },
 
 		// Add mouse and touch event listeners to the canvas
 		createUserEvents = function () {
 			var press = function (e) {
 				// Mouse down location
-				var mouseX = e.pageX - this.offsetLeft,
-					mouseY = e.pageY - this.offsetTop;
+                var coords = relativeMouseCoordinates(e);
 				paint = true;
-				addClick(mouseX, mouseY, false);
+				addClick(coords.x, coords.y, false);
 				redraw();
 			},
 
             drag = function (e) {
                 if (paint) {
-                    addClick(e.pageX - this.offsetLeft, e.pageY - this.offsetTop, true);
+                    var coords = relativeMouseCoordinates(e);
+                    addClick(coords.x, coords.y, true);
                     redraw();
                 }
                 // Prevent the whole page from dragging if on mobile

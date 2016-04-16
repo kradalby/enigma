@@ -19,7 +19,7 @@ def new_course(request):
             course = form.save()
             create_users(amount = course.participants, course = course)
             messages.success(request, 'Successfully created new course: %s.' % course.name)
-            return redirect(list_courses)
+            return redirect(view_course, course.id)
     else:
         form = CourseForm()
 
@@ -37,7 +37,7 @@ def list_courses(request):
 @staff_member_required
 def delete_course(request, course_id):
     try:
-        course = get_object_or_404(Course, id = course_id)
+        course = Course.objects.get(id = course_id)
         course_name = course.name
         course.delete()
         messages.success(request, 'Successfully deleted course: %s.' % course_name)

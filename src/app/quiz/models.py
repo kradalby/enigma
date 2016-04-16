@@ -100,15 +100,19 @@ class LandmarkQuestion(TestUnit):
         return LandmarkRegion.objects.filter(landmark_question=self)
     
     def as_html(self):
+        original_image = self.original_image.url
+        landmark_drawing = self.landmark_drawing.url
+        width = self.original_image.width
+        height = self.original_image.height
         html = """
         <div class="landmark-container">
-            <canvas id="viewport" width="681" height="618"></canvas>
-            <input type="hidden" id="landmark_answer" name="landmark_question-%s" value="{}">
+            <canvas id="viewport" width="{3}" height="{4}"></canvas>
+            <input type="hidden" id="landmark_answer" name="landmark_question-{0}" value="{{}}">
         </div>
         <script>
-            landmark("%s", "%s", 681, 618);
+            landmark("{1}", "{2}", {3}, {4});
         </script>
-        """ % (self.question, self.original_image.url, self.landmark_drawing.url)
+        """.format(self.question, original_image, landmark_drawing, width, height)
         return html
         
 class LandmarkRegion(models.Model):

@@ -92,12 +92,12 @@
                     {{ test.name }}
                 </div>
                 <div class="cell">
-                    <a href="/admin/test/{{test.id}}">
+                    <a href="{% url 'admin_add_questions_to_test' test.id %}">
                         <span class="glyphicon glyphicon-pencil" aria-hidden="true"> Edit</span>
                     </a>
                 </div>
                 <div class="cell">
-                    <a href="/admin/test/{{test.id}}/delete">
+                    <a href="{% url 'admin_delete_test' test.id %}">
                         <span class="glyphicon glyphicon-remove red" aria-hidden="true"> Delete</span>
                     </a>
                 </div>
