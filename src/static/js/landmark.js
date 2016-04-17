@@ -2,18 +2,41 @@ var coloredRegions = [];
 var distanceToColorThreshold = 0;
 var origImg;
 
-//processImage("img/1_solution.png", 681, 618);
 function landmark(originalImage, landmarkImage, width, height){
+    var context = document.getElementById('viewport').getContext('2d');
+    width = Math.min(width, context.canvas.clientWidth);
+    height = Math.min(height, context.canvas.clientHeight);
+    context.canvas.height = height;
+    context.canvas.width = width;
     origImg = originalImage;
     processImage(landmarkImage, width, height, function(){
         drawImage(originalImage, width, height);
     })
 }
 
+relativeMouseCoordinates = function(event){
+    var totalOffsetX = 0;
+    var totalOffsetY = 0;
+    var canvasX = 0;
+    var canvasY = 0;
+    var currentElement = document.getElementById('viewport');
+
+    do{
+        totalOffsetX += currentElement.offsetLeft - currentElement.scrollLeft;
+        totalOffsetY += currentElement.offsetTop - currentElement.scrollTop;
+    }
+    while(currentElement = currentElement.offsetParent)
+
+    canvasX = event.pageX - totalOffsetX;
+    canvasY = event.pageY - totalOffsetY;
+
+    return {x:canvasX, y:canvasY}
+}
+
 function drawImage(originalImage, width, height, callback){
     var canvas = document.getElementById('viewport'),
     context = canvas.getContext('2d');
-
+    console.log("draw image",width,height)
     var image = new Image();
     image.src = originalImage;
     image.onload = function(){
@@ -27,6 +50,7 @@ function drawImage(originalImage, width, height, callback){
 function processImage(imgSrc, width, height, callback){
     var canvas = document.getElementById('viewport'),
     context = canvas.getContext('2d');
+    console.log("process image",width,height)
 
     var image = new Image();
     image.src = imgSrc;
@@ -37,7 +61,7 @@ function processImage(imgSrc, width, height, callback){
         DetectRegions(pixelsAndColors); 
         AddMouseOverListener();
         ClearCanvas(canvas);
-        drawXOnMouseUp();
+        drawXOnMouseUp(width, height);
         callback();
     }
 }
@@ -167,7 +191,7 @@ HashTable.prototype = {
  * Draw x on click
  */
 
-function drawXOnMouseUp(){
+function drawXOnMouseUp(width, height){
     var canvas = document.getElementById('viewport');
     var ctx = canvas.getContext("2d");
 
@@ -178,6 +202,7 @@ function drawXOnMouseUp(){
     function drawX(x, y) {
         ctx.beginPath();
         ctx.strokeStyle="#FF0000";
+        ctx.lineWidth = 3;
         
         ctx.moveTo(x - 10, y - 10);
         ctx.lineTo(x + 10, y + 10);
@@ -189,12 +214,14 @@ function drawXOnMouseUp(){
     }
 
     function mouseUp(e) {
+        var coords = relativeMouseCoordinates(e);
+        console.log("Clicked",coords.x,coords.y)
         mouseX = e.pageX - canvas.offsetLeft;
         mouseY = e.pageY - canvas.offsetTop;
         
         ClearCanvas(canvas);
-        drawImage(origImg, 681, 618, function(){
-            drawX(mouseX, mouseY);
+        drawImage(origImg, width, height, function(){
+            drawX(coords.x, coords.y);
         });
     }
 }
