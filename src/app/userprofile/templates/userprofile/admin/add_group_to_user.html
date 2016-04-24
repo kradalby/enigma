@@ -1,0 +1,19 @@
+{% extends "base/admin/index.html" %}
+
+{% block admincontent %}
+<h1>
+    Add {{user}} to group:
+</h1>
+<ul>
+    {% for group in groups %}
+        <li>
+            <a href="{% url 'admin_register_user_in_group' group.id user.id %}">{{ group }}</a>
+        </li>
+    {% empty %}
+        <li>
+            No groups are created yet, or user is added to all groups. <br/>
+            <a href="{% url 'admin_new_group' %}">Create a group now!</a>
+        </li>
+    {% endfor %}
+</ul>
+{% endblock %}

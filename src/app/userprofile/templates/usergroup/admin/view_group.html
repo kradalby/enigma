@@ -1,0 +1,31 @@
+{% extends "base/admin/index.html" %}
+
+{% block admincontent %}
+<h1>
+    Group: {{ group }}
+</h1>
+<div class="row">
+    <a href="{% url 'admin_add_user_to_group' group.id %}" class="btn btn-primary btn-lg">Add user to group</a>
+</div>
+
+<br/>
+
+<h2>
+    Members:
+</h2>
+<div class="row">
+    <ul>
+    {% for user in group.users %}
+        <li>
+            <a href="{% url 'admin_view_user' user.id %}">
+                {{ user }}
+            </a>
+        </li>
+    {% empty %}
+        <li>
+            This group does not have any members.
+        </li>
+    {% endfor %}
+    </ul>
+</div>
+{% endblock %}

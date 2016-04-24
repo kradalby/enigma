@@ -3,6 +3,22 @@
 {% block sidebar %}
 <ul class="nav nav-sidebar">
     <li>
+        <b>USERS AND GROUPS</b>
+    </li>
+    <li>
+        <a href="{% url 'admin_new_user' %}">New user</a>
+    </li>
+    <li>
+        <a href="{% url 'admin_new_group' %}">New group</a>
+    </li>
+    <li>
+        <a href="{% url 'admin_list_users' %}">List existing users</a>
+    </li>
+    <li>
+        <a href="{% url 'admin_list_groups' %}">List existing groups</a>
+    </li>
+    <hr/>
+    <li>
         <b>COURSES</b>
     </li>
     <li>

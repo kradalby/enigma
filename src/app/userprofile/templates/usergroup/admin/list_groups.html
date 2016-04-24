@@ -71,40 +71,40 @@
     }
 </style>
 <h1 class="page-header">
-    Courses
+    Group
 </h1>
 <div class="table-wrapper">
     <div class="table">
         <div class="table-row header blue">
             <div class="cell">
-                Course name
+                Group name
             </div>
             <div class="cell">
-                Edit course
+                Edit group
             </div>
             <div class="cell">
-                Delete course
+                Delete group
             </div>
         </div>
-        {% for course in courses %}
+        {% for group in groups %}
             <div class="table-row">
                 <div class="cell">
-                    {{ course.name }}
+                    {{ group }}
                 </div>
                 <div class="cell">
-                    <a href="{% url 'admin_view_course' course.id %}">
+                    <a href="{% url 'admin_view_group' group.id %}">
                         <span class="glyphicon glyphicon-pencil" aria-hidden="true"> Edit</span>
                     </a>
                 </div>
                 <div class="cell">
-                    <a href="{% url 'admin_delete_course' course.id %}">
+                    <a href="{% url 'admin_delete_group' group.id %}">
                         <span class="glyphicon glyphicon-remove red" aria-hidden="true"> Delete</span>
                     </a>
                 </div>
             </div>
         {% empty %}
             <div class="cell">
-                No courses created.
+                No groups created.
             </div>
         {% endfor %}
     </div>
