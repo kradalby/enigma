@@ -1,0 +1,19 @@
+{% extends "base/admin/index.html" %}
+
+{% block admincontent %}
+<h1>
+    Add group to {{ course }}:
+</h1>
+<ul>
+    {% for group in groups %}
+        <li>
+            <a href="{% url 'admin_register_group_to_course' course.id group.id %}">{{ group }}</a>
+        </li>
+    {% empty %}
+        <li>
+            No groups are created yet, or all groups are added to this course. <br/>
+            <a href="{% url 'admin_new_group' %}">Create a group now!</a>
+        </li>
+    {% endfor %}
+</ul>
+{% endblock %}

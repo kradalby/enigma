@@ -34,7 +34,7 @@ def view_user(request, user_id):
 def add_group_to_user(request, user_id):
     userprofile = get_object_or_404(UserProfile, id=user_id)
     group_id_to_exclude = [g.id for g in userprofile.groups.all()]
-    groups = UserGroup.objects.exclude(id__in=group_id_to_exclude)
+    groups = UserGroup.objects.exclude(id__in=group_id_to_exclude).exclude(name__startswith="custom_group")
     return render(request, 'userprofile/admin/add_group_to_user.html',{
         'user' : userprofile,
         'groups' : groups
@@ -57,49 +57,6 @@ def delete_user(request, user_id):
     except ObjectDoesNotExist:
         messages.warning(request, 'The user has already been deleted. You may have clicked twice.')
     return redirect("admin_list_users")
-        
-
-@staff_member_required
-@transaction.atomic
-def delete_userprofile(request, userprofile_id, course_id):
-    try:
-        userprofile = UserProfile.objects.get(id=userprofile_id)
-        course = userprofile.course 
-        course.participants -= 1
-        course.save()
-        username = userprofile.user.username
-        userprofile.delete()
-        messages.success(request, 'Successfully deleted user %s.' % username)
-    except ObjectDoesNotExist:
-        messages.warning(request, 'The user has already been deleted. You may have clicked twice.')
-    return redirect("admin_view_course", course_id)
-
-@transaction.atomic
-def create_users(amount, group, prefix = ""):
-    created = 0
-    while created < amount:
-        add_user_to_group(group, prefix)
-        created+=1
-        
-@transaction.atomic
-def add_user_to_group(group, prefix):
-    user = User()
-    user.username = _generate_random_username(prefix)
-    user.set_password("question")
-    user.save()
-    userprofile = UserProfile()
-    userprofile.user = user
-    userprofile.group = group
-    userprofile.save()
- 
-def _generate_random_username(prefix):
-    username = "%s-%s-%s" % (prefix, random.choice(colors), random.choice(animals))
-    if UserProfile.objects.filter(user__username=username).exists():
-        return _generate_random_username(prefix)
-    return username
-    
-colors = ["red","blue","yellow","orange","green","purple","teal","dark","white","grey","pink"]
-animals = ["cat","fox","turtle","snake","dog","cow","sheep","bull","mouse"]
 
 @staff_member_required
 @transaction.atomic
@@ -133,7 +90,7 @@ def add_user_to_group(request, group_id):
     
 @staff_member_required
 def list_groups(request):
-    groups = UserGroup.objects.all()
+    groups = UserGroup.objects.all().exclude(name__startswith="custom_group")
     return render(request, 'usergroup/admin/list_groups.html',{
         'groups' : groups
     })
@@ -155,3 +112,41 @@ def register_user_in_group(request, group_id, user_id):
     user = get_object_or_404(UserProfile, id=user_id)
     user.groups.add(group)
     return redirect("admin_view_group", group_id)
+
+@transaction.atomic
+def create_users(amount, group, prefix):
+    created = 0
+    while created < amount:
+        add_user_to_group(group, prefix, created)
+        created+=1
+        
+@transaction.atomic
+def add_user_to_group(group, prefix, suffix):
+    user = User()
+    user.username = _generate_username(prefix, suffix)
+    user.set_password("question")
+    user.save()
+    userprofile = UserProfile()
+    userprofile.user = user
+    userprofile.save()
+    userprofile.groups.add(group)
+    
+def _generate_username(prefix, suffix):
+    username = "%s-%s" % (prefix, suffix)
+    if User.objects.filter(username=username).exists():
+        return _generate_username(prefix, suffix + 1)
+    return username
+    
+@staff_member_required
+@transaction.atomic
+def delete_userprofile(request, userprofile_id, course_id):
+    try:
+        userprofile = UserProfile.objects.get(id=userprofile_id)
+        if userprofile.groups.first().name.startswith("custom_group"):
+            userprofile.groups.first().delete()
+        username = userprofile.user.username
+        userprofile.delete()
+        messages.success(request, 'Successfully deleted user %s.' % username)
+    except ObjectDoesNotExist:
+        messages.warning(request, 'The user has already been deleted. You may have clicked twice.')
+    return redirect("admin_view_course", course_id)

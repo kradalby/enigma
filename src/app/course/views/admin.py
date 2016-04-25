@@ -3,11 +3,12 @@ from django.contrib.admin.views.decorators import staff_member_required
 from django.core.exceptions import ObjectDoesNotExist
 from django.db import transaction
 from django.shortcuts import render, redirect, get_object_or_404
+from random import randint
 
 from ..forms import CourseForm, EditCourseForm
 from ..models import Course
 
-from app.userprofile.models import UserProfile
+from app.userprofile.models import UserProfile, UserGroup
 from app.userprofile.views import create_users
 
 @transaction.atomic
@@ -17,7 +18,6 @@ def new_course(request):
         form = CourseForm(request.POST)
         if form.is_valid():
             course = form.save()
-            create_users(amount = course.participants, course = course)
             messages.success(request, 'Successfully created new course: %s.' % course.name)
             return redirect(view_course, course.id)
     else:
@@ -48,10 +48,14 @@ def delete_course(request, course_id):
 @staff_member_required
 def view_course(request, course_id):
     course = get_object_or_404(Course, id = course_id)
-    participants = UserProfile.objects.filter(course = course)
+    group_id_to_exclude = [g.id for g in course.groups.filter(name__startswith="custom_group")]
+    groups = course.groups.exclude(id__in=group_id_to_exclude)
+    participants = UserProfile.objects.filter(groups__id__in = group_id_to_exclude)
+    print(participants)
     return render(request, 'course/admin/view_course.html',{
         'course' : course,
-        'participants' : participants
+        'participants' : participants,
+        'groups' : groups
     })
 
 @staff_member_required    
@@ -74,8 +78,37 @@ def edit_course(request, course_id):
 @staff_member_required
 def add_user_to_course(request, course_id):
     course = get_object_or_404(Course, id=course_id)
-    create_users(amount = 1, course = course)
-    course.participants += 1
+    group = UserGroup()
+    group.name = "custom_group-%s-%s" % (course.name, randint(0,1000000)) 
+    group.save()
+    create_users(1, group, course.name)
+    course.groups.add(group)
     course.save()
-    messages.success(request, 'Successfully added user to %s.' % course.name)
+    messages.success(request, 'Successfully added a user to %s.' % course.name)
     return redirect(view_course, course_id=course_id)
+    
+@staff_member_required
+def add_group_to_course(request, course_id):
+    course = get_object_or_404(Course, id=course_id)
+    group_id_to_exclude = [g.id for g in course.groups.all()]
+    groups = UserGroup.objects.exclude(id__in=group_id_to_exclude).exclude(name__startswith="custom_group")
+
+    return render(request, 'course/admin/add_group_to_course.html',{
+        'groups' : groups,
+        'course' : course
+    }) 
+    
+@staff_member_required
+def register_group_to_course(request, course_id, group_id):
+    group = get_object_or_404(UserGroup, id=group_id)
+    course = get_object_or_404(Course, id=course_id)
+    course.groups.add(group)
+    return redirect("admin_view_course", course_id)
+    
+@staff_member_required
+def unregister_group_from_course(request, course_id, group_id):
+    group = get_object_or_404(UserGroup, id=group_id)
+    course = get_object_or_404(Course, id=course_id)
+    course.groups.remove(group)
+    messages.success(request, 'Successfully removed group from course')
+    return redirect("admin_view_course", course_id)

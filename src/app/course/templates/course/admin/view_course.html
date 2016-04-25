@@ -22,9 +22,35 @@
 <div class="row">
     <a href="{% url 'admin_edit_course' course.id %}" class="btn btn-primary btn-lg">Edit name</a>
     <a href="{% url 'admin_add_user_to_course' course.id %}" class="btn btn-primary btn-lg">Add users</a>
+    <a href="{% url 'admin_add_group_to_course' course.id %}" class="btn btn-primary btn-lg">Add group</a>
 </div>
 <h2>
-    Participants: {{ course.participants }}
+    Groups: {{ groups|length }}
+</h2>
+<div class="row">
+    <table>
+        <tr>
+            <th>Group name</th>
+            <th>Remove group from course</th>
+        </tr>
+        {% for group in groups %}
+            <tr>
+                <td>
+                    <a href="{% url 'admin_view_group' group.id %}">
+                        {{ group }}
+                    </a>
+                </td>
+                <td>
+                    <a href="{% url 'admin_unregister_group_from_course' course.id group.id %}">
+                        <span class="glyphicon glyphicon-remove red" aria-hidden="true"> Remove
+                    </a>
+                </td>
+            </tr>
+        {% endfor %}
+    </table>
+</div>
+<h2>
+    Participants without groups: {{ participants|length }}
 </h2>
 <div class="row">
     <table>
@@ -36,7 +62,9 @@
         {% for participant in participants %}
             <tr>
                 <td>
-                    {{ participant }}
+                    <a href="{% url 'admin_view_user' participant.id %}">
+                        {{ participant }}
+                    </a>
                 </td>
                 <td>
                     {% if participant.last_login %}
