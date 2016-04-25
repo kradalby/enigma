@@ -76,7 +76,7 @@ def edit_course(request, course_id):
     })
     
 @staff_member_required
-def add_user_to_course(request, course_id):
+def add_random_user_to_course(request, course_id):
     course = get_object_or_404(Course, id=course_id)
     group = UserGroup()
     group.name = "custom_group-%s-%s" % (course.name, randint(0,1000000)) 
@@ -112,3 +112,25 @@ def unregister_group_from_course(request, course_id, group_id):
     course.groups.remove(group)
     messages.success(request, 'Successfully removed group from course')
     return redirect("admin_view_course", course_id)
+    
+@staff_member_required
+def add_user_to_course(request, user_id):
+    user = get_object_or_404(UserProfile, id=user_id)
+    courses = Course.objects.exclude(groups=user.groups.all())
+    return render(request, 'course/admin/add_user_to_course.html',{
+        'user' : user,
+        'courses' : courses
+    }) 
+    
+@staff_member_required
+def register_user_to_course(request, user_id, course_id):
+    course = get_object_or_404(Course, id=course_id)
+    user = get_object_or_404(UserProfile, id=user_id)
+    group = UserGroup()
+    group.name = "custom_group-%s-%s" % (course.name, randint(0,1000000)) 
+    group.save()
+    user.groups.add(group)
+    course.groups.add(group)
+    messages.success(request, 'Successfully added %s user to %s.' % (user, course.name) )
+    return redirect("admin_view_user", user_id=user_id)
+    

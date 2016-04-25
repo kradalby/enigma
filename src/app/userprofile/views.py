@@ -26,8 +26,10 @@ def new_user(request):
 @staff_member_required
 def view_user(request, user_id):
     userprofile = UserProfile.objects.get(id=user_id)
+    groups = userprofile.groups.exclude(name__startswith="custom_group")
     return render(request, 'userprofile/admin/view_user.html',{
-        'user' : userprofile
+        'user' : userprofile,
+        'groups' : groups
     })
     
 @staff_member_required

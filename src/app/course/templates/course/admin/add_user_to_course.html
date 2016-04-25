@@ -1,0 +1,19 @@
+{% extends "base/admin/index.html" %}
+
+{% block admincontent %}
+<h1>
+    Add {{ user }} to course:
+</h1>
+<ul>
+    {% for course in courses %}
+        <li>
+            <a href="{% url 'admin_register_user_to_course' user.id course.id %}">{{ course }}</a>
+        </li>
+    {% empty %}
+        <li>
+            No courses are created yet, or this user may be attending all courses. <br/>
+            <a href="{% url 'admin_new_course' %}">Create a new course now!</a>
+        </li>
+    {% endfor %}
+</ul>
+{% endblock %}
