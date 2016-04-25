@@ -22,8 +22,8 @@ relativeMouseCoordinates = function(event){
     var currentElement = document.getElementById('viewport');
 
     do{
-        totalOffsetX += currentElement.offsetLeft - currentElement.scrollLeft;
-        totalOffsetY += currentElement.offsetTop - currentElement.scrollTop;
+        totalOffsetX += currentElement.offsetLeft;
+        totalOffsetY += currentElement.offsetTop;
     }
     while(currentElement = currentElement.offsetParent)
 
@@ -36,7 +36,6 @@ relativeMouseCoordinates = function(event){
 function drawImage(originalImage, width, height, callback){
     var canvas = document.getElementById('viewport'),
     context = canvas.getContext('2d');
-    console.log("draw image",width,height)
     var image = new Image();
     image.src = originalImage;
     image.onload = function(){
@@ -50,7 +49,6 @@ function drawImage(originalImage, width, height, callback){
 function processImage(imgSrc, width, height, callback){
     var canvas = document.getElementById('viewport'),
     context = canvas.getContext('2d');
-    console.log("process image",width,height)
 
     var image = new Image();
     image.src = imgSrc;
@@ -155,7 +153,6 @@ function IsCloseToColorRegion(points, x, y, threshold){
             dy = point.y;
         var distance = Math.sqrt(Math.pow(x-dx, 2) + Math.pow(y-dy, 2));
         if(distance <= threshold){
-            console.log("Close to color region!!");
             return true;
         }
     }
@@ -215,7 +212,6 @@ function drawXOnMouseUp(width, height){
 
     function mouseUp(e) {
         var coords = relativeMouseCoordinates(e);
-        console.log("Clicked",coords.x,coords.y)
         mouseX = e.pageX - canvas.offsetLeft;
         mouseY = e.pageY - canvas.offsetTop;
         
