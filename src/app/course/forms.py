@@ -1,7 +1,7 @@
 from django.forms import ModelForm, CharField, IntegerField
 from .models import Course
 
-from app.userprofile.views.users import create_users
+from app.userprofile.views.users import generate_users
 
 class CourseForm(ModelForm):
     #generated_participants_amount = IntegerField(min_value=0)
@@ -25,7 +25,7 @@ class CourseForm(ModelForm):
         amount = self.cleaned_data.get('generated_participants_amount')
         prefix = self.cleaned_data.get('generated_participants_prefix')
         if amount and prefix:
-            create_users(amount, self, prefix)
+            generate_users(amount, self, prefix)
         return super(CourseForm, self).save(commit=commit)
         
 class EditCourseForm(ModelForm):

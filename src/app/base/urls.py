@@ -1,8 +1,12 @@
 from django.conf.urls import include, url, patterns
 
-urlpatterns = patterns('app.base.views',
+from .views import site, admin
+
+app_name = "base"
+
+urlpatterns = [
     # Site
-    url(r'^$', "site.index", name='index'),
+    url(r'^$', site.index, name='index'),
     # Admin
-    url(r'^admin/$', "admin.index", name='admin_index'),
-)
+    url(r'^admin/$', admin.index, name='admin_index'),
+]
