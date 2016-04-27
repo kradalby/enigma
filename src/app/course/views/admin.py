@@ -9,7 +9,7 @@ from ..forms import CourseForm, EditCourseForm
 from ..models import Course
 
 from app.userprofile.models import UserProfile, UserGroup
-from app.userprofile.views import create_users
+from app.userprofile.views.users import generate_user
 
 @transaction.atomic
 @staff_member_required
@@ -81,7 +81,8 @@ def add_random_user_to_course(request, course_id):
     group = UserGroup()
     group.name = "custom_group-%s-%s" % (course.name, randint(0,1000000)) 
     group.save()
-    create_users(1, group, course.name)
+    user = generate_user(course.name)
+    user.groups.add(group)
     course.groups.add(group)
     course.save()
     messages.success(request, 'Successfully added a user to %s.' % course.name)

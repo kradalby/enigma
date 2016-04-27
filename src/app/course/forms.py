@@ -1,7 +1,7 @@
 from django.forms import ModelForm, CharField, IntegerField
 from .models import Course
 
-from app.userprofile.views import create_users
+from app.userprofile.views.users import create_users
 
 class CourseForm(ModelForm):
     #generated_participants_amount = IntegerField(min_value=0)
