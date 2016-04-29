@@ -33,7 +33,7 @@
         <tr>
             <th>Group name</th>
             <th>Participants</th>
-            <th>Remove group from course</th>
+            <th>Unregister group from course</th>
         </tr>
         {% for group in groups %}
             <tr>
@@ -47,7 +47,7 @@
                 </td>
                 <td>
                     <a href="{% url 'admin_unregister_group_from_course' course.id group.id %}">
-                        <span class="glyphicon glyphicon-remove red" aria-hidden="true"> Remove
+                        <span class="glyphicon glyphicon-remove red" aria-hidden="true"> Unregister
                     </a>
                 </td>
             </tr>
@@ -62,7 +62,7 @@
         <tr>
             <th>Username</th>
             <th>Has logged in</th>
-            <th>Remove user</th>
+            <th>Unregister user from course</th>
         </tr>
         {% for participant in participants %}
             <tr>
@@ -79,8 +79,8 @@
                     {% endif %}
                 </td>
                 <td>
-                    <a href="{% url 'admin_delete_user_from_course' participant.id course.id %}">
-                        <span class="glyphicon glyphicon-remove red" aria-hidden="true"> Remove
+                    <a href="{% url 'admin_unregister_user_from_course' course.id participant.id %}">
+                        <span class="glyphicon glyphicon-remove red" aria-hidden="true"> Unregister
                     </a>
                 </td>
             </tr>

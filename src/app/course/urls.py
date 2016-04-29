@@ -14,6 +14,7 @@ urlpatterns = [
     url(r'^admin/(?P<course_id>\d+)/adduser/$', admin.list_users_not_attending_course, name='admin_list_users_not_attending_course'),
     url(r'^admin/(?P<course_id>\d+)/registergroup/(?P<group_id>\d+)/$', admin.register_group_to_course, name='admin_register_group_to_course'),
     url(r'^admin/(?P<course_id>\d+)/unregistergroup/(?P<group_id>\d+)/$', admin.unregister_group_from_course, name='admin_unregister_group_from_course'),
+    url(r'^admin/(?P<course_id>\d+)/unregisteruser/(?P<user_id>\d+)/$', admin.unregister_user_from_course, name='admin_unregister_user_from_course'),
     
     url(r'^admin/(?P<user_id>\d+)/addtocourse/$', admin.list_courses_user_is_not_attending, name='admin_list_courses_user_is_not_attending'),
     url(r'^admin/(?P<user_id>\d+)/register/(?P<course_id>\d+)/$', admin.register_user_to_course, name='admin_register_user_to_course'),
