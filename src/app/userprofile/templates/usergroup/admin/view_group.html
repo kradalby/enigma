@@ -1,11 +1,21 @@
 {% extends "base/admin/index.html" %}
 
 {% block admincontent %}
+<style>
+    td, th {
+        padding: 5px;
+    }
+    
+    .red {
+        color:red;
+    }
+</style>
 <h1>
     Group: {{ group }}
 </h1>
 <div class="row">
     <a href="{% url 'admin_list_users_not_in_group' group.id %}" class="btn btn-primary btn-lg disabled">Add user to group</a>
+    <a href="{% url 'admin_generate_user_for_group' group.id %}" class="btn btn-primary btn-lg">Generate user</a>
 </div>
 
 <br/>
@@ -14,18 +24,36 @@
     Members: {{ group.users|length }}
 </h2>
 <div class="row">
-    <ul>
-    {% for user in group.users %}
-        <li>
-            <a href="{% url 'admin_view_user' user.id %}">
-                {{ user }}
-            </a>
-        </li>
-    {% empty %}
-        <li>
-            This group does not have any members.
-        </li>
-    {% endfor %}
-    </ul>
+    <table>
+        {% if group.users %}
+            <tr>
+                <th>Group name</th>
+                <th>Remove from group</th>
+            </tr>
+        {% endif %}
+        {% for user in group.users %}
+            <tr>
+                <td>
+                    <a href="{% url 'admin_view_user' user.id %}">
+                        {{ user }}
+                    </a>
+                </td>
+                <td>
+                    <a href="#">
+                        <span class="glyphicon glyphicon-remove red" aria-hidden="true"> Remove</span>
+                    </a>
+                </td>
+            </tr>
+        {% empty %}
+            <tr>
+                <td>
+                    This group has no users.
+                </td>
+            </tr>
+        {% endfor %}
+    </table>
 </div>
+
+
+
 {% endblock %}

@@ -89,7 +89,7 @@ def generate_user_for_course(request, course_id):
     user.groups.add(group)
     course.groups.add(group)
     course.save()
-    messages.success(request, 'Successfully added a user to %s.' % course.name)
+    messages.success(request, 'Successfully generated a user for %s.' % course.name)
     return redirect(view_course, course_id=course_id)
     
 @staff_member_required

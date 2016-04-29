@@ -9,6 +9,7 @@ import random
 
 from app.userprofile.models import UserProfile, UserGroup
 from app.userprofile.forms import UserProfileForm, UserGroupForm
+from app.userprofile.views.users import generate_user
 
 @staff_member_required
 @transaction.atomic
@@ -73,3 +74,10 @@ def unregister_user_from_group(request, group_id, user_id):
     messages.success(request, 'Successfully removed %s from %s.' % (user, group))
     return redirect("admin_view_user", user_id)
     
+@staff_member_required
+def generate_user_for_group(request, group_id):
+    group = get_object_or_404(UserGroup, id=group_id)
+    user = generate_user(group.name)
+    user.groups.add(group)
+    messages.success(request, 'Successfully generated a user for %s.' % group.name)
+    return redirect(view_group, group_id)
