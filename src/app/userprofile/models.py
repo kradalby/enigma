@@ -1,5 +1,6 @@
 from django.contrib.auth.models import User
 from django.db import models
+from django.db.models import signals
 
 class UserGroupManager(models.Manager):
     def hidden(self):
@@ -32,3 +33,14 @@ class UserProfile(models.Model):
         
     class Meta:
         ordering = ["user"]
+        
+        
+def delete_user(sender, instance=None, **kwargs):
+    try:
+        instance.user
+    except User.DoesNotExist:
+        pass
+    else:
+        instance.user.delete()
+        
+signals.post_delete.connect(delete_user, sender=UserProfile)

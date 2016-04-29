@@ -64,3 +64,12 @@ def register_user_in_group(request, group_id, user_id):
     user = get_object_or_404(UserProfile, id=user_id)
     user.groups.add(group)
     return redirect("admin_view_group", group_id)
+
+@staff_member_required
+def unregister_user_from_group(request, group_id, user_id):
+    group = get_object_or_404(UserGroup, id=group_id)
+    user = get_object_or_404(UserProfile, id=user_id)
+    user.groups.remove(group)
+    messages.success(request, 'Successfully removed %s from %s.' % (user, group))
+    return redirect("admin_view_user", user_id)
+    

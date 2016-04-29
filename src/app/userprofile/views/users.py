@@ -16,8 +16,18 @@ def new_user(request):
     if request.method == 'POST':
         form = UserProfileForm(request.POST)
         if form.is_valid():
-            userprofile = form.save()
-            return redirect(view_user, userprofile.id)
+            user = form.save(commit=False)
+            for u in User.objects.all():
+                print(u)
+            print("WEWEWEW")
+            for userprofile in UserProfile.objects.all():
+                print(userprofile)
+            if User.objects.filter(username=user.user.username).exists():
+                messages.warning(request, 'Username "%s" already exists. Try another one.' % user.user.username)
+            else:
+                user = form.save()
+                messages.success(request, 'Successfully created user %s.' % user)
+                return redirect(view_user, user.id)
     else:
         form = UserProfileForm()
 
@@ -33,16 +43,29 @@ def view_user(request, user_id):
     })
     
 @staff_member_required
+def edit_user(request, user_id):
+    user = get_object_or_404(UserProfile, id=user_id)
+    form = UserProfileForm(request.POST or None, instance=user)
+    if request.method == 'POST':
+        if form.is_valid():
+            user = form.save(commit=False)
+            if User.objects.filter(username=user.user.username).exists():
+                messages.warning(request, 'Username "%s" already exists. Try another one.' % user)
+            else:
+                user = form.save()
+                messages.success(request, 'Successfully changed name of user to %s.' % user)
+                return redirect(view_user, user.id)
+
+    return render(request, 'userprofile/admin/edit_user.html',{
+        'form' : form,
+        'user' : user
+    })
+    
+@staff_member_required
 def list_groups_user_is_not_member_of(request, user_id):
     userprofile = get_object_or_404(UserProfile, id=user_id)
     group_id_to_exclude = [g.id for g in userprofile.groups.all()]
-    print("HEI")
-    print(group_id_to_exclude)
     groups = UserGroup.objects.non_hidden().exclude(id__in=group_id_to_exclude)
-    print(groups)
-    for g in UserGroup.objects.all():
-        print(g.is_hidden)
-    print("HEI")
     return render(request, 'userprofile/admin/list_groups_user_is_not_member_of.html',{
         'user' : userprofile,
         'groups' : groups
@@ -55,26 +78,31 @@ def list_users(request):
         'users' : users
     })
    
-@transaction.atomic 
-def _delete_user(request, user_id):
+@staff_member_required
+def delete_user(request, user_id):
     try:
         user = UserProfile.objects.get(id=user_id)
         username = user.user.username
-        if user.groups.first() and user.groups.first().is_hidden:
-            user.groups.first().delete()
+        for hidden_group in user.groups.hidden():
+            hidden_group.delete()
         user.delete()
         messages.success(request, 'Successfully deleted user %s.' % username)
     except ObjectDoesNotExist:
         messages.warning(request, 'The user has already been deleted. You may have clicked twice.')
-    
-@staff_member_required
-def delete_user(request, user_id):
-    _delete_user(request, user_id)
     return redirect("admin_list_users")
     
 @staff_member_required
 def delete_user_from_course(request, user_id, course_id):
-    _delete_user(request, user_id)
+    try:
+        user = UserProfile.objects.get(id=user_id)
+        username = user.user.username
+        for hidden_group in user.groups.hidden():
+            hidden_group.delete()
+        if user.groups.all().exists():
+            user.delete()
+        messages.success(request, 'Successfully deleted user %s.' % username)
+    except ObjectDoesNotExist:
+        messages.warning(request, 'The user has already been deleted. You may have clicked twice.')
     return redirect("admin_view_course", course_id)
     
 @transaction.atomic

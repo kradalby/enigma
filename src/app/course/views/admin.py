@@ -130,9 +130,35 @@ def list_courses_user_is_not_attending(request, user_id):
 def register_user_to_course(request, user_id, course_id):
     course = get_object_or_404(Course, id=course_id)
     user = get_object_or_404(UserProfile, id=user_id)
-    group = _create_hidden_group_for_course(course)
-    user.groups.add(group)
-    course.groups.add(group)
-    messages.success(request, 'Successfully added %s user to %s.' % (user, course.name) )
+    if user.groups.filter(id__in=course.groups.all()):
+        messages.warning(request, '%s is already attending %s.' % (user, course.name) )
+    else:
+        group = _create_hidden_group_for_course(course)
+        user.groups.add(group)
+        course.groups.add(group)
+        messages.success(request, 'Successfully added %s user to %s.' % (user, course.name) )
     return redirect("admin_view_user", user_id=user_id)
     
+@staff_member_required
+def list_users_not_attending_course(request, course_id):
+    course = get_object_or_404(Course, id=course_id)
+    groups_attending_course = course.groups.all() | UserGroup.objects.hidden()
+    users_not_attending_course = UserProfile.objects.exclude(groups=groups_attending_course)
+    return render(request, 'course/admin/list_users_not_attending_course.html',{
+        'users' : users_not_attending_course,
+        'course' : course
+    }) 
+    
+    
+@staff_member_required
+def register_existing_user_to_course(request, user_id, course_id):
+    course = get_object_or_404(Course, id=course_id)
+    user = get_object_or_404(UserProfile, id=user_id)
+    if user.groups.filter(id__in=course.groups.all()):
+        messages.warning(request, '%s is already attending %s.' % (user, course.name) )
+    else:
+        group = _create_hidden_group_for_course(course)
+        user.groups.add(group)
+        course.groups.add(group)
+        messages.success(request, 'Successfully added %s user to %s.' % (user, course.name) )
+    return redirect("admin_view_course", course_id=course_id)
