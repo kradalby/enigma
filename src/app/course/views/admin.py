@@ -48,13 +48,12 @@ def delete_course(request, course_id):
 @staff_member_required
 def view_course(request, course_id):
     course = get_object_or_404(Course, id = course_id)
-    group_id_to_exclude = [g.id for g in course.groups.filter(name__startswith="custom_group")]
+    group_id_to_exclude = [g.id for g in course.groups.non_hidden()]
     groups = course.groups.exclude(id__in=group_id_to_exclude)
-    participants = UserProfile.objects.filter(groups__id__in = group_id_to_exclude)
-    print(participants)
+    participants_without_groups = UserProfile.objects.filter(groups__id__in = group_id_to_exclude)
     return render(request, 'course/admin/view_course.html',{
         'course' : course,
-        'participants' : participants,
+        'participants' : participants_without_groups,
         'groups' : groups
     })
 
@@ -76,11 +75,17 @@ def edit_course(request, course_id):
     })
     
 @staff_member_required
-def add_random_user_to_course(request, course_id):
-    course = get_object_or_404(Course, id=course_id)
+def _create_hidden_group_for_course(course):
     group = UserGroup()
     group.name = "custom_group-%s-%s" % (course.name, randint(0,1000000)) 
+    group.is_hidden = True
     group.save()
+    return group
+    
+@staff_member_required
+def generate_user_for_course(request, course_id):
+    course = get_object_or_404(Course, id=course_id)
+    group = _create_hidden_group_for_course(course)
     user = generate_user(course.name)
     user.groups.add(group)
     course.groups.add(group)
@@ -89,12 +94,11 @@ def add_random_user_to_course(request, course_id):
     return redirect(view_course, course_id=course_id)
     
 @staff_member_required
-def add_group_to_course(request, course_id):
+def list_all_groups_not_attending_course(request, course_id):
     course = get_object_or_404(Course, id=course_id)
-    group_id_to_exclude = [g.id for g in course.groups.all()]
-    groups = UserGroup.objects.exclude(id__in=group_id_to_exclude).exclude(name__startswith="custom_group")
-
-    return render(request, 'course/admin/add_group_to_course.html',{
+    ids_of_groups_attending_course = [g.id for g in course.groups.all()]
+    groups = UserGroup.objects.non_hidden().exclude(id__in=ids_of_groups_attending_course)
+    return render(request, 'course/admin/list_all_groups_not_attending_course.html',{
         'groups' : groups,
         'course' : course
     }) 
@@ -115,10 +119,10 @@ def unregister_group_from_course(request, course_id, group_id):
     return redirect("admin_view_course", course_id)
     
 @staff_member_required
-def add_user_to_course(request, user_id):
+def list_courses_user_is_not_attending(request, user_id):
     user = get_object_or_404(UserProfile, id=user_id)
     courses = Course.objects.exclude(groups=user.groups.all())
-    return render(request, 'course/admin/add_user_to_course.html',{
+    return render(request, 'course/admin/list_courses_user_is_not_attending.html',{
         'user' : user,
         'courses' : courses
     }) 
@@ -127,9 +131,7 @@ def add_user_to_course(request, user_id):
 def register_user_to_course(request, user_id, course_id):
     course = get_object_or_404(Course, id=course_id)
     user = get_object_or_404(UserProfile, id=user_id)
-    group = UserGroup()
-    group.name = "custom_group-%s-%s" % (course.name, randint(0,1000000)) 
-    group.save()
+    group = _create_hidden_group_for_course(course)
     user.groups.add(group)
     course.groups.add(group)
     messages.success(request, 'Successfully added %s user to %s.' % (user, course.name) )

@@ -2,8 +2,6 @@ from django.conf.urls import include, url, patterns
 
 from .views import admin, site
 
-app_name = "quiz"
-
 urlpatterns = [
     # Site
     url(r'^view/(?P<test_id>\d+)/$', site.single_test, name='single_test'),

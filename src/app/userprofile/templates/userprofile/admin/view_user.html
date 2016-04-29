@@ -5,8 +5,8 @@
     User: {{ user }}
 </h1>
 <div class="row">
-    <a href="{% url 'admin_add_group_to_user' user.id %}" class="btn btn-primary btn-lg">Add to group</a>
-    <a href="{% url 'admin_add_user_to_course' user.id %}" class="btn btn-primary btn-lg">Add to course</a>
+    <a href="{% url 'admin_list_groups_user_is_not_member_of' user.id %}" class="btn btn-primary btn-lg">Add to group</a>
+    <a href="{% url 'admin_list_courses_user_is_not_attending' user.id %}" class="btn btn-primary btn-lg">Add to course</a>
 </div>
 
 <br/>

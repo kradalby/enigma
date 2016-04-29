@@ -36,7 +36,13 @@ def view_user(request, user_id):
 def list_groups_user_is_not_member_of(request, user_id):
     userprofile = get_object_or_404(UserProfile, id=user_id)
     group_id_to_exclude = [g.id for g in userprofile.groups.all()]
+    print("HEI")
+    print(group_id_to_exclude)
     groups = UserGroup.objects.non_hidden().exclude(id__in=group_id_to_exclude)
+    print(groups)
+    for g in UserGroup.objects.all():
+        print(g.is_hidden)
+    print("HEI")
     return render(request, 'userprofile/admin/list_groups_user_is_not_member_of.html',{
         'user' : userprofile,
         'groups' : groups
@@ -55,8 +61,8 @@ def delete_user(request, user_id, redirect_view="admin_list_users", *args, **kwa
     try:
         user = UserProfile.objects.get(id=user_id)
         username = user.user.username
-        if userprofile.groups.first().is_hidden:
-            userprofile.groups.first().delete()
+        if user.groups.first() and user.groups.first().is_hidden:
+            user.groups.first().delete()
         user.delete()
         messages.success(request, 'Successfully deleted user %s.' % username)
     except ObjectDoesNotExist:

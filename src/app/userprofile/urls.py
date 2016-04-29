@@ -2,8 +2,6 @@ from django.conf.urls import include, url, patterns
 
 from .views import users, groups
 
-app_name = "userprofile"
-
 urlpatterns = [
     # User admin
     url(r'^admin/user/new/$', users.new_user, name='admin_new_user'),

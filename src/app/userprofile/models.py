@@ -10,7 +10,7 @@ class UserGroupManager(models.Manager):
 
 class UserGroup(models.Model):
     name = models.CharField(max_length=255, unique=True)
-    is_hidden = models.BooleanField(default=True)
+    is_hidden = models.BooleanField(default=False)
     
     objects = UserGroupManager()
     

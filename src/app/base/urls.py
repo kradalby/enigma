@@ -2,8 +2,6 @@ from django.conf.urls import include, url, patterns
 
 from .views import site, admin
 
-app_name = "base"
-
 urlpatterns = [
     # Site
     url(r'^$', site.index, name='index'),
