@@ -48,7 +48,7 @@ def delete_course(request, course_id):
 @staff_member_required
 def view_course(request, course_id):
     course = get_object_or_404(Course, id = course_id)
-    group_id_to_exclude = [g.id for g in course.groups.non_hidden()]
+    group_id_to_exclude = [g.id for g in course.groups.hidden()]
     groups = course.groups.exclude(id__in=group_id_to_exclude)
     participants_without_groups = UserProfile.objects.filter(groups__id__in = group_id_to_exclude)
     return render(request, 'course/admin/view_course.html',{
@@ -74,7 +74,6 @@ def edit_course(request, course_id):
         'course' : course
     })
     
-@staff_member_required
 def _create_hidden_group_for_course(course):
     group = UserGroup()
     group.name = "custom_group-%s-%s" % (course.name, randint(0,1000000)) 

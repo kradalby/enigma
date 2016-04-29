@@ -31,6 +31,7 @@
     <table>
         <tr>
             <th>Group name</th>
+            <th>Participants</th>
             <th>Remove group from course</th>
         </tr>
         {% for group in groups %}
@@ -39,6 +40,9 @@
                     <a href="{% url 'admin_view_group' group.id %}">
                         {{ group }}
                     </a>
+                </td>
+                <td>
+                    {{group.users|length}}
                 </td>
                 <td>
                     <a href="{% url 'admin_unregister_group_from_course' course.id group.id %}">
@@ -74,7 +78,7 @@
                     {% endif %}
                 </td>
                 <td>
-                    <a href="{% url 'admin_delete_userprofile' participant.id course.id %}">
+                    <a href="{% url 'admin_delete_user_from_course' participant.id course.id %}">
                         <span class="glyphicon glyphicon-remove red" aria-hidden="true"> Delete
                     </a>
                 </td>

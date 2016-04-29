@@ -54,10 +54,9 @@ def list_users(request):
     return render(request, 'userprofile/admin/list_users.html',{
         'users' : users
     })
-    
-@staff_member_required
-@transaction.atomic
-def delete_user(request, user_id, redirect_view="admin_list_users", *args, **kwargs):
+   
+@transaction.atomic 
+def _delete_user(request, user_id):
     try:
         user = UserProfile.objects.get(id=user_id)
         username = user.user.username
@@ -67,7 +66,16 @@ def delete_user(request, user_id, redirect_view="admin_list_users", *args, **kwa
         messages.success(request, 'Successfully deleted user %s.' % username)
     except ObjectDoesNotExist:
         messages.warning(request, 'The user has already been deleted. You may have clicked twice.')
-    return redirect(redirect_view, *args, **kwargs)
+    
+@staff_member_required
+def delete_user(request, user_id):
+    _delete_user(request, user_id)
+    return redirect("admin_list_users")
+    
+@staff_member_required
+def delete_user_from_course(request, user_id, course_id):
+    _delete_user(request, user_id)
+    return redirect("admin_view_course", course_id)
     
 @transaction.atomic
 def generate_users(amount, group, prefix):

@@ -8,6 +8,7 @@ urlpatterns = [
     url(r'^admin/user/list/$', users.list_users, name='admin_list_users'),
     url(r'^admin/user/(?P<user_id>\d+)/$', users.view_user, name='admin_view_user'),
     url(r'^admin/user/(?P<user_id>\d+)/delete/$', users.delete_user, name='admin_delete_user'),
+    url(r'^admin/user/(?P<user_id>\d+)/delete/(?P<course_id>\d+)$', users.delete_user_from_course, name='admin_delete_user_from_course'),
     url(r'^admin/user/(?P<user_id>\d+)/add_group$', users.list_groups_user_is_not_member_of, name='admin_list_groups_user_is_not_member_of'),
     
     # Group admin
