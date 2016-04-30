@@ -11,8 +11,9 @@ def single_test (request, test_id):
     already_answered = test.answered_by_user(request.user)
     multiple_choice = test.multiple_choice_questions()
     multiple_choice_image = test.multiple_choice_questions_with_image()
+    multiple_choice_video = test.multiple_choice_questions_with_video()
     landmark = test.landmark_questions()
-    questions = [multiple_choice, multiple_choice_image, landmark]
+    questions = [multiple_choice, multiple_choice_image, landmark, multiple_choice_video]
     questions = [item for sublist in questions for item in sublist]
     return render(request, 'quiz/site/single_test.html', {
         "test" : test,
@@ -53,6 +54,9 @@ def submit_test(request, test_id):
         elif testunit_name.startswith("mpci-"):
             question = testunit_name.split("-", 1)[1]
             _add_test_result(MultipleChoiceQuestionWithImage, question, testresult, answer)
+        elif testunit_name.startswith("mpcv-"):
+            question = testunit_name.split("-", 1)[1]
+            _add_test_result(MultipleChoiceQuestionWithVideo, question, testresult, answer)
         elif testunit_name.startswith("landmark_question-"):
             question = testunit_name.split("-", 1)[1]
             question_model = LandmarkQuestion.objects.get(question=question)

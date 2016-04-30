@@ -16,6 +16,11 @@ class MultipleChoiceQuestionWithImageForm(ModelForm):
         model = MultipleChoiceQuestionWithImage
         fields = ["question", "correct_answer", "wrong_answer_1", "wrong_answer_2", "image",]
         
+class MultipleChoiceQuestionWithVideoForm(ModelForm):
+    class Meta:
+        model = MultipleChoiceQuestionWithVideo
+        fields = ["question", "correct_answer", "wrong_answer_1", "wrong_answer_2", "video",]
+        
 class LandmarkQuestionForm(ModelForm):
     class Meta:
         model = LandmarkQuestion

@@ -8,3 +8,4 @@ venv/
 upload/
 src/staticfiles/
 src/settings/local.py
+src/mediafiles/

@@ -16,7 +16,6 @@ class CourseForm(ModelForm):
         super(CourseForm, self).clean()
         amount = self.cleaned_data.get("generated_participants_amount")
         prefix = self.cleaned_data.get("generated_participants_prefix")
-        print("clean %s %s" % (amount, prefix))
         if (not amount or amount == 0) and self._errors.get('generated_participants_amount'):
             del self._errors['generated_participants_amount']
         if amount > 0 and self._errors.get('generated_participants_amount'):

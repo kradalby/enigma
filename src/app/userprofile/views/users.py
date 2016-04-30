@@ -17,11 +17,6 @@ def new_user(request):
         form = UserProfileForm(request.POST)
         if form.is_valid():
             user = form.save(commit=False)
-            for u in User.objects.all():
-                print(u)
-            print("WEWEWEW")
-            for userprofile in UserProfile.objects.all():
-                print(userprofile)
             if User.objects.filter(username=user.user.username).exists():
                 messages.warning(request, 'Username "%s" already exists. Try another one.' % user.user.username)
             else:

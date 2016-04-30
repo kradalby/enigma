@@ -66,6 +66,24 @@ def add_mpci_to_test(request, test_id):
         "form" : form
     })
     
+@staff_member_required
+def add_mpcv_to_test(request, test_id):
+    test = Test.objects.get(id=test_id)
+    if request.method == 'POST':
+        form = MultipleChoiceQuestionWithVideoForm(request.POST, request.FILES)
+        if form.is_valid():
+            question = form.save(commit=False)
+            question.test_id = test_id
+            question.save()
+            return redirect(add_questions_to_test, test.id)
+    else:
+        form = MultipleChoiceQuestionWithVideoForm()
+
+    return render(request, 'quiz/admin/add_question_to_test.html', {
+        "test" : test,
+        "form" : form
+    })
+    
     
 @staff_member_required
 def add_landmark_to_test(request, test_id):

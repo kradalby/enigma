@@ -6,7 +6,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 
 from ..forms import CourseForm, EditCourseForm
 from ..models import Course
-from ..util import generate_user_for_course, create_hidden_group_for_course
+from ..util import generate_user_for_course as util_generate_user_for_course, create_hidden_group_for_course
 
 from app.userprofile.models import UserProfile, UserGroup
 from app.userprofile.views.users import generate_user
@@ -83,10 +83,9 @@ def edit_course(request, course_id):
 # Course and user related
 #
 
-@staff_member_required
 def generate_user_for_course(request, course_id):
     course = get_object_or_404(Course, id=course_id)
-    generate_user_for_course(course)
+    util_generate_user_for_course(course)
     messages.success(request, 'Successfully generated a user for %s.' % course.name)
     return redirect(view_course, course_id=course_id)
     
@@ -115,12 +114,12 @@ def register_user_to_course(request, user_id, course_id):
 @staff_member_required
 def list_users_not_attending_course(request, course_id):
     course = get_object_or_404(Course, id=course_id)
-    groups_attending_course = course.groups.all() | UserGroup.objects.hidden()
-    users_not_attending_course = UserProfile.objects.exclude(groups=groups_attending_course)
+    group_id_to_exclude = [g.id for g in course.groups.all()]
+    users_not_attending_course = UserProfile.objects.exclude(groups__id__in=group_id_to_exclude)
     return render(request, 'course/admin/list_users_not_attending_course.html',{
         'users' : users_not_attending_course,
         'course' : course
-    }) 
+    })
     
 @staff_member_required
 def register_existing_user_to_course(request, user_id, course_id):

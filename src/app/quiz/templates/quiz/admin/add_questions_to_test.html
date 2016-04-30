@@ -55,6 +55,27 @@
 <hr/>
 
 <div>
+    <h2>Multiple choice questions with video</h2>
+    <ul>
+        {% for question in test.multiple_choice_questions_with_video %}
+            <li>
+                <a href="mpcv/{{ question.id }}/delete">
+                    <span class="glyphicon glyphicon-remove red" aria-hidden="true"></span>
+                </a>
+                {{ question }}
+            </li>
+        {% empty %}
+            <li>
+                No multiple choice questions with video added.
+            </li>
+        {% endfor %}
+    </ul>
+    <a href="mpcv" class="btn btn-default">Add new multiple choice question with video</a>
+</div>
+
+<hr/>
+
+<div>
     <h2>Landmark questions</h2>
     <ul>
         {% for question in test.landmark_questions %}

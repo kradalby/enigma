@@ -23,6 +23,9 @@ class Test(models.Model):
     def multiple_choice_questions_with_image(self):
         return MultipleChoiceQuestionWithImage.objects.filter(test = self)
         
+    def multiple_choice_questions_with_video(self):
+        return MultipleChoiceQuestionWithVideo.objects.filter(test = self)
+        
     def landmark_questions(self):
         return LandmarkQuestion.objects.filter(test = self)
         
@@ -38,7 +41,7 @@ class TestUnit(models.Model):
         
     def as_html(self):
         return "<h1>THIS MODEL HAS NOT IMPLEMENTED AS_HTML</h1>"
-    
+            
 class MultipleChoiceQuestion(TestUnit):
     correct_answer = models.CharField(max_length = 255, verbose_name = "Correct answer")
     wrong_answer_1 = models.CharField(max_length = 255, verbose_name = "Wrong answer")
@@ -85,6 +88,35 @@ class MultipleChoiceQuestionWithImage(TestUnit):
             html += """
             <li class="list-group-item">
                 <input type='radio' name='mpci-%s' value="%s"/>
+                <label for='%s'>%s</label>
+                <div class="highlight"></div>
+            </li>
+            """ % (self, alternative, alternative, alternative)
+        html += "</ul></div>"
+        return html
+            
+class MultipleChoiceQuestionWithVideo(TestUnit):
+    correct_answer = models.CharField(max_length = 255, verbose_name = "Correct answer")
+    wrong_answer_1 = models.CharField(max_length = 255, verbose_name = "Wrong answer")
+    wrong_answer_2 = models.CharField(max_length = 255, verbose_name = "Wrong answer")
+    video = models.FileField()
+    
+    def as_html(self):
+        html = """
+        <div>
+            <video id="%s" src="%s" controls></video>
+        </div>
+        <div>
+            <ul class="list-group">
+        """ % (self.id, self.video.url)
+        
+        alternatives = [self.correct_answer, self.wrong_answer_1, self.wrong_answer_2]
+        shuffle(alternatives)
+        
+        for alternative in alternatives:
+            html += """
+            <li class="list-group-item">
+                <input type='radio' name='mpcv-%s' value="%s"/>
                 <label for='%s'>%s</label>
                 <div class="highlight"></div>
             </li>

@@ -12,6 +12,7 @@ urlpatterns = [
     url(r'^admin/(?P<test_id>\d+)/delete/$', admin.delete_test, name='admin_delete_test'),
     url(r'^admin/(?P<test_id>\d+)/mpc/$', admin.add_mpc_to_test, name='admin_add_mpc_to_test'),
     url(r'^admin/(?P<test_id>\d+)/mpci/$', admin.add_mpci_to_test, name='admin_add_mpci_to_test'),
+    url(r'^admin/(?P<test_id>\d+)/mpcv/$', admin.add_mpcv_to_test, name='admin_add_mpcv_to_test'),
     url(r'^admin/(?P<test_id>\d+)/landmark/$', admin.add_landmark_to_test, name='admin_add_landmark_to_test'),
     url(r'^admin/(?P<test_id>\d+)/landmark/draw/(?P<question_id>\d+)/$', admin.draw_landmark, name='admin_draw_landmark'),
     url(r'^admin/list/$', admin.list_tests, name='admin_list_tests'),
