@@ -31,7 +31,7 @@ class Test(models.Model):
         
 class TestUnit(models.Model):
     question = models.CharField(max_length = 255, verbose_name = "Question")
-    test = models.ForeignKey(Test)
+    test = models.ManyToManyField(Test)
     
     def __str__(self):
         return self.question
@@ -59,7 +59,7 @@ class MultipleChoiceQuestion(TestUnit):
                 <label for='%s'>%s</label>
                 <div class="highlight"></div>
             </li>
-            """ % (self, alternative, alternative, alternative)
+            """ % (self.id, alternative, alternative, alternative)
         html += "</ul></div>"
         return html
 
@@ -91,7 +91,7 @@ class MultipleChoiceQuestionWithImage(TestUnit):
                 <label for='%s'>%s</label>
                 <div class="highlight"></div>
             </li>
-            """ % (self, alternative, alternative, alternative)
+            """ % (self.id, alternative, alternative, alternative)
         html += "</ul></div>"
         return html
             
@@ -120,7 +120,7 @@ class MultipleChoiceQuestionWithVideo(TestUnit):
                 <label for='%s'>%s</label>
                 <div class="highlight"></div>
             </li>
-            """ % (self, alternative, alternative, alternative)
+            """ % (self.id, alternative, alternative, alternative)
         html += "</ul></div>"
         return html
     
@@ -144,7 +144,7 @@ class LandmarkQuestion(TestUnit):
         <script>
             landmark("{1}", "{2}", {3}, {4});
         </script>
-        """.format(self.question, original_image, landmark_drawing, width, height)
+        """.format(self.id, original_image, landmark_drawing, width, height)
         return html
         
 class LandmarkRegion(models.Model):

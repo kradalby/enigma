@@ -7,7 +7,6 @@ import re
 import base64
 import os
 
-
 from ..forms import *
 from ..models import *
   
@@ -36,9 +35,8 @@ def add_mpc_to_test(request, test_id):
     if request.method == 'POST':
         form = MultipleChoiceQuestionForm(request.POST)
         if form.is_valid():
-            question = form.save(commit=False)
-            question.test_id = test_id
-            question.save()
+            question = form.save()
+            question.test.add(test)
             return redirect(add_questions_to_test, test.id)
     else:
         form = MultipleChoiceQuestionForm()
@@ -54,9 +52,8 @@ def add_mpci_to_test(request, test_id):
     if request.method == 'POST':
         form = MultipleChoiceQuestionWithImageForm(request.POST, request.FILES)
         if form.is_valid():
-            question = form.save(commit=False)
-            question.test_id = test_id
-            question.save()
+            question = form.save()
+            question.test.add(test)
             return redirect(add_questions_to_test, test.id)
     else:
         form = MultipleChoiceQuestionWithImageForm()
@@ -72,9 +69,8 @@ def add_mpcv_to_test(request, test_id):
     if request.method == 'POST':
         form = MultipleChoiceQuestionWithVideoForm(request.POST, request.FILES)
         if form.is_valid():
-            question = form.save(commit=False)
-            question.test_id = test_id
-            question.save()
+            question = form.save()
+            question.test.add(test)
             return redirect(add_questions_to_test, test.id)
     else:
         form = MultipleChoiceQuestionWithVideoForm()
@@ -91,9 +87,8 @@ def add_landmark_to_test(request, test_id):
     if request.method == 'POST':
         form = LandmarkQuestionForm(request.POST, request.FILES)
         if form.is_valid():
-            question = form.save(commit=False)
-            question.test_id = test_id
-            question.save()
+            question = form.save()
+            question.test.add(test)
             return redirect(draw_landmark, test.id, question.id)
     else:
         form = LandmarkQuestionForm()

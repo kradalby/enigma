@@ -21,10 +21,10 @@ def single_test (request, test_id):
         "answers" : already_answered
     })
 
-def _add_test_result(question_type, question, testresult, answer):
+def _add_test_result(question_type, question_id, testresult, answer):
     test_unit_result = TestUnitResult()
     test_unit_result.test_result = testresult
-    test_unit_result.test_unit = question_type.objects.get(question=question)
+    test_unit_result.test_unit = question_type.objects.get(id=question_id)
     test_unit_result.correct_answer = test_unit_result.test_unit.correct_answer == answer
     test_unit_result.save()
     
@@ -49,17 +49,17 @@ def submit_test(request, test_id):
     for testunit_name in request.POST:
         answer = request.POST[testunit_name]
         if testunit_name.startswith("mpc-"):
-            question = testunit_name.split("-", 1)[1]
-            _add_test_result(MultipleChoiceQuestion, question, testresult, answer)
+            question_id = testunit_name.split("-", 1)[1]
+            _add_test_result(MultipleChoiceQuestion, question_id, testresult, answer)
         elif testunit_name.startswith("mpci-"):
-            question = testunit_name.split("-", 1)[1]
-            _add_test_result(MultipleChoiceQuestionWithImage, question, testresult, answer)
+            question_id = testunit_name.split("-", 1)[1]
+            _add_test_result(MultipleChoiceQuestionWithImage, question_id, testresult, answer)
         elif testunit_name.startswith("mpcv-"):
-            question = testunit_name.split("-", 1)[1]
-            _add_test_result(MultipleChoiceQuestionWithVideo, question, testresult, answer)
+            question_id = testunit_name.split("-", 1)[1]
+            _add_test_result(MultipleChoiceQuestionWithVideo, question_id, testresult, answer)
         elif testunit_name.startswith("landmark_question-"):
-            question = testunit_name.split("-", 1)[1]
-            question_model = LandmarkQuestion.objects.get(question=question)
+            question_id = testunit_name.split("-", 1)[1]
+            question_model = LandmarkQuestion.objects.get(id=question_id)
             test_unit_result = TestUnitResult()
             test_unit_result.test_result = testresult
             test_unit_result.test_unit = question_model
