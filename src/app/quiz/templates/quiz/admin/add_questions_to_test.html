@@ -17,10 +17,12 @@
     <ul>
         {% for question in test.multiple_choice_questions %}
             <li>
-                <a href="mpc/{{ question.id }}/delete">
+                <a href="{% url 'admin_delete_multiple_choice_question_from_test' test.id question.id %}">
                     <span class="glyphicon glyphicon-remove red" aria-hidden="true"></span>
                 </a>
-                {{ question }}
+                <a href="{% url 'admin_edit_multiple_choice_question' question.id %}">
+                    {{ question }}
+                </a>
             </li>
         {% empty %}
             <li>
@@ -28,7 +30,7 @@
             </li>
         {% endfor %}
     </ul>
-    <a href="mpc" class="btn btn-default">Add new multiple choice question</a>
+    <a href="{% url 'admin_add_multiple_choice_question_to_test' test.id %}" class="btn btn-default">Add new multiple choice question</a>
 </div>
 
 <hr/>
@@ -38,7 +40,7 @@
     <ul>
         {% for question in test.multiple_choice_questions_with_image %}
             <li>
-                <a href="mpci/{{ question.id }}/delete">
+                <a href="{% url 'admin_delete_multiple_choice_question_with_image_from_test' test.id question.id %}">
                     <span class="glyphicon glyphicon-remove red" aria-hidden="true"></span>
                 </a>
                 {{ question }}
@@ -49,7 +51,7 @@
             </li>
         {% endfor %}
     </ul>
-    <a href="mpci" class="btn btn-default">Add new multiple choice question with image</a>
+    <a href="{% url 'admin_add_multiple_choice_question_with_image_to_test' test.id %}" class="btn btn-default">Add new multiple choice question with image</a>
 </div>
 
 <hr/>
@@ -59,7 +61,7 @@
     <ul>
         {% for question in test.multiple_choice_questions_with_video %}
             <li>
-                <a href="mpcv/{{ question.id }}/delete">
+                <a href="{% url 'admin_delete_multiple_choice_question_with_video_from_test' test.id question.id %}">
                     <span class="glyphicon glyphicon-remove red" aria-hidden="true"></span>
                 </a>
                 {{ question }}
@@ -70,7 +72,7 @@
             </li>
         {% endfor %}
     </ul>
-    <a href="mpcv" class="btn btn-default">Add new multiple choice question with video</a>
+    <a href="{% url 'admin_add_multiple_choice_question_with_video_to_test' test.id %}" class="btn btn-default">Add new multiple choice question with video</a>
 </div>
 
 <hr/>
@@ -80,7 +82,7 @@
     <ul>
         {% for question in test.landmark_questions %}
             <li>
-                <a href="landmark/{{ question.id }}/delete">
+                <a href="{% url 'admin_delete_landmark_question_from_test' test.id question.id %}">
                     <span class="glyphicon glyphicon-remove red" aria-hidden="true"></span>
                 </a>
                 {{ question }}
@@ -91,6 +93,6 @@
             </li>
         {% endfor %}
     </ul>
-    <a href="landmark" class="btn btn-default">Add new landmark question</a>
+    <a href="{% url 'admin_add_landmark_question_to_test' test.id %}" class="btn btn-default">Add new landmark question</a>
 </div>
 {% endblock %}

@@ -1,11 +1,12 @@
 from django.forms import ModelForm
+
 from .models import *
 
 class TestForm(ModelForm):
     class Meta:
         model = Test
         fields = ["name","course",]
-        
+
 class MultipleChoiceQuestionForm(ModelForm):
     class Meta:
         model = MultipleChoiceQuestion

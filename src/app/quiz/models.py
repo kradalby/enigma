@@ -11,15 +11,15 @@ class Test(models.Model):
     def __str__(self):
         return self.name
         
-    def test_unit_count(self):
-        return len(TestUnit.objects.filter(test = self))
-        
     def answered_by_user(self, user):
         return TestResult.objects.filter(test = self, user = user).first()
-                
+        
+    def test_unit_count(self):
+        return len(TestUnit.objects.filter(test = self))
+
     def multiple_choice_questions(self):
         return MultipleChoiceQuestion.objects.filter(test = self)
-        
+
     def multiple_choice_questions_with_image(self):
         return MultipleChoiceQuestionWithImage.objects.filter(test = self)
         
@@ -28,6 +28,22 @@ class Test(models.Model):
         
     def landmark_questions(self):
         return LandmarkQuestion.objects.filter(test = self)
+               
+class TestResult(models.Model):
+    test = models.ForeignKey(Test)
+    user = models.ForeignKey(User)
+    answered = models.DateField(auto_now=True)
+    
+    def test_unit_results(self):
+        return TestUnitResult.objects.filter(test_result = self)
+        
+    def correct_answers(self):
+        test_units = self.test_unit_results()
+        return [x for x in test_units if x.correct_answer]
+        
+    def incorrect_answers(self):
+        test_units = self.test_unit_results()
+        return [x for x in test_units if not x.correct_answer]
         
 class TestUnit(models.Model):
     question = models.CharField(max_length = 255, verbose_name = "Question")
@@ -41,6 +57,9 @@ class TestUnit(models.Model):
         
     def as_html(self):
         return "<h1>THIS MODEL HAS NOT IMPLEMENTED AS_HTML</h1>"
+        
+    def times_used(self):
+        return self.test.count()
             
 class MultipleChoiceQuestion(TestUnit):
     correct_answer = models.CharField(max_length = 255, verbose_name = "Correct answer")
@@ -151,22 +170,6 @@ class LandmarkRegion(models.Model):
     landmark_question = models.ForeignKey(LandmarkQuestion)
     color = models.CharField(max_length=50)
     name = models.CharField(max_length=255)
-        
-class TestResult(models.Model):
-    test = models.ForeignKey(Test)
-    user = models.ForeignKey(User)
-    answered = models.DateField(auto_now=True)
-    
-    def test_unit_results(self):
-        return TestUnitResult.objects.filter(test_result = self)
-        
-    def correct_answers(self):
-        test_units = self.test_unit_results()
-        return [x for x in test_units if x.correct_answer]
-        
-    def incorrect_answers(self):
-        test_units = self.test_unit_results()
-        return [x for x in test_units if not x.correct_answer]
     
 class TestUnitResult(models.Model):
     test_unit = models.ForeignKey(TestUnit)

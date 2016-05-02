@@ -2,7 +2,7 @@ from django.core.exceptions import ObjectDoesNotExist
 from django.core.files.base import ContentFile
 from django.contrib.admin.views.decorators import staff_member_required
 from django.contrib import messages
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 import re
 import base64
 import os
@@ -10,6 +10,10 @@ import os
 from ..forms import *
 from ..models import *
   
+#
+# Test related
+#
+
 @staff_member_required
 def new_test(request):
     if request.method == 'POST':
@@ -30,16 +34,63 @@ def add_questions_to_test(request, test_id):
     })
     
 @staff_member_required
-def add_mpc_to_test(request, test_id):
+def list_tests(request):
+    tests = Test.objects.all()
+    return render(request, 'quiz/admin/test_list.html', {
+        "tests" : tests
+    })
+    
+@staff_member_required
+def delete_test(request, test_id):
+    try:
+        test = Test.objects.get(id=test_id)
+        test_name = test.name
+        test.delete()
+        messages.success(request, 'Successfully deleted test: %s.' % test_name)
+    except ObjectDoesNotExist:
+        messages.warning(request, 'The test has already been deleted. You may have clicked twice.')
+    return redirect(list_tests)
+    
+#
+# Test result related
+#
+   
+@staff_member_required 
+def delete_test_results(request):
+    TestResult.objects.all().delete()
+    messages.success(request, 'Successfully deleted all test results.')
+    return redirect('/admin')
+    
+#
+# Questions related
+#
+@staff_member_required
+def list_questions(request):
+    multiple_choice_questions = MultipleChoiceQuestion.objects.all()
+    multiple_choice_questions_with_image = MultipleChoiceQuestionWithImage.objects.all()
+    multiple_choice_questions_with_video = MultipleChoiceQuestionWithVideo.objects.all()
+    landmark_questions = LandmarkQuestion.objects.all()
+    return render(request, 'quiz/admin/list_questions.html', {
+        "multiple_choice_questions" : multiple_choice_questions,
+        "multiple_choice_questions_with_image" : multiple_choice_questions_with_image,
+        "multiple_choice_questions_with_video" : multiple_choice_questions_with_video,
+        "landmark_questions" : landmark_questions
+    })
+
+#
+# Generic functions
+#
+@staff_member_required
+def _generic_add_multiple_choice_question_to_test(request, form_type, test_id):
     test = Test.objects.get(id=test_id)
     if request.method == 'POST':
-        form = MultipleChoiceQuestionForm(request.POST)
+        form = form_type(request.POST, request.FILES)
         if form.is_valid():
             question = form.save()
             question.test.add(test)
-            return redirect(add_questions_to_test, test.id)
+            return redirect('admin_add_questions_to_test', test.id)
     else:
-        form = MultipleChoiceQuestionForm()
+        form = form_type()
 
     return render(request, 'quiz/admin/add_question_to_test.html', {
         "test" : test,
@@ -47,42 +98,135 @@ def add_mpc_to_test(request, test_id):
     })
     
 @staff_member_required
-def add_mpci_to_test(request, test_id):
+def _generic_delete_question(request, question_type, question_id):
+    try:
+        question = question_type.objects.get(id=question_id)
+        question_text = question.question
+        question.delete()
+        messages.success(request, 'Successfully deleted question: %s.' % question_text)
+    except ObjectDoesNotExist:
+        messages.warning(request, 'The question has already been deleted. You may have clicked twice.')
+
+@staff_member_required
+def _generic_remove_question_from_test(request, question_type, test_id, question_id):
+    question = question_type.objects.get(id=question_id)
     test = Test.objects.get(id=test_id)
+    question.test.remove(test)
+    messages.success(request, 'Successfully removed question from test: %s.' % question.question)
+    
+@staff_member_required
+def _generic_new_question(request, form_type):
     if request.method == 'POST':
-        form = MultipleChoiceQuestionWithImageForm(request.POST, request.FILES)
+        form = form_type(request.POST, request.FILES)
         if form.is_valid():
             question = form.save()
-            question.test.add(test)
-            return redirect(add_questions_to_test, test.id)
+            messages.success(request, 'Successfully created new question: %s.' % question)
+            return redirect(list_questions)
     else:
-        form = MultipleChoiceQuestionWithImageForm()
+        form = form_type()
 
-    return render(request, 'quiz/admin/add_question_to_test.html', {
-        "test" : test,
-        "form" : form
+    return render(request, 'quiz/admin/new_question.html', {
+        'form': form
     })
     
 @staff_member_required
-def add_mpcv_to_test(request, test_id):
-    test = Test.objects.get(id=test_id)
+def _generic_edit_question(request, form_type, object_type, id):
+    instance = get_object_or_404(object_type, id=id)
+    form = form_type(request.POST or None, instance=instance)
     if request.method == 'POST':
-        form = MultipleChoiceQuestionWithVideoForm(request.POST, request.FILES)
         if form.is_valid():
             question = form.save()
-            question.test.add(test)
-            return redirect(add_questions_to_test, test.id)
-    else:
-        form = MultipleChoiceQuestionWithVideoForm()
+            messages.success(request, 'Successfully saved question: %s.' % question)
+            return redirect(list_questions)
 
-    return render(request, 'quiz/admin/add_question_to_test.html', {
-        "test" : test,
-        "form" : form
+    return render(request, 'quiz/admin/edit_question.html',{
+        'form' : form,
+        'question' : instance
     })
-    
+#
+# MPC related
+#
+
+@staff_member_required
+def new_multiple_choice_question(request):
+    return _generic_new_question(request, MultipleChoiceQuestionForm)
     
 @staff_member_required
-def add_landmark_to_test(request, test_id):
+def edit_multiple_choice_question(request, question_id):
+    return _generic_edit_question(request, MultipleChoiceQuestionForm, MultipleChoiceQuestion, question_id)
+
+@staff_member_required
+def add_multiple_choice_question_to_test(request, test_id):
+    return _generic_add_multiple_choice_question_to_test(request, MultipleChoiceQuestionForm, test_id)
+           
+@staff_member_required
+def delete_multiple_choice_question_from_test(request, test_id, question_id):
+    _generic_remove_question_from_test(request, MultipleChoiceQuestion, test_id, question_id)
+    return redirect('admin_add_questions_to_test', test_id)
+    
+@staff_member_required
+def delete_multiple_choice_question(request, question_id):
+    _generic_delete_question(request, MultipleChoiceQuestion, question_id)
+    return redirect(list_questions)
+        
+#
+# MPCI related
+#
+    
+@staff_member_required
+def new_multiple_choice_question_with_image(request):
+    return _generic_new_question(request, MultipleChoiceQuestionWithImageForm)
+    
+@staff_member_required
+def edit_multiple_choice_question_with_image(request, question_id):
+    return _generic_edit_question(request, MultipleChoiceQuestionWithImageForm, MultipleChoiceQuestionWithImage, question_id)
+    
+@staff_member_required
+def add_multiple_choice_question_with_image_to_test(request, test_id):
+    return _generic_add_multiple_choice_question_to_test(request, MultipleChoiceQuestionWithImageForm, test_id)
+    
+@staff_member_required
+def delete_multiple_choice_question_with_image_from_test(request, test_id, question_id):
+    _generic_remove_question_from_test(request, MultipleChoiceQuestionWithImage, test_id, question_id)
+    return redirect('admin_add_questions_to_test', test_id)
+    
+@staff_member_required
+def delete_multiple_choice_question_with_image(request, question_id):
+    _generic_delete_question(request, MultipleChoiceQuestionWithImage, question_id)
+    return redirect(list_questions)
+    
+#
+# MPCV related
+#
+    
+@staff_member_required
+def new_multiple_choice_question_with_video(request):
+    return _generic_new_question(request, MultipleChoiceQuestionWithVideoForm)
+    
+@staff_member_required
+def edit_multiple_choice_question_with_video(request, question_id):
+    return _generic_edit_question(request, MultipleChoiceQuestionWithVideoForm, MultipleChoiceQuestionWithVideo, question_id)
+
+@staff_member_required
+def add_multiple_choice_question_with_video_to_test(request, test_id):
+    return _generic_add_multiple_choice_question_to_test(request, MultipleChoiceQuestionWithVideoForm, test_id)
+    
+@staff_member_required
+def delete_multiple_choice_question_with_video_from_test(request, test_id, question_id):
+    _generic_remove_question_from_test(request, MultipleChoiceQuestionWithVideo, test_id, question_id)
+    return redirect('admin_add_questions_to_test', test_id)
+    
+@staff_member_required
+def delete_multiple_choice_question_with_video(request, question_id):
+    _generic_delete_question(request, MultipleChoiceQuestionWithVideo, question_id)
+    return redirect(list_questions)
+    
+#
+# Landmark related
+#
+
+@staff_member_required
+def add_landmark_question_to_test(request, test_id):
     test = Test.objects.get(id=test_id)
     if request.method == 'POST':
         form = LandmarkQuestionForm(request.POST, request.FILES)
@@ -120,25 +264,11 @@ def draw_landmark(request, test_id, question_id):
                 region.name = v
                 region.landmark_question = question
                 region.save()
-        return redirect(add_questions_to_test, test.id)
+        return redirect('admin_add_questions_to_test', test.id)
     return render(request, 'quiz/admin/draw_landmark.html', {
         "test" : test,
         "question" : question
     })
-    
-    
-@staff_member_required
-def list_tests(request):
-    tests = Test.objects.all()
-    return render(request, 'quiz/admin/test_list.html', {
-        "tests" : tests
-    })
-   
-@staff_member_required 
-def delete_test_results(request):
-    TestResult.objects.all().delete()
-    messages.success(request, 'Successfully deleted all test results.')
-    return redirect('/admin')
     
 @staff_member_required
 def add_landmark_regions(request, test_id, question_id):
@@ -146,46 +276,6 @@ def add_landmark_regions(request, test_id, question_id):
     question = LandmarkQuestion.objects.get(id=question_id)
     
 @staff_member_required
-def delete_landmark_question(request, test_id, question_id):
-    try:
-        question = LandmarkQuestion.objects.get(id=question_id)
-        question_text = question.question
-        question.delete()
-        messages.success(request, 'Successfully deleted question: %s.' % question_text)
-    except ObjectDoesNotExist:
-        messages.warning(request, 'The question has already been deleted. You may have clicked twice.')
-    return redirect(add_questions_to_test, test_id)
-    
-@staff_member_required
-def delete_test(request, test_id):
-    try:
-        test = Test.objects.get(id=test_id)
-        test_name = test.name
-        test.delete()
-        messages.success(request, 'Successfully deleted test: %s.' % test_name)
-    except ObjectDoesNotExist:
-        messages.warning(request, 'The test has already been deleted. You may have clicked twice.')
-    return redirect(list_tests)
-    
-@staff_member_required
-def delete_multiple_choice_question(request, test_id, question_id):
-    try:
-        question = MultipleChoiceQuestion.objects.get(id=question_id)
-        question_text = question.question
-        question.delete()
-        messages.success(request, 'Successfully deleted question: %s.' % question_text)
-    except ObjectDoesNotExist:
-        messages.warning(request, 'The question has already been deleted. You may have clicked twice.')
-    return redirect(add_questions_to_test, test_id)
-    
-@staff_member_required
-def delete_multiple_choice_question_with_image(request, test_id, question_id):
-    try:
-        question = MultipleChoiceQuestionWithImage.objects.get(id=question_id)
-        question_text = question.question
-        question.delete()
-        messages.success(request, 'Successfully deleted question: %s.' % question_text)
-    except ObjectDoesNotExist:
-        messages.warning(request, 'The question has already been deleted. You may have clicked twice.')
-    return redirect(add_questions_to_test, test_id)
-    
+def delete_landmark_question_from_test(request, test_id, question_id):
+    _generic_remove_question_from_test(request, LandmarkQuestion, test_id, question_id)
+    return redirect('admin_add_questions_to_test', test_id)

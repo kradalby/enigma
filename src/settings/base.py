@@ -18,7 +18,7 @@ INSTALLED_APPS = [
     'app.base',
     'app.course',
     'app.userprofile',
-    'app.quiz'
+    'app.quiz',
 ]
 
 MIDDLEWARE_CLASSES = [

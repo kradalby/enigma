@@ -16,13 +16,15 @@ class CourseForm(ModelForm):
         super(CourseForm, self).clean()
         amount = self.cleaned_data.get("generated_participants_amount")
         prefix = self.cleaned_data.get("generated_participants_prefix")
+        print("amount %s" % amount)
+        print("prefix %s" % prefix)
         if (not amount or amount == 0) and self._errors.get('generated_participants_amount'):
             del self._errors['generated_participants_amount']
-        if amount > 0 and self._errors.get('generated_participants_amount'):
-            del self._errors['generated_participants_amount']
-            if not prefix:
-                del self._errors['generated_participants_prefix']
-                self.add_error(None, "Generated participants prefix and amount have to be specified together")
+        if not prefix and self._errors.get('generated_participants_prefix'):
+            del self._errors['generated_participants_prefix']
+        if amount and amount > 0 and not prefix:
+            self.add_error(None, "Generated participants prefix and amount have to be specified together")
+        print(self._errors)
         
     def save(self, commit=True):
         amount = self.cleaned_data.get('generated_participants_amount')
