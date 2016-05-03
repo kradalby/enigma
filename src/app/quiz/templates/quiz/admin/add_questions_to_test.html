@@ -30,7 +30,8 @@
             </li>
         {% endfor %}
     </ul>
-    <a href="{% url 'admin_add_multiple_choice_question_to_test' test.id %}" class="btn btn-default">Add new multiple choice question</a>
+    <a href="{% url 'admin_new_multiple_choice_question_to_test' test.id %}" class="btn btn-default">Add new multiple choice question</a>
+    <a href="{% url 'admin_list_multiple_choice_question_not_in_test' test.id %}" class="btn btn-default">Add existing multiple choice question</a>
 </div>
 
 <hr/>

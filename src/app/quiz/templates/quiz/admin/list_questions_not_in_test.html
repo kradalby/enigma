@@ -1,0 +1,18 @@
+{% extends "base/admin/index.html" %}
+
+{% block admincontent %}
+<h1>
+    Questions not added to {{ test }}:
+</h1>
+<ul>
+    {% for question in questions %}
+        <li>
+            <a href="{% url 'admin_register_user_to_course' question.id question.id %}">{{ question }}</a>
+        </li>
+    {% empty %}
+        <li>
+            No questions are created yet, or this test contains all questions. <br/>
+        </li>
+    {% endfor %}
+</ul>
+{% endblock %}

@@ -17,8 +17,10 @@ urlpatterns = [
     
     #MPC
     url(r'^admin/mpc/new/$', admin.new_multiple_choice_question, name='admin_new_multiple_choice_question'),
-    url(r'^admin/mpc/addtotest/(?P<test_id>\d+)/$', admin.add_multiple_choice_question_to_test, name='admin_add_multiple_choice_question_to_test'),
+    url(r'^admin/mpc/new/(?P<test_id>\d+)/$', admin.new_multiple_choice_question_to_test, name='admin_new_multiple_choice_question_to_test'),
     url(r'^admin/mpc/edit/(?P<question_id>\d+)/$', admin.edit_multiple_choice_question, name='admin_edit_multiple_choice_question'),
+    url(r'^admin/mpc/add/(?P<test_id>\d+)/$', admin.list_multiple_choice_question_not_in_test, name='admin_list_multiple_choice_question_not_in_test'),
+    url(r'^admin/mpc/add/(?P<test_id>\d+)/(?P<question_id>\d+)/$', admin.add_multiple_choice_question_to_test, name='admin_add_multiple_choice_question_to_test'),
     url(r'^admin/mpc/removefromtest/(?P<test_id>\d+)/(?P<question_id>\d+)/$', admin.delete_multiple_choice_question_from_test, name='admin_delete_multiple_choice_question_from_test'),
     url(r'^admin/mpc/delete/(?P<question_id>\d+)/$', admin.delete_multiple_choice_question, name='admin_delete_multiple_choice_question'),
     
