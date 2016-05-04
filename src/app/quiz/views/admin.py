@@ -9,6 +9,7 @@ import os
 
 from ..forms import *
 from ..models import *
+from ..templatetags.question_tags import question_type_from_id
   
 #
 # Test related
@@ -154,28 +155,37 @@ def _generic_list_question_not_in_test(request, question_type, test_id):
         'questions' : questions_not_in_test
     })
 
+@staff_member_required
+def add_question_to_test(request, test_id, question_id, question_type_id):
+    
+    test = get_object_or_404(Test, id=test_id)
+    print(test)
+    question_type = question_type_from_id(question_type_id)
+    print(question_type)
+    question = get_object_or_404(question_type, id=question_id)
+    print(question)
+    question.test.add(test)
+    messages.success(request, 'Successfully added question to test.')
+    
+    return redirect(add_questions_to_test, test_id)
+    
 #
 # MPC related
 #
-
 @staff_member_required
 def new_multiple_choice_question(request):
     return _generic_new_question(request, MultipleChoiceQuestionForm)
-    
-@staff_member_required
-def edit_multiple_choice_question(request, question_id):
-    return _generic_edit_question(request, MultipleChoiceQuestionForm, MultipleChoiceQuestion, question_id)
 
 @staff_member_required
 def new_multiple_choice_question_to_test(request, test_id):
     return _generic_new_multiple_choice_question_to_test(request, MultipleChoiceQuestionForm, test_id)
     
 @staff_member_required
-def add_multiple_choice_question_to_test(request, question_id, test_id):
-    return _generic_add_multiple_choice_question_to_test(request, MultipleChoiceQuestion, question_id, test_id)
-    
+def edit_multiple_choice_question(request, question_id):
+    return _generic_edit_question(request, MultipleChoiceQuestionForm, MultipleChoiceQuestion, question_id)
+        
 @staff_member_required
-def list_multiple_choice_question_not_in_test(request, test_id):
+def list_multiple_choice_questions_not_in_test(request, test_id):
     return _generic_list_question_not_in_test(request, MultipleChoiceQuestion, test_id)
            
 @staff_member_required
@@ -197,12 +207,16 @@ def new_multiple_choice_question_with_image(request):
     return _generic_new_question(request, MultipleChoiceQuestionWithImageForm)
     
 @staff_member_required
-def edit_multiple_choice_question_with_image(request, question_id):
-    return _generic_edit_question(request, MultipleChoiceQuestionWithImageForm, MultipleChoiceQuestionWithImage, question_id)
+def new_multiple_choice_question_with_image_to_test(request, test_id):
+    return _generic_new_multiple_choice_question_to_test(request, MultipleChoiceQuestionWithImageForm, test_id)
     
 @staff_member_required
-def add_multiple_choice_question_with_image_to_test(request, test_id):
-    return _generic_new_multiple_choice_question_to_test(request, MultipleChoiceQuestionWithImageForm, test_id)
+def edit_multiple_choice_question_with_image(request, question_id):
+    return _generic_edit_question(request, MultipleChoiceQuestionWithImageForm, MultipleChoiceQuestionWithImage, question_id)
+        
+@staff_member_required
+def list_multiple_choice_questions_with_image_not_in_test(request, test_id):
+    return _generic_list_question_not_in_test(request, MultipleChoiceQuestionWithImage, test_id)
     
 @staff_member_required
 def delete_multiple_choice_question_with_image_from_test(request, test_id, question_id):
@@ -223,12 +237,16 @@ def new_multiple_choice_question_with_video(request):
     return _generic_new_question(request, MultipleChoiceQuestionWithVideoForm)
     
 @staff_member_required
+def new_multiple_choice_question_with_video_to_test(request, test_id):
+    return _generic_new_multiple_choice_question_to_test(request, MultipleChoiceQuestionWithVideoForm, test_id)
+    
+@staff_member_required
 def edit_multiple_choice_question_with_video(request, question_id):
     return _generic_edit_question(request, MultipleChoiceQuestionWithVideoForm, MultipleChoiceQuestionWithVideo, question_id)
-
+    
 @staff_member_required
-def add_multiple_choice_question_with_video_to_test(request, test_id):
-    return _generic_new_multiple_choice_question_to_test(request, MultipleChoiceQuestionWithVideoForm, test_id)
+def list_multiple_choice_questions_with_video_not_in_test(request, test_id):
+    return _generic_list_question_not_in_test(request, MultipleChoiceQuestionWithVideo, test_id)
     
 @staff_member_required
 def delete_multiple_choice_question_with_video_from_test(request, test_id, question_id):

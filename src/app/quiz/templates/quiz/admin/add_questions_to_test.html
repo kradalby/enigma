@@ -31,7 +31,7 @@
         {% endfor %}
     </ul>
     <a href="{% url 'admin_new_multiple_choice_question_to_test' test.id %}" class="btn btn-default">Add new multiple choice question</a>
-    <a href="{% url 'admin_list_multiple_choice_question_not_in_test' test.id %}" class="btn btn-default">Add existing multiple choice question</a>
+    <a href="{% url 'admin_list_multiple_choice_questions_not_in_test' test.id %}" class="btn btn-default">Add existing multiple choice question</a>
 </div>
 
 <hr/>
@@ -52,7 +52,8 @@
             </li>
         {% endfor %}
     </ul>
-    <a href="{% url 'admin_add_multiple_choice_question_with_image_to_test' test.id %}" class="btn btn-default">Add new multiple choice question with image</a>
+    <a href="{% url 'admin_new_multiple_choice_question_with_image_to_test' test.id %}" class="btn btn-default">Add new multiple choice question with image</a>
+    <a href="{% url 'admin_list_multiple_choice_questions_with_image_not_in_test' test.id %}" class="btn btn-default">Add existing multiple choice question with image</a>
 </div>
 
 <hr/>
@@ -73,7 +74,8 @@
             </li>
         {% endfor %}
     </ul>
-    <a href="{% url 'admin_add_multiple_choice_question_with_video_to_test' test.id %}" class="btn btn-default">Add new multiple choice question with video</a>
+    <a href="{% url 'admin_new_multiple_choice_question_with_video_to_test' test.id %}" class="btn btn-default">Add new multiple choice question with video</a>
+    <a href="{% url 'admin_list_multiple_choice_questions_with_video_not_in_test' test.id %}" class="btn btn-default">Add existing multiple choice question with video</a>
 </div>
 
 <hr/>

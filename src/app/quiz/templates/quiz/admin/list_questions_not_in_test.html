@@ -1,13 +1,15 @@
 {% extends "base/admin/index.html" %}
 
+{% load question_tags %}
+
 {% block admincontent %}
 <h1>
-    Questions not added to {{ test }}:
+    {{ questions|first|question_type }} not added to {{ test }}:
 </h1>
 <ul>
     {% for question in questions %}
         <li>
-            <a href="{% url 'admin_register_user_to_course' question.id question.id %}">{{ question }}</a>
+            <a href="{% url 'admin_add_question_to_test' test.id question.id question|question_type_id %}">{{ question }}</a>
         </li>
     {% empty %}
         <li>
