@@ -316,3 +316,56 @@ def add_landmark_regions(request, test_id, question_id):
 def delete_landmark_question_from_test(request, test_id, question_id):
     _generic_remove_question_from_test(request, LandmarkQuestion, test_id, question_id)
     return redirect('admin_add_questions_to_test', test_id)
+    
+#
+# Outline
+#
+@staff_member_required
+def add_outline_question_to_test(request, test_id):
+    test = Test.objects.get(id=test_id)
+    if request.method == 'POST':
+        form = OutlineQuestionForm(request.POST, request.FILES)
+        if form.is_valid():
+            question = form.save()
+            question.test.add(test)
+            return redirect(draw_outline, test.id, question.id)
+    else:
+        form = OutlineQuestionForm()
+
+    return render(request, 'quiz/admin/new_outline_question.html', {
+        "test" : test,
+        "form" : form
+    })
+    
+@staff_member_required
+def draw_outline(request, test_id, question_id):
+    test = Test.objects.get(id=test_id)
+    question = OutlineQuestion.objects.get(id=question_id)
+    if request.method == 'POST':
+        dataUrlPattern = re.compile('data:image/(png|jpeg);base64,(.*)$')
+        image_data = request.POST.get('hidden-image-data')
+        image_data = dataUrlPattern.match(image_data).group(2)
+
+        if (image_data == None or len(image_data) == 0):
+            # TODO: PRINT ERROR MESSAGE HERE
+            pass
+        image_data = base64.b64decode(image_data)
+        question.outline_drawing = ContentFile(image_data, 'solution-' + os.path.basename( question.original_image.name ))
+        question.save()
+        for k,v in request.POST.items():
+            if k.startswith('#') and len(k) == 7:
+                region = OutlineRegion()
+                region.color = k
+                region.name = v
+                region.outline_question = question
+                region.save()
+        return redirect('admin_add_questions_to_test', test.id)
+    return render(request, 'quiz/admin/draw_outline.html', {
+        "test" : test,
+        "question" : question
+    })
+    
+@staff_member_required
+def delete_outline_question_from_test(request, test_id, question_id):
+    _generic_remove_question_from_test(request, OutlineQuestion, test_id, question_id)
+    return redirect('admin_add_questions_to_test', test_id)

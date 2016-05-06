@@ -30,3 +30,12 @@ class LandmarkQuestionForm(ModelForm):
     def __init__(self, *args, **kwargs):
         super(LandmarkQuestionForm, self).__init__(*args, **kwargs)
         self.fields['question'].label = "Name"
+        
+class OutlineQuestionForm(ModelForm):
+    class Meta:
+        model = OutlineQuestion
+        fields = ["question", "original_image", ]
+        
+    def __init__(self, *args, **kwargs):
+        super(OutlineQuestionForm, self).__init__(*args, **kwargs)
+        self.fields['question'].label = "Name"

@@ -13,7 +13,8 @@ def single_test (request, test_id):
     multiple_choice_image = test.multiple_choice_questions_with_image()
     multiple_choice_video = test.multiple_choice_questions_with_video()
     landmark = test.landmark_questions()
-    questions = [multiple_choice, multiple_choice_image, landmark, multiple_choice_video]
+    outline = test.outline_questions()
+    questions = [multiple_choice, multiple_choice_image, landmark, multiple_choice_video, outline]
     questions = [item for sublist in questions for item in sublist]
     return render(request, 'quiz/site/single_test.html', {
         "test" : test,

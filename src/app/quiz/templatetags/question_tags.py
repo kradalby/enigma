@@ -1,3 +1,4 @@
+import random
 from django import template
 register = template.Library()
 
@@ -29,4 +30,15 @@ def question_type_id(question):
 @register.filter
 def question_type_from_id(question_id):
     return question_type_ids[int(question_id)]
+
+@register.filter
+def is_landmark(test):
+    return type(test) is LandmarkQuestion
     
+@register.filter
+def is_outline(test):
+    return type(test) is OutlineQuestion
+    
+@register.filter
+def get_random_region(question):
+    return random.choice(question.regions())

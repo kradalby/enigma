@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 {% load shuffle %}
 {% load staticfiles %}
-{% load landmark_tags %}
+{% load question_tags %}
 
 {% block extrahead %}
 <script src="{% static "js/landmark.js" %}"></script>
@@ -67,6 +67,11 @@
                             {% with region=question|get_random_region %}
                                 Select {{ region.name}}
                                 <input type="hidden" id="landmark_region-{{ question.id }}" name="landmark_region-{{ question.id }}" value="{{ region.color }}">
+                            {% endwith %}
+                        {% elif question|is_outline %}
+                            {% with region=question|get_random_region %}
+                                Select {{ region.name}}
+                                <input type="hidden" id="outline_region-{{ question.id }}" name="outline_region-{{ question.id }}" value="{{ region.color }}">
                             {% endwith %}
                         {% else %}
                             {{ question }}

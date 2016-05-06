@@ -1,4 +1,4 @@
-var drawLandmark = (function () {
+var drawRegions = (function () {
 	"use strict";
 
 	var canvas,
@@ -32,14 +32,14 @@ var drawLandmark = (function () {
 			}
 
 			clearCanvas();
-            drawLandmarkOutline();
+            drawRegionOutline();
             updateHiddenImageData();
 			clearCanvas();
             drawOriginalImage();
-            drawLandmarkOutline();
+            drawRegionOutline();
 		},
         
-        drawLandmarkOutline = function(){
+        drawRegionOutline = function(){
             // For each point drawn
 			for (var i = 0; i < clickX.length; i += 1) {
 				// Set the drawing path

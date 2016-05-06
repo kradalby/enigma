@@ -98,4 +98,25 @@
     </ul>
     <a href="{% url 'admin_add_landmark_question_to_test' test.id %}" class="btn btn-default">Add new landmark question</a>
 </div>
+
+<hr/>
+
+<div>
+    <h2>Outline questions</h2>
+    <ul>
+        {% for question in test.outline_questions %}
+            <li>
+                <a href="{% url 'admin_delete_outline_question_from_test' test.id question.id %}">
+                    <span class="glyphicon glyphicon-remove red" aria-hidden="true"></span>
+                </a>
+                {{ question }}
+            </li>
+        {% empty %}
+            <li>
+                No outline question added.
+            </li>
+        {% endfor %}
+    </ul>
+    <a href="{% url 'admin_add_outline_question_to_test' test.id %}" class="btn btn-default">Add new outline question</a>
+</div>
 {% endblock %}
