@@ -97,6 +97,7 @@
         {% endfor %}
     </ul>
     <a href="{% url 'admin_add_landmark_question_to_test' test.id %}" class="btn btn-default">Add new landmark question</a>
+    <a href="#" class="btn btn-default disabled">Add existing landmark question</a>
 </div>
 
 <hr/>
@@ -118,5 +119,6 @@
         {% endfor %}
     </ul>
     <a href="{% url 'admin_add_outline_question_to_test' test.id %}" class="btn btn-default">Add new outline question</a>
+    <a href="#" class="btn btn-default disabled">Add existing outline question</a>
 </div>
 {% endblock %}

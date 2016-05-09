@@ -259,4 +259,51 @@
         {% endfor %}
     </div>
 </div>
+<hr/>
+
+<h1 class="page-header">
+    Outline questions
+</h1>
+<div class="table-wrapper">
+    <div class="table">
+        <div class="table-row header blue">
+            <div class="cell">
+                Question name
+            </div>
+            <div class="cell">
+                Times used
+            </div>
+            <div class="cell">
+                Edit question
+            </div>
+            <div class="cell">
+                Delete question
+            </div>
+        </div>
+        {% for question in outline_questions %}
+            <div class="table-row">
+                <div class="cell">
+                    {{ question }}
+                </div>
+                <div class="cell">
+                    {{ question.times_used }}
+                </div>
+                <div class="cell">
+                    <a href="#">
+                        <span class="glyphicon glyphicon-pencil" aria-hidden="true"> Edit</span>
+                    </a>
+                </div>
+                <div class="cell">
+                    <a href="#">
+                        <span class="glyphicon glyphicon-remove red" aria-hidden="true"> Delete</span>
+                    </a>
+                </div>
+            </div>
+        {% empty %}
+            <div class="cell">
+                No questions created.
+            </div>
+        {% endfor %}
+    </div>
+</div>
 {% endblock %}

@@ -71,11 +71,13 @@ def list_questions(request):
     multiple_choice_questions_with_image = MultipleChoiceQuestionWithImage.objects.all()
     multiple_choice_questions_with_video = MultipleChoiceQuestionWithVideo.objects.all()
     landmark_questions = LandmarkQuestion.objects.all()
+    outline_question = OutlineQuestion.objects.all()
     return render(request, 'quiz/admin/list_questions.html', {
         "multiple_choice_questions" : multiple_choice_questions,
         "multiple_choice_questions_with_image" : multiple_choice_questions_with_image,
         "multiple_choice_questions_with_video" : multiple_choice_questions_with_video,
-        "landmark_questions" : landmark_questions
+        "landmark_questions" : landmark_questions,
+        "outline_question" : outline_question
     })
 
 #
