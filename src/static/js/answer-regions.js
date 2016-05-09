@@ -34,7 +34,7 @@ var answerRegions = (function(){
         coloredRegions = [],
         distanceToColorThreshold = 0,
         originalImage,
-        landmarkImage,
+        answerImage,
         canvasHeight,
         canvasWidth,
         canvas,
@@ -42,12 +42,16 @@ var answerRegions = (function(){
         aspectRatio,
         questionId,
         
+        /**
+         * COMMON STUFF
+         */
+        
         relativeMouseCoordinates = function(event){
             var totalOffsetX = 0;
             var totalOffsetY = 0;
             var canvasX = 0;
             var canvasY = 0;
-            var currentElement = document.getElementById("landmark_canvas-" + questionId);
+            var currentElement = document.getElementById(canvas.id);
 
             do{
                 totalOffsetX += currentElement.offsetLeft;
@@ -67,6 +71,21 @@ var answerRegions = (function(){
         clearCanvas = function(){
             context.clearRect(0, 0, canvas.width, canvas.height);
         },
+        
+        drawImage = function(imgSrc, callback){
+            var image = new Image();
+            image.src = imgSrc;
+            image.onload = function(){
+                context.drawImage(image, 0, 0, canvasWidth, canvasHeight);
+                if(callback){
+                    callback();
+                }
+            }
+        },
+        
+        /**
+         * LANDMARK RELATED
+         */
         
         IsInsideColorRegion = function(coordinates, x, y){
             var existPointToLeft = false,
@@ -194,17 +213,6 @@ var answerRegions = (function(){
             }
         },
         
-        drawImage = function(imgSrc, callback){
-            var image = new Image();
-            image.src = imgSrc;
-            image.onload = function(){
-                context.drawImage(image, 0, 0, canvasWidth, canvasHeight);
-                if(callback){
-                    callback();
-                }
-            }
-        },
-        
         setImageRatios = function(height, width){
             aspectRatio = width / height;
             canvasHeight = Math.min(height, window.innerHeight);
@@ -219,39 +227,193 @@ var answerRegions = (function(){
             
         },
         
-        enableLandmark = function(targetDivId, image, answerImage, height, width, id){
-            console.log(image)
+        /**
+         * OUTLINE SPECIFIC
+         */
+        lineWidth = 5,
+		clickX = [],
+		clickY = [],
+		clickColor = [],
+		clickDrag = [],
+		paint = false,
+		curColor = "#ff0000",
+		imageLoaded = false,
+        
+        redraw = function () {
+            if (!imageLoaded) {
+                return;
+            }
+
+            //clearCanvas();
+            //drawRegionOutline();
+            //updateHiddenImageData();
+            clearCanvas();
+            drawImage(originalImage, function(){
+                drawRegionOutline();
+            });
+        },
+        
+        drawRegionOutline = function(){
+            // For each point drawn
+			for (var i = 0; i < clickX.length; i += 1) {
+				// Set the drawing path
+				context.beginPath();
+				// If dragging then draw a line between the two points
+				if (clickDrag[i] && i) {
+					context.moveTo(clickX[i - 1], clickY[i - 1]);
+				} else {
+					// The x position is moved over one pixel so a circle even if not dragging
+					context.moveTo(clickX[i] - 1, clickY[i]);
+				}
+				context.lineTo(clickX[i], clickY[i]);
+				
+                context.strokeStyle = clickColor[i];
+				context.lineCap = "round";
+				context.lineJoin = "round";
+				context.lineWidth = lineWidth;
+				context.stroke();
+			}
+			context.closePath();
+			context.restore();
+
+			// Overlay a crayon texture (if the current tool is crayon)
+			context.globalAlpha = 1; // No IE support
+        },
+
+		// Adds a point to the drawing array.
+		// @param x
+		// @param y
+		// @param dragging
+		addClick = function (x, y, dragging) {
+			clickX.push(x);
+			clickY.push(y);
+			clickColor.push(curColor);
+			clickDrag.push(dragging);
+		},
+        
+        // Add mouse and touch event listeners to the canvas
+		createUserEvents = function () {
+			var press = function (e) {
+				// Mouse down location
+                var coords = relativeMouseCoordinates(e);
+				paint = true;
+				addClick(coords.x, coords.y, false);
+				redraw();
+			},
+
+            drag = function (e) {
+                if (paint) {
+                    var coords = relativeMouseCoordinates(e);
+                    addClick(coords.x, coords.y, true);
+                    redraw();
+                }
+                // Prevent the whole page from dragging if on mobile
+                e.preventDefault();
+            },
+
+            release = function () {
+                paint = false;
+                redraw();
+            },
+
+            cancel = function () {
+                paint = false;
+            };
+
+			// Add mouse event listeners to canvas element
+			canvas.addEventListener("mousedown", press, false);
+			canvas.addEventListener("mousemove", drag, false);
+			canvas.addEventListener("mouseup", release);
+			canvas.addEventListener("mouseout", cancel, false);
+
+			// Add touch event listeners to canvas element
+			canvas.addEventListener("touchstart", press, false);
+			canvas.addEventListener("touchmove", drag, false);
+			canvas.addEventListener("touchend", release, false);
+			canvas.addEventListener("touchcancel", cancel, false);
+		},
+
+		// Calls the redraw function after all neccessary resources are loaded.
+		resourceLoaded = function () {
+            imageLoaded = true;
+            redraw();
+            createUserEvents();
+		},
+        
+        clearColor = function(colorIndex){
+            var colorToRemove = curColor;
+            for(var i = clickColor.length - 1; i >= 0; i--) {
+                if(clickColor[i] === colorToRemove) {
+                    clickColor.splice(i, 1);
+                    clickY.splice(i, 1);
+                    clickX.splice(i, 1);
+                    clickDrag.splice(i, 1);
+                }
+            }
+            redraw();
+        },
+        
+        updateHiddenImageData = function(){
+            var imageData = canvas.toDataURL("image/png");
+            hiddenAnswerField.value = imageData;
+        },
+        
+        /**
+         *  EXPORTED
+         */
+        enableCommon = function(targetDivId, image, answerImg, height, width, id){
             parentId = targetDivId;
             parentDiv = document.getElementById(parentId);
             questionId = id;
             
             // Create canvas
             canvas = document.createElement('canvas');
-            canvas.id = "landmark_canvas-" + questionId;
             parentDiv.appendChild(canvas);
+            if (typeof G_vmlCanvasManager !== "undefined") {
+				canvas = G_vmlCanvasManager.initElement(canvas);
+			}
             context = canvas.getContext('2d');
             
             // Create hidden answer field
             hiddenAnswerField = document.createElement("input");
             hiddenAnswerField.setAttribute("type", "hidden");
-            hiddenAnswerField.setAttribute("name", "landmark_question-" + questionId);
             hiddenAnswerField.setAttribute("value", "{}");
             parentDiv.appendChild(hiddenAnswerField);
 
             // Register other necessities
             originalImage = image;
-            landmarkImage = answerImage;
+            answerImage = answerImg;
             setImageRatios(height, width);
+        },
+        
+        enableLandmark = function(targetDivId, image, answerImg, height, width, id){
+            enableCommon(targetDivId, image, answerImg, height, width, id);
             
-            registerColoredRegions(landmarkImage, function(){
+            canvas.id = "landmark_canvas-" + questionId;
+            hiddenAnswerField.setAttribute("name", "landmark_question-" + questionId);
+            
+            registerColoredRegions(answerImage, function(){
                 drawImage(originalImage);
             });
             
             updateHiddenAnswerOnMouseUp();
             drawXOnMouseUp();
+        },
+        
+        enableOutline = function(targetDivId, image, answerImg, height, width, id){
+            enableCommon(targetDivId, image, answerImg, height, width, id);
+            
+            canvas.id = "landmark_outline-" + questionId;
+            hiddenAnswerField.setAttribute("name", "outline_question-" + questionId);
+            
+            registerColoredRegions(answerImage, function(){
+                drawImage(originalImage);
+                resourceLoaded();
+            });
         };
 
     return {
-		enableLandmark: enableLandmark
+		enableLandmark: enableLandmark,
+		enableOutline: enableOutline
 	};
 });

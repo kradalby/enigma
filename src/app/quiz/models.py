@@ -158,17 +158,6 @@ class LandmarkQuestion(TestUnit):
         landmark_drawing = self.landmark_drawing.url
         width = self.original_image.width
         height = self.original_image.height
-        # html = """
-        # <div class="landmark-container">
-        #     <canvas id="viewport" width="{3}" height="{4}"></canvas>
-        #     <input type="hidden" id="landmark_answer" name="landmark_question-{0}" value="{{}}">
-        # </div>
-        # <script>
-        #     landmark("{1}", "{2}", {3}, {4});
-        # </script>
-        # """.format(self.id, original_image, landmark_drawing, width, height)
-        
-        #enableLandmark = function(targetDivId, image, answerImage, height, width, questionId){
         html = """
         <div id="{0}" class="landmark-container">
         </div>
@@ -192,14 +181,13 @@ class OutlineQuestion(TestUnit):
         width = self.original_image.width
         height = self.original_image.height
         html = """
-        <div class="outline-container">
-            <canvas id="viewport" width="{3}" height="{4}"></canvas>
-            <input type="hidden" id="outline_answer" name="outline_question-{0}" value="{{}}">
+        <div id="{0}" class="outline-container">
         </div>
         <script>
-            landmark("{1}", "{2}", {3}, {4});
+            var a = answerRegions();
+            a.enableOutline("{0}", "{1}", "{2}", "{3}", "{4}", "{5}");
         </script>
-        """.format(self.id, original_image, outline_drawing, width, height)
+        """.format("outline-container-" + str(self.id), original_image, outline_drawing, height, width, self.id)
         return html
         
 class LandmarkRegion(models.Model):
