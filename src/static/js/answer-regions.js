@@ -31,7 +31,10 @@ var answerRegions = (function(){
         parentId,
         parentDiv,
         hiddenAnswerField,
+        targetRegionColor,
         coloredRegions = [],
+        colorsHashTable,
+        regionColor,
         distanceToColorThreshold = 0,
         originalImage,
         answerImage,
@@ -41,6 +44,9 @@ var answerRegions = (function(){
         context,
         aspectRatio,
         questionId,
+        regionCanvas,
+        regionContext,
+        regionData,
         
         /**
          * COMMON STUFF
@@ -69,14 +75,15 @@ var answerRegions = (function(){
         },
         
         clearCanvas = function(){
-            context.clearRect(0, 0, canvas.width, canvas.height);
+            regionContext.clearRect(0, 0, canvasWidth, canvasHeight);
+            context.clearRect(0, 0, canvasWidth, canvasHeight);
         },
         
-        drawImage = function(imgSrc, callback){
+        drawImage = function(contextDest, imgSrc, callback){
             var image = new Image();
             image.src = imgSrc;
             image.onload = function(){
-                context.drawImage(image, 0, 0, canvasWidth, canvasHeight);
+                contextDest.drawImage(image, 0, 0, canvasWidth, canvasHeight);
                 if(callback){
                     callback();
                 }
@@ -127,33 +134,32 @@ var answerRegions = (function(){
         },
         
         drawXOnMouseUp = function(){
-            canvas.addEventListener("mouseup", mouseUp, false);
+            regionCanvas.addEventListener("mouseup", mouseUp, false);
 
             function drawX(x, y) {
-                context.beginPath();
-                context.strokeStyle="#FF0000";
-                context.lineWidth = 3;
+                regionContext.beginPath();
+                regionContext.strokeStyle="#FF0000";
+                regionContext.lineWidth = 3;
                 
-                context.moveTo(x - 10, y - 10);
-                context.lineTo(x + 10, y + 10);
-                context.stroke();
+                regionContext.moveTo(x - 10, y - 10);
+                regionContext.lineTo(x + 10, y + 10);
+                regionContext.stroke();
 
-                context.moveTo(x + 10, y - 10);
-                context.lineTo(x - 10, y + 10);
-                context.stroke();
+                regionContext.moveTo(x + 10, y - 10);
+                regionContext.lineTo(x - 10, y + 10);
+                regionContext.stroke();
             }
 
             function mouseUp(e) {
                 var coords = relativeMouseCoordinates(e);
-                clearCanvas();
-                drawImage(originalImage, function(){
+                drawImage(regionContext, originalImage, function(){
                     drawX(coords.x, coords.y);
                 });
             }
         },
         
         updateHiddenAnswerOnMouseUp = function(){
-            canvas.addEventListener("mouseup", mouseUp, false);
+            regionCanvas.addEventListener("mouseup", mouseUp, false);
             
             function mouseUp(e){
                 for(var i = 0; i < coloredRegions.length; i++){
@@ -174,15 +180,15 @@ var answerRegions = (function(){
             image.src = imgSrc;
             image.onload = function(){
                 context.drawImage(image, 0, 0, canvasWidth, canvasHeight);
-                var imageData = context.getImageData(0, 0, canvasWidth, canvasHeight);
-                var data = imageData.data;
-                var colors = new HashTable();
+                regionData = context.getImageData(0, 0, canvasWidth, canvasHeight);
+                var data = regionData.data;
+                colorsHashTable = new HashTable();
 
                 // Detect all colors
                 for(var i = 0, n = data.length; i < n; i += 4){
                     var alpha = data[i + 3];
                     if(alpha == 255){
-                        colors.add({
+                        colorsHashTable.add({
                             red: data[i],
                             green: data[i+1],
                             blue: data[i+2],
@@ -196,7 +202,7 @@ var answerRegions = (function(){
                 }
                 
                 // Push the regions to global table
-                var colorTable = colors.table();
+                var colorTable = colorsHashTable.table();
                 for (var color in colorTable) {
                     if (colorTable.hasOwnProperty(color)) {
                         coloredRegions.push({
@@ -219,12 +225,19 @@ var answerRegions = (function(){
             canvasWidth = canvasHeight * aspectRatio;
             context.canvas.height = canvasHeight;
             context.canvas.width = canvasWidth;
+            regionContext.canvas.height = canvasHeight;
+            regionContext.canvas.width = canvasWidth;
 
             canvasWidth = Math.min(canvasWidth, context.canvas.clientWidth);
             canvasHeight = Math.min(canvasHeight, context.canvas.clientHeight);
             context.canvas.height = canvasHeight;
             context.canvas.width = canvasWidth;
+            regionContext.canvas.height = canvasHeight;
+            regionContext.canvas.width = canvasWidth;
             
+            var wrapperDiv = $(canvas).parent();
+            wrapperDiv.width(canvasWidth);
+            wrapperDiv.height(canvasHeight);
         },
         
         /**
@@ -233,51 +246,48 @@ var answerRegions = (function(){
         lineWidth = 5,
 		clickX = [],
 		clickY = [],
-		clickColor = [],
 		clickDrag = [],
 		paint = false,
-		curColor = "#ff0000",
 		imageLoaded = false,
         
-        redraw = function () {
+        redraw = function (clear) {
             if (!imageLoaded) {
                 return;
             }
-
-            //clearCanvas();
-            //drawRegionOutline();
-            //updateHiddenImageData();
-            clearCanvas();
-            drawImage(originalImage, function(){
+            
+            if(clear){
+                clearCanvas();
+                drawImage(context, originalImage);
+            } else {
                 drawRegionOutline();
-            });
+            }
         },
         
         drawRegionOutline = function(){
             // For each point drawn
 			for (var i = 0; i < clickX.length; i += 1) {
 				// Set the drawing path
-				context.beginPath();
+				regionContext.beginPath();
 				// If dragging then draw a line between the two points
 				if (clickDrag[i] && i) {
-					context.moveTo(clickX[i - 1], clickY[i - 1]);
+					regionContext.moveTo(clickX[i - 1], clickY[i - 1]);
 				} else {
 					// The x position is moved over one pixel so a circle even if not dragging
-					context.moveTo(clickX[i] - 1, clickY[i]);
+					regionContext.moveTo(clickX[i] - 1, clickY[i]);
 				}
-				context.lineTo(clickX[i], clickY[i]);
+				regionContext.lineTo(clickX[i], clickY[i]);
 				
-                context.strokeStyle = clickColor[i];
-				context.lineCap = "round";
-				context.lineJoin = "round";
-				context.lineWidth = lineWidth;
-				context.stroke();
+                regionContext.strokeStyle = "#ff0000";
+				regionContext.lineCap = "round";
+				regionContext.lineJoin = "round";
+				regionContext.lineWidth = lineWidth;
+				regionContext.stroke();
 			}
-			context.closePath();
-			context.restore();
+			regionContext.closePath();
+			regionContext.restore();
 
 			// Overlay a crayon texture (if the current tool is crayon)
-			context.globalAlpha = 1; // No IE support
+			regionContext.globalAlpha = 1; // No IE support
         },
 
 		// Adds a point to the drawing array.
@@ -287,7 +297,6 @@ var answerRegions = (function(){
 		addClick = function (x, y, dragging) {
 			clickX.push(x);
 			clickY.push(y);
-			clickColor.push(curColor);
 			clickDrag.push(dragging);
 		},
         
@@ -319,18 +328,17 @@ var answerRegions = (function(){
             cancel = function () {
                 paint = false;
             };
-
 			// Add mouse event listeners to canvas element
-			canvas.addEventListener("mousedown", press, false);
-			canvas.addEventListener("mousemove", drag, false);
-			canvas.addEventListener("mouseup", release);
-			canvas.addEventListener("mouseout", cancel, false);
+			regionCanvas.addEventListener("mousedown", press, false);
+			regionCanvas.addEventListener("mousemove", drag, false);
+			regionCanvas.addEventListener("mouseup", release);
+			regionCanvas.addEventListener("mouseout", cancel, false);
 
 			// Add touch event listeners to canvas element
-			canvas.addEventListener("touchstart", press, false);
-			canvas.addEventListener("touchmove", drag, false);
-			canvas.addEventListener("touchend", release, false);
-			canvas.addEventListener("touchcancel", cancel, false);
+			regionCanvas.addEventListener("touchstart", press, false);
+			regionCanvas.addEventListener("touchmove", drag, false);
+			regionCanvas.addEventListener("touchend", release, false);
+			regionCanvas.addEventListener("touchcancel", cancel, false);
 		},
 
 		// Calls the redraw function after all neccessary resources are loaded.
@@ -340,22 +348,48 @@ var answerRegions = (function(){
             createUserEvents();
 		},
         
-        clearColor = function(colorIndex){
-            var colorToRemove = curColor;
-            for(var i = clickColor.length - 1; i >= 0; i--) {
-                if(clickColor[i] === colorToRemove) {
-                    clickColor.splice(i, 1);
-                    clickY.splice(i, 1);
-                    clickX.splice(i, 1);
-                    clickDrag.splice(i, 1);
-                }
-            }
-            redraw();
+        clearOutline = function(colorIndex){
+            clickY = [];
+            clickX = [];
+            clickDrag = [];
+            redraw(true);
         },
         
-        updateHiddenImageData = function(){
-            var imageData = canvas.toDataURL("image/png");
-            hiddenAnswerField.value = imageData;
+        updateHiddenOutlineAnswerOnMouseUp = function(){
+            regionCanvas.addEventListener("mouseup", mouseUp, false);
+            
+            function mouseUp(e){
+                var targetRegionPoints = colorsHashTable.get(targetRegionColor);
+                var data = regionContext.getImageData(0, 0, canvasWidth, canvasHeight).data;
+                var pixelsHit = 0;
+                var pixelsTargetTotal = targetRegionPoints.length;
+                
+                for (var index in targetRegionPoints) {
+                    if (targetRegionPoints.hasOwnProperty(index)) {
+                        var x = targetRegionPoints[index].x;
+                        var y = targetRegionPoints[index].y;
+                        var dataIndex = (y * canvasWidth * 4) + x * 4;
+                        if(data[dataIndex] == 255 && data[dataIndex + 1] == 0 && data[dataIndex + 2] == 0 && data[dataIndex + 3] == 255){
+                            pixelsHit++;
+                        }
+                    }
+                }
+                
+                hiddenAnswerField.value = JSON.stringify({
+                    "pixelsHit" : pixelsHit,
+                    "pixelsTotal" : pixelsTargetTotal
+                });
+            };
+        },
+        
+        setTargetRegion = function(questionId){
+            var hexColor = document.getElementById("region-" + questionId + "-color").getAttribute("value");
+            targetRegionColor = {
+                "red": parseInt(hexColor.substring(1,3), 16),
+                "green": parseInt(hexColor.substring(3,5), 16),
+                "blue": parseInt(hexColor.substring(5,7), 16),
+                "alpha":255
+            };
         },
         
         /**
@@ -368,11 +402,22 @@ var answerRegions = (function(){
             
             // Create canvas
             canvas = document.createElement('canvas');
+            canvas.style.zIndex = "1";
             parentDiv.appendChild(canvas);
             if (typeof G_vmlCanvasManager !== "undefined") {
 				canvas = G_vmlCanvasManager.initElement(canvas);
 			}
             context = canvas.getContext('2d');
+            
+            // Create region canvas
+            regionCanvas = document.createElement('canvas');
+            regionCanvas.style.zIndex = "2";
+            parentDiv.appendChild(regionCanvas);
+            if (typeof G_vmlCanvasManager !== "undefined") {
+				regionCanvas = G_vmlCanvasManager.initElement(regionCanvas);
+			}
+            regionContext = regionCanvas.getContext('2d');
+            regionCanvas.id = "region_canvas-" + questionId;
             
             // Create hidden answer field
             hiddenAnswerField = document.createElement("input");
@@ -381,6 +426,7 @@ var answerRegions = (function(){
             parentDiv.appendChild(hiddenAnswerField);
 
             // Register other necessities
+            setTargetRegion(questionId);
             originalImage = image;
             answerImage = answerImg;
             setImageRatios(height, width);
@@ -393,27 +439,30 @@ var answerRegions = (function(){
             hiddenAnswerField.setAttribute("name", "landmark_question-" + questionId);
             
             registerColoredRegions(answerImage, function(){
-                drawImage(originalImage);
+                drawImage(context, originalImage);
             });
             
-            updateHiddenAnswerOnMouseUp();
             drawXOnMouseUp();
+            updateHiddenAnswerOnMouseUp();
         },
         
         enableOutline = function(targetDivId, image, answerImg, height, width, id){
             enableCommon(targetDivId, image, answerImg, height, width, id);
             
-            canvas.id = "landmark_outline-" + questionId;
+            canvas.id = "outline_canvas-" + questionId;
             hiddenAnswerField.setAttribute("name", "outline_question-" + questionId);
             
             registerColoredRegions(answerImage, function(){
-                drawImage(originalImage);
+                drawImage(context, originalImage);
                 resourceLoaded();
             });
+            
+            updateHiddenOutlineAnswerOnMouseUp();
         };
 
     return {
 		enableLandmark: enableLandmark,
-		enableOutline: enableOutline
+		enableOutline: enableOutline,
+        clearOutline: clearOutline
 	};
 });

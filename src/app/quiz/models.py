@@ -186,6 +186,7 @@ class OutlineQuestion(TestUnit):
         <script>
             var a = answerRegions();
             a.enableOutline("{0}", "{1}", "{2}", "{3}", "{4}", "{5}");
+            $("div#{0}").parent().parent().children(".panel-heading").prepend($('<div class="btn btn-default pull-right" onclick="a.clearOutline()">Clear</div>'));
         </script>
         """.format("outline-container-" + str(self.id), original_image, outline_drawing, height, width, self.id)
         return html

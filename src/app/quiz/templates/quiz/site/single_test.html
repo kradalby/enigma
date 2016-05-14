@@ -16,6 +16,9 @@
     
     canvas {
         max-width: 100%;
+        position: absolute;
+        left: 0;
+        top: 0;
     }
     
     img.hide {
@@ -31,6 +34,14 @@
         width:100%; 
         max-height:500px; 
         width: auto; 
+    }
+    
+    div.outline-container{
+        position: relative;
+    }
+    
+    div.outline-container::after {
+        clear: both;
     }
 </style>
 {% endblock %}
@@ -66,17 +77,18 @@
                         {% if question|is_landmark %}
                             {% with region=question|get_random_region %}
                                 Select {{ region.name}}
-                                <input type="hidden" id="landmark_region-{{ question.id }}" name="landmark_region-{{ question.id }}" value="{{ region.color }}">
+                                <input type="hidden" id="region-{{ question.id }}-color" name="region-{{ question.id }}-color" value="{{ region.color }}">
                             {% endwith %}
                         {% elif question|is_outline %}
                             {% with region=question|get_random_region %}
-                                Select {{ region.name}}
-                                <input type="hidden" id="outline_region-{{ question.id }}" name="outline_region-{{ question.id }}" value="{{ region.color }}">
+                                Draw around {{ region.name}}
+                                <input type="hidden" id="region-{{ question.id }}-color" name="region-{{ question.id }}-color" value="{{ region.color }}">
                             {% endwith %}
                         {% else %}
                             {{ question }}
                         {% endif %}
                     </h3>
+                    <div class="clearfix"></div>
                 </div>
                 <div class="panel-body">
                         {{ question.as_html | safe }}
