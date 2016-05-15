@@ -64,10 +64,27 @@ def submit_test(request, test_id):
             test_unit_result = TestUnitResult()
             test_unit_result.test_result = testresult
             test_unit_result.test_unit = question_model
+            test_unit_result.correct_answer = False
             for k,v in request.POST.items():
-                if k == "landmark_region-%s" % question_model.id:
-                    region = question_model.regions().get(color=v)
+                if k == "region-%s-color" % question_model.id:
                     test_unit_result.correct_answer = _colors_match(answer, v)
+            test_unit_result.save()
+        elif testunit_name.startswith("outline_question-"):
+            question_id = testunit_name.split("-", 1)[1]
+            question_model = OutlineQuestion.objects.get(id=question_id)
+            test_unit_result = TestUnitResult()
+            test_unit_result.test_result = testresult
+            test_unit_result.test_unit = question_model
+            test_unit_result.correct_answer = False
+            for k,v in request.POST.items():
+                if k == "outline_question-%s" % question_model.id:
+                    try:
+                        result = json.loads(answer)
+                        hit = result["pixelsHit"]
+                        total = result["pixelsTotal"]
+                        test_unit_result.correct_answer = (hit/total > 0.30)
+                    except KeyError:
+                        test_unit_result.correct_answer = False
             test_unit_result.save()
            
     return redirect('/')
