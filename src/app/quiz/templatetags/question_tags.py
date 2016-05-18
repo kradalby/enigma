@@ -8,7 +8,8 @@ question_types = {
     LandmarkQuestion : "Landmark questions",
     MultipleChoiceQuestion : "Multiple choice questions",
     MultipleChoiceQuestionWithImage : "Multiple choice questions with image",
-    MultipleChoiceQuestionWithVideo : "Multiple choice questions with video"
+    MultipleChoiceQuestionWithVideo : "Multiple choice questions with video",
+    OutlineQuestion : "Outline questions"
 }
 
 @register.filter
@@ -20,7 +21,8 @@ question_type_ids = [
     MultipleChoiceQuestion,
     MultipleChoiceQuestionWithImage,
     MultipleChoiceQuestionWithVideo,
-    LandmarkQuestion
+    LandmarkQuestion,
+    OutlineQuestion
 ]
 
 @register.filter

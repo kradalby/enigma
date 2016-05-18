@@ -3,6 +3,7 @@ PIP:=$(shell which pip)
 
 help:
 	@echo 'help         - shows this help message'
+	@echo 'adminuser    - creates a user with username and password admin/admin'
 	@echo 'app          - creates a new application. Usage: make app app=myappname'
 	@echo 'db           - resets the database and creates a superuser'
 	@echo 'dev          - installs dev requirements and sets up dev environment'
@@ -14,6 +15,9 @@ help:
 	@echo 'sync         - syncs and migrates the database'
 	@echo 'superuser    - creates a superuser'
 
+adminuser:
+	echo "from django.contrib.auth.models import User; User.objects.create_superuser('admin', 'admin@example.com', 'question')" | $(PYTHON) src/manage.py shell
+
 app:
 	cd src/app; \
 	$(PYTHON) ../manage.py startapp ${app}
@@ -22,7 +26,7 @@ db:
 	rm src/project.db -f
 	find src/ -path "*/migrations/*.py" -not -name "__init__.py" -delete
 	$(MAKE) sync
-	echo "from django.contrib.auth.models import User; User.objects.create_superuser('admin', 'admin@example.com', 'question')" | $(PYTHON) src/manage.py shell
+	$(MAKE) adminuser
 
 dev:
 	echo "from settings.development import *" > src/settings/local.py
@@ -53,4 +57,4 @@ sync:
 superuser:
 	$(PYTHON) src/manage.py createsuperuser
     
-.PHONY: app db dev fixtures herokurun herokusetup prod run sync superuser
+.PHONY: adminuser app db dev fixtures herokurun herokusetup prod run sync superuser

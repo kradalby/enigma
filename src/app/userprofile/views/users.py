@@ -120,7 +120,7 @@ def generate_user(prefix, suffix_count = 1, password = "question"):
     return userprofile
     
 def _generate_username(prefix, suffix_count):
-    username = "%s-%s" % (prefix, suffix_count)
+    username = "{0}-{1:02}".format(prefix, suffix_count)
     if User.objects.filter(username=username).exists():
         return _generate_username(prefix, suffix_count + 1)
     return username

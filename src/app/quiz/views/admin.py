@@ -77,7 +77,7 @@ def list_questions(request):
         "multiple_choice_questions_with_image" : multiple_choice_questions_with_image,
         "multiple_choice_questions_with_video" : multiple_choice_questions_with_video,
         "landmark_questions" : landmark_questions,
-        "outline_question" : outline_question
+        "outline_questions" : outline_question
     })
 
 #
@@ -159,13 +159,9 @@ def _generic_list_question_not_in_test(request, question_type, test_id):
 
 @staff_member_required
 def add_question_to_test(request, test_id, question_id, question_type_id):
-    
     test = get_object_or_404(Test, id=test_id)
-    print(test)
     question_type = question_type_from_id(question_type_id)
-    print(question_type)
     question = get_object_or_404(question_type, id=question_id)
-    print(question)
     question.test.add(test)
     messages.success(request, 'Successfully added question to test.')
     
@@ -318,6 +314,10 @@ def add_landmark_regions(request, test_id, question_id):
 def delete_landmark_question_from_test(request, test_id, question_id):
     _generic_remove_question_from_test(request, LandmarkQuestion, test_id, question_id)
     return redirect('admin_add_questions_to_test', test_id)
+        
+@staff_member_required
+def list_landmark_questions_not_in_test(request, test_id):
+    return _generic_list_question_not_in_test(request, LandmarkQuestion, test_id)
     
 #
 # Outline
@@ -371,3 +371,7 @@ def draw_outline(request, test_id, question_id):
 def delete_outline_question_from_test(request, test_id, question_id):
     _generic_remove_question_from_test(request, OutlineQuestion, test_id, question_id)
     return redirect('admin_add_questions_to_test', test_id)
+        
+@staff_member_required
+def list_outline_questions_not_in_test(request, test_id):
+    return _generic_list_question_not_in_test(request, OutlineQuestion, test_id)

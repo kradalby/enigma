@@ -18,5 +18,10 @@ apt-get install -y gcc                         # Required for pillow
 # Upgrade virtualenv to latest version
 sudo pip install virtualenv --upgrade
 
+# If you wish you wish to have postgres installed
+# apt-get install -y libpq-dev                   # Required for postgresql
+# apt-get install -y postgresql                  # Postgresql
+# apt-get install -y postgresql-contrib          # Postgresql
+
 # Add vagrant user if it does not exist
 id -u vagrant &>/dev/null || useradd vagrant --home /home/vagrant --shell /bin/bash
