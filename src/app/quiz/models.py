@@ -85,14 +85,14 @@ class MultipleChoiceQuestion(TestUnit):
         html += "</ul></div>"
         return html
 
-def image_directory_path(instance, filename):
-    return 'upload/quiz/{0}/{1}'.format(instance.id, filename)
+# def image_directory_path(instance, filename):
+#     return 'upload/quiz/{0}/{1}'.format(instance.id, filename)
     
 class MultipleChoiceQuestionWithImage(TestUnit):
     correct_answer = models.CharField(max_length = 255, verbose_name = "Correct answer")
     wrong_answer_1 = models.CharField(max_length = 255, verbose_name = "Wrong answer")
     wrong_answer_2 = models.CharField(max_length = 255, verbose_name = "Wrong answer")
-    image = models.ImageField(upload_to=image_directory_path)
+    image = models.ImageField()
     
     def as_html(self):
         html = """
@@ -147,8 +147,8 @@ class MultipleChoiceQuestionWithVideo(TestUnit):
         return html
     
 class LandmarkQuestion(TestUnit):
-    original_image = models.ImageField(upload_to=image_directory_path)
-    landmark_drawing = models.ImageField(upload_to=image_directory_path, blank=True)
+    original_image = models.ImageField()
+    landmark_drawing = models.ImageField(blank=True)
     
     def regions(self):
         return LandmarkRegion.objects.filter(landmark_question=self)
@@ -169,8 +169,8 @@ class LandmarkQuestion(TestUnit):
         return html
     
 class OutlineQuestion(TestUnit):
-    original_image = models.ImageField(upload_to=image_directory_path)
-    outline_drawing = models.ImageField(upload_to=image_directory_path, blank=True)
+    original_image = models.ImageField()
+    outline_drawing = models.ImageField(blank=True)
     
     def regions(self):
         return OutlineRegion.objects.filter(outline_question=self)
