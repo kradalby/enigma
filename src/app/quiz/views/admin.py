@@ -268,7 +268,7 @@ def add_landmark_question_to_test(request, test_id):
         if form.is_valid():
             question = form.save()
             question.test.add(test)
-            return redirect(draw_landmark, test.id, question.id)
+            return redirect(draw_landmark, question.id, test.id)
     else:
         form = LandmarkQuestionForm()
 
@@ -278,8 +278,8 @@ def add_landmark_question_to_test(request, test_id):
     })
     
 @staff_member_required
-def draw_landmark(request, test_id, question_id):
-    test = Test.objects.get(id=test_id)
+def draw_landmark(request, question_id, test_id = None):
+    test = Test.objects.get(id=test_id) if test_id else None
     question = LandmarkQuestion.objects.get(id=question_id)
     if request.method == 'POST':
         dataUrlPattern = re.compile('data:image/(png|jpeg);base64,(.*)$')
@@ -299,10 +299,27 @@ def draw_landmark(request, test_id, question_id):
                 region.name = v
                 region.landmark_question = question
                 region.save()
-        return redirect('admin_add_questions_to_test', test.id)
+        if test:
+            return redirect('admin_add_questions_to_test', test.id)
+        else:
+            return redirect(list_questions)
     return render(request, 'quiz/admin/draw_landmark.html', {
         "test" : test,
         "question" : question
+    })
+    
+@staff_member_required
+def new_landmark_question(request):
+    if request.method == 'POST':
+        form = LandmarkQuestionForm(request.POST, request.FILES)
+        if form.is_valid():
+            question = form.save()
+            return redirect(draw_landmark, question.id)
+    else:
+        form = LandmarkQuestionForm()
+
+    return render(request, 'quiz/admin/new_landmark_question.html', {
+        "form" : form
     })
     
 @staff_member_required
@@ -319,6 +336,11 @@ def delete_landmark_question_from_test(request, test_id, question_id):
 def list_landmark_questions_not_in_test(request, test_id):
     return _generic_list_question_not_in_test(request, LandmarkQuestion, test_id)
     
+@staff_member_required
+def delete_landmark_question(request, question_id):
+    _generic_delete_question(request, LandmarkQuestion, question_id)
+    return redirect(list_questions)
+    
 #
 # Outline
 #
@@ -330,7 +352,7 @@ def add_outline_question_to_test(request, test_id):
         if form.is_valid():
             question = form.save()
             question.test.add(test)
-            return redirect(draw_outline, test.id, question.id)
+            return redirect(draw_outline, question.id, test.id)
     else:
         form = OutlineQuestionForm()
 
@@ -340,8 +362,8 @@ def add_outline_question_to_test(request, test_id):
     })
     
 @staff_member_required
-def draw_outline(request, test_id, question_id):
-    test = Test.objects.get(id=test_id)
+def draw_outline(request, question_id, test_id = None):
+    test = Test.objects.get(id=test_id) if test_id else None
     question = OutlineQuestion.objects.get(id=question_id)
     if request.method == 'POST':
         dataUrlPattern = re.compile('data:image/(png|jpeg);base64,(.*)$')
@@ -361,7 +383,10 @@ def draw_outline(request, test_id, question_id):
                 region.name = v
                 region.outline_question = question
                 region.save()
-        return redirect('admin_add_questions_to_test', test.id)
+        if test:
+            return redirect('admin_add_questions_to_test', test.id)
+        else:
+            return redirect(list_questions)
     return render(request, 'quiz/admin/draw_outline.html', {
         "test" : test,
         "question" : question
@@ -374,4 +399,24 @@ def delete_outline_question_from_test(request, test_id, question_id):
         
 @staff_member_required
 def list_outline_questions_not_in_test(request, test_id):
-    return _generic_list_question_not_in_test(request, OutlineQuestion, test_id)
+    return _generic_list_question_not_in_test(request, OutlineQuestion, test_id)  
+    
+@staff_member_required
+def delete_outline_question(request, question_id):
+    _generic_delete_question(request, OutlineQuestion, question_id)
+    return redirect(list_questions)
+    
+@staff_member_required
+def new_outline_question(request):
+    if request.method == 'POST':
+        form = OutlineQuestionForm(request.POST, request.FILES)
+        if form.is_valid():
+            question = form.save()
+            return redirect(draw_outline, question.id)
+    else:
+        form = OutlineQuestionForm()
+
+    return render(request, 'quiz/admin/new_outline_question.html', {
+        "form" : form
+    })
+    

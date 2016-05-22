@@ -242,12 +242,12 @@
                     {{ question.times_used }}
                 </div>
                 <div class="cell">
-                    <a href="#">
+                    <a href="{% url 'admin_edit_landmark' question.id %}">
                         <span class="glyphicon glyphicon-pencil" aria-hidden="true"> Edit</span>
                     </a>
                 </div>
                 <div class="cell">
-                    <a href="#">
+                    <a href="{% url 'admin_delete_landmark_question' question.id %}">
                         <span class="glyphicon glyphicon-remove red" aria-hidden="true"> Delete</span>
                     </a>
                 </div>
@@ -289,12 +289,12 @@
                     {{ question.times_used }}
                 </div>
                 <div class="cell">
-                    <a href="#">
+                    <a href="{% url 'admin_edit_outline' question.id %}">
                         <span class="glyphicon glyphicon-pencil" aria-hidden="true"> Edit</span>
                     </a>
                 </div>
                 <div class="cell">
-                    <a href="#">
+                    <a href="{% url 'admin_delete_outline_question' question.id %}">
                         <span class="glyphicon glyphicon-remove red" aria-hidden="true"> Delete</span>
                     </a>
                 </div>

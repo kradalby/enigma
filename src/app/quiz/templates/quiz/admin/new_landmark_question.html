@@ -2,10 +2,16 @@
 
 {% block admincontent %}
 <h1>
-    Add landmark question to test
+    {% if test %}
+        Add landmark question to test
+    {% else %}
+        Create landmark question
+    {% endif %}
 </h1>
 <h4>
-    <small>Test</small> {{ test.name }}
+    {% if test %}
+        <small>Test</small> {{ test.name }}
+    {% endif %}
 </h4>
 <form action="" method="post" enctype="multipart/form-data">
     {% csrf_token %}

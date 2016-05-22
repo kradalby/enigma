@@ -42,14 +42,20 @@ urlpatterns = [
     url(r'^admin/mpcv/delete/(?P<question_id>\d+)/$', admin.delete_multiple_choice_question_with_video, name='admin_delete_multiple_choice_question_with_video'),
     
     # LANDMARK
+    url(r'^admin/landmark/new/$', admin.new_landmark_question, name='admin_new_landmark_question'),
+    url(r'^admin/landmark/draw/(?P<question_id>\d+)/$', admin.draw_landmark, name='admin_edit_landmark'),
     url(r'^admin/(?P<test_id>\d+)/landmark/draw/(?P<question_id>\d+)/$', admin.draw_landmark, name='admin_draw_landmark'),
     url(r'^admin/(?P<test_id>\d+)/landmark/(?P<question_id>\d+)/delete/$', admin.delete_landmark_question_from_test, name='admin_delete_landmark_question_from_test'),
     url(r'^admin/(?P<test_id>\d+)/landmark/$', admin.add_landmark_question_to_test, name='admin_add_landmark_question_to_test'),
     url(r'^admin/landmark/add/(?P<test_id>\d+)/$', admin.list_landmark_questions_not_in_test, name='admin_list_landmark_questions_not_in_test'),
+    url(r'^admin/landmark/delete/(?P<question_id>\d+)/$', admin.delete_landmark_question, name='admin_delete_landmark_question'),
     
     # OUTLINE
+    url(r'^admin/outline/new/$', admin.new_outline_question, name='admin_new_outline_question'),
+    url(r'^admin/outline/draw/(?P<question_id>\d+)/$', admin.draw_outline, name='admin_edit_outline'),
     url(r'^admin/(?P<test_id>\d+)/outline/draw/(?P<question_id>\d+)/$', admin.draw_outline, name='admin_draw_outline'),
     url(r'^admin/(?P<test_id>\d+)/outline/(?P<question_id>\d+)/delete/$', admin.delete_outline_question_from_test, name='admin_delete_outline_question_from_test'),
     url(r'^admin/(?P<test_id>\d+)/outline/$', admin.add_outline_question_to_test, name='admin_add_outline_question_to_test'),
     url(r'^admin/outline/add/(?P<test_id>\d+)/$', admin.list_outline_questions_not_in_test, name='admin_list_outline_questions_not_in_test'),
+    url(r'^admin/outline/delete/(?P<question_id>\d+)/$', admin.delete_outline_question, name='admin_delete_outline_question'),
 ]
