@@ -7,9 +7,9 @@ from django.shortcuts import render, get_object_or_404, redirect
 
 import random
 
-from app.userprofile.models import UserProfile, UserGroup
-from app.userprofile.forms import UserProfileForm, UserGroupForm
-from app.userprofile.views.users import generate_user
+from ..models import UserProfile, UserGroup
+from ..forms import UserProfileForm, UserGroupForm
+from ..util import generate_user
 
 @staff_member_required
 @transaction.atomic
@@ -81,3 +81,4 @@ def generate_user_for_group(request, group_id):
     user.groups.add(group)
     messages.success(request, 'Successfully generated a user for %s.' % group.name)
     return redirect(view_group, group_id)
+    

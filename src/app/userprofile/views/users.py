@@ -5,8 +5,6 @@ from django.core.exceptions import ObjectDoesNotExist
 from django.db import IntegrityError, transaction
 from django.shortcuts import render, get_object_or_404, redirect
 
-import random
-
 from app.userprofile.models import UserProfile, UserGroup
 from app.userprofile.forms import UserProfileForm, UserGroupForm
 
@@ -100,27 +98,3 @@ def delete_user_from_course(request, user_id, course_id):
         messages.warning(request, 'The user has already been deleted. You may have clicked twice.')
     return redirect("admin_view_course", course_id)
     
-@transaction.atomic
-def generate_users(amount, group, prefix):
-    created = 0
-    while created < amount:
-        user = generate_user(prefix, created)
-        user.groups.add(group)
-        created+=1
-        
-@transaction.atomic
-def generate_user(prefix, suffix_count = 1, password = "question"):
-    user = User()
-    user.username = _generate_username(prefix, suffix_count)
-    user.set_password(password)
-    user.save()
-    userprofile = UserProfile()
-    userprofile.user = user
-    userprofile.save()
-    return userprofile
-    
-def _generate_username(prefix, suffix_count):
-    username = "{0}-{1:02}".format(prefix, suffix_count)
-    if User.objects.filter(username=username).exists():
-        return _generate_username(prefix, suffix_count + 1)
-    return username

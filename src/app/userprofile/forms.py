@@ -1,9 +1,10 @@
 from django.contrib.auth.models import User
 from django.core.exceptions import ObjectDoesNotExist
 from django.core.validators import validate_slug
-from django.forms import ModelForm, TextInput, CharField
+from django.forms import ModelForm, TextInput, CharField, IntegerField
 
 from .models import UserProfile, UserGroup
+from .util import generate_users
 
 class UserProfileForm(ModelForm):
     username = CharField()
@@ -36,3 +37,25 @@ class UserGroupForm(ModelForm):
     class Meta:
         model = UserGroup
         fields = ["name",]
+        
+    generated_participants_amount = IntegerField(min_value=0)
+    generated_participants_prefix = CharField()
+        
+    def clean(self):
+        super(UserGroupForm, self).clean()
+        amount = self.cleaned_data.get("generated_participants_amount")
+        prefix = self.cleaned_data.get("generated_participants_prefix")
+        if (not amount or amount == 0) and self._errors.get('generated_participants_amount'):
+            del self._errors['generated_participants_amount']
+        if not prefix and self._errors.get('generated_participants_prefix'):
+            del self._errors['generated_participants_prefix']
+        if amount and amount > 0 and not prefix:
+            self.add_error(None, "Generated participants prefix and amount have to be specified together")
+        
+    def save(self, commit=True):
+        amount = self.cleaned_data.get('generated_participants_amount')
+        prefix = self.cleaned_data.get('generated_participants_prefix')
+        saved_instance = super(UserGroupForm, self).save(commit=commit)
+        if amount and prefix:
+            generate_users(amount, saved_instance, prefix)
+        return saved_instance

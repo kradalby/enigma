@@ -1,7 +1,7 @@
 from random import randint
 
 from app.userprofile.models import UserProfile, UserGroup
-from app.userprofile.views.users import generate_user
+from app.userprofile.util import generate_user
 
 def create_hidden_group_for_course(course):
     group = UserGroup()
