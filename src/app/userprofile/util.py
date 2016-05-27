@@ -8,7 +8,7 @@ import random
 def generate_users(amount, group, prefix):
     created = 0
     while created < amount:
-        user = generate_user(prefix, created)
+        user = generate_user(prefix, created + 1)
         user.groups.add(group)
         created+=1
         

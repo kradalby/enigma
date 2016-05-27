@@ -2,35 +2,22 @@
 
 {% block admincontent %}
 <h1>
-    Add question
+    {% if test %}
+        Add question to test
+    {% else %}
+        Create question
+    {% endif %}
 </h1>
+{% if test %}
+    <h4>
+        <small>Test</small> {{ test.name }}
+    </h4>
+{% endif %}
 <form action="" method="post" enctype="multipart/form-data">
     {% csrf_token %}
-    {% if form.non_field_errors %}
-        <div class="form_errors">
-            {% for err in form.non_field_errors %}
-                <div class="form_error_message">{{ err }}</div>
-            {% endfor %}
-        </div>	
-    {% endif %}
-    {% for hidden in form.hidden_fields %}
-        {{ hidden }}
-    {% endfor %}
-    {% for field in form.visible_fields %}
-    <div {% if field.errors %}class="field_error"{% endif %}>
-        <div>
-            {{ field.label_tag }}
-        </div>
-        <div>
-            {{ field }}                    
-        </div>
-        {% for err in field.errors %}
-            <span class="error_message">{{ err }}</span>
-        {% endfor %}
-    </div>
-    {% endfor %}
-    <br/>
+    <table>
+        {{ form.as_table }}
+    </table>
     <input type="submit" class="btn btn-default" value="Add question" />
-    <a href="##" class="btn btn-danger" onClick="window.location.href = document.referrer;">Go back</a>
 </form>
 {% endblock %}
