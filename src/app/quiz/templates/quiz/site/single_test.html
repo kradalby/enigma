@@ -129,7 +129,8 @@
         if(currentlyVisible.next('div.single-question').length <= 0){
             $("li.next").hide();
             $("li.submit").show();
-        } else if(currentlyVisible.prev('div.single-question').length <= 0){
+        } 
+        if(currentlyVisible.prev('div.single-question').length <= 0){
             $("li.previous").hide();
         }
     }
