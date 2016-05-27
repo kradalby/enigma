@@ -48,68 +48,104 @@
 
 {% block content %}
 <div class="container">
-    {% if answers %}
-        {% for answer in answers.test_unit_results %}
-        <div class="center-block">
-            <div class="panel panel-default">
-                <div class="panel-heading">
-                    <h3 class="panel-title">
-                        {{ answer.test_unit }}
-                    </h3>
-                </div>
-                <div class="panel-body">
-                        {{ answer.correct_answer }}
-                </div>
-            </div>
-        </div>
-        {% endfor %}
-    {% else %}
     <form action="{% url 'submit_test' test.id %}" method="post">
         {% csrf_token %}
         <h3>
             {{ test }}
         </h3>
         {% for question in questions|shuffle %}
-        <div class="center-block">
-            <div class="panel panel-default">
-                <div class="panel-heading">
-                    <h3 class="panel-title">
-                        {% if question|is_landmark %}
-                            {% with region=question|get_random_region %}
-                                Select {{ region.name}}
-                                <input type="hidden" id="region-{{ question.id }}-color" name="region-{{ question.id }}-color" value="{{ region.color }}">
-                            {% endwith %}
-                        {% elif question|is_outline %}
-                            {% with region=question|get_random_region %}
-                                Draw around {{ region.name}}
-                                <input type="hidden" id="region-{{ question.id }}-color" name="region-{{ question.id }}-color" value="{{ region.color }}">
-                            {% endwith %}
-                        {% else %}
-                            {{ question }}
-                        {% endif %}
-                    </h3>
-                    <div class="clearfix"></div>
+            <div class="single-question">
+                <div class="center-block">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <h3 class="panel-title">
+                                {% if question|is_landmark %}
+                                    {% with region=question|get_random_region %}
+                                        Select {{ region.name}}
+                                        <input type="hidden" id="region-{{ question.id }}-color" name="region-{{ question.id }}-color" value="{{ region.color }}">
+                                    {% endwith %}
+                                {% elif question|is_outline %}
+                                    {% with region=question|get_random_region %}
+                                        Draw around {{ region.name}}
+                                        <input type="hidden" id="region-{{ question.id }}-color" name="region-{{ question.id }}-color" value="{{ region.color }}">
+                                    {% endwith %}
+                                {% else %}
+                                    {{ question }}
+                                {% endif %}
+                            </h3>
+                            <div class="clearfix"></div>
+                        </div>
+                        <div class="panel-body">
+                                {{ question.as_html | safe }}
+                        </div>
+                    </div>
                 </div>
-                <div class="panel-body">
-                        {{ question.as_html | safe }}
+            </div>
+        {% endfor %}
+        <div class="single-question">
+            <div class="center-block">
+                <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <h3 class="panel-title">
+                                All questions have been answered.
+                            </h3>
+                        </div>
+                    <div class="panel-body">
+                        <p>You can submit your answers, or browse back through your answeres in order to double check them.</p>
+                        <p>Once answered have been submitted, you can not change your answers.</p>
+                    </div>
                 </div>
             </div>
         </div>
-        {% endfor %}
-        <input type="submit" class="btn btn-success" value="Answer">
+        <ul class="pager">
+            <li class="previous"><a href="#" class="test-navigation">Previous</a></li>
+            <li class="next"><a href="#" class="test-navigation">Next</a></li>
+            <li class="submit"><input type="submit" class="btn btn-success pull-right" value="Answer"></li>
+        </ul>
     </form>
-    {% endif %}
 </div>
 {% endblock %}
 
 {% block end %}
 <script>
-$('input:radio').click(function(ev){
-    ev.stopPropagation();
-}).parent().click(function(ev){
-    ev.preventDefault();
-    $(this).children('input').click();
-    $(this).addClass('active').siblings().removeClass('active');
-});
+    $("li.previous").hide();
+    $("li.submit").hide();
+    // MPC-Input related
+    $('input:radio').click(function(ev){
+        ev.stopPropagation();
+    }).parent().click(function(ev){
+        ev.preventDefault();
+        $(this).children('input').click();
+        $(this).addClass('active').siblings().removeClass('active');
+    });
+    //Next-previous related
+    $('div.single-question').hide().first().show();
+    $('a.test-navigation').on('click', function(e) {
+        e.preventDefault();
+        $("li.next").show();
+        $("li.submit").hide();
+        $("li.previous").show();
+        var currentlyVisible = $('div.single-question:visible');
+        var t = $(this).text();
+
+        if (t == 'Next' && currentlyVisible.next('div.single-question').length > 0) {
+            $('div.single-question').hide();
+            currentlyVisible.next('div.single-question').show()
+        } else if (t == 'Previous' && currentlyVisible.prev('div.single-question').length > 0) {
+            $('div.single-question').hide();
+            currentlyVisible.prev('div.single-question').show()
+        }
+        
+        console.log("next",$('div.single-question:visible').next('div.single-question'))
+        console.log("prev",$('div.single-question:visible').prev('div.single-question'))
+        
+        if($('div.single-question:visible').next('div.single-question').length <= 0){
+            $("li.next").hide();
+            $("li.submit").show();
+        } else if($('div.single-question:visible').prev('div.single-question').length <= 0){
+            $("li.previous").hide();
+        }
+    });
+    
 </script>
 {% endblock %}

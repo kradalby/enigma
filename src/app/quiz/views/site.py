@@ -9,6 +9,10 @@ from ..models import *
 def single_test (request, test_id):
     test = get_object_or_404(Test, pk=test_id)
     already_answered = test.answered_by_user(request.user)
+    if already_answered:
+        return render(request, 'quiz/site/single_test_answered.html', {
+            "answers" : already_answered
+        })
     multiple_choice = test.multiple_choice_questions()
     multiple_choice_image = test.multiple_choice_questions_with_image()
     multiple_choice_video = test.multiple_choice_questions_with_video()
@@ -19,7 +23,6 @@ def single_test (request, test_id):
     return render(request, 'quiz/site/single_test.html', {
         "test" : test,
         "questions" : questions,
-        "answers" : already_answered
     })
 
 def _add_test_result(question_type, question_id, testresult, answer):
