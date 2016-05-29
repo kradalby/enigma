@@ -10,6 +10,7 @@ var drawRegions = (function () {
 		outlineImage = new Image(),
 		clickX = [],
 		clickY = [],
+		clickWidth = [],
 		clickColor = [],
 		clickDrag = [],
 		paint = false,
@@ -56,7 +57,7 @@ var drawRegions = (function () {
                 context.strokeStyle = clickColor[i];
 				context.lineCap = "round";
 				context.lineJoin = "round";
-				context.lineWidth = lineWidth;
+				context.lineWidth = clickWidth[i];
 				context.stroke();
 			}
 			context.closePath();
@@ -75,6 +76,7 @@ var drawRegions = (function () {
 			clickY.push(y);
 			clickColor.push(curColor);
 			clickDrag.push(dragging);
+			clickWidth.push(lineWidth);
 		},
             
         relativeMouseCoordinates = function(event){
@@ -85,15 +87,18 @@ var drawRegions = (function () {
             var currentElement = canvas;
 
             do{
-                totalOffsetX += currentElement.offsetLeft - currentElement.scrollLeft;
-                totalOffsetY += currentElement.offsetTop - currentElement.scrollTop;
+                totalOffsetX += currentElement.offsetLeft;
+                totalOffsetY += currentElement.offsetTop;
             }
             while(currentElement = currentElement.offsetParent)
 
             canvasX = event.pageX - totalOffsetX;
             canvasY = event.pageY - totalOffsetY;
 
-            return {x:canvasX, y:canvasY}
+            return {
+				x : canvasX, 
+				y : canvasY
+			}
         },
 
 		// Add mouse and touch event listeners to the canvas
@@ -152,6 +157,10 @@ var drawRegions = (function () {
         setColor = function(colorIndex){
             curColor = colors[colorIndex];
         },
+		
+		getCurrentColor = function() {
+			return curColor;
+		},
         
         clearColor = function(colorIndex){
             var colorToRemove = colors[colorIndex];
@@ -170,6 +179,10 @@ var drawRegions = (function () {
             var imageData = document.getElementById('canvas').toDataURL("image/png");
             document.getElementById('hidden-image-data').value = imageData;
         },
+		
+		setLineWidth = function(width){
+			lineWidth = width;
+		},
 
 		// Creates a canvas element, loads images, adds events, and draws the canvas for the first time.
 		init = function (image, height, width) {
@@ -205,6 +218,8 @@ var drawRegions = (function () {
 		init: init,
         setColor : setColor,
         clearColor : clearColor,
-        addColor : addColor
+        addColor : addColor,
+		getCurrentColor : getCurrentColor,
+		setLineWidth : setLineWidth
 	};
 }());

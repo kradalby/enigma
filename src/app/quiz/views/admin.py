@@ -268,7 +268,7 @@ def add_landmark_question_to_test(request, test_id):
         if form.is_valid():
             question = form.save()
             question.test.add(test)
-            return redirect(draw_landmark, question.id, test.id)
+            return redirect(draw_landmark, test.id, question.id)
     else:
         form = LandmarkQuestionForm()
 

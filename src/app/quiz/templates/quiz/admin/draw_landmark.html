@@ -5,7 +5,6 @@
 <style>
     .btn {
         display:inline-block;
-        min-width: 140px;
         padding:5px 10px;
     }
     
@@ -15,6 +14,7 @@
         text-overflow:ellipsis;
         -ms-text-overflow:ellipsis;
         float: left;
+        padding-right: 5px;
     }
     
     #right-column {
@@ -22,7 +22,6 @@
         text-overflow:ellipsis;
         -ms-text-overflow:ellipsis;
         text-align: right;  
-        padding-top: 110px;
     }
     
     div.buttons {
@@ -30,27 +29,97 @@
     }
     
     div#canvasDiv{
-        border: 1px solid black;
+        border: 2px solid black;
+    }
+    
+    div > label {
+        padding-left: 10px;
+    }
+    
+    div.panel-heading > button {
+        margin: 5px;
     }
 </style>
+<div>
+    <h1>Draw landmark regions</h1>
+</div>
 <div id="left-column">
-    <div>
-        <h1>Draw landmark regions</h1>
-    </div>
-    <div>
-        <p>
-            Some explanatory text here.
-        </p>
-            <button type="button" class="btn" onclick="addColor()">New color</button>
-    </div>
     <div id="canvasDiv"></div>
 </div>
 <div id="right-column">
+    <div class="alert alert-danger fade in" id="max-colors-error" style="display:none;">
+        <button type="button" class="close">×</button>
+        You can't add any more colors.
+    </div>
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <button type="button" class="pull-left btn btn-info" onclick="addColor()">New color</button>
+            <button data-toggle="collapse" data-target="#collapsable" class="pull-left btn btn-info">Hide/Show information</button>
+                <h4>Information</h4>
+            <div class="clearfix"></div>
+        </div>
+        <div class="panel-body">
+            <div id="collapsable" class="collapse">
+                <p>
+                    Draw regions which the user will have to select. 
+                </p>
+                <p>
+                    While taking the test, the user will not see the different regions.
+                </p>
+                <p>
+                    The user scores at this question if s/he correctly selects a pixel from the region in question.
+                </p>
+                <table class="table text-left">
+                    <tr>
+                        <th>Symbol</th>
+                        <th>Description</th>
+                    </tr>
+                    <tr>
+                        <td><span class='glyphicon glyphicon-pencil'></span></td>
+                        <td>Select color</td>
+                    </tr>
+                    <tr>
+                        <td><span class='glyphicon glyphicon-trash'></span></td>
+                        <td>Clear color</td>
+                    </tr>
+                    <tr>
+                        <td>Region name</td>
+                        <td>Appears in the test as "Select &lt;Region name&gt;"</td>
+                    </tr>
+                </table>
+            </div>
+            <hr/>
+            <div class="text-left">
+                <p class="pull-left">
+                    Selected color: 
+                    <span id="selected-color" style='background-color:#abcdef'>
+                        &nbsp;&nbsp;&nbsp;&nbsp;
+                    </span>
+                </p>
+                <div class="pull-right">
+                    Brush size:
+                    <div class="btn-group">
+                        <button style="width: 3.5em; height: 3em;" type='button' class='btn btn-default pull-right' onclick='drawRegions.setLineWidth(15)'>
+                            <span style="font-size: 1.75em;" class='glyphicon glyphicon-pencil'></span>
+                        </button>
+                        <button style="width: 3.5em; height: 3em;" type='button' class='btn btn-default pull-right' onclick='drawRegions.setLineWidth(10)'>
+                            <span style="font-size: 1.0em;" class='glyphicon glyphicon-pencil'></span>
+                        </button>
+                        <button style="width: 3.5em; height: 3em;" type='button' class='btn btn-default pull-right' onclick='drawRegions.setLineWidth(5)'>
+                            <span style="font-size: 0.75em;" class='glyphicon glyphicon-pencil'></span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <form action="" method="post" enctype="multipart/form-data">
         {% csrf_token %}
         <div id="form-div">
             
         </div>
+        <hr/>
         <input type="hidden" name="hidden-image-data" id="hidden-image-data" />
         <input type="submit" class="btn btn-success" style="min-width: 200px;" value="Create landmark question" />
         <a href="{% url 'admin_add_questions_to_test' test.id %}" class="btn btn-danger">Cancel</a>
@@ -61,6 +130,10 @@
 {% block end %} 
 <script type="text/javascript" src="{% static "js/draw-regions.js" %}"></script>
 <script type="text/javascript">
+    // Hide warning when close is clicked
+    $('.alert .close').on('click', function(e) {
+        $(this).parent().hide();
+    });
     // String format
     if (!String.format) {
         String.format = function(format) {
@@ -76,29 +149,33 @@
     // Add colors
     var currentColors = 0,
         colors = [
+            "#c02f1d", // red
+            "#107896", // blue
+            "#ffcf33", // yellow
             "#cb3594", // purple
             "#659b41", // green
-            "#ffcf33", // yellow
             "#986928", // brown
         ],
         maxColors = colors.length,
         html =
         "    <div>" +
-        "        <div class='buttons'>" +
-        "            <button type='button' class='btn' style='background-color:{1}' onclick='drawRegions.setColor({0})'>Select color</button>" +
-        "            <button type='button' class='btn' style='background-color:{1}' onclick='drawRegions.clearColor({0})'>Clear color</button>" +
-        "        </div>" +
+        "        Color: <span style='background-color:{1}'>&nbsp;&nbsp;&nbsp;&nbsp;</span>" +
         "        <label for='region{0}'>" +
         "            Region name:" +
         "            <input type='text' name='{1}' id='region{0}' />" +
         "        </label>" +
-        "    </div>" +
-        "    <hr/>"
+        "        <button type='button' class='btn btn-default' onclick='drawRegions.setColor({0});displaySelectedColor();'>" +
+        "            <span class='glyphicon glyphicon-pencil'></span>" +
+        "        </button>" +
+        "        <button type='button' class='btn btn-default' onclick='drawRegions.clearColor({0})'>" +
+        "            <span class='glyphicon glyphicon-trash'></span>" +
+        "        </button>" +
+        "    </div>"
         ;
     
     function addColor(){
         if(currentColors >= maxColors){
-            //TODO: output to user
+            $('#max-colors-error').show();
             return;
         }
         var color = colors[currentColors];
@@ -108,11 +185,17 @@
         currentColors++;
     }
     
+    function displaySelectedColor(){
+        var selectedColor = drawRegions.getCurrentColor();
+        $("#selected-color").css("background-color", selectedColor);
+    }
+    
     // Init application
     addColor();
     drawRegions.setColor(0);
     {% with image=question.original_image %}
     drawRegions.init("{{image.url}}", {{image.height}}, {{image.width}});
+    displaySelectedColor();
     {% endwith %}
 </script>
 {% endblock %}

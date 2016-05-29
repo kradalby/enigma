@@ -19,5 +19,8 @@
         {{ form.as_table }}
     </table>
     <input type="submit" class="btn btn-success" value="Continue" />
+    {% if test %}
+        <a href="{% url 'admin_add_questions_to_test' test.id %}" class="btn btn-danger">Cancel</a>
+    {% endif %}
 </form>
 {% endblock %}
