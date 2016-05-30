@@ -246,7 +246,7 @@ var drawRegions = (function () {
             wrapperDiv.height(canvasHeight);
         },
 
-		initCommon = function (targetDivId, image, height, width, answerImg) {
+		init = function (targetDivId, image, height, width, answerImg) {
 			parentId = targetDivId;
             parentDiv = document.getElementById(parentId);
             
@@ -276,19 +276,10 @@ var drawRegions = (function () {
 					updateHiddenImageData();
 				});
 			}
-		},
-        
-        initLandmark = function(targetDivId, image, height, width, answerImg){
-            initCommon(targetDivId, image, height, width, answerImg);
-        },
-        
-        initOutline = function(targetDivId, image, height, width, answerImg){
-            initCommon(targetDivId, image, height, width, answerImg);
-        };
+		};
 
 	return {
-		initLandmark: initLandmark,
-		initOutline: initOutline,
+		init: init,
         setColor : setColor,
         clearColor : clearColor,
         addColor : addColor,
