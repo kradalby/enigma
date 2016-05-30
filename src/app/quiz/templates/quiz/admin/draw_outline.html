@@ -205,9 +205,9 @@
     // Init application
     {% with image=question.original_image %}
     {% if question.outline_drawing %}
-        drawRegions.initOutline("canvasDiv", "{{image.url}}", {{image.height}}, {{image.width}}, "{{question.outline_drawing.url}}");
+        drawRegions.init("canvasDiv", "{{image.url}}", {{image.height}}, {{image.width}}, "{{question.outline_drawing.url}}");
     {% else %}
-        drawRegions.initOutline("canvasDiv", "{{image.url}}", {{image.height}}, {{image.width}});
+        drawRegions.init("canvasDiv", "{{image.url}}", {{image.height}}, {{image.width}});
     {% endif %}
     {% endwith %}
     {% for region in question.regions %}

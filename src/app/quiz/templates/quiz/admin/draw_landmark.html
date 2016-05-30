@@ -205,9 +205,9 @@
     // Init application
     {% with image=question.original_image %}
     {% if question.landmark_drawing %}
-        drawRegions.initLandmark("canvasDiv", "{{image.url}}", {{image.height}}, {{image.width}}, "{{question.landmark_drawing.url}}");
+        drawRegions.init("canvasDiv", "{{image.url}}", {{image.height}}, {{image.width}}, "{{question.landmark_drawing.url}}");
     {% else %}
-        drawRegions.initLandmark("canvasDiv", "{{image.url}}", {{image.height}}, {{image.width}});
+        drawRegions.init("canvasDiv", "{{image.url}}", {{image.height}}, {{image.width}});
     {% endif %}
     {% endwith %}
     {% for region in question.regions %}
