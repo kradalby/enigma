@@ -7,7 +7,8 @@ var drawRegions = (function () {
 		canvasHeight,
         lineWidth = 5,
         colors = [],
-		outlineImage = new Image(),
+		rgbColors = [],
+		originalImage,
 		clickX = [],
 		clickY = [],
 		clickWidth = [],
@@ -16,61 +17,92 @@ var drawRegions = (function () {
 		paint = false,
 		curColor = colors[1],
 		imageLoaded = false,
+		parentId,
+		parentDiv,
+		regionCanvas,
+		regionContext,
+		aspectRatio,
 
-		// Clears the canvas.
 		clearCanvas = function () {
-			context.clearRect(0, 0, canvasWidth, canvasHeight);
+            regionContext.clearRect(0, 0, canvasWidth, canvasHeight);
+            context.clearRect(0, 0, canvasWidth, canvasHeight);
 		},
         
-        drawOriginalImage = function () {
-			context.drawImage(outlineImage, 0, 0, canvasWidth, canvasHeight);
+        drawImage = function(contextDest, imgSrc, callback){
+            var image = new Image();
+            image.src = imgSrc;
+            image.onload = function(){
+                contextDest.drawImage(image, 0, 0, canvasWidth, canvasHeight);
+                if(callback){
+                    callback();
+                }
+            }
         },
+		
+		removeColor = function(color){
+			var canvasData = regionContext.getImageData(0, 0, canvasWidth, canvasHeight),
+				pix = canvasData.data;
 
-		// Redraws the canvas.
-		redraw = function () {
-			if (!imageLoaded) {
-				return;
+			for (var i = 0; i < pix.length; i += 4) {
+				if(pix[i] === color[0] && pix[i+1] === color[1] && pix[i+2] === color[2]){
+					pix[i+3] = 0;
+				}
+				if(!isARegisteredColor([pix[i],pix[i+1],pix[i+2],pix[i+3]])){
+					// Remove anti-aliased colors
+					pix[i+3] = 0;
+				}
 			}
-
-			clearCanvas();
-            drawRegionOutline();
-            updateHiddenImageData();
-			clearCanvas();
-            drawOriginalImage();
-            drawRegionOutline();
+			regionContext.putImageData(canvasData, 0, 0);
 		},
+		
+		isARegisteredColor = function(color){
+			if(color[3] === 0){
+				return false;
+			}
+			
+			for(var i = 0; i < rgbColors.length; i++){
+				var rgbColor = rgbColors[i];
+				if(rgbColor[0] === color[0] && rgbColor[1] === color[1] && rgbColor[2] === color[2]){
+					return true;
+				}
+			}
+			return false;
+		},
+
+		redraw = function (clear) {
+            if (!imageLoaded) {
+                return;
+            }
+            
+            if(clear){
+                clearCanvas();
+                drawImage(context, originalImage);
+            }
+			drawRegionOutline();
+        },
         
         drawRegionOutline = function(){
-            // For each point drawn
 			for (var i = 0; i < clickX.length; i += 1) {
-				// Set the drawing path
-				context.beginPath();
-				// If dragging then draw a line between the two points
+				regionContext.beginPath();
 				if (clickDrag[i] && i) {
-					context.moveTo(clickX[i - 1], clickY[i - 1]);
+					regionContext.moveTo(clickX[i - 1], clickY[i - 1]);
 				} else {
-					// The x position is moved over one pixel so a circle even if not dragging
-					context.moveTo(clickX[i] - 1, clickY[i]);
+					regionContext.moveTo(clickX[i] - 1, clickY[i]);
 				}
-				context.lineTo(clickX[i], clickY[i]);
+				regionContext.lineTo(clickX[i], clickY[i]);
 				
-                context.strokeStyle = clickColor[i];
-				context.lineCap = "round";
-				context.lineJoin = "round";
-				context.lineWidth = clickWidth[i];
-				context.stroke();
+                regionContext.strokeStyle = clickColor[i];
+				regionContext.lineWidth = clickWidth[i];
+				regionContext.lineCap = "round";
+				regionContext.lineJoin = "round";
+				regionContext.stroke();
 			}
-			context.closePath();
-			context.restore();
+			regionContext.closePath();
+			regionContext.restore();
 
-			// Overlay a crayon texture (if the current tool is crayon)
-			context.globalAlpha = 1; // No IE support
+			regionContext.globalAlpha = 1;
         },
-
-		// Adds a point to the drawing array.
-		// @param x
-		// @param y
-		// @param dragging
+		
 		addClick = function (x, y, dragging) {
 			clickX.push(x);
 			clickY.push(y);
@@ -123,6 +155,7 @@ var drawRegions = (function () {
 
             release = function () {
                 paint = false;
+				updateHiddenImageData();
                 redraw();
             },
 
@@ -131,27 +164,33 @@ var drawRegions = (function () {
             };
 
 			// Add mouse event listeners to canvas element
-			canvas.addEventListener("mousedown", press, false);
-			canvas.addEventListener("mousemove", drag, false);
-			canvas.addEventListener("mouseup", release);
-			canvas.addEventListener("mouseout", cancel, false);
+			regionCanvas.addEventListener("mousedown", press, false);
+			regionCanvas.addEventListener("mousemove", drag, false);
+			regionCanvas.addEventListener("mouseup", release);
+			regionCanvas.addEventListener("mouseout", cancel, false);
 
 			// Add touch event listeners to canvas element
-			canvas.addEventListener("touchstart", press, false);
-			canvas.addEventListener("touchmove", drag, false);
-			canvas.addEventListener("touchend", release, false);
-			canvas.addEventListener("touchcancel", cancel, false);
+			regionCanvas.addEventListener("touchstart", press, false);
+			regionCanvas.addEventListener("touchmove", drag, false);
+			regionCanvas.addEventListener("touchend", release, false);
+			regionCanvas.addEventListener("touchcancel", cancel, false);
 		},
 
 		// Calls the redraw function after all neccessary resources are loaded.
 		resourceLoaded = function () {
             imageLoaded = true;
-            redraw();
+            redraw(true);
             createUserEvents();
 		},
         
         addColor = function(color){
             colors.push(color);
+
+			var colorWithoutHash = "0x" + color.substring(1);
+			var r = colorWithoutHash >> 16;
+			var g = colorWithoutHash >> 8 & 0xFF;
+			var b = colorWithoutHash & 0xFF;
+			rgbColors.push([r,g,b]);
         },
         
         setColor = function(colorIndex){
@@ -170,52 +209,84 @@ var drawRegions = (function () {
                     clickY.splice(i, 1);
                     clickX.splice(i, 1);
                     clickDrag.splice(i, 1);
+					clickWidth.splice(i, 1);
                 }
             }
+			removeColor(rgbColors[colorIndex], regionContext);
             redraw();
         },
         
         updateHiddenImageData = function(){
-            var imageData = document.getElementById('canvas').toDataURL("image/png");
+            var imageData = regionCanvas.toDataURL("image/png");
             document.getElementById('hidden-image-data').value = imageData;
         },
 		
 		setLineWidth = function(width){
 			lineWidth = width;
 		},
+				
+		setImageRatios = function(height, width){
+            aspectRatio = width / height;
+            canvasHeight = Math.min(height, window.innerHeight);
+            canvasWidth = canvasHeight * aspectRatio;
+            context.canvas.height = canvasHeight;
+            context.canvas.width = canvasWidth;
+            regionContext.canvas.height = canvasHeight;
+            regionContext.canvas.width = canvasWidth;
 
-		// Creates a canvas element, loads images, adds events, and draws the canvas for the first time.
-		init = function (image, height, width) {
-            canvasHeight = height;
-            canvasWidth = width;
+            canvasWidth = Math.min(canvasWidth, context.canvas.clientWidth);
+            canvasHeight = Math.min(canvasHeight, context.canvas.clientHeight);
+            context.canvas.height = canvasHeight;
+            context.canvas.width = canvasWidth;
+            regionContext.canvas.height = canvasHeight;
+            regionContext.canvas.width = canvasWidth;
             
-            // Ensure canvas is not too wide
-            var leftColumnWidth = 800;
-            if(canvasWidth > leftColumnWidth){
-                var shrinkRatio = canvasWidth / leftColumnWidth;
-                canvasWidth /= shrinkRatio;
-                canvasHeight /= shrinkRatio;
-            }
+            var wrapperDiv = $(canvas).parent();
+            wrapperDiv.width(canvasWidth);
+            wrapperDiv.height(canvasHeight);
+        },
 
-			// Create the canvas (Neccessary for IE because it doesn't know what a canvas element is)
-			canvas = document.createElement('canvas');
-			canvas.setAttribute('width', canvasWidth);
-			canvas.setAttribute('height', canvasHeight);
-			canvas.setAttribute('id', 'canvas');
-			document.getElementById('canvasDiv').appendChild(canvas);
-			if (typeof G_vmlCanvasManager !== "undefined") {
+		initCommon = function (targetDivId, image, height, width, answerImg) {
+			parentId = targetDivId;
+            parentDiv = document.getElementById(parentId);
+            
+            // Create canvas
+            canvas = document.createElement('canvas');
+            canvas.style.zIndex = "1";
+            parentDiv.appendChild(canvas);
+            if (typeof G_vmlCanvasManager !== "undefined") {
 				canvas = G_vmlCanvasManager.initElement(canvas);
 			}
-			context = canvas.getContext("2d"); // Grab the 2d canvas context
-			// Note: The above code is a workaround for IE 8 and lower. Otherwise we could have used:
-			//     context = document.getElementById('canvas').getContext("2d");
+            context = canvas.getContext('2d');
+            
+            // Create region canvas
+            regionCanvas = document.createElement('canvas');
+            regionCanvas.style.zIndex = "2";
+            parentDiv.appendChild(regionCanvas);
+            if (typeof G_vmlCanvasManager !== "undefined") {
+				regionCanvas = G_vmlCanvasManager.initElement(regionCanvas);
+			}
+            regionContext = regionCanvas.getContext('2d');
 
-			outlineImage.onload = resourceLoaded;
-            outlineImage.src = image;
-		};
+            originalImage = image;
+			setImageRatios(height, width);
+			resourceLoaded();
+			if(answerImg){
+                drawImage(regionContext, answerImg);
+			}
+		},
+        
+        initLandmark = function(targetDivId, image, height, width, answerImg){
+            initCommon(targetDivId, image, height, width, answerImg);
+        },
+        
+        initOutline = function(targetDivId, image, height, width, answerImg){
+            initCommon(targetDivId, image, height, width, answerImg);
+        };
 
 	return {
-		init: init,
+		initLandmark: initLandmark,
+		initOutline: initOutline,
         setColor : setColor,
         clearColor : clearColor,
         addColor : addColor,

@@ -299,6 +299,7 @@ def draw_landmark(request, question_id, test_id = None):
                 region.name = v
                 region.landmark_question = question
                 region.save()
+                print("SAVED REGION!", v, k)
         if test:
             return redirect('admin_add_questions_to_test', test.id)
         else:

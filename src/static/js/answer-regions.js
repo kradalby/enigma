@@ -162,15 +162,20 @@ var answerRegions = (function(){
             regionCanvas.addEventListener("mouseup", mouseUp, false);
             
             function mouseUp(e){
-                for(var i = 0; i < coloredRegions.length; i++){
-                    var region = coloredRegions[i];
-                    if(IsInsideColorRegion(region.points, event.offsetX, event.offsetY) ||
-                       IsCloseToColorRegion(region.points, event.offsetX, event.offsetY, distanceToColorThreshold)){
-                        hiddenAnswerField.value = region.color;
-                        return;
-                    }
+                var data = regionData.data,
+                    dataIndex = (event.offsetY * canvasWidth * 4) + event.offsetX * 4,
+                    red = data[dataIndex],
+                    green = data[dataIndex+1],
+                    blue = data[dataIndex+2],
+                    alpha = data[dataIndex+3];
+                if(alpha !== 0 && (red !== 0 || green !== 0 || blue !== 0)){
+                    hiddenAnswerField.value = JSON.stringify({
+                        "red": red,
+                        "green": green,
+                        "blue": blue,
+                        "alpha": 255
+                    });
                 }
-                hiddenAnswerField.value = "{}";
             };
         },
         
@@ -382,14 +387,18 @@ var answerRegions = (function(){
             };
         },
         
-        setTargetRegion = function(questionId){
-            var hexColor = document.getElementById("region-" + questionId + "-color").getAttribute("value");
-            targetRegionColor = {
+        hexColorToJson = function(hexColor){
+            return {
                 "red": parseInt(hexColor.substring(1,3), 16),
                 "green": parseInt(hexColor.substring(3,5), 16),
                 "blue": parseInt(hexColor.substring(5,7), 16),
                 "alpha":255
             };
+        },
+        
+        setTargetRegion = function(questionId){
+            var hexColor = document.getElementById("region-" + questionId + "-color").getAttribute("value");
+            targetRegionColor = hexColorToJson(hexColor);
         },
         
         /**
