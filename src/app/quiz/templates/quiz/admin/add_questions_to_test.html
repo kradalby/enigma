@@ -20,7 +20,7 @@
                 <a href="{% url 'admin_delete_multiple_choice_question_from_test' test.id question.id %}">
                     <span class="glyphicon glyphicon-remove red" aria-hidden="true"></span>
                 </a>
-                <a href="{% url 'admin_edit_multiple_choice_question' question.id %}">
+                <a href="{% url 'admin_edit_multiple_choice_question_for_test' test.id question.id %}">
                     {{ question }}
                 </a>
             </li>
@@ -44,7 +44,9 @@
                 <a href="{% url 'admin_delete_multiple_choice_question_with_image_from_test' test.id question.id %}">
                     <span class="glyphicon glyphicon-remove red" aria-hidden="true"></span>
                 </a>
-                {{ question }}
+                <a href="{% url 'admin_edit_multiple_choice_question_with_image' question.id %}">
+                    {{ question }}
+                </a>
             </li>
         {% empty %}
             <li>
@@ -66,7 +68,9 @@
                 <a href="{% url 'admin_delete_multiple_choice_question_with_video_from_test' test.id question.id %}">
                     <span class="glyphicon glyphicon-remove red" aria-hidden="true"></span>
                 </a>
-                {{ question }}
+                <a href="{% url 'admin_edit_multiple_choice_question_with_video' question.id %}">
+                    {{ question }}
+                </a>
             </li>
         {% empty %}
             <li>
@@ -88,7 +92,9 @@
                 <a href="{% url 'admin_delete_landmark_question_from_test' test.id question.id %}">
                     <span class="glyphicon glyphicon-remove red" aria-hidden="true"></span>
                 </a>
-                {{ question }}
+                <a href="{% url 'admin_draw_landmark' test.id question.id %}">
+                    {{ question }}
+                </a>
             </li>
         {% empty %}
             <li>
@@ -110,7 +116,9 @@
                 <a href="{% url 'admin_delete_outline_question_from_test' test.id question.id %}">
                     <span class="glyphicon glyphicon-remove red" aria-hidden="true"></span>
                 </a>
-                {{ question }}
+                <a href="{% url 'admin_draw_outline' test.id question.id %}">
+                    {{ question }}
+                </a>
             </li>
         {% empty %}
             <li>

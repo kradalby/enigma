@@ -134,18 +134,21 @@ def _generic_new_question(request, form_type):
     })
     
 @staff_member_required
-def _generic_edit_question(request, form_type, object_type, id):
-    instance = get_object_or_404(object_type, id=id)
+def _generic_edit_question(request, form_type, object_type, question_id, test_id=None):
+    instance = get_object_or_404(object_type, id=question_id)
     form = form_type(request.POST or None, instance=instance)
     if request.method == 'POST':
         if form.is_valid():
             question = form.save()
             messages.success(request, 'Successfully saved question: %s.' % question)
+            if test_id:
+                return redirect('admin_add_questions_to_test', test.id)
             return redirect(list_questions)
 
     return render(request, 'quiz/admin/edit_question.html',{
         'form' : form,
-        'question' : instance
+        'question' : instance,
+        'test_id' : test_id
     })
     
 @staff_member_required
@@ -182,6 +185,10 @@ def new_multiple_choice_question_to_test(request, test_id):
 @staff_member_required
 def edit_multiple_choice_question(request, question_id):
     return _generic_edit_question(request, MultipleChoiceQuestionForm, MultipleChoiceQuestion, question_id)
+    
+@staff_member_required
+def edit_multiple_choice_question_for_test(request, test_id, question_id):
+    return _generic_edit_question(request, MultipleChoiceQuestionForm, MultipleChoiceQuestion, question_id, test_id)
         
 @staff_member_required
 def list_multiple_choice_questions_not_in_test(request, test_id):
@@ -214,6 +221,10 @@ def edit_multiple_choice_question_with_image(request, question_id):
     return _generic_edit_question(request, MultipleChoiceQuestionWithImageForm, MultipleChoiceQuestionWithImage, question_id)
         
 @staff_member_required
+def edit_multiple_choice_question_with_image_for_test(request, test_id, question_id):
+    return _generic_edit_question(request, MultipleChoiceQuestionWithImageForm, MultipleChoiceQuestionWithImage, question_id, test_id)
+        
+@staff_member_required
 def list_multiple_choice_questions_with_image_not_in_test(request, test_id):
     return _generic_list_question_not_in_test(request, MultipleChoiceQuestionWithImage, test_id)
     
@@ -242,6 +253,10 @@ def new_multiple_choice_question_with_video_to_test(request, test_id):
 @staff_member_required
 def edit_multiple_choice_question_with_video(request, question_id):
     return _generic_edit_question(request, MultipleChoiceQuestionWithVideoForm, MultipleChoiceQuestionWithVideo, question_id)
+    
+@staff_member_required
+def edit_multiple_choice_question_with_video_for_test(request, test_id, question_id):
+    return _generic_edit_question(request, MultipleChoiceQuestionWithVideoForm, MultipleChoiceQuestionWithVideo, question_id, test_id)
     
 @staff_member_required
 def list_multiple_choice_questions_with_video_not_in_test(request, test_id):
@@ -374,20 +389,31 @@ def add_outline_question_to_test(request, test_id):
     })
     
 @staff_member_required
+@transaction.atomic
 def draw_outline(request, question_id, test_id = None):
     test = Test.objects.get(id=test_id) if test_id else None
     question = OutlineQuestion.objects.get(id=question_id)
     if request.method == 'POST':
         dataUrlPattern = re.compile('data:image/(png|jpeg);base64,(.*)$')
         image_data = request.POST.get('hidden-image-data')
-        image_data = dataUrlPattern.match(image_data).group(2)
-
+        try:
+            image_data = dataUrlPattern.match(image_data).group(2)
+        except AttributeError:
+            messages.error(request, "You can't leave any regions blank or empty.")
+            return render(request, 'quiz/admin/draw_outline.html', {
+                "test" : test,
+                "question" : question
+            })
         if (image_data == None or len(image_data) == 0):
-            # TODO: PRINT ERROR MESSAGE HERE
-            pass
+            messages.error(request, "You can't leave any regions blank or empty.")
+            return render(request, 'quiz/admin/draw_outline.html', {
+                "test" : test,
+                "question" : question
+            })
         image_data = base64.b64decode(image_data)
         question.outline_drawing = ContentFile(image_data, 'solution-' + os.path.basename( question.original_image.name ))
         question.save()
+        question.regions().delete()
         for k,v in request.POST.items():
             if k.startswith('#') and len(k) == 7:
                 region = OutlineRegion()

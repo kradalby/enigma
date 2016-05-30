@@ -15,7 +15,11 @@
         </table>
         <br/>
         <input type="submit" class="btn btn-success" value="Edit" />
-        <a href="{% url 'admin_add_questions_to_test' test.id %}" class="btn btn-danger">Cancel</a>
+        {% if test_id %}
+            <a href="{% url 'admin_add_questions_to_test' test_id %}" class="btn btn-danger">Cancel</a>
+        {% else %}
+            <a href="{% url 'admin_list_questions' %}" class="btn btn-danger">Cancel</a>
+        {% endif %}
     </form>
 </div>
 {% endblock %}
