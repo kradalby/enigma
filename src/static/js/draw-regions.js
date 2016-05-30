@@ -272,7 +272,9 @@ var drawRegions = (function () {
 			setImageRatios(height, width);
 			resourceLoaded();
 			if(answerImg){
-                drawImage(regionContext, answerImg);
+                drawImage(regionContext, answerImg, function(){
+					updateHiddenImageData();
+				});
 			}
 		},
         

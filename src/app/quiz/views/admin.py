@@ -2,6 +2,7 @@ from django.core.exceptions import ObjectDoesNotExist
 from django.core.files.base import ContentFile
 from django.contrib.admin.views.decorators import staff_member_required
 from django.contrib import messages
+from django.db import transaction
 from django.shortcuts import render, redirect, get_object_or_404
 import re
 import base64
@@ -278,20 +279,31 @@ def add_landmark_question_to_test(request, test_id):
     })
     
 @staff_member_required
+@transaction.atomic
 def draw_landmark(request, question_id, test_id = None):
     test = Test.objects.get(id=test_id) if test_id else None
     question = LandmarkQuestion.objects.get(id=question_id)
     if request.method == 'POST':
         dataUrlPattern = re.compile('data:image/(png|jpeg);base64,(.*)$')
         image_data = request.POST.get('hidden-image-data')
-        image_data = dataUrlPattern.match(image_data).group(2)
-
+        try:
+            image_data = dataUrlPattern.match(image_data).group(2)
+        except AttributeError:
+            messages.error(request, "You can't leave any regions blank or empty.")
+            return render(request, 'quiz/admin/draw_landmark.html', {
+                "test" : test,
+                "question" : question
+            })
         if (image_data == None or len(image_data) == 0):
-            # TODO: PRINT ERROR MESSAGE HERE
-            pass
+            messages.error(request, "You can't leave any regions blank or empty.")
+            return render(request, 'quiz/admin/draw_landmark.html', {
+                "test" : test,
+                "question" : question
+            })
         image_data = base64.b64decode(image_data)
         question.landmark_drawing = ContentFile(image_data, 'solution-' + os.path.basename( question.original_image.name ))
         question.save()
+        question.regions().delete()
         for k,v in request.POST.items():
             if k.startswith('#') and len(k) == 7:
                 region = LandmarkRegion()
@@ -299,7 +311,6 @@ def draw_landmark(request, question_id, test_id = None):
                 region.name = v
                 region.landmark_question = question
                 region.save()
-                print("SAVED REGION!", v, k)
         if test:
             return redirect('admin_add_questions_to_test', test.id)
         else:

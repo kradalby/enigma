@@ -75,8 +75,8 @@
                         <td>Clear color</td>
                     </tr>
                     <tr>
-                        <td>Region name</td>
-                        <td>Appears in the test as "Select &lt;Region name&gt;"</td>
+                        <td>Name</td>
+                        <td>Appears in the test as "Select &lt;Name&gt;"</td>
                     </tr>
                 </table>
                 <hr/>
@@ -160,7 +160,7 @@
         "            Name:" +
         "            <input type='text' name='{1}' id='region{0}' value='{2}'/>" +
         "        </label>" +
-        "        <button type='button' class='btn btn-default' onclick='drawRegions.setColor({0});displaySelectedColor();'>" +
+        "        <button type='button' class='btn btn-default' onclick='setColor({0})'>" +
         "            <span class='glyphicon glyphicon-pencil'></span>" +
         "        </button>" +
         "        <button type='button' class='btn btn-default' onclick='drawRegions.clearColor({0})'>" +
@@ -190,13 +190,13 @@
         currentColors++;
     }
     
-    function displaySelectedColor(){
-        var selectedColor = drawRegions.getCurrentColor();
+    function setColor(colorIndex){
+        drawRegions.setColor(colorIndex);
+        var selectedColor = colors[colorIndex];
         $("#selected-color").css("background-color", selectedColor);
     }
     
     // Init application
-    drawRegions.setColor(0);
     {% with image=question.original_image %}
     {% if question.landmark_drawing %}
         drawRegions.initLandmark("canvasDiv", "{{image.url}}", {{image.height}}, {{image.width}}, "{{question.landmark_drawing.url}}");
@@ -204,11 +204,11 @@
         drawRegions.initLandmark("canvasDiv", "{{image.url}}", {{image.height}}, {{image.width}});
     {% endif %}
     {% endwith %}
-    displaySelectedColor();
     {% for region in question.regions %}
         addColor("{{region.name}}");
     {% empty %}
         addColor();
     {% endfor %}
+    setColor(0);
 </script>
 {% endblock %}
