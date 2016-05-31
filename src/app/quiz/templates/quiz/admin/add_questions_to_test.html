@@ -10,6 +10,7 @@
     <h1>
         <small>Test: </small> {{ test.name }}
     </h1>
+    <a href="{% url 'admin_view_test_results_for_single_test' test.id %}">View results</a>
 </div>
 
 <div>

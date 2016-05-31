@@ -11,8 +11,11 @@ urlpatterns = [
     url(r'^admin/(?P<test_id>\d+)/$', admin.add_questions_to_test, name='admin_add_questions_to_test'),
     url(r'^admin/(?P<test_id>\d+)/delete/$', admin.delete_test, name='admin_delete_test'),
     url(r'^admin/list/$', admin.list_tests, name='admin_list_tests'),
-    url(r'^adminresult/delete/$', admin.delete_test_results, name='admin_delete_test_results'),
     url(r'^admin/questions/$', admin.list_questions, name='admin_list_questions'),
+    
+    # Test results
+    url(r'^admin/result/delete/$', admin.delete_test_results, name='admin_delete_test_results'),
+    url(r'^admin/result/view/(?P<test_id>\d+)/$', admin.view_test_results_for_single_test, name='admin_view_test_results_for_single_test'),
     
     # Generic
     url(r'^admin/question/add/(?P<test_id>\d+)/(?P<question_id>\d+)/(?P<question_type_id>\d+)/$', admin.add_question_to_test, name='admin_add_question_to_test'),

@@ -1,0 +1,122 @@
+{% extends "base/admin/index.html" %}
+{% load question_tags %}
+
+{% block admincontent %}
+<style>
+    .img-container { 
+        position: relative; 
+        max-height: 500px;
+        max-width: 500px;
+    }
+
+    .img-container .top {
+        position: absolute;
+        top: 0;
+        left: 0;
+        z-index: 1;
+    }
+    
+    .img-container img {
+        width: 100%;
+    }
+</style>
+<div class="page-header">
+  <h1>Test results for {{ test }}</h1>
+</div>
+<nav>
+  <ul class="pagination">
+    <li>
+      <a href="#" aria-label="Previous">
+        <span aria-hidden="true">&laquo;</span>
+      </a>
+    </li>
+    {% for test_unit in test_units %}
+    <li id="pagination-{{ forloop.counter }}">
+        <a href="#">{{ forloop.counter }}</a>
+    </li>
+    {% endfor %}
+    <li>
+      <a href="#" aria-label="Next">
+        <span aria-hidden="true">&raquo;</span>
+      </a>
+    </li>
+  </ul>
+</nav>
+{% for test_unit in test_units %}
+<div class="test_unit_{{ forloop.counter }}">
+    <div class="panel panel-info">
+        <div class="panel-heading">
+            <h3 class="panel-title">Question {{ forloop.counter }}</h3>
+        </div>
+        <table class="table">
+            <tr>
+                <th>Question</th>
+                <td>{{ test_unit }}</td>
+            </tr>
+            <tr>
+                <th>Correct answer</th>
+                <td>
+                    {% if test_unit|is_landmark %}
+                        <div class="img-container">
+                            <img class="top" src="{{ test_unit.landmarkquestion.landmark_drawing.url }}" />
+                            <img class="bottom" src="{{ test_unit.landmarkquestion.original_image.url }}" />
+                        </div>
+                    {% elif test_unit|is_outline %}
+                        <div class="img-container">
+                            <img class="top" src="{{ test_unit.outlinequestion.outline_drawing.url }}" />
+                            <img class="bottom" src="{{ test_unit.outlinequestion.original_image.url }}" />
+                        </div>
+                    {% elif test_unit|is_multiple_choice_question %}
+                        {{ test_unit.multiplechoicequestion.correct_answer }}
+                    {% elif test_unit|is_multiple_choice_question_with_image %}
+                        {{ test_unit.multiplechoicequestionwithimage.correct_answer }}
+                    {% elif test_unit|is_multiple_choice_question_with_video %}
+                        {{ test_unit.multiplechoicequestionwithvideo.correct_answer }}
+                    {% endif %}
+                </td>
+            </tr>
+        </table>
+    </div>
+
+    <div class="panel panel-info">
+        <div class="panel-heading">
+            <h3 class="panel-title">Answers</h3>
+        </div>
+        <table class="table">
+            {% for test_unit_result in test_unit_results %}
+                {% if test_unit_result.test_unit == test_unit %}
+                <tr>
+                    <th>{{ test_unit_result.test_result.user }}'s answer - {{test_unit_result}}</th>
+                    <td>
+                        {% if test_unit|is_landmark %}
+                            <div class="img-container">
+                                <img class="top" src="{{ test_unit_result.answer_image.url }}" />
+                                <img class="bottom" src="{{ test_unit.landmarkquestion.original_image.url }}" />
+                            </div>
+                        {% elif test_unit|is_outline %}
+                            <div class="img-container">
+                                <img class="top" src="{{ test_unit_result.answer_image.url }}" />
+                                <img class="bottom" src="{{ test_unit.outlinequestion.original_image.url }}" />
+                            </div>
+                        {% elif test_unit|is_multiple_choice_question %}
+                            {{ test_unit_result.answer }}
+                        {% elif test_unit|is_multiple_choice_question_with_image %}
+                            {{ test_unit_result.answer }}
+                        {% elif test_unit|is_multiple_choice_question_with_video %}
+                            {{ test_unit_result.answer }}
+                        {% endif %}
+                    </td>
+                </tr>
+                {% endif %}
+            {% endfor %}
+        </table>
+    </div>
+</div>
+{% endfor %}
+{% endblock %}
+
+{% block end %}
+<script>
+    
+</script>
+{% endblock %}

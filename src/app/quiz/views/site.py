@@ -1,7 +1,13 @@
-from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
+from django.core.files.base import ContentFile
+from django.db import transaction
+from django.shortcuts import render, get_object_or_404, redirect
+import base64
 import json
+import re
+import random
+import string
 
 from ..models import *
    
@@ -30,6 +36,7 @@ def _add_test_result(question_type, question_id, testresult, answer):
     test_unit_result.test_result = testresult
     test_unit_result.test_unit = question_type.objects.get(id=question_id)
     test_unit_result.correct_answer = test_unit_result.test_unit.correct_answer == answer
+    test_unit_result.answer = answer
     test_unit_result.save()
     
 def _colors_match(json_color, target_color):
@@ -41,8 +48,24 @@ def _colors_match(json_color, target_color):
         return '#' + format(red, 'x') + format(green, 'x') + format(blue, 'x') == target_color
     except KeyError:
         return False
+    
+def _randomword(length):
+   return ''.join(random.choice(string.ascii_lowercase) for i in range(length))
+        
+def _get_answer_image(request, question_id):
+    dataUrlPattern = re.compile('data:image/(png|jpeg);base64,(.*)$')
+    image_data = request.POST.get('hidden-image-data-' + question_id)
+    try:
+        image_data = dataUrlPattern.match(image_data).group(2)
+    except AttributeError:
+        return
+    if (image_data == None or len(image_data) == 0):
+        return
+    image_data = base64.b64decode(image_data)
+    return ContentFile(image_data, _randomword(15) + ".png")
 
-@login_required    
+@login_required   
+@transaction.atomic 
 def submit_test(request, test_id):
     if not request.method == 'POST':
         return redirect('/')
@@ -71,6 +94,7 @@ def submit_test(request, test_id):
             for k,v in request.POST.items():
                 if k == "region-%s-color" % question_model.id:
                     test_unit_result.correct_answer = _colors_match(answer, v)
+            test_unit_result.answer_image = _get_answer_image(request, question_id)
             test_unit_result.save()
         elif testunit_name.startswith("outline_question-"):
             question_id = testunit_name.split("-", 1)[1]
@@ -88,6 +112,7 @@ def submit_test(request, test_id):
                         test_unit_result.correct_answer = (hit/total > 0.30)
                     except KeyError:
                         test_unit_result.correct_answer = False
+            test_unit_result.answer_image = _get_answer_image(request, question_id)
             test_unit_result.save()
            
     return redirect('/')

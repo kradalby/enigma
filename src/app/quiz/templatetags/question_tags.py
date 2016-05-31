@@ -1,5 +1,6 @@
 import random
 from django import template
+from django.core.exceptions import ObjectDoesNotExist
 register = template.Library()
 
 from ..models import *
@@ -35,11 +36,53 @@ def question_type_from_id(question_id):
 
 @register.filter
 def is_landmark(test):
-    return type(test) is LandmarkQuestion
+    if type(test) is LandmarkQuestion:
+        return True
+    try:
+        return type(test) is TestUnit and test.landmarkquestion
+    except ObjectDoesNotExist:
+        pass
+    return False
     
 @register.filter
 def is_outline(test):
-    return type(test) is OutlineQuestion
+    if type(test) is OutlineQuestion:
+        return True
+    try:
+        return type(test) is TestUnit and test.outlinequestion
+    except ObjectDoesNotExist:
+        pass
+    return False
+    
+@register.filter
+def is_multiple_choice_question(test):
+    if type(test) is MultipleChoiceQuestion:
+        return True
+    try:
+        return type(test) is TestUnit and test.multiplechoicequestion
+    except ObjectDoesNotExist:
+        pass
+    return False
+    
+@register.filter
+def is_multiple_choice_question_with_image(test):
+    if type(test) is MultipleChoiceQuestionWithImage:
+        return True
+    try:
+        return type(test) is TestUnit and test.multiplechoicequestionwithimage
+    except ObjectDoesNotExist:
+        pass
+    return False
+    
+@register.filter
+def is_multiple_choice_question_with_video(test):
+    if type(test) is MultipleChoiceQuestionWithVideo:
+        return True
+    try:
+        return type(test) is TestUnit and test.multiplechoicequestionwithvideo
+    except ObjectDoesNotExist:
+        pass
+    return False
     
 @register.filter
 def get_random_region(question):

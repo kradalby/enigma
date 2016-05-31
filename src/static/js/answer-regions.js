@@ -31,6 +31,7 @@ var answerRegions = (function(){
         parentId,
         parentDiv,
         hiddenAnswerField,
+        hiddenImageData,
         targetRegionColor,
         coloredRegions = [],
         colorsHashTable,
@@ -154,6 +155,7 @@ var answerRegions = (function(){
                 var coords = relativeMouseCoordinates(e);
                 drawImage(regionContext, originalImage, function(){
                     drawX(coords.x, coords.y);
+                    updateHiddenImageData();
                 });
             }
         },
@@ -262,9 +264,10 @@ var answerRegions = (function(){
             
             if(clear){
                 clearCanvas();
-                drawImage(context, originalImage);
+                drawImage(context, originalImage, updateHiddenImageData);
             } else {
                 drawRegionOutline();
+                updateHiddenImageData();
             }
         },
         
@@ -401,6 +404,11 @@ var answerRegions = (function(){
             targetRegionColor = hexColorToJson(hexColor);
         },
         
+        updateHiddenImageData = function(){
+            var imageData = regionCanvas.toDataURL("image/png");
+            hiddenImageData.value = imageData;
+        },
+        
         /**
          *  EXPORTED
          */
@@ -433,6 +441,13 @@ var answerRegions = (function(){
             hiddenAnswerField.setAttribute("type", "hidden");
             hiddenAnswerField.setAttribute("value", "{}");
             parentDiv.appendChild(hiddenAnswerField);
+            
+            // Create hidden image field
+            hiddenImageData = document.createElement("input");
+            hiddenImageData.setAttribute("type", "hidden");
+            hiddenImageData.setAttribute("value", "");
+            hiddenImageData.setAttribute("name", "hidden-image-data-" + questionId);
+            parentDiv.appendChild(hiddenImageData);
 
             // Register other necessities
             setTargetRegion(questionId);

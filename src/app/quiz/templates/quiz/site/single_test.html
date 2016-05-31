@@ -76,7 +76,7 @@
                             <div class="clearfix"></div>
                         </div>
                         <div class="panel-body">
-                                {{ question.as_html | safe }}
+                            {{ question.as_html | safe }}
                         </div>
                     </div>
                 </div>
@@ -144,12 +144,12 @@
 
         if (t == 'Next' && currentlyVisible.next('div.single-question').length > 0) {
             $('div.single-question').hide();
-            currentlyVisible.next('div.single-question').show()
+            currentlyVisible.next('div.single-question').show();
         } else if (t == 'Previous' && currentlyVisible.prev('div.single-question').length > 0) {
             $('div.single-question').hide();
-            currentlyVisible.prev('div.single-question').show()
+            currentlyVisible.prev('div.single-question').show();
         }
         disableAndEnableNavigationButtons();
-    });    
+    });
 </script>
 {% endblock %}

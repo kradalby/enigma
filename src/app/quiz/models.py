@@ -84,9 +84,6 @@ class MultipleChoiceQuestion(TestUnit):
             """ % (self.id, alternative, alternative, alternative)
         html += "</ul></div>"
         return html
-
-# def image_directory_path(instance, filename):
-#     return 'upload/quiz/{0}/{1}'.format(instance.id, filename)
     
 class MultipleChoiceQuestionWithImage(TestUnit):
     correct_answer = models.CharField(max_length = 255, verbose_name = "Correct answer")
@@ -205,3 +202,5 @@ class TestUnitResult(models.Model):
     test_unit = models.ForeignKey(TestUnit)
     correct_answer = models.BooleanField()
     test_result = models.ForeignKey(TestResult)
+    answer = models.CharField(max_length=255, blank=True)
+    answer_image = models.ImageField(blank=True)

@@ -458,3 +458,21 @@ def new_outline_question(request):
         "form" : form
     })
     
+#
+# Test result
+#
+@staff_member_required
+def view_test_results_for_single_test(request, test_id):
+    test = get_object_or_404(Test, id=test_id)
+    test_results = TestResult.objects.filter(test = test)
+    test_units = TestUnit.objects.filter(test = test)
+    test_unit_results = [x.test_unit_results() for x in test_results]
+    #flatten list
+    test_unit_results = [item for sublist in test_unit_results for item in sublist]
+    
+    return render(request, 'quiz/admin/view_test_results_for_single_test.html', {
+        "test" : test,
+        "test_units" : test_units,
+        "test_unit_results" : test_unit_results
+    })
+    
