@@ -34,7 +34,7 @@
                                         <h3>{{ test }}</h3>
                                         {% has_been_answered test as test_answered_by_current_user %}
                                         {% if test_answered_by_current_user %}
-                                            <p>ANSWERED!</p>
+                                            <p>You have already answered this test.</p>
                                         {% else %}
                                             <p>This test contains {{ test.test_unit_count }} questions.</p>
                                             <p>
