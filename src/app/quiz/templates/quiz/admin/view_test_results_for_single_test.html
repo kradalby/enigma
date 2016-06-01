@@ -19,6 +19,19 @@
     .img-container img {
         width: 100%;
     }
+    
+    .pagination>.disabled>a, 
+    .pagination>.disabled>a:focus, 
+    .pagination>.disabled>a:hover, 
+    .pagination>.disabled>span, 
+    .pagination>.disabled>span:focus, 
+    .pagination>.disabled>span:hover {
+        z-index: 3;
+        color: black;
+        cursor: default;
+        background-color: #ddd;
+        border-color: #ddd;
+    }
 </style>
 <div class="page-header">
   <h1>Test results for {{ test }}</h1>
@@ -26,24 +39,24 @@
 <nav>
   <ul class="pagination">
     <li>
-      <a href="#" aria-label="Previous">
+      <a id="previous" class="navigation" href="#" aria-label="Previous">
         <span aria-hidden="true">&laquo;</span>
       </a>
     </li>
     {% for test_unit in test_units %}
-    <li id="pagination-{{ forloop.counter }}">
-        <a href="#">{{ forloop.counter }}</a>
+    <li>
+        <a id="{{ forloop.counter }}" class="navigation" href="#">{{ forloop.counter }}</a>
     </li>
     {% endfor %}
     <li>
-      <a href="#" aria-label="Next">
+      <a id="next" class="navigation" href="#" aria-label="Next">
         <span aria-hidden="true">&raquo;</span>
       </a>
     </li>
   </ul>
 </nav>
 {% for test_unit in test_units %}
-<div class="test_unit_{{ forloop.counter }}">
+<div class="test-result" id="{{ forloop.counter }}">
     <div class="panel panel-info">
         <div class="panel-heading">
             <h3 class="panel-title">Question {{ forloop.counter }}</h3>
@@ -86,7 +99,7 @@
             {% for test_unit_result in test_unit_results %}
                 {% if test_unit_result.test_unit == test_unit %}
                 <tr>
-                    <th>{{ test_unit_result.test_result.user }}'s answer - {{test_unit_result}}</th>
+                    <th>{{ test_unit_result.test_result.user }}'s answer</th>
                     <td>
                         {% if test_unit|is_landmark %}
                             <div class="img-container">
@@ -117,6 +130,41 @@
 
 {% block end %}
 <script>
+    function disableAndEnableNavigationButtons(){
+        // Default
+        $("a.navigation").parent().removeClass('disabled');
+        $("a.navigation").parent().removeClass('active');
+        
+        var currentlyVisible = $('div.test-result:visible');
+        if(currentlyVisible.next('div.test-result').length <= 0){
+            $("a#next").parent().addClass('disabled');
+        } 
+        if(currentlyVisible.prev('div.test-result').length <= 0){
+            $("a#previous").parent().addClass('disabled');
+        }
+        // console.log()
+        $("a#"+currentlyVisible.attr('id')+".navigation").parent().addClass('active');
+    }
     
+    $('div.test-result').hide().first().show();
+    $('a.navigation').on('click', function(e) {
+        e.preventDefault();
+        if($(this).parent().hasClass("disabled")){
+            return;
+        }
+        var currentlyVisible = $('div.test-result:visible');
+        var t = $(this).attr('id');
+
+        $('div.test-result').hide();
+        if (t === 'next' && currentlyVisible.next('div.test-result').length > 0) {
+            currentlyVisible.next('div.test-result').show();
+        } else if (t === 'previous' && currentlyVisible.prev('div.test-result').length > 0) {
+            currentlyVisible.prev('div.test-result').show();
+        } else if (!isNaN(t)){
+            $("div#" + t + ".test-result").show();
+        }
+        disableAndEnableNavigationButtons();
+    });
+    disableAndEnableNavigationButtons();
 </script>
 {% endblock %}

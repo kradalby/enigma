@@ -142,10 +142,10 @@
         var currentlyVisible = $('div.single-question:visible');
         var t = $(this).text();
 
-        if (t == 'Next' && currentlyVisible.next('div.single-question').length > 0) {
+        if (t === 'Next' && currentlyVisible.next('div.single-question').length > 0) {
             $('div.single-question').hide();
             currentlyVisible.next('div.single-question').show();
-        } else if (t == 'Previous' && currentlyVisible.prev('div.single-question').length > 0) {
+        } else if (t === 'Previous' && currentlyVisible.prev('div.single-question').length > 0) {
             $('div.single-question').hide();
             currentlyVisible.prev('div.single-question').show();
         }
