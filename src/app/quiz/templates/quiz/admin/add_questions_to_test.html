@@ -117,7 +117,7 @@
                 <a href="{% url 'admin_delete_outline_question_from_test' test.id question.id %}">
                     <span class="glyphicon glyphicon-remove red" aria-hidden="true"></span>
                 </a>
-                <a href="{% url 'admin_draw_outline' test.id question.id %}">
+                <a href="{% url 'admin_draw_outline' question.id test.id %}">
                     {{ question }}
                 </a>
             </li>
