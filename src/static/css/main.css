@@ -14,6 +14,10 @@ ul
     list-style-type: none;
 }
 
+.no-border-radius {
+    border-radius: 0px;    
+}
+
 nav a {
     position: relative;
     display: inline-block;
@@ -49,12 +53,6 @@ nav a:focus {
     color: #818a91;
 }
 
-.album {
-    min-height: 50rem; /* Can be removed; just added for demo purposes */
-    padding-top: 3rem;
-    padding-bottom: 3rem;
-}
-
 div#page-content
 {
     position: relative;
@@ -63,23 +61,6 @@ div#page-content
     height: 100%;
     min-height: 100%;
 }
-
-div#content {
-    padding-bottom: 200px;
-}
-
-footer {
-    background-color: #f7f7f7;
-    padding-top: 3rem;
-    padding-bottom: 3rem;
-    position: absolute;
-    width: 100%;
-    bottom: 0; /* stick to bottom */
-}
-
-footer p {
-    margin-bottom: .25rem;
-}
  
 h1 {
     font: 400 40px/1.5 Helvetica, Verdana, sans-serif;
@@ -87,8 +68,6 @@ h1 {
     padding: 0;
 }
 
-@media (min-width: 768px) {
-    .main-content {
-        padding-top: 80px;
-    }   
-}
+.main-content {
+    padding-top: 80px;
+}   

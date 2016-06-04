@@ -18,6 +18,7 @@
 
 <body>
     <div id="page-content">
+        {% block prebody %} {% endblock %}
         {% block body %}
         <nav class="navbar navbar-default navbar-fixed-top">
             <div class="container-fluid">
@@ -64,14 +65,6 @@
         </div>
 
         {% block footer %}
-        <!--footer class="text-muted">
-            <div class="container">
-                <p class="pull-xs-right">
-                    <a href="#">Back to top</a>
-                </p>
-                <p>Medical Imaging Quiz &copy; Marte Nordrik Hallan.</p>
-            </div>
-        </footer-->
         {% endblock %}
 
         {% endblock %}

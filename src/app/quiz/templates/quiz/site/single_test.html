@@ -6,6 +6,25 @@
 {% block extrahead %}
 <script src="{% static "js/answer-regions.js" %}"></script>
 <style>
+    .modal {
+        text-align: center;
+    }
+
+    @media screen and (min-width: 768px) { 
+        .modal:before {
+            display: inline-block;
+            vertical-align: middle;
+            content: " ";
+            height: 100%;
+        }
+    }
+
+    .modal-dialog {
+        display: inline-block;
+        text-align: left;
+        vertical-align: middle;
+    }
+
     input[type=radio] {
         visibility:hidden;
     }
@@ -38,10 +57,26 @@
     
     div.landmark-container, div.outline-container{
         position: relative;
+        margin: auto;
     }
     
     div.landmark-container::after, div.outline-container::after {
         clear: both;
+    }
+    
+    .pager li>a,
+    .pager li>a:visited {
+        background-color:  #5cb85c;
+        border-color: #4cae4c;
+        color: antiquewhite;
+    }
+    
+    .pager li>a:hover,
+    .pager li>a:link,
+    .pager li>a:active {
+        background-color: #449d44;
+        border-color: #398439;
+        color: antiquewhite;        
     }
 </style>
 {% endblock %}
@@ -103,6 +138,21 @@
             <li class="submit"><input type="submit" class="btn btn-success pull-right" value="Answer"></li>
         </ul>
     </form>
+</div>
+{% endblock %}
+
+{% block prebody %}
+<div id="outlineModal" class="modal" tabindex="-1" role="dialog">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title">Calculating...</h4>
+      </div>
+      <div class="modal-body">
+        <p>Calculating outline distance, please wait...</p>
+      </div>
+    </div>
+  </div>
 </div>
 {% endblock %}
 

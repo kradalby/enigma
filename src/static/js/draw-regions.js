@@ -227,7 +227,7 @@ var drawRegions = (function () {
 				
 		setImageRatios = function(height, width){
             aspectRatio = width / height;
-            canvasHeight = Math.min(height, window.innerHeight);
+            canvasHeight = Math.min(height, window.innerHeight * 0.65);
             canvasWidth = canvasHeight * aspectRatio;
             context.canvas.height = canvasHeight;
             context.canvas.width = canvasWidth;

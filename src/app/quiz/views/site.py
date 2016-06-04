@@ -106,10 +106,8 @@ def submit_test(request, test_id):
             for k,v in request.POST.items():
                 if k == "outline_question-%s" % question_model.id:
                     try:
-                        result = json.loads(answer)
-                        hit = result["pixelsHit"]
-                        total = result["pixelsTotal"]
-                        test_unit_result.correct_answer = (hit/total > 0.30)
+                        print("Outline distance", answer)
+                        test_unit_result.correct_answer = (float(answer) > 40.0)
                     except KeyError:
                         test_unit_result.correct_answer = False
             test_unit_result.answer_image = _get_answer_image(request, question_id)

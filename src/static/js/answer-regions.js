@@ -28,22 +28,17 @@ var answerRegions = (function(){
      * The real deal starts here.
      */
     var context,
-        parentId,
         parentDiv,
         hiddenAnswerField,
         hiddenImageData,
         targetRegionColor,
         coloredRegions = [],
         colorsHashTable,
-        regionColor,
-        distanceToColorThreshold = 0,
         originalImage,
-        answerImage,
         canvasHeight,
         canvasWidth,
         canvas,
         context,
-        aspectRatio,
         questionId,
         regionCanvas,
         regionContext,
@@ -94,45 +89,6 @@ var answerRegions = (function(){
         /**
          * LANDMARK RELATED
          */
-        
-        IsInsideColorRegion = function(coordinates, x, y){
-            var existPointToLeft = false,
-                existPointToRight = false,
-                existPointAbove = false,
-                existPointBelow = false;
-            
-            for(var i = 0; i < coordinates.length; i++){
-                var coordinate = coordinates[i];
-                if(!existPointAbove && coordinate.x === x && coordinate.y >= y){
-                    existPointAbove = true;
-                }
-                if(!existPointBelow && coordinate.x === x && coordinate.y <= y){
-                    existPointBelow = true;
-                }
-                if(!existPointToLeft && coordinate.x >= x && coordinate.y === y){
-                    existPointToLeft = true;
-                }
-                if(!existPointToRight && coordinate.x <= x && coordinate.y === y){
-                    existPointToRight = true;
-                }
-            }
-            
-            return existPointToLeft && existPointAbove && existPointBelow && existPointToRight;
-        },
-
-        IsCloseToColorRegion = function(points, x, y, threshold){
-            for(var i = 0; i < points.length; i++){
-                var point = points[i];
-                var dx = point.x,
-                    dy = point.y;
-                var distance = Math.sqrt(Math.pow(x-dx, 2) + Math.pow(y-dy, 2));
-                if(distance <= threshold){
-                    return true;
-                }
-            }
-            
-            return false;
-        },
         
         drawXOnMouseUp = function(){
             regionCanvas.addEventListener("mouseup", mouseUp, false);
@@ -227,8 +183,8 @@ var answerRegions = (function(){
         },
         
         setImageRatios = function(height, width){
-            aspectRatio = width / height;
-            canvasHeight = Math.min(height, window.innerHeight);
+            var aspectRatio = width / height;
+            canvasHeight = Math.min(height, window.innerHeight*0.65);
             canvasWidth = canvasHeight * aspectRatio;
             context.canvas.height = canvasHeight;
             context.canvas.width = canvasWidth;
@@ -298,17 +254,12 @@ var answerRegions = (function(){
 			regionContext.globalAlpha = 1; // No IE support
         },
 
-		// Adds a point to the drawing array.
-		// @param x
-		// @param y
-		// @param dragging
 		addClick = function (x, y, dragging) {
 			clickX.push(x);
 			clickY.push(y);
 			clickDrag.push(dragging);
 		},
         
-        // Add mouse and touch event listeners to the canvas
 		createUserEvents = function () {
 			var press = function (e) {
 				// Mouse down location
@@ -366,27 +317,46 @@ var answerRegions = (function(){
         updateHiddenOutlineAnswerOnMouseUp = function(){
             regionCanvas.addEventListener("mouseup", mouseUp, false);
             
-            function mouseUp(e){
-                var targetRegionPoints = colorsHashTable.get(targetRegionColor);
-                var data = regionContext.getImageData(0, 0, canvasWidth, canvasHeight).data;
-                var pixelsHit = 0;
-                var pixelsTargetTotal = targetRegionPoints.length;
-                
-                for (var index in targetRegionPoints) {
-                    if (targetRegionPoints.hasOwnProperty(index)) {
-                        var x = targetRegionPoints[index].x;
-                        var y = targetRegionPoints[index].y;
-                        var dataIndex = (y * canvasWidth * 4) + x * 4;
-                        if(data[dataIndex] == 255 && data[dataIndex + 1] == 0 && data[dataIndex + 2] == 0 && data[dataIndex + 3] == 255){
-                            pixelsHit++;
+            function distance(x1,y1,x2,y2){
+                return Math.sqrt(Math.pow(x2-x1, 2) + Math.pow(y2-y1, 2));
+            }
+            
+            function closestPoint(data, x2, y2){
+                var closest = 4200;
+                for (var i = 0; i < data.length; i += 4 * 5){
+                    if(data[i] == 255 && 
+                        data[i + 1] == 0 && 
+                        data[i + 2] == 0 && 
+                        data[i + 3] == 255)
+                    {
+                        var x1 = Math.floor((i / 4) % canvasWidth);
+                        var y1 = Math.floor((i / 4) / canvasWidth);
+                        var currentDistance = distance(x1,y1,x2,y2);
+                        if(currentDistance < closest){
+                            closest = currentDistance;
                         }
                     }
                 }
-                
-                hiddenAnswerField.value = JSON.stringify({
-                    "pixelsHit" : pixelsHit,
-                    "pixelsTotal" : pixelsTargetTotal
-                });
+                return closest;
+            }
+            
+            function mouseUp(e){
+                $('#outlineModal').modal('show');
+                setTimeout(function(){
+                    var targetRegionPoints = colorsHashTable.get(targetRegionColor);
+                    var data = regionContext.getImageData(0, 0, canvasWidth, canvasHeight).data;
+                    var totalDistance = 0;
+                    
+                    for (var index in targetRegionPoints) {
+                        if (targetRegionPoints.hasOwnProperty(index)) {
+                            var x2 = targetRegionPoints[index].x;
+                            var y2 = targetRegionPoints[index].y;
+                            totalDistance += closestPoint(data, x2, y2);
+                        }
+                    }
+                    hiddenAnswerField.value = totalDistance/targetRegionPoints.length;
+                    $('#outlineModal').modal('hide');
+                }, 25);
             };
         },
         
@@ -413,7 +383,7 @@ var answerRegions = (function(){
          *  EXPORTED
          */
         enableCommon = function(targetDivId, image, answerImg, height, width, id){
-            parentId = targetDivId;
+            var parentId = targetDivId;
             parentDiv = document.getElementById(parentId);
             questionId = id;
             
@@ -452,7 +422,6 @@ var answerRegions = (function(){
             // Register other necessities
             setTargetRegion(questionId);
             originalImage = image;
-            answerImage = answerImg;
             setImageRatios(height, width);
         },
         
@@ -462,7 +431,7 @@ var answerRegions = (function(){
             canvas.id = "landmark_canvas-" + questionId;
             hiddenAnswerField.setAttribute("name", "landmark_question-" + questionId);
             
-            registerColoredRegions(answerImage, function(){
+            registerColoredRegions(answerImg, function(){
                 drawImage(context, originalImage);
             });
             
@@ -475,8 +444,8 @@ var answerRegions = (function(){
             
             canvas.id = "outline_canvas-" + questionId;
             hiddenAnswerField.setAttribute("name", "outline_question-" + questionId);
-            
-            registerColoredRegions(answerImage, function(){
+                        
+            registerColoredRegions(answerImg, function(){
                 drawImage(context, originalImage);
                 resourceLoaded();
             });
