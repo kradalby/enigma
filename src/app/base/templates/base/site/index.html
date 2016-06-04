@@ -22,8 +22,8 @@
             <div class="panel-body">
                 <div class="row">
                     {% for test in tests %}
-                        <div class="col-sm-6 col-md-4">
-                            {% if test.course == course %}
+                        {% if test.course == course %}
+                            <div class="col-sm-6 col-md-4">
                                 <div class="test-box">
                                     <h3>{{ test }}</h3>
                                     {% has_been_answered test as test_answered_by_current_user %}
@@ -39,8 +39,8 @@
                                         </p>
                                     {% endif %}
                                 </div>
-                            {% endif %}
-                        </div>
+                            </div>
+                        {% endif %}
                     {% endfor %}
                 </div>
             </div>
