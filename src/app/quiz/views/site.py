@@ -22,8 +22,8 @@ def single_test (request, test_id):
     multiple_choice = test.multiple_choice_questions()
     multiple_choice_image = test.multiple_choice_questions_with_image()
     multiple_choice_video = test.multiple_choice_questions_with_video()
-    landmark = test.landmark_questions()
-    outline = test.outline_questions()
+    landmark = [question for question in test.landmark_questions() if question.regions()]
+    outline = [question for question in test.outline_questions() if question.regions()]
     questions = [multiple_choice, multiple_choice_image, landmark, multiple_choice_video, outline]
     questions = [item for sublist in questions for item in sublist]
     return render(request, 'quiz/site/single_test.html', {
