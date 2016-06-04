@@ -30,6 +30,7 @@ class LandmarkQuestionForm(ModelForm):
     def __init__(self, *args, **kwargs):
         super(LandmarkQuestionForm, self).__init__(*args, **kwargs)
         self.fields['question'].label = "Name"
+        self.fields['question'].required = False
         
 class OutlineQuestionForm(ModelForm):
     class Meta:
@@ -39,3 +40,4 @@ class OutlineQuestionForm(ModelForm):
     def __init__(self, *args, **kwargs):
         super(OutlineQuestionForm, self).__init__(*args, **kwargs)
         self.fields['question'].label = "Name"
+        self.fields['question'].required = False

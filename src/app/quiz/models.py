@@ -147,6 +147,9 @@ class LandmarkQuestion(TestUnit):
     original_image = models.ImageField()
     landmark_drawing = models.ImageField(blank=True)
     
+    def __str__(self):
+        return self.question or "[LANDMARK] - {0}".format(self.original_image.name)
+    
     def regions(self):
         return LandmarkRegion.objects.filter(landmark_question=self)
     
@@ -168,6 +171,9 @@ class LandmarkQuestion(TestUnit):
 class OutlineQuestion(TestUnit):
     original_image = models.ImageField()
     outline_drawing = models.ImageField(blank=True)
+    
+    def __str__(self):
+        return self.question or "[OUTLINE] - {0}".format(self.original_image.name)
     
     def regions(self):
         return OutlineRegion.objects.filter(outline_question=self)
