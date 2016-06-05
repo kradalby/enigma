@@ -39,15 +39,18 @@ def _add_test_result(question_type, question_id, testresult, answer):
     test_unit_result.answer = answer
     test_unit_result.save()
     
-def _colors_match(json_color, target_color):
+def _json_color_to_rgb(json_color):
     try:
         selected_color = json.loads(json_color)
         red = selected_color["red"]
         green = selected_color["green"]
         blue = selected_color["blue"]
-        return '#' + format(red, 'x') + format(green, 'x') + format(blue, 'x') == target_color
+        return '#' + format(red, 'x') + format(green, 'x') + format(blue, 'x')
     except KeyError:
-        return False
+        return None
+    
+def _colors_match(json_color, target_color):
+    return _json_color_to_rgb(json_color) == target_color
     
 def _randomword(length):
    return ''.join(random.choice(string.ascii_lowercase) for i in range(length))
@@ -94,6 +97,8 @@ def submit_test(request, test_id):
             for k,v in request.POST.items():
                 if k == "region-%s-color" % question_model.id:
                     test_unit_result.correct_answer = _colors_match(answer, v)
+                    test_unit_result.answer = _json_color_to_rgb(answer)
+                    test_unit_result.target_color_region = v
             test_unit_result.answer_image = _get_answer_image(request, question_id)
             test_unit_result.save()
         elif testunit_name.startswith("outline_question-"):
@@ -106,10 +111,11 @@ def submit_test(request, test_id):
             for k,v in request.POST.items():
                 if k == "outline_question-%s" % question_model.id:
                     try:
-                        print("Outline distance", answer)
                         test_unit_result.correct_answer = (float(answer) > 40.0)
                     except KeyError:
                         test_unit_result.correct_answer = False
+                elif k == "region-%s-color" % question_model.id:
+                    test_unit_result.target_color_region = v
             test_unit_result.answer_image = _get_answer_image(request, question_id)
             test_unit_result.save()
            

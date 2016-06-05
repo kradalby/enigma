@@ -102,11 +102,34 @@
                     <th>{{ test_unit_result.test_result.user }}'s answer</th>
                     <td>
                         {% if test_unit|is_landmark %}
+                            <table class="table">
+                                <tr>
+                                    <td>Target region </td>
+                                    <td style="color:{{test_unit_result.target_color_region}};">
+                                        {{ test_unit_result.target_landmark_region }}
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>Answered region</td>
+                                    <td style="color:{{test_unit_result.answer}};">
+                                        {{ test_unit_result.answered_landmark_region }}
+                                    </td>
+                                </tr>
+                            </table>
+    
                             <div class="img-container">
                                 <img class="top" src="{{ test_unit_result.answer_image.url }}" />
                                 <img class="bottom" src="{{ test_unit.landmarkquestion.original_image.url }}" />
                             </div>
                         {% elif test_unit|is_outline %}
+                            <table class="table">
+                                <tr>
+                                    <td>Target region </td>
+                                    <td style="color:{{test_unit_result.target_color_region}};">
+                                        {{ test_unit_result.target_outline_region }}
+                                    </td>
+                                </tr>
+                            </table>
                             <div class="img-container">
                                 <img class="top" src="{{ test_unit_result.answer_image.url }}" />
                                 <img class="bottom" src="{{ test_unit.outlinequestion.original_image.url }}" />
