@@ -189,7 +189,14 @@ class OutlineQuestion(TestUnit):
         <script>
             var a = answerRegions();
             a.enableOutline("{0}", "{1}", "{2}", "{3}", "{4}", "{5}");
-            $("div#{0}").parent().parent().children(".panel-heading").prepend($('<div class="btn btn-default pull-right" onclick="a.clearOutline()">Clear</div>'));
+            $("div#{0}").parent()
+                .parent()
+                .children(".panel-heading")
+                .prepend($('<div class="btn btn-default pull-right" onclick="a.clearOutline()">Clear</div>'));
+            // We have to do the following because the next button does not exist yet...
+            $(document).on('click', 'li.next > a.test-navigation', function(){{
+                a.updateOutlineAnswer();
+            }});
         </script>
         """.format("outline-container-" + str(self.id), original_image, outline_drawing, height, width, self.id)
         return html

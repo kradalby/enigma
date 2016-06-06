@@ -43,6 +43,7 @@ var answerRegions = (function(){
         regionCanvas,
         regionContext,
         regionData,
+        clicksAddedSinceLastCalculation = false,
         
         /**
          * COMMON STUFF
@@ -258,6 +259,7 @@ var answerRegions = (function(){
 			clickX.push(x);
 			clickY.push(y);
 			clickDrag.push(dragging);
+            clicksAddedSinceLastCalculation = true;
 		},
         
 		createUserEvents = function () {
@@ -314,9 +316,7 @@ var answerRegions = (function(){
             redraw(true);
         },
         
-        updateHiddenOutlineAnswerOnMouseUp = function(){
-            regionCanvas.addEventListener("mouseup", mouseUp, false);
-            
+        updateOutlineAnswer = function(){            
             function distance(x1,y1,x2,y2){
                 return Math.sqrt(Math.pow(x2-x1, 2) + Math.pow(y2-y1, 2));
             }
@@ -340,24 +340,27 @@ var answerRegions = (function(){
                 return closest;
             }
             
-            function mouseUp(e){
-                $('#outlineModal').modal('show');
-                setTimeout(function(){
-                    var targetRegionPoints = colorsHashTable.get(targetRegionColor);
-                    var data = regionContext.getImageData(0, 0, canvasWidth, canvasHeight).data;
-                    var totalDistance = 0;
-                    
-                    for (var index in targetRegionPoints) {
-                        if (targetRegionPoints.hasOwnProperty(index)) {
-                            var x2 = targetRegionPoints[index].x;
-                            var y2 = targetRegionPoints[index].y;
-                            totalDistance += closestPoint(data, x2, y2);
-                        }
+            if(!clicksAddedSinceLastCalculation){
+                return;
+            }
+            
+            $('#outlineModal').modal('show');
+            setTimeout(function(){
+                var targetRegionPoints = colorsHashTable.get(targetRegionColor);
+                var data = regionContext.getImageData(0, 0, canvasWidth, canvasHeight).data;
+                var totalDistance = 0;
+                
+                for (var index in targetRegionPoints) {
+                    if (targetRegionPoints.hasOwnProperty(index)) {
+                        var x2 = targetRegionPoints[index].x;
+                        var y2 = targetRegionPoints[index].y;
+                        totalDistance += closestPoint(data, x2, y2);
                     }
-                    hiddenAnswerField.value = totalDistance/targetRegionPoints.length;
-                    $('#outlineModal').modal('hide');
-                }, 25);
-            };
+                }
+                hiddenAnswerField.value = totalDistance/targetRegionPoints.length;
+                $('#outlineModal').modal('hide');
+                clicksAddedSinceLastCalculation = false;
+            }, 25);
         },
         
         hexColorToJson = function(hexColor){
@@ -449,13 +452,12 @@ var answerRegions = (function(){
                 drawImage(context, originalImage);
                 resourceLoaded();
             });
-            
-            updateHiddenOutlineAnswerOnMouseUp();
         };
 
     return {
 		enableLandmark: enableLandmark,
 		enableOutline: enableOutline,
-        clearOutline: clearOutline
+        clearOutline: clearOutline,
+        updateOutlineAnswer : updateOutlineAnswer
 	};
 });
