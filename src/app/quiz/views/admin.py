@@ -11,6 +11,8 @@ import os
 from ..forms import *
 from ..models import *
 from ..templatetags.question_tags import question_type_from_id
+
+from app.userprofile.models import UserProfile
   
 #
 # Test related
@@ -56,11 +58,28 @@ def delete_test(request, test_id):
 @staff_member_required
 def view_list_of_users_taking_test(request, test_id):
     test = get_object_or_404(Test, id=test_id)
-    users = UserProfile.objects.filter(groups = test.course.groups)
+    group_id_to_include = [g.id for g in test.course.groups.all()]
+    users_taking_test = UserProfile.objects.filter(groups__id__in=group_id_to_include)
     
-    render(request, 'quiz/admin/view_list_of_users_taking_test.html', {
-        "users" : users,
+    return render(request, 'quiz/admin/view_list_of_users_taking_test.html', {
+        "users" : users_taking_test,
         "test" : test
+    })
+    
+@staff_member_required
+def view_test_result_for_user(request, test_id, user_id):
+    test = get_object_or_404(Test, id=test_id)
+    user = get_object_or_404(UserProfile, id=user_id)
+    test_result = TestResult.objects.filter(test=test, user=user.user)
+    test_unit_results = TestUnitResult.objects.filter(test_result=test_result)
+    test_units = TestUnit.objects.filter(test=test)
+    
+    return render(request, 'quiz/admin/view_test_result_for_user.html', {
+        "test_unit_results" : test_unit_results,
+        "user" : user,
+        "test" : test,
+        "test_result" : test_result,
+        "test_units" : test_units
     })
     
 #

@@ -235,10 +235,10 @@ class TestUnitResult(models.Model):
         try:
             return LandmarkRegion.objects.filter(landmark_question = self.test_unit).get(color=self.target_color_region)
         except:
-            return "Region"
+            return None
             
     def answered_landmark_region(self):
         try:
             return LandmarkRegion.objects.filter(landmark_question = self.test_unit).get(color=self.answer)
         except:
-            return "Region"
+            return None
