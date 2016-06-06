@@ -10,6 +10,14 @@
         padding: 1em;
         border: 1px solid rgb(221, 221, 221);
     }
+    
+    .badge-success {
+        background-color: green;
+    }
+    
+    .badge-failure {
+        background-color: red;        
+    }
 </style>
 
 <div class="container">
@@ -29,6 +37,12 @@
                                     {% has_been_answered test as test_answered_by_current_user %}
                                     {% if test_answered_by_current_user %}
                                         <p>You have already answered this test.</p>
+                                        <p>You scored 
+                                            <span class="badge badge-success">
+                                                {{ test_answered_by_current_user.correct_answers|length }}/
+                                                {{ test.test_unit_count }}
+                                            </span>.
+                                        </p>
                                     {% else %}
                                         <p>This test contains {{ test.test_unit_count }} question{{ test.test_unit_count|pluralize }}.</p>
                                         <br/>

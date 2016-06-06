@@ -221,17 +221,15 @@ class TestUnitResult(models.Model):
     test_unit = models.ForeignKey(TestUnit)
     correct_answer = models.BooleanField()
     test_result = models.ForeignKey(TestResult)
-    answer = models.CharField(max_length=255, blank=True)
+    answer = models.CharField(max_length=255, blank=True, null=True, default="")
     answer_image = models.ImageField(blank=True)
     target_color_region = models.CharField(max_length=255)
     
     def target_outline_region(self):
-        # try:
-        print(OutlineRegion.objects.filter(outline_question = self.test_unit))
-        print(self.target_color_region)
-        return OutlineRegion.objects.filter(outline_question = self.test_unit).get(color=self.target_color_region)
-        # except:
-            # return None
+        try:
+            return OutlineRegion.objects.filter(outline_question = self.test_unit).get(color=self.target_color_region)
+        except:
+            return None
             
     def target_landmark_region(self):
         try:
