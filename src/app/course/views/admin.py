@@ -10,6 +10,7 @@ from ..util import generate_user_for_course as util_generate_user_for_course, cr
 
 from app.userprofile.models import UserProfile, UserGroup
 from app.userprofile.util import generate_user
+from app.quiz.models import Test
 
 #
 # Course specific
@@ -55,10 +56,12 @@ def view_course(request, course_id):
     group_id_to_exclude = [g.id for g in course.groups.hidden()]
     groups = course.groups.exclude(id__in=group_id_to_exclude)
     participants_without_groups = UserProfile.objects.filter(groups__id__in = group_id_to_exclude)
+    tests = Test.objects.filter(course=course)
     return render(request, 'course/admin/view_course.html',{
         'course' : course,
         'participants' : participants_without_groups,
-        'groups' : groups
+        'groups' : groups,
+        'tests' : tests
     })
 
 @staff_member_required    

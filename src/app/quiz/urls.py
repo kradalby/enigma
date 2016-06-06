@@ -9,6 +9,7 @@ urlpatterns = [
     # Admin
     url(r'^admin/new/$', admin.new_test, name='admin_new_test'),
     url(r'^admin/(?P<test_id>\d+)/$', admin.add_questions_to_test, name='admin_add_questions_to_test'),
+    url(r'^admin/(?P<test_id>\d+)/$', admin.add_questions_to_test, name='admin_view_test'),
     url(r'^admin/(?P<test_id>\d+)/delete/$', admin.delete_test, name='admin_delete_test'),
     url(r'^admin/list/$', admin.list_tests, name='admin_list_tests'),
     url(r'^admin/questions/$', admin.list_questions, name='admin_list_questions'),

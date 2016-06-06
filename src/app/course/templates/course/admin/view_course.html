@@ -87,4 +87,18 @@
         {% endfor %}
     </table>
 </div>
+
+<h2>
+    Tests: {{ tests|length }}
+</h2>
+<div class="row">
+    <ul>
+        {% for test in tests %}
+        <li>
+            <a href="{% url 'admin_view_test' test.id %}">{{ test }}</a>
+            
+        </li>
+        {% endfor %}
+    </ul>
+</div>
 {% endblock %}
