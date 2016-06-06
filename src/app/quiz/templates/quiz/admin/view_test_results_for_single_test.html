@@ -15,7 +15,12 @@
         max-width: 500px;
     }
 
-    .img-container .top,
+    .img-container .top{
+        position: absolute;
+        top: 0;
+        left: 0;
+        z-index: 2;
+    }
     .img-container .middle {
         position: absolute;
         top: 0;
@@ -129,14 +134,25 @@
                                         {{ test_unit_result.answered_landmark_region }}
                                     </td>
                                 </tr>
+                                <tr>
+                                    <td>
+                                        <div class="img-container">
+                                            {% if test_unit_result.answer_image %}
+                                                <img class="top" src="{{ test_unit_result.answer_image.url }}" />
+                                            {% endif %}
+                                            <img class="middle" src="{{ test_unit.landmarkquestion.landmark_drawing.url }}" />
+                                            <img class="bottom" src="{{ test_unit.landmarkquestion.original_image.url }}" />
+                                        </div>
+                                    </td>
+                                    <td>
+                                        {% if test_unit_result.answer_image %}
+                                            Toggle regions: <input type="checkbox" class="landmark-answer-checkbox" checked>
+                                        {% endif %}
+                                    </td>
+                                </tr>
                             </table>
     
                             <div class="img-container">
-                                {% if test_unit_result.answer_image %}
-                                    <img class="top" src="{{ test_unit_result.answer_image.url }}" />
-                                {% endif %}
-                                <img class="middle" src="{{ test_unit.landmarkquestion.landmark_drawing.url }}" />
-                                <img class="bottom" src="{{ test_unit.landmarkquestion.original_image.url }}" />
                             </div>
                         {% elif test_unit|is_outline %}
                             <table class="table">
@@ -155,9 +171,9 @@
                                         </div>
                                     </td>
                                     <td>
-                                        User answer: <input type="checkbox" id="user-answer-checkbox-{{test_unit_result.id}}" class="user-answer-checkbox" checked>
+                                        User answer: <input type="checkbox" class="user-answer-checkbox" checked>
                                         <br/>
-                                        Correct answer: <input type="checkbox" id="correct-answer-checkbox-{{test_unit_result.id}}" class="correct-answer-checkbox" checked>
+                                        Correct answer: <input type="checkbox" class="correct-answer-checkbox" checked>
                                     </td>
                                 </tr>
                             </table>
@@ -202,6 +218,21 @@
         offText : "Hide",
         onSwitchChange : function(event, state) {
             var img = $(this).parent().parent().parent().parent().find('img.middle:first');
+            if(state){ // SHOW
+                img.show();
+            } else{
+                img.hide();
+            }
+        }
+    });
+    // Landmark 
+    $(".landmark-answer-checkbox").bootstrapSwitch({
+        offColor : "danger",
+        onColor : "success",
+        onText : "On",
+        offText : "Off",
+        onSwitchChange : function(event, state) {
+            var img = $(this).parent().parent().parent().parent().find('img.top:first');
             if(state){ // SHOW
                 img.show();
             } else{
