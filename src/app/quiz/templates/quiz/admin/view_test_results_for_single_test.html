@@ -1,5 +1,11 @@
 {% extends "base/admin/index.html" %}
 {% load question_tags %}
+{% load staticfiles %}
+
+{% block extrahead %}
+    {{ block.super }}
+    <link rel="stylesheet" href="{% static "css/bootstrap-switch.min.css" %}" type="text/css"> 
+{% endblock %}
 
 {% block admincontent %}
 <style>
@@ -9,7 +15,8 @@
         max-width: 500px;
     }
 
-    .img-container .top {
+    .img-container .top,
+    .img-container .middle {
         position: absolute;
         top: 0;
         left: 0;
@@ -99,7 +106,14 @@
             {% for test_unit_result in test_unit_results %}
                 {% if test_unit_result.test_unit == test_unit %}
                 <tr>
-                    <th>{{ test_unit_result.test_result.user }}'s answer</th>
+                    <th>
+                        {{ test_unit_result.test_result.user }}'s answer was 
+                        {% if test_unit_result.correct_answer %}
+                            correct.
+                        {% else %}
+                            incorrect.
+                        {% endif %}
+                    </th>
                     <td>
                         {% if test_unit|is_landmark %}
                             <table class="table">
@@ -118,7 +132,10 @@
                             </table>
     
                             <div class="img-container">
-                                <img class="top" src="{{ test_unit_result.answer_image.url }}" />
+                                {% if test_unit_result.answer_image %}
+                                    <img class="top" src="{{ test_unit_result.answer_image.url }}" />
+                                {% endif %}
+                                <img class="middle" src="{{ test_unit.landmarkquestion.landmark_drawing.url }}" />
                                 <img class="bottom" src="{{ test_unit.landmarkquestion.original_image.url }}" />
                             </div>
                         {% elif test_unit|is_outline %}
@@ -129,11 +146,21 @@
                                         {{ test_unit_result.target_outline_region }}
                                     </td>
                                 </tr>
+                                <tr>
+                                    <td>
+                                        <div class="img-container">
+                                            <img class="top" src="{{ test_unit_result.answer_image.url }}" />
+                                            <img class="middle" src="{{ test_unit.outlinequestion.outline_drawing.url }}" />
+                                            <img class="bottom" src="{{ test_unit.outlinequestion.original_image.url }}" />
+                                        </div>
+                                    </td>
+                                    <td>
+                                        User answer: <input type="checkbox" id="user-answer-checkbox-{{test_unit_result.id}}" class="user-answer-checkbox" checked>
+                                        <br/>
+                                        Correct answer: <input type="checkbox" id="correct-answer-checkbox-{{test_unit_result.id}}" class="correct-answer-checkbox" checked>
+                                    </td>
+                                </tr>
                             </table>
-                            <div class="img-container">
-                                <img class="top" src="{{ test_unit_result.answer_image.url }}" />
-                                <img class="bottom" src="{{ test_unit.outlinequestion.original_image.url }}" />
-                            </div>
                         {% elif test_unit|is_multiple_choice_question %}
                             {{ test_unit_result.answer }}
                         {% elif test_unit|is_multiple_choice_question_with_image %}
@@ -152,6 +179,37 @@
 {% endblock %}
 
 {% block end %}
+<script src="{% static "js/bootstrap-switch.min.js" %}"></script>
+<script>
+    $(".user-answer-checkbox").bootstrapSwitch({
+        offColor : "danger",
+        onColor : "success",
+        onText : "Show",
+        offText : "Hide",
+        onSwitchChange : function(event, state) {
+            var img = $(this).parent().parent().parent().parent().find('img.top:first');
+            if(state){ // SHOW
+                img.show();
+            } else{
+                img.hide();
+            }
+        }
+    });
+    $(".correct-answer-checkbox").bootstrapSwitch({
+        offColor : "danger",
+        onColor : "success",
+        onText : "Show",
+        offText : "Hide",
+        onSwitchChange : function(event, state) {
+            var img = $(this).parent().parent().parent().parent().find('img.middle:first');
+            if(state){ // SHOW
+                img.show();
+            } else{
+                img.hide();
+            }
+        }
+    });
+</script>
 <script>
     function disableAndEnableNavigationButtons(){
         // Default
@@ -165,7 +223,6 @@
         if(currentlyVisible.prev('div.test-result').length <= 0){
             $("a#previous").parent().addClass('disabled');
         }
-        // console.log()
         $("a#"+currentlyVisible.attr('id')+".navigation").parent().addClass('active');
     }
     

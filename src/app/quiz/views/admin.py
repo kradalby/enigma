@@ -53,6 +53,16 @@ def delete_test(request, test_id):
         messages.warning(request, 'The test has already been deleted. You may have clicked twice.')
     return redirect(list_tests)
     
+@staff_member_required
+def view_list_of_users_taking_test(request, test_id):
+    test = get_object_or_404(Test, id=test_id)
+    users = UserProfile.objects.filter(groups = test.course.groups)
+    
+    render(request, 'quiz/admin/view_list_of_users_taking_test.html', {
+        "users" : users,
+        "test" : test
+    })
+    
 #
 # Test result related
 #

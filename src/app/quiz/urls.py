@@ -13,6 +13,7 @@ urlpatterns = [
     url(r'^admin/(?P<test_id>\d+)/delete/$', admin.delete_test, name='admin_delete_test'),
     url(r'^admin/list/$', admin.list_tests, name='admin_list_tests'),
     url(r'^admin/questions/$', admin.list_questions, name='admin_list_questions'),
+    url(r'^admin/(?P<test_id>\d+)/userlist/$', admin.view_list_of_users_taking_test, name='admin_view_list_of_users_taking_test'),
     
     # Test results
     url(r'^admin/result/delete/$', admin.delete_test_results, name='admin_delete_test_results'),
