@@ -18,7 +18,7 @@ class UserProfileForm(ModelForm):
 
     class Meta:
         model = UserProfile
-        exclude = ["groups", "user",]
+        fields = ["username",]
         
     def save(self, commit=True):
         user = User()
