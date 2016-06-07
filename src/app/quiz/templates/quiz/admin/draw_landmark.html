@@ -35,10 +35,10 @@
         <button type="button" class="close" data-dismiss="alert" aria-label="Close">
             <span aria-hidden="true">&times;</span>
         </button>
-        <strong>Warning!</strong> Changes will be applied to all tests containing this question.
+        <strong>Warning!</strong> This question is in active use. Changes will be applied to all tests containing this question.
     </div>
     {% endif %}
-    <h1>Draw landmark regions</h1>
+    <h1>Draw landmark regions for {{ question }}</h1>
 </div>
 <div id="left-column" class="col-md-8">
     <div id="canvasDiv"></div>
@@ -46,11 +46,29 @@
 <div id="right-column" class="col-md-4">
     <div class="alert alert-danger fade in" id="max-colors-error" style="display:none;">
         <button type="button" class="close">×</button>
-        You can't add any more colors.
+        You can't add any more regions.
     </div>
+    
+    <form action="" method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        <div id="form-div">
+            
+        </div>
+        <hr/>
+        <input type="hidden" name="hidden-image-data" id="hidden-image-data" />
+        <input type="submit" class="btn btn-success" style="min-width: 200px;" value="Create landmark question" />
+        {% if test %}
+            <a href="{% url 'admin_add_questions_to_test' test.id %}" class="btn btn-danger">Cancel</a>
+        {% else %}
+            <a href="{% url 'admin_list_questions' %}" class="btn btn-danger">Cancel</a>
+        {% endif %}
+    </form>
+    
+    <hr/>
+    
     <div class="panel panel-default">
         <div class="panel-heading">
-            <button type="button" class="pull-left btn btn-info" onclick="addColor()">New color</button>
+            <button type="button" class="pull-left btn btn-info" onclick="addColor()">New region</button>
             <button data-toggle="collapse" data-target="#collapsable" class="pull-left btn btn-info">Hide/Show information</button>
             <div class="clearfix"></div>
         </div>
@@ -79,15 +97,15 @@
                         <td>Clear color</td>
                     </tr>
                     <tr>
-                        <td>Name</td>
-                        <td>Appears in the test as "Select &lt;Name&gt;"</td>
+                        <td>Landmark</td>
+                        <td>Appears in the test as "Mark &lt;Landmark&gt;"</td>
                     </tr>
                 </table>
                 <hr/>
             </div>
             <div class="text-left">
                 <p class="pull-left">
-                    Selected color: 
+                    Selected region color: 
                     <span id="selected-color" style='background-color:#abcdef'>
                         &nbsp;&nbsp;&nbsp;&nbsp;
                     </span>
@@ -101,7 +119,7 @@
                         <button style="width: 3.5em; height: 3em;" type='button' class='btn btn-default pull-right' onclick='drawRegions.setLineWidth(10)'>
                             <span style="font-size: 1.0em;" class='glyphicon glyphicon-pencil'></span>
                         </button>
-                        <button style="width: 3.5em; height: 3em;" type='button' class='btn btn-default pull-right' onclick='drawRegions.setLineWidth(5)'>
+                        <button style="width: 3.5em; height: 3em;" type='button' class='btn btn-default pull-right' onclick='drawRegions.setLineWidth(1)'>
                             <span style="font-size: 0.75em;" class='glyphicon glyphicon-pencil'></span>
                         </button>
                     </div>
@@ -109,21 +127,6 @@
             </div>
         </div>
     </div>
-
-    <form action="" method="post" enctype="multipart/form-data">
-        {% csrf_token %}
-        <div id="form-div">
-            
-        </div>
-        <hr/>
-        <input type="hidden" name="hidden-image-data" id="hidden-image-data" />
-        <input type="submit" class="btn btn-success" style="min-width: 200px;" value="Create landmark question" />
-        {% if test %}
-            <a href="{% url 'admin_add_questions_to_test' test.id %}" class="btn btn-danger">Cancel</a>
-        {% else %}
-            <a href="{% url 'admin_list_questions' %}" class="btn btn-danger">Cancel</a>
-        {% endif %}
-    </form>
 </div>
 {% endblock %}
 
@@ -161,7 +164,7 @@
         "    <div>" +
         "        Color: <span style='background-color:{1}'>&nbsp;&nbsp;&nbsp;&nbsp;</span>" +
         "        <label for='region{0}'>" +
-        "            Name:" +
+        "            Landmark:" +
         "            <input type='text' name='{1}' id='region{0}' value='{2}'/>" +
         "        </label>" +
         "        <button type='button' class='btn btn-default' onclick='setColor({0})'>" +

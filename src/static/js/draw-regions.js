@@ -5,7 +5,7 @@ var drawRegions = (function () {
 		context,
 		canvasWidth,
 		canvasHeight,
-        lineWidth = 5,
+        lineWidth = 1,
         colors = [],
 		rgbColors = [],
 		originalImage,
