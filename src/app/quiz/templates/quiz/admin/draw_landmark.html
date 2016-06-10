@@ -12,13 +12,15 @@
         padding: 5px 0px;
     }
     
-    div#canvasDiv{
-        border: 2px solid black;
+    div.erase {
+       cursor: url(/static/img/eraser.png), auto;
     }
     
     canvas {
+        border: 2px solid black;
         max-width: 100%;
         position: absolute;
+        left: -3px;
     }
     
     div > label {
@@ -93,8 +95,12 @@
                         <td>Select color</td>
                     </tr>
                     <tr>
-                        <td><span class='glyphicon glyphicon-trash'></span></td>
+                        <td><span class='glyphicon glyphicon-erase'></span></td>
                         <td>Clear color</td>
+                    </tr>
+                    <tr>
+                        <td><span class='glyphicon glyphicon-trash'></span></td>
+                        <td>Delete region</td>
                     </tr>
                     <tr>
                         <td>Landmark</td>
@@ -111,7 +117,7 @@
                     </span>
                 </p>
                 <div class="pull-right">
-                    Brush size:
+                    <p>Eraser / Brush size:</p>
                     <div class="btn-group">
                         <button style="width: 3.5em; height: 3em;" type='button' class='btn btn-default pull-right' onclick='drawRegions.setLineWidth(15)'>
                             <span style="font-size: 1.75em;" class='glyphicon glyphicon-pencil'></span>
@@ -119,8 +125,11 @@
                         <button style="width: 3.5em; height: 3em;" type='button' class='btn btn-default pull-right' onclick='drawRegions.setLineWidth(10)'>
                             <span style="font-size: 1.0em;" class='glyphicon glyphicon-pencil'></span>
                         </button>
-                        <button style="width: 3.5em; height: 3em;" type='button' class='btn btn-default pull-right' onclick='drawRegions.setLineWidth(1)'>
+                        <button style="width: 3.5em; height: 3em;" type='button' class='btn btn-default pull-right' onclick='drawRegions.setLineWidth(2)'>
                             <span style="font-size: 0.75em;" class='glyphicon glyphicon-pencil'></span>
+                        </button>
+                        <button style="width: 3.5em; height: 3em;" type='button' class='btn btn-default pull-right' onclick='drawRegions.eraseColor(true);$("#selected-color").css("background-color", "white");'>
+                            <span style="font-size: 1.5em;" class='glyphicon glyphicon-erase'></span>
                         </button>
                     </div>
                 </div>
@@ -159,18 +168,22 @@
             "#659b41", // green
             "#986928", // brown
         ],
+        colorsInUse = [false, false, false, false, false, false],
         maxColors = colors.length,
         html =
-        "    <div>" +
-        "        Color: <span style='background-color:{1}'>&nbsp;&nbsp;&nbsp;&nbsp;</span>" +
+        "    <div id='color-input-{0}'>" +
+        "        <span style='background-color:{1}'>&nbsp;&nbsp;&nbsp;&nbsp;</span>" +
         "        <label for='region{0}'>" +
         "            Landmark:" +
         "            <input type='text' name='{1}' id='region{0}' value='{2}'/>" +
         "        </label>" +
-        "        <button type='button' class='btn btn-default' onclick='setColor({0})'>" +
+        "        <button type='button' class='btn btn-default' onclick='setColor(\"{1}\")'>" +
         "            <span class='glyphicon glyphicon-pencil'></span>" +
         "        </button>" +
-        "        <button type='button' class='btn btn-default' onclick='drawRegions.clearColor({0})'>" +
+        "        <button type='button' class='btn btn-default' onclick='drawRegions.clearColor(\"{1}\")'>" +
+        "            <span class='glyphicon glyphicon-erase'></span>" +
+        "        </button>" +
+        "        <button type='button' class='btn btn-default' onclick='deleteColorRegion({0})'>" +
         "            <span class='glyphicon glyphicon-trash'></span>" +
         "        </button>" +
         "    </div>"
@@ -184,23 +197,43 @@
         }
     }
     
+    function getUnusedColor(){
+        for(var i = 0; i < colorsInUse.length; i++){
+            if(!colorsInUse[i]){
+                return {
+                    color: colors[i],
+                    index: i
+                };
+            }
+        }
+    }
+    
+    function deleteColorRegion(colorIndex){
+        colorsInUse[colorIndex] = false;
+        drawRegions.deleteColor(colors[colorIndex]);
+        $("div#color-input-"+colorIndex).remove();
+        currentColors--;
+    }
+    
     function addColor(regionName){
         regionName = typeof regionName !== 'undefined' ? regionName : "";
         if(currentColors >= maxColors){
             $('#max-colors-error').show();
             return;
         }
-        var color = colors[currentColors];
-        var formatedHtml = String.format(html, currentColors, color, regionName);
+        var colorDict = getUnusedColor();
+        var color = colorDict.color;
+        var index = colorDict.index;
+        colorsInUse[index] = true;
+        var formatedHtml = String.format(html, index, color, regionName);
         $("#form-div").append(formatedHtml);
         drawRegions.addColor(color);
         currentColors++;
     }
     
-    function setColor(colorIndex){
-        drawRegions.setColor(colorIndex);
-        var selectedColor = colors[colorIndex];
-        $("#selected-color").css("background-color", selectedColor);
+    function setColor(color){
+        drawRegions.setColor(color);
+        $("#selected-color").css("background-color", color);
     }
     
     // Init application
@@ -216,6 +249,6 @@
     {% empty %}
         addColor();
     {% endfor %}
-    setColor(0);
+    setColor(colors[0]);
 </script>
 {% endblock %}

@@ -5,7 +5,7 @@ var drawRegions = (function () {
 		context,
 		canvasWidth,
 		canvasHeight,
-        lineWidth = 1,
+        lineWidth = 2,
         colors = [],
 		rgbColors = [],
 		originalImage,
@@ -17,6 +17,8 @@ var drawRegions = (function () {
 		paint = false,
 		curColor = colors[1],
 		imageLoaded = false,
+		erase = [],
+		erasing = false,
 		parentId,
 		parentDiv,
 		regionCanvas,
@@ -91,15 +93,22 @@ var drawRegions = (function () {
 				}
 				regionContext.lineTo(clickX[i], clickY[i]);
 				
-                regionContext.strokeStyle = clickColor[i];
-				regionContext.lineWidth = clickWidth[i];
+				if(erase[i]){
+					regionContext.globalCompositeOperation = "destination-out";
+					regionContext.strokeStyle = "rgba(0,0,0,1.0)";
+					regionContext.lineWidth = 15;
+				}else{
+					regionContext.globalCompositeOperation = "source-over";
+					regionContext.strokeStyle = clickColor[i];
+					regionContext.lineWidth = clickWidth[i];
+				}
 				regionContext.lineCap = "round";
 				regionContext.lineJoin = "round";
 				regionContext.stroke();
 			}
 			regionContext.closePath();
 			regionContext.restore();
-
+			context.globalCompositeOperation = "source-over";
 			regionContext.globalAlpha = 1;
         },
 		
@@ -109,6 +118,7 @@ var drawRegions = (function () {
 			clickColor.push(curColor);
 			clickDrag.push(dragging);
 			clickWidth.push(lineWidth);
+			erase.push(erasing);
 		},
             
         relativeMouseCoordinates = function(event){
@@ -192,16 +202,50 @@ var drawRegions = (function () {
 			var b = colorWithoutHash & 0xFF;
 			rgbColors.push([r,g,b]);
         },
+		
+		deleteColor = function(color){
+			for(var i = 0; i < colors.length; i++){
+				if(colors[i] == color){
+					clearColor(colors[i]);
+                    colors.splice(i, 1);
+                    rgbColors.splice(i, 1);
+				}
+			}
+		},
+		
+		eraseColor = function(eraseOn){
+			erasing = eraseOn;
+			if(eraseOn){
+				$(parentDiv).addClass("erase");
+			}else{
+				console.log("REMOVE")
+				$(parentDiv).removeClass("erase");
+			}
+		},
         
-        setColor = function(colorIndex){
-            curColor = colors[colorIndex];
+        setColor = function(color){
+			for(var i = 0; i < colors.length; i++){
+				if(colors[i] == color){
+					curColor = color;
+					eraseColor(false);
+					break;
+				}
+			}
         },
 		
 		getCurrentColor = function() {
 			return curColor;
 		},
         
-        clearColor = function(colorIndex){
+        clearColor = function(color){
+			var colorIndex = -1;
+			for(var i = 0; i < colors.length; i++){
+				if(color == colors[i]){
+					colorIndex = i;
+					break;
+				}
+			}
+
             var colorToRemove = colors[colorIndex];
             for(var i = clickColor.length - 1; i >= 0; i--) {
                 if(clickColor[i] === colorToRemove) {
@@ -283,7 +327,9 @@ var drawRegions = (function () {
         setColor : setColor,
         clearColor : clearColor,
         addColor : addColor,
+		deleteColor : deleteColor,
 		getCurrentColor : getCurrentColor,
-		setLineWidth : setLineWidth
+		setLineWidth : setLineWidth,
+		eraseColor : eraseColor
 	};
 }());
