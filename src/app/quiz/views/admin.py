@@ -352,6 +352,12 @@ def draw_landmark(request, question_id, test_id = None):
             if k.startswith('#') and len(k) == 7:
                 region = LandmarkRegion()
                 region.color = k
+                if not v:
+                    messages.error(request, "You have to give name to all regions.")
+                    return render(request, 'quiz/admin/draw_landmark.html', {
+                        "test" : test,
+                        "question" : question
+                    })
                 region.name = v
                 region.landmark_question = question
                 region.save()
@@ -447,6 +453,12 @@ def draw_outline(request, question_id, test_id = None):
             if k.startswith('#') and len(k) == 7:
                 region = OutlineRegion()
                 region.color = k
+                if not v:
+                    messages.error(request, "You have to give name to all regions.")
+                    return render(request, 'quiz/admin/draw_outline.html', {
+                        "test" : test,
+                        "question" : question
+                    })
                 region.name = v
                 region.outline_question = question
                 region.save()
