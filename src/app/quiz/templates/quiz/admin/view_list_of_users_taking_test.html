@@ -1,14 +1,28 @@
 {% extends "base/admin/index.html" %}
+{% load test_answers %}
 
 {% block admincontent %}
-<h1>Users</h1>
-<ul>
+<h1>Users taking <a href="{% url 'admin_view_test' test.id %}">{{test}}</a></h1>
+<table class="table">
+    <tr>
+        <th>Username</th>
+        <th>Score</th>
+    </tr>
     {% for user in users %}
-        <li>
-            <a href="{% url 'admin_view_test_result_for_user' test.id user.id %}">
-                {{ user }}
-            </a>
-        </li>
+        <tr>
+            <td>
+                <a href="{% url 'admin_view_test_result_for_user' test.id user.id %}">
+                    {{ user }}
+                </a>                
+            </td>
+            <td>
+                {% if test|answered_by_user:user %}
+                    {{ test|answered_by_user:user|score_fraction}}
+                {% else %}
+                    No answered
+                {% endif %}
+            </td>
+        </tr>
     {% endfor %}
-</ul>
+</table>
 {% endblock %}

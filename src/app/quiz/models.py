@@ -48,6 +48,9 @@ class TestResult(models.Model):
         test_units = self.test_unit_results()
         return [x for x in test_units if not x.correct_answer]
         
+    def score_fraction(self):
+        return str(len(self.correct_answers())) + "/" + str(len(self.test_unit_results()))
+        
 class TestUnit(models.Model):
     question = models.CharField(max_length = 255, verbose_name = "Question")
     test = models.ManyToManyField(Test)
