@@ -110,10 +110,8 @@ def submit_test(request, test_id):
             test_unit_result.correct_answer = False
             for k,v in request.POST.items():
                 if k == "outline_question-%s" % question_model.id:
-                    try:
-                        test_unit_result.correct_answer = (float(answer) > 40.0)
-                    except KeyError:
-                        test_unit_result.correct_answer = False
+                    test_unit_result.correct_answer = (float(answer if answer else 99999) < 40.0)
+                    test_unit_result.answer = answer
                 elif k == "region-%s-color" % question_model.id:
                     test_unit_result.target_color_region = v
             test_unit_result.answer_image = _get_answer_image(request, question_id)

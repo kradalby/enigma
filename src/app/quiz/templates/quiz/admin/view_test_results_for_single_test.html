@@ -107,88 +107,94 @@
         <div class="panel-heading">
             <h3 class="panel-title">Answers</h3>
         </div>
-        <table class="table">
-            {% for test_unit_result in test_unit_results %}
-                {% if test_unit_result.test_unit == test_unit %}
-                <tr>
-                    <th>
-                        {{ test_unit_result.test_result.user }}'s answer was 
-                        {% if test_unit_result.correct_answer %}
-                            correct.
-                        {% else %}
-                            incorrect.
-                        {% endif %}
-                    </th>
-                    <td>
-                        {% if test_unit|is_landmark %}
-                            <table class="table">
-                                <tr>
-                                    <td>Target region </td>
-                                    <td style="color:{{test_unit_result.target_color_region}};">
-                                        {{ test_unit_result.target_landmark_region }}
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>Answered region</td>
-                                    <td style="color:{{test_unit_result.answer}};">
-                                        {{ test_unit_result.answered_landmark_region }}
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>
-                                        <div class="img-container">
-                                            {% if test_unit_result.answer_image %}
-                                                <img class="top" src="{{ test_unit_result.answer_image.url }}" />
-                                            {% endif %}
-                                            <img class="middle" src="{{ test_unit.landmarkquestion.landmark_drawing.url }}" />
-                                            <img class="bottom" src="{{ test_unit.landmarkquestion.original_image.url }}" />
-                                        </div>
-                                    </td>
-                                    <td>
+        {% for test_unit_result in test_unit_results %}
+            {% if test_unit_result.test_unit == test_unit %}
+                <div>
+                    <b>
+                    {{ test_unit_result.test_result.user }}'s answer was 
+                    {% if test_unit_result.correct_answer %}
+                        <span style="color:green;">correct.</span>
+                    {% else %}
+                        <span style="color:red;">incorrect.</span>
+                    {% endif %}
+                    </b>
+                </div>
+                <div>
+                    {% if test_unit|is_landmark %}
+                        <table class="table">
+                            <tr>
+                                <td rowspan="3"> 
+                                    <div class="img-container">
                                         {% if test_unit_result.answer_image %}
-                                            Toggle regions: <input type="checkbox" class="landmark-answer-checkbox" checked>
-                                        {% endif %}
-                                    </td>
-                                </tr>
-                            </table>
-    
-                            <div class="img-container">
-                            </div>
-                        {% elif test_unit|is_outline %}
-                            <table class="table">
-                                <tr>
-                                    <td>Target region </td>
-                                    <td style="color:{{test_unit_result.target_color_region}};">
-                                        {{ test_unit_result.target_outline_region }}
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>
-                                        <div class="img-container">
                                             <img class="top" src="{{ test_unit_result.answer_image.url }}" />
-                                            <img class="middle" src="{{ test_unit.outlinequestion.outline_drawing.url }}" />
-                                            <img class="bottom" src="{{ test_unit.outlinequestion.original_image.url }}" />
-                                        </div>
-                                    </td>
-                                    <td>
-                                        User answer: <input type="checkbox" class="user-answer-checkbox" checked>
-                                        <br/>
-                                        Correct answer: <input type="checkbox" class="correct-answer-checkbox" checked>
-                                    </td>
-                                </tr>
-                            </table>
-                        {% elif test_unit|is_multiple_choice_question %}
-                            {{ test_unit_result.answer }}
-                        {% elif test_unit|is_multiple_choice_question_with_image %}
-                            {{ test_unit_result.answer }}
-                        {% elif test_unit|is_multiple_choice_question_with_video %}
-                            {{ test_unit_result.answer }}
-                        {% endif %}
-                    </td>
-                </tr>
-                {% endif %}
-            {% endfor %}
-        </table>
+                                        {% endif %}
+                                        <img class="middle" src="{{ test_unit.landmarkquestion.landmark_drawing.url }}" />
+                                        <img class="bottom" src="{{ test_unit.landmarkquestion.original_image.url }}" />
+                                    </div>
+                                </td>
+                                <td>Target region </td>
+                                <td style="color:{{test_unit_result.target_color_region}};">
+                                    {{ test_unit_result.target_landmark_region }}
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>Answered region</td>
+                                <td style="color:{{test_unit_result.answer}};">
+                                    {{ test_unit_result.answered_landmark_region }}
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>Toggle answer:</td>
+                                <td>
+                                    {% if test_unit_result.answer_image %}
+                                        <input type="checkbox" class="landmark-answer-checkbox" checked>
+                                    {% endif %}
+                                </td>                                
+                            </tr>
+                        </table>
+                    {% elif test_unit|is_outline %}
+                        <table class="table">
+                            <tr>
+                                <td rowspan="4">
+                                    <div class="img-container">
+                                        <img class="top" src="{{ test_unit_result.answer_image.url }}" />
+                                        <img class="middle" src="{{ test_unit.outlinequestion.outline_drawing.url }}" />
+                                        <img class="bottom" src="{{ test_unit.outlinequestion.original_image.url }}" />
+                                    </div>
+                                </td>
+                                 <td>Target region </td>
+                                <td style="color:{{test_unit_result.target_color_region}};">
+                                    {{ test_unit_result.target_outline_region }}
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>User answer:</td>
+                                <td><input type="checkbox" class="user-answer-checkbox" checked></td>
+                            </tr>
+                            <tr>
+                                <td>Correct answer:</td>
+                                <td><input type="checkbox" class="correct-answer-checkbox" checked></td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    Answer average distance:
+                                </td>
+                                <td>
+                                    {{test_unit_result.answer|floatformat:3}}
+                                </td>
+                            </tr>
+                        </table>
+                    {% elif test_unit|is_multiple_choice_question %}
+                        <b>Answered:</b> {{ test_unit_result.answer }}
+                    {% elif test_unit|is_multiple_choice_question_with_image %}
+                        <b>Answered:</b> {{ test_unit_result.answer }}
+                    {% elif test_unit|is_multiple_choice_question_with_video %}
+                        <b>Answered:</b> {{ test_unit_result.answer }}
+                    {% endif %}
+                </div>
+                <hr/>
+            {% endif %}
+        {% endfor %}
     </div>
 </div>
 {% endfor %}
@@ -203,7 +209,7 @@
         onText : "Show",
         offText : "Hide",
         onSwitchChange : function(event, state) {
-            var img = $(this).parent().parent().parent().parent().find('img.top:first');
+            var img = $(this).parent().parent().parent().parent().parent().find('img.top:first');
             if(state){ // SHOW
                 img.show();
             } else{
@@ -217,7 +223,7 @@
         onText : "Show",
         offText : "Hide",
         onSwitchChange : function(event, state) {
-            var img = $(this).parent().parent().parent().parent().find('img.middle:first');
+            var img = $(this).parent().parent().parent().parent().parent().find('img.middle:first');
             if(state){ // SHOW
                 img.show();
             } else{
@@ -232,7 +238,7 @@
         onText : "On",
         offText : "Off",
         onSwitchChange : function(event, state) {
-            var img = $(this).parent().parent().parent().parent().find('img.top:first');
+            var img = $(this).parent().parent().parent().parent().parent().find('img.top:first');
             if(state){ // SHOW
                 img.show();
             } else{

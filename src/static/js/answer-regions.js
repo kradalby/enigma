@@ -412,7 +412,7 @@ var answerRegions = (function(){
             // Create hidden answer field
             hiddenAnswerField = document.createElement("input");
             hiddenAnswerField.setAttribute("type", "hidden");
-            hiddenAnswerField.setAttribute("value", "{}");
+            hiddenAnswerField.setAttribute("value", "");
             parentDiv.appendChild(hiddenAnswerField);
             
             // Create hidden image field
