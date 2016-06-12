@@ -473,6 +473,11 @@ var answerRegions = (function(){
             setImageRatios(height, width);
             addPencilButton();
             addRubberButton();
+            
+            // We have to do the following because the next button does not exist yet...
+            $(document).on('click', 'li.next > a.test-navigation', function(){{
+                updateOutlineAnswer();
+            }});
         },
         
         enableLandmark = function(targetDivId, image, answerImg, height, width, id){
@@ -513,8 +518,6 @@ var answerRegions = (function(){
 
     return {
 		enableLandmark: enableLandmark,
-		enableOutline: enableOutline,
-        clearOutline: clearOutline,
-        updateOutlineAnswer : updateOutlineAnswer
+		enableOutline: enableOutline
 	};
 });
