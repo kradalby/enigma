@@ -44,6 +44,8 @@ var answerRegions = (function(){
         regionContext,
         regionData,
         clicksAddedSinceLastCalculation = false,
+        erasing = false,
+        erase = [],
         
         /**
          * COMMON STUFF
@@ -243,18 +245,26 @@ var answerRegions = (function(){
 					regionContext.moveTo(clickX[i] - 1, clickY[i]);
 				}
 				regionContext.lineTo(clickX[i], clickY[i]);
+                
+                if(erase[i]){
+					regionContext.globalCompositeOperation = "destination-out";
+					regionContext.strokeStyle = "rgba(0,0,0,1.0)";
+					regionContext.lineWidth = 15;
+				}else{
+					regionContext.globalCompositeOperation = "source-over";
+					regionContext.strokeStyle = "#ff0000";
+					regionContext.lineWidth = lineWidth;
+				}
 				
-                regionContext.strokeStyle = "#ff0000";
 				regionContext.lineCap = "round";
 				regionContext.lineJoin = "round";
-				regionContext.lineWidth = lineWidth;
 				regionContext.stroke();
 			}
 			regionContext.closePath();
 			regionContext.restore();
 
-			// Overlay a crayon texture (if the current tool is crayon)
-			regionContext.globalAlpha = 1; // No IE support
+			regionContext.globalAlpha = 1;
+            regionContext.globalCompositeOperation = "source-over";
         },
 
 		addClick = function (x, y, dragging) {
@@ -262,6 +272,7 @@ var answerRegions = (function(){
 			clickY.push(y);
 			clickDrag.push(dragging);
             clicksAddedSinceLastCalculation = true;
+			erase.push(erasing);
 		},
         
 		createUserEvents = function () {
@@ -311,7 +322,7 @@ var answerRegions = (function(){
             createUserEvents();
 		},
         
-        clearOutline = function(colorIndex){
+        clearOutline = function(){
             clickY = [];
             clickX = [];
             clickDrag = [];
@@ -384,12 +395,44 @@ var answerRegions = (function(){
             hiddenImageData.value = imageData;
         },
         
+        addRubberButton = function(){
+            var rubberButton = $('<div class="btn btn-default pull-right"><span class="glyphicon glyphicon-erase" aria-hidden="true"></span></div>');
+            $(parentDiv)
+                .parent()
+                .parent()
+                .children(".panel-heading")
+                .prepend(rubberButton);
+            $(rubberButton).click(function(){
+                enableEraser(true);
+            });
+        },
+        
+        addPencilButton = function(){
+            var pencilButton = $('<div class="btn btn-default pull-right"><span class="glyphicon glyphicon-pencil" aria-hidden="true"></span></div>');
+            $(parentDiv)
+                .parent()
+                .parent()
+                .children(".panel-heading")
+                .prepend(pencilButton);
+            $(pencilButton).click(function(){
+                enableEraser(false);
+            });
+        },
+        
+		enableEraser = function(eraseOn){
+			erasing = eraseOn;
+			if(eraseOn){
+				$(parentDiv).addClass("erase");
+			}else{
+				$(parentDiv).removeClass("erase");
+			}
+		},
+        
         /**
          *  EXPORTED
          */
         enableCommon = function(targetDivId, image, answerImg, height, width, id){
-            var parentId = targetDivId;
-            parentDiv = document.getElementById(parentId);
+            parentDiv = document.getElementById(targetDivId);
             questionId = id;
             
             // Create canvas
@@ -428,6 +471,8 @@ var answerRegions = (function(){
             setTargetRegion(questionId);
             originalImage = image;
             setImageRatios(height, width);
+            addPencilButton();
+            addRubberButton();
         },
         
         enableLandmark = function(targetDivId, image, answerImg, height, width, id){
@@ -453,6 +498,16 @@ var answerRegions = (function(){
             registerColoredRegions(answerImg, function(){
                 drawImage(context, originalImage);
                 resourceLoaded();
+            });
+            
+            var clearButtonDiv = $('<div class="btn btn-default pull-right">Clear</div>');
+            $(parentDiv)
+                .parent()
+                .parent()
+                .children(".panel-heading")
+                .prepend(clearButtonDiv);
+            clearButtonDiv.click(function(){
+                clearOutline();
             });
         };
 

@@ -218,7 +218,6 @@ var drawRegions = (function () {
 			if(eraseOn){
 				$(parentDiv).addClass("erase");
 			}else{
-				console.log("REMOVE")
 				$(parentDiv).removeClass("erase");
 			}
 		},
