@@ -7,6 +7,7 @@ from django.shortcuts import render, get_object_or_404, redirect
 
 from app.userprofile.models import UserProfile, UserGroup
 from app.userprofile.forms import UserProfileForm, UserGroupForm
+from app.quiz.models import TestResult
 
 @staff_member_required
 @transaction.atomic
@@ -30,9 +31,13 @@ def new_user(request):
 def view_user(request, user_id):
     userprofile = UserProfile.objects.get(id=user_id)
     groups = userprofile.groups.non_hidden()
+    # test_results = TestResult.objects.all()
+    test_results = TestResult.objects.filter(user = userprofile.user)
+    print(test_results)
     return render(request, 'userprofile/admin/view_user.html',{
         'user' : userprofile,
-        'groups' : groups
+        'groups' : groups,
+        'test_results' : test_results
     })
     
 @staff_member_required

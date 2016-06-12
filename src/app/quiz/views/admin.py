@@ -13,6 +13,7 @@ from ..models import *
 from ..templatetags.question_tags import question_type_from_id
 
 from app.userprofile.models import UserProfile
+from app.userprofile.views.users import view_user
   
 #
 # Test related
@@ -516,4 +517,13 @@ def view_test_results_for_single_test(request, test_id):
         "test_units" : test_units,
         "test_unit_results" : test_unit_results
     })
+    
+@staff_member_required
+def delete_test_result(request, test_result_id):
+    test_result = TestResult.objects.get(id=test_result_id)
+    user = UserProfile.objects.get(user = test_result.user)
+    test_result.delete()
+    messages.success(request, "Successfully deleted test result")
+    
+    return redirect(view_user, user.id)
     

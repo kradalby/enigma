@@ -15,6 +15,7 @@ urlpatterns = [
     url(r'^admin/questions/$', admin.list_questions, name='admin_list_questions'),
     url(r'^admin/(?P<test_id>\d+)/userlist/$', admin.view_list_of_users_taking_test, name='admin_view_list_of_users_taking_test'),
     url(r'^admin/(?P<test_id>\d+)/user/(?P<user_id>\d+)/$', admin.view_test_result_for_user, name='admin_view_test_result_for_user'),
+    url(r'^admin/testresult/(?P<test_result_id>\d+)/delete/$', admin.delete_test_result, name='admin_delete_test_result'),
     
     # Test results
     url(r'^admin/result/delete/$', admin.delete_test_results, name='admin_delete_test_results'),

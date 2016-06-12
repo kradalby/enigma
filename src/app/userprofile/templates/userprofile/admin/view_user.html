@@ -26,7 +26,7 @@
     Courses attending:
 </h2>
 <div class="row">
-    <table>
+    <table class="table">
         {% if user|courses_attending %}
             <tr>
                 <th>Course name</th>
@@ -60,7 +60,7 @@
     Group memberships:
 </h2>
 <div class="row">
-    <table>
+    <table class="table">
         {% if groups %}
             <tr>
                 <th>Group name</th>
@@ -84,6 +84,40 @@
             <tr>
                 <td>
                     This user is not member of any groups.
+                </td>
+            </tr>
+        {% endfor %}
+    </table>
+</div>
+
+<h2>
+    Test results:
+</h2>
+<div class="row">
+    <table class="table">
+        {% if test_results %}
+            <tr>
+                <th>Test result</th>
+                <th>Delete test result</th>
+            </tr>
+        {% endif %}
+        {% for result in test_results %}
+            <tr>
+                <td>
+                    <a href="{% url 'admin_view_test_result_for_user' result.test.id user.id %}">
+                        {{result.test }} <span class="badge">{{ result.score_fraction }}</span>
+                    </a>
+                </td>
+                <td>
+                    <a href="{% url 'admin_delete_test_result' result.id %}">
+                        <span class="glyphicon glyphicon-remove red" aria-hidden="true"> Delete</span>
+                    </a>
+                </td>
+            </tr>
+        {% empty %}
+            <tr>
+                <td>
+                    This user has not taken any tests yet.
                 </td>
             </tr>
         {% endfor %}
