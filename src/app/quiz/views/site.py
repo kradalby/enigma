@@ -117,4 +117,4 @@ def submit_test(request, test_id):
             test_unit_result.answer_image = _get_answer_image(request, question_id)
             test_unit_result.save()
            
-    return redirect('/')
+    return redirect('/survey/')

@@ -134,6 +134,8 @@ var answerRegions = (function(){
                         "blue": blue,
                         "alpha": 255
                     });
+                }else{
+                    hiddenAnswerField.value = "{}";
                 }
             };
         },

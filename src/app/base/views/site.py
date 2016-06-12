@@ -19,3 +19,7 @@ def index(request):
         "courses" : courses,
         "tests" : tests
     })
+    
+@login_required
+def survey(request):
+    return render(request, 'base/site/survey.html')
