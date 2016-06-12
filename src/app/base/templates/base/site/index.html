@@ -39,8 +39,7 @@
                                         <p>You have already answered this test.</p>
                                         <p>You scored 
                                             <span class="badge badge-success">
-                                                {{ test_answered_by_current_user.correct_answers|length }}/
-                                                {{ test.test_unit_count }}
+                                                {{ test_answered_by_current_user.score_fraction }}
                                             </span>.
                                         </p>
                                     {% else %}

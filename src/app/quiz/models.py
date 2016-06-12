@@ -49,7 +49,10 @@ class TestResult(models.Model):
         return [x for x in test_units if not x.correct_answer]
         
     def score_fraction(self):
-        return str(len(self.correct_answers())) + "/" + str(len(self.test_unit_results()))
+        test_unit_results = self.test_unit_results()
+        score = sum([x.score for x in test_unit_results])
+        max_score = sum([x.max_score for x in test_unit_results])
+        return str(score) + "/" + str(max_score)
         
 class TestUnit(models.Model):
     question = models.CharField(max_length = 255, verbose_name = "Question")
@@ -219,6 +222,8 @@ class TestUnitResult(models.Model):
     answer = models.CharField(max_length=255, blank=True, null=True, default="")
     answer_image = models.ImageField(blank=True)
     target_color_region = models.CharField(max_length=255)
+    score = models.PositiveSmallIntegerField()
+    max_score = models.PositiveSmallIntegerField()
     
     def target_outline_region(self):
         try:

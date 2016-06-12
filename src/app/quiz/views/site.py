@@ -10,6 +10,7 @@ import random
 import string
 
 from ..models import *
+from app.base.models import GlobalSettings
    
 @login_required
 def single_test (request, test_id):
@@ -31,12 +32,37 @@ def single_test (request, test_id):
         "questions" : questions,
     })
 
-def _add_test_result(question_type, question_id, testresult, answer):
+def _get_score(question_type, correct_answer, distance = None):
+    if not correct_answer:
+        return 0
+    settings = GlobalSettings.objects.all().first()
+    if question_type == MultipleChoiceQuestion:
+        return settings.mpc_points
+    elif question_type == MultipleChoiceQuestionWithImage:
+        return settings.mpci_points
+    elif question_type == MultipleChoiceQuestionWithVideo:
+        return settings.mpcv_points
+    elif question_type == LandmarkQuestion:
+        return settings.landmark_points
+    elif question_type == OutlineQuestion:
+        if settings.outline_max_threshold < distance:
+            return 0
+        elif settings.outline_min_threshold > distance:
+            return settings.outline_points
+        else:
+            max = settings.outline_max_threshold
+            min = settings.outline_min_threshold
+            points = settings.outline_points
+            return int(round((max-distance)/(max-min)*points, -1))
+
+def _add_test_result(question_type, question_id, testresult, answer, max_score):
     test_unit_result = TestUnitResult()
     test_unit_result.test_result = testresult
     test_unit_result.test_unit = question_type.objects.get(id=question_id)
     test_unit_result.correct_answer = test_unit_result.test_unit.correct_answer == answer
     test_unit_result.answer = answer
+    test_unit_result.score = _get_score(question_type, test_unit_result.correct_answer)
+    test_unit_result.max_score = max_score
     test_unit_result.save()
     
 def _json_color_to_rgb(json_color):
@@ -76,17 +102,18 @@ def submit_test(request, test_id):
     testresult.test = get_object_or_404(Test, pk=test_id)
     testresult.user = request.user
     testresult.save()
+    settings = GlobalSettings.objects.all().first()
     for testunit_name in request.POST:
         answer = request.POST[testunit_name]
         if testunit_name.startswith("mpc-"):
             question_id = testunit_name.split("-", 1)[1]
-            _add_test_result(MultipleChoiceQuestion, question_id, testresult, answer)
+            _add_test_result(MultipleChoiceQuestion, question_id, testresult, answer, settings.mpc_points)
         elif testunit_name.startswith("mpci-"):
             question_id = testunit_name.split("-", 1)[1]
-            _add_test_result(MultipleChoiceQuestionWithImage, question_id, testresult, answer)
+            _add_test_result(MultipleChoiceQuestionWithImage, question_id, testresult, answer, settings.mpci_points)
         elif testunit_name.startswith("mpcv-"):
             question_id = testunit_name.split("-", 1)[1]
-            _add_test_result(MultipleChoiceQuestionWithVideo, question_id, testresult, answer)
+            _add_test_result(MultipleChoiceQuestionWithVideo, question_id, testresult, answer, settings.mpcv_points)
         elif testunit_name.startswith("landmark_question-"):
             question_id = testunit_name.split("-", 1)[1]
             question_model = LandmarkQuestion.objects.get(id=question_id)
@@ -100,6 +127,8 @@ def submit_test(request, test_id):
                     test_unit_result.answer = _json_color_to_rgb(answer)
                     test_unit_result.target_color_region = v
             test_unit_result.answer_image = _get_answer_image(request, question_id)
+            test_unit_result.score = _get_score(LandmarkQuestion, test_unit_result.correct_answer)
+            test_unit_result.max_score = settings.landmark_points
             test_unit_result.save()
         elif testunit_name.startswith("outline_question-"):
             question_id = testunit_name.split("-", 1)[1]
@@ -115,6 +144,8 @@ def submit_test(request, test_id):
                 elif k == "region-%s-color" % question_model.id:
                     test_unit_result.target_color_region = v
             test_unit_result.answer_image = _get_answer_image(request, question_id)
+            test_unit_result.score = _get_score(OutlineQuestion, test_unit_result.correct_answer, test_unit_result.correct_answer)
+            test_unit_result.max_score = settings.outline_points
             test_unit_result.save()
            
     return redirect('/survey/')

@@ -8,4 +8,5 @@ urlpatterns = [
     url(r'^survey/$', site.survey, name='survey'),
     # Admin
     url(r'^admin/$', admin.index, name='admin_index'),
+    url(r'^admin/settings/$', admin.settings, name='admin_settings'),
 ]

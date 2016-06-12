@@ -123,7 +123,7 @@
                     {% if test_unit|is_landmark %}
                         <table class="table">
                             <tr>
-                                <td rowspan="3"> 
+                                <td rowspan="4"> 
                                     <div class="img-container">
                                         {% if test_unit_result.answer_image %}
                                             <img class="top" src="{{ test_unit_result.answer_image.url }}" />
@@ -151,11 +151,17 @@
                                     {% endif %}
                                 </td>                                
                             </tr>
+                            <tr>
+                                <td>Score</td>
+                                <td>
+                                    <span class="badge">{{test_unit_result.score}}/{{test_unit_result.max_score}} points</span>
+                                </td>
+                            </tr>
                         </table>
                     {% elif test_unit|is_outline %}
                         <table class="table">
                             <tr>
-                                <td rowspan="4">
+                                <td rowspan="5">
                                     <div class="img-container">
                                         <img class="top" src="{{ test_unit_result.answer_image.url }}" />
                                         <img class="middle" src="{{ test_unit.outlinequestion.outline_drawing.url }}" />
@@ -183,13 +189,22 @@
                                     {{test_unit_result.answer|floatformat:3}}
                                 </td>
                             </tr>
+                            <tr>
+                                <td>Score</td>
+                                <td>
+                                    <span class="badge">{{test_unit_result.score}}/{{test_unit_result.max_score}} points</span>
+                                </td>
+                            </tr>
                         </table>
                     {% elif test_unit|is_multiple_choice_question %}
                         <b>Answered:</b> {{ test_unit_result.answer }}
+                        <span class="badge">{{test_unit_result.score}}/{{test_unit_result.max_score}} points</span>
                     {% elif test_unit|is_multiple_choice_question_with_image %}
                         <b>Answered:</b> {{ test_unit_result.answer }}
+                        <span class="badge">{{test_unit_result.score}}/{{test_unit_result.max_score}} points</span>
                     {% elif test_unit|is_multiple_choice_question_with_video %}
                         <b>Answered:</b> {{ test_unit_result.answer }}
+                        <span class="badge">{{test_unit_result.score}}/{{test_unit_result.max_score}} points</span>
                     {% endif %}
                 </div>
                 <hr/>
