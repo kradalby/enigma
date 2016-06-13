@@ -1,6 +1,7 @@
 from django.contrib.admin.views.decorators import staff_member_required
 from django.shortcuts import render
 from django.db import transaction
+from django.contrib import messages
 
 from ..forms import GlobalSettingsForm
 from ..models import GlobalSettings
@@ -16,6 +17,7 @@ def settings(request):
         form = GlobalSettingsForm(request.POST)
         if form.is_valid():
             GlobalSettings.objects.all().delete()
+            messages.success(request, 'Successfully updated global settings')
             form.save()
     else:
         instance = GlobalSettings.objects.all().first()
