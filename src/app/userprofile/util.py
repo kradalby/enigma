@@ -16,12 +16,11 @@ def generate_users(amount, group, prefix):
 def generate_user(prefix, suffix_count = 1):
     user = User()
     user.username = _generate_username(prefix, suffix_count)
-    password = random.randint(1000, 9999)
     user.set_password(user.username)
     user.save()
     userprofile = UserProfile()
     userprofile.user = user
-    userprofile.password = password
+    userprofile.password = user.username
     userprofile.save()
     return userprofile
     
