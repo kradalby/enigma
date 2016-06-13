@@ -17,7 +17,7 @@ def generate_user(prefix, suffix_count = 1):
     user = User()
     user.username = _generate_username(prefix, suffix_count)
     password = random.randint(1000, 9999)
-    user.set_password(str(password))
+    user.set_password(user.username)
     user.save()
     userprofile = UserProfile()
     userprofile.user = user

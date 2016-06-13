@@ -11,6 +11,6 @@ Vagrant.configure(2) do |config|
 
   config.vm.provision :shell, :inline => 'export DEBIAN_FRONTEND=noninteractive'
   config.ssh.shell = "bash -c 'BASH_ENV=/etc/profile exec bash'"
-  config.vm.provision :shell, :path => "scripts/bootstrap.sh" 
+  config.vm.provision :shell, :path => "scripts/setup-environment.sh" 
   config.vm.provision :shell, :inline => 'echo "cd /vagrant;. .env;" >> /home/vagrant/.bashrc'
 end
