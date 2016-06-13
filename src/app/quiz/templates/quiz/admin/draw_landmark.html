@@ -117,7 +117,7 @@
                     </span>
                 </p>
                 <div class="pull-right">
-                    <p>Eraser / Brush size:</p>
+                    <p>{% comment %}Eraser / {% endcomment %}Brush size:</p>
                     <div class="btn-group">
                         <button style="width: 3.5em; height: 3em;" type='button' class='btn btn-default pull-right' onclick='drawRegions.setLineWidth(15)'>
                             <span style="font-size: 1.75em;" class='glyphicon glyphicon-pencil'></span>
@@ -128,9 +128,11 @@
                         <button style="width: 3.5em; height: 3em;" type='button' class='btn btn-default pull-right' onclick='drawRegions.setLineWidth(2)'>
                             <span style="font-size: 0.75em;" class='glyphicon glyphicon-pencil'></span>
                         </button>
+                        {% comment %}
                         <button style="width: 3.5em; height: 3em;" type='button' class='btn btn-default pull-right' onclick='drawRegions.eraseColor(true);$("#selected-color").css("background-color", "white");'>
                             <span style="font-size: 1.5em;" class='glyphicon glyphicon-erase'></span>
                         </button>
+                        {% endcomment %}
                     </div>
                 </div>
             </div>

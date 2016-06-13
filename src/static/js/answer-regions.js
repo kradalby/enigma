@@ -472,7 +472,7 @@ var answerRegions = (function(){
             originalImage = image;
             setImageRatios(height, width);
             addPencilButton();
-            addRubberButton();
+            // addRubberButton();
             
             // We have to do the following because the next button does not exist yet...
             $(document).on('click', 'li.next > a.test-navigation', function(){{
