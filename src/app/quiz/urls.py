@@ -6,8 +6,12 @@ urlpatterns = [
     # Site
     url(r'^view/(?P<test_id>\d+)/$', site.single_test, name='single_test'),
     url(r'^submit/(?P<test_id>\d+)/$', site.submit_test, name='submit_test'),
+
+    url(r'^result/(?P<test_result_id>\d+)/$', site.view_test_result, name='view_test_result'),
+    
     # Admin
     url(r'^admin/new/$', admin.new_test, name='admin_new_test'),
+    url(r'^admin/edit/(?P<test_id>\d+)/$', admin.edit_test, name='admin_edit_test'),
     url(r'^admin/(?P<test_id>\d+)/$', admin.add_questions_to_test, name='admin_add_questions_to_test'),
     url(r'^admin/(?P<test_id>\d+)/$', admin.add_questions_to_test, name='admin_view_test'),
     url(r'^admin/(?P<test_id>\d+)/delete/$', admin.delete_test, name='admin_delete_test'),

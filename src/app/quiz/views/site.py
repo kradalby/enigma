@@ -136,16 +136,31 @@ def submit_test(request, test_id):
             test_unit_result = TestUnitResult()
             test_unit_result.test_result = testresult
             test_unit_result.test_unit = question_model
-            test_unit_result.correct_answer = False
             for k,v in request.POST.items():
                 if k == "outline_question-%s" % question_model.id:
-                    test_unit_result.correct_answer = float(answer if answer else 99999) < 40.0
                     test_unit_result.answer = answer
                 elif k == "region-%s-color" % question_model.id:
                     test_unit_result.target_color_region = v
             test_unit_result.answer_image = _get_answer_image(request, question_id)
-            test_unit_result.score = _get_score(OutlineQuestion, test_unit_result.correct_answer, float(answer) if answer else 99999)
+            test_unit_result.score = _get_score(OutlineQuestion, True, float(answer) if answer else 99999)
+            test_unit_result.correct_answer = 0 < test_unit_result.score
             test_unit_result.max_score = settings.outline_points
             test_unit_result.save()
            
     return redirect('/survey/')
+    
+@login_required
+def view_test_result(request, test_result_id):
+    test_result = get_object_or_404(TestResult, id=test_result_id)
+    test = test_result.test
+    user = request.user
+    test_unit_results = TestUnitResult.objects.filter(test_result=test_result)
+    test_units = TestUnit.objects.filter(test=test)
+    return render(request, 'quiz/site/view_test_result.html', {
+        "test_unit_results" : test_unit_results,
+        "user" : user,
+        "test" : test,
+        "test_result" : test_result,
+        "test_units" : test_units
+    })
+    

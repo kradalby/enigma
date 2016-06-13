@@ -2,11 +2,11 @@
 
 {% block admincontent %}
 <h1>
-    Edit question
+    Edit test
 </h1>
 <div class="row">
     <h4>
-        Question: {{ question }}
+        Test: {{ test }}
     </h4>
     <form action="" method="post">
         {% csrf_token %}
@@ -15,11 +15,7 @@
         </table>
         <br/>
         <input type="submit" class="btn btn-success" value="Save" />
-        {% if test_id %}
-            <a href="{% url 'admin_add_questions_to_test' test_id %}" class="btn btn-danger">Cancel</a>
-        {% else %}
-            <a href="{% url 'admin_list_questions' %}" class="btn btn-danger">Cancel</a>
-        {% endif %}
+        <a href="{% url 'admin_add_questions_to_test' test.id %}" class="btn btn-danger">Cancel</a>
     </form>
 </div>
 {% endblock %}

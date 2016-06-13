@@ -32,6 +32,21 @@ def new_test(request):
     return render(request, 'quiz/admin/new_test.html', {'form': form})
     
 @staff_member_required
+def edit_test(request, test_id):
+    test = get_object_or_404(Test, id=test_id)
+    form = TestForm(request.POST or None, instance=test)
+    if request.method == 'POST':
+        if form.is_valid():
+            test = form.save()
+            messages.success(request, 'Successfully updated test: %s.' % test)
+            return redirect('admin_add_questions_to_test', test.id)
+
+    return render(request, 'quiz/admin/edit_test.html',{
+        'form' : form,
+        'test' : test,
+    })
+    
+@staff_member_required
 def add_questions_to_test(request, test_id):
     test = Test.objects.get(id=test_id)
     return render(request, 'quiz/admin/add_questions_to_test.html', {
