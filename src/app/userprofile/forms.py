@@ -55,7 +55,7 @@ class UserGroupForm(ModelForm):
     def save(self, commit=True):
         amount = self.cleaned_data.get('generated_participants_amount')
         prefix = self.cleaned_data.get('generated_participants_prefix')
-        self.instance.prefix = prefix
+        self.instance.prefix = prefix if prefix else self.instance.name
         saved_instance = super(UserGroupForm, self).save(commit=commit)
         if amount and prefix:
             generate_users(amount, saved_instance, prefix)
