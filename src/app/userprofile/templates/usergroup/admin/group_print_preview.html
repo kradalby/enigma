@@ -1,0 +1,44 @@
+{% load staticfiles %}
+<!DOCTYPE HTML>
+<html>
+
+<head>
+    <title>Medical Imaging Quiz | Project by Marte Nordrik Hallan</title>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="medical imaging quiz website">
+    <meta name="author" content="Marte Nordrik Hallan">
+    <!-- CSS -->
+    <link rel="stylesheet" href="{% static "css/bootstrap.min.css" %}" type="text/css">
+    <!-- JS -->
+    <script src="{% static "js/jquery-2.2.1.min.js" %}"></script>
+    <script src="{% static "js/bootstrap.min.js" %}"></script>
+</head>
+
+<body>
+    <div id="page-content">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="row">
+                    {% for user in group.users %}
+                        <div class="col-xs-6 col-sm-4" style="border:1px solid black">
+                            <table class="table">
+                                <tr>
+                                    <th>Username</th>
+                                    <td>{{user}}</td>
+                                </tr>
+                                <tr>
+                                    <th>Password</th>
+                                    <td>{{user.password}}</td>
+                                </tr>
+                            </table>
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>

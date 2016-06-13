@@ -77,8 +77,14 @@ def unregister_user_from_group(request, group_id, user_id):
 @staff_member_required
 def generate_user_for_group(request, group_id):
     group = get_object_or_404(UserGroup, id=group_id)
-    user = generate_user(group.name)
+    user = generate_user(group.prefix)
     user.groups.add(group)
     messages.success(request, 'Successfully generated a user for %s.' % group.name)
     return redirect(view_group, group_id)
     
+@staff_member_required
+def group_print_preview(request, group_id):
+    group = get_object_or_404(UserGroup, id=group_id)
+    return render(request, 'usergroup/admin/group_print_preview.html',{
+        'group' : group
+    })  

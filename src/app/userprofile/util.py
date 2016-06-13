@@ -13,13 +13,15 @@ def generate_users(amount, group, prefix):
         created+=1
         
 @transaction.atomic
-def generate_user(prefix, suffix_count = 1, password = "question"):
+def generate_user(prefix, suffix_count = 1):
     user = User()
     user.username = _generate_username(prefix, suffix_count)
-    user.set_password(password)
+    password = random.randint(1000, 9999)
+    user.set_password(str(password))
     user.save()
     userprofile = UserProfile()
     userprofile.user = user
+    userprofile.password = password
     userprofile.save()
     return userprofile
     

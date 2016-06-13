@@ -31,7 +31,6 @@ def new_user(request):
 def view_user(request, user_id):
     userprofile = UserProfile.objects.get(id=user_id)
     groups = userprofile.groups.non_hidden()
-    # test_results = TestResult.objects.all()
     test_results = TestResult.objects.filter(user = userprofile.user)
     print(test_results)
     return render(request, 'userprofile/admin/view_user.html',{
