@@ -23,7 +23,7 @@ class UserProfileForm(ModelForm):
     def save(self, commit=True):
         user = User()
         user.username = self.cleaned_data['username']
-        user.set_password("question")
+        user.set_password(user.username)
         if commit:
             user.save()
             try:
