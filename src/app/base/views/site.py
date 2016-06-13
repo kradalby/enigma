@@ -48,5 +48,6 @@ def change_password(request):
 
     return render(request, 'base/site/change_password.html', {
         'form': form,
-        'user': userprofile
+        'user': user,
+        'userprofile': userprofile
     })
