@@ -12,7 +12,7 @@
     <tr>
         <th>Username</th>
         <th>Score</th>
-        <th>Delete test result</th>
+        <th>Clear test result</th>
     </tr>
     {% for user in users %}
         <tr>
@@ -32,11 +32,11 @@
                 {% if test|answered_by_user:user %}
                 {% with test|answered_by_user:user as test_result %}
                 <a href="{% url 'admin_delete_test_result_in_test' test_result.id %}">
-                    <span class="glyphicon glyphicon-remove red" aria-hidden="true"> Delete</span>
+                    <span class="glyphicon glyphicon-trash red" aria-hidden="true"> Clear</span>
                 </a>
                 {% endwith %}
                 {% else %}
-                   <span class="glyphicon glyphicon-remove" aria-hidden="true"></span> 
+                   <span class="glyphicon glyphicon-trash" aria-hidden="true"></span> 
                 {% endif %}
             </td>
         </tr>
