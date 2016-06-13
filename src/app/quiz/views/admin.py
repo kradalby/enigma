@@ -527,3 +527,20 @@ def delete_test_result(request, test_result_id):
     
     return redirect(view_user, user.id)
     
+@staff_member_required
+def delete_test_result_in_test(request, test_result_id):
+    test_result = get_object_or_404(TestResult, id=test_result_id)
+    test_id = test_result.test.id
+    test_result.delete()
+    messages.success(request, "Successfully deleted test result")
+    
+    return redirect(view_list_of_users_taking_test, test_id)
+    
+@staff_member_required
+def delete_test_results_in_test(request, test_id):
+    test = get_object_or_404(Test, id=test_id)
+    TestResult.objects.filter(test=test).delete()
+    messages.success(request, "Successfully deleted test results for {0}".format(test))
+    
+    return redirect(list_tests)
+    

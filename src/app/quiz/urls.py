@@ -15,11 +15,13 @@ urlpatterns = [
     url(r'^admin/questions/$', admin.list_questions, name='admin_list_questions'),
     url(r'^admin/(?P<test_id>\d+)/userlist/$', admin.view_list_of_users_taking_test, name='admin_view_list_of_users_taking_test'),
     url(r'^admin/(?P<test_id>\d+)/user/(?P<user_id>\d+)/$', admin.view_test_result_for_user, name='admin_view_test_result_for_user'),
-    url(r'^admin/testresult/(?P<test_result_id>\d+)/delete/$', admin.delete_test_result, name='admin_delete_test_result'),
     
     # Test results
     url(r'^admin/result/delete/$', admin.delete_test_results, name='admin_delete_test_results'),
+    url(r'^admin/result/delete/(?P<test_result_id>\d+)/$', admin.delete_test_result_in_test, name='admin_delete_test_result_in_test'),
+    url(r'^admin/result/delete/test/(?P<test_id>\d+)/$', admin.delete_test_results_in_test, name='admin_delete_test_results_in_test'),
     url(r'^admin/result/view/(?P<test_id>\d+)/$', admin.view_test_results_for_single_test, name='admin_view_test_results_for_single_test'),
+    url(r'^admin/result/(?P<test_result_id>\d+)/delete/$', admin.delete_test_result, name='admin_delete_test_result'),
     
     # Generic
     url(r'^admin/question/add/(?P<test_id>\d+)/(?P<question_id>\d+)/(?P<question_type_id>\d+)/$', admin.add_question_to_test, name='admin_add_question_to_test'),
