@@ -53,7 +53,7 @@ def _get_score(question_type, correct_answer, distance = None):
             max = settings.outline_max_threshold
             min = settings.outline_min_threshold
             points = settings.outline_points
-            return int(round((max-distance)/(max-min)*points, -1))
+            return int((max-distance)/(max-min)*points)
 
 def _add_test_result(question_type, question_id, testresult, answer, max_score):
     test_unit_result = TestUnitResult()
@@ -139,12 +139,12 @@ def submit_test(request, test_id):
             test_unit_result.correct_answer = False
             for k,v in request.POST.items():
                 if k == "outline_question-%s" % question_model.id:
-                    test_unit_result.correct_answer = (float(answer if answer else 99999) < 40.0)
+                    test_unit_result.correct_answer = float(answer if answer else 99999) < 40.0
                     test_unit_result.answer = answer
                 elif k == "region-%s-color" % question_model.id:
                     test_unit_result.target_color_region = v
             test_unit_result.answer_image = _get_answer_image(request, question_id)
-            test_unit_result.score = _get_score(OutlineQuestion, test_unit_result.correct_answer, test_unit_result.correct_answer)
+            test_unit_result.score = _get_score(OutlineQuestion, test_unit_result.correct_answer, float(answer) if answer else 99999)
             test_unit_result.max_score = settings.outline_points
             test_unit_result.save()
            
