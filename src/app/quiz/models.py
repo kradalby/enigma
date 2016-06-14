@@ -8,6 +8,7 @@ class Test(models.Model):
     name = models.CharField(max_length=255)
     course = models.ForeignKey(Course)
     user_can_see_test_result = models.BooleanField(default=False)
+    user_can_delete_test_result = models.BooleanField(default=False)
     
     def __str__(self):
         return self.name

@@ -5,7 +5,7 @@ from .models import *
 class TestForm(ModelForm):
     class Meta:
         model = Test
-        fields = ["name","course","user_can_see_test_result",]
+        fields = ["name","course","user_can_see_test_result","user_can_delete_test_result",]
 
 class MultipleChoiceQuestionForm(ModelForm):
     class Meta:
