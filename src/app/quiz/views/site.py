@@ -1,8 +1,10 @@
 from django.contrib.auth import authenticate, login, logout
+from django.core.exceptions import ObjectDoesNotExist
 from django.contrib.auth.decorators import login_required
 from django.core.files.base import ContentFile
 from django.db import transaction
 from django.shortcuts import render, get_object_or_404, redirect
+from django.contrib import messages
 import base64
 import json
 import re
@@ -11,6 +13,8 @@ import string
 
 from ..models import *
 from app.base.models import GlobalSettings
+
+from app.base.views.site import index
    
 @login_required
 def single_test (request, test_id):
@@ -164,3 +168,12 @@ def view_test_result(request, test_result_id):
         "test_units" : test_units
     })
     
+@login_required
+def delete_test_result(request, test_result_id):
+    try:
+        test_result = TestResult.objects.get(id=test_result_id)
+        test_result.delete()
+        messages.success(request, 'Successfully deleted test result.')
+    except ObjectDoesNotExist:
+        messages.warning(request, 'The test result has already been deleted. You may have clicked twice.')
+    return redirect(index)

@@ -8,6 +8,7 @@ urlpatterns = [
     url(r'^submit/(?P<test_id>\d+)/$', site.submit_test, name='submit_test'),
 
     url(r'^result/(?P<test_result_id>\d+)/$', site.view_test_result, name='view_test_result'),
+    url(r'^result/delete/(?P<test_result_id>\d+)/$', site.delete_test_result, name='delete_test_result'),
     
     # Admin
     url(r'^admin/new/$', admin.new_test, name='admin_new_test'),

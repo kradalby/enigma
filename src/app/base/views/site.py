@@ -14,8 +14,6 @@ def index(request):
         courses = Course.objects.all()
     else:
         userprofile = UserProfile.objects.get(user=user)
-        if not userprofile.has_changed_password:
-            return redirect(change_password)
         groups = userprofile.groups.all()
         courses = Course.objects.filter(groups=groups)
     tests = Test.objects.all()

@@ -47,6 +47,9 @@
                                             <a href="{% url 'view_test_result' test_answered_by_current_user.id %}">Compare your results with the answers.</a>
                                         </p>
                                         {% endif %}
+                                        <p>
+                                            <a onclick="return confirm('Are you sure?');" href="{% url 'delete_test_result' test_answered_by_current_user.id %}">Delete old test result in order to try again.</a>
+                                        </p>
                                     {% else %}
                                         <p>This test contains {{ test.test_unit_count }} question{{ test.test_unit_count|pluralize }}.</p>
                                         <br/>
