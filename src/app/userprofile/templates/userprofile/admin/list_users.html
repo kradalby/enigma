@@ -2,111 +2,40 @@
 
 {% block admincontent %}
 <style>
-    body{
-        font-family: 'Helvetica Neue', Helvetica, Arial;
-        font-size: 14px;
-        line-height: 20px;
-        font-weight: 400;
-        color: #3b3b3b;
-        -webkit-font-smoothing: antialiased;
-        font-smoothing: antialiased;
-    }
-
-    .table-wrapper{
-        margin: 0 auto;
-        padding: 40px;
-        max-width: 800px;
-    }
-
-    .table{
-        margin: 0 0 40px 0;
-        width: 100%;
-        box-shadow: 0 1px 3px rgba(0,0,0,0.2);
-        display: table;
-    }
-    @media screen and (max-width: 580px){
-        .table{
-            display: block
-        }
-    }
-    
-    .red{
+   .red{
         color: red;
-    }
-    
-    .green{
-        color: green;
-    }
-    
-    .table-row{
-        display: table-row;
-        background: #f6f6f6;
-    }
-    
-    .table-row:nth-of-type(odd){
-        background: #e9e9e9;
-    }
-    
-    .table-row.blue{
-        background: #59b0e9
-    }
-    
-    @media screen and (max-width: 580px){
-        .table-row{
-            padding: 8px 0;
-            display: block;
-        }
-    }
-
-    .cell{
-        padding: 6px 12px;
-        display: table-cell;
-    }
-
-    @media screen and (max-width: 580px){
-        .cell{
-            padding: 2px 12px;
-            display: block;
-        }
     }
 </style>
 <h1 class="page-header">
     Users
 </h1>
-<div class="table-wrapper">
-    <div class="table">
-        <div class="table-row header blue">
-            <div class="cell">
-                User name
-            </div>
-            <div class="cell">
-                Edit user
-            </div>
-            <div class="cell">
-                Delete user
-            </div>
-        </div>
-        {% for user in users %}
-            <div class="table-row">
-                <div class="cell">
-                    {{ user }}
-                </div>
-                <div class="cell">
-                    <a href="{% url 'admin_view_user' user.id %}">
-                        <span class="glyphicon glyphicon-pencil" aria-hidden="true"> Edit</span>
-                    </a>
-                </div>
-                <div class="cell">
-                    <a href="{% url 'admin_delete_user' user.id %}">
-                        <span class="glyphicon glyphicon-remove red" aria-hidden="true"> Delete</span>
-                    </a>
-                </div>
-            </div>
-        {% empty %}
-            <div class="cell">
-                No users created.
-            </div>
-        {% endfor %}
-    </div>
-</div>
+
+<table class="table">
+    <tr>
+        <th>User name</th>
+        <th>Edit user</th>
+        <th>Delete user</th>
+    </tr>
+    {% for user in users %}
+        <tr>
+            <td>
+                {{ user }}
+            </td>
+            <td>
+                <a href="{% url 'admin_view_user' user.id %}">
+                    <span class="glyphicon glyphicon-pencil" aria-hidden="true"> Edit</span>
+                </a>
+            </td>
+            <td>
+                <a href="{% url 'admin_delete_user' user.id %}">
+                    <span class="glyphicon glyphicon-remove red" aria-hidden="true"> Delete</span>
+                </a>
+            </td>
+        </tr>
+    {% empty %}
+        <tr>
+            <td colspan="3">No users created.</td>
+        </tr>
+    {% endfor %}
+</table>
 {% endblock %}

@@ -9,7 +9,7 @@
 </h4>
 <form action="" method="post" enctype="multipart/form-data">
     {% csrf_token %}
-    <table>
+    <table class="table">
         {{ form.as_table }}
     </table>
     <input type="submit" class="btn btn-success" value="Add question" />

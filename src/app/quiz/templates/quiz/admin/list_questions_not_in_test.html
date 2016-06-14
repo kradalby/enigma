@@ -3,19 +3,38 @@
 {% load question_tags %}
 
 {% block admincontent %}
+<style>
+    li:hover
+    {
+         background-color: #fbfbfb;
+         cursor: pointer; 
+    }
+</style>
 <h1>
     {{ questions|first|question_type }} not added to {{ test }}:
 </h1>
-<ul>
+<ul class="list-group">
     {% for question in questions %}
-        <li>
-            <a href="{% url 'admin_add_question_to_test' test.id question.id question|question_type_id %}">{{ question }}</a>
+        <li class="list-group-item">
+            <a class="list-item" href="{% url 'admin_add_question_to_test' test.id question.id question|question_type_id %}">{{ question }}</a>
         </li>
     {% empty %}
-        <li>
+        <li class="list-group-item">
             No questions are created yet, or this test contains all questions. <br/>
         </li>
     {% endfor %}
     <a href="{% url 'admin_add_questions_to_test' test.id %}" class="btn btn-danger">Cancel</a>
 </ul>
+<script>
+    $('a').click(function(ev){
+        ev.stopPropagation();
+    }).parent().click(function(ev){
+        ev.preventDefault();
+        $(this).addClass('active').siblings().removeClass('active');
+        var href = $(this).children('a.list-item').attr('href');
+        if(href){
+            window.location.href = href;
+        }
+    });
+</script>
 {% endblock %}

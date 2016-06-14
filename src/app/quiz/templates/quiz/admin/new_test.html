@@ -4,13 +4,11 @@
 <h1 class="page-header">
     New test
 </h1>
-<div class="row">
-    <form action="" method="post">
-        {% csrf_token %}
-        <table>
-            {{ form.as_table }}
-        </table>
-        <input type="submit" class="btn btn-success" value="Continue" />
-    </form>
-</div>
+<form action="" method="post">
+    {% csrf_token %}
+    <table class="table">
+        {{ form.as_table }}
+    </table>
+    <input type="submit" class="btn btn-success" value="Continue" />
+</form>
 {% endblock %}

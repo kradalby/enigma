@@ -5,16 +5,6 @@
     .red{
         color: red;
     }
-    td{
-        padding-left: 10px;
-        padding-right: 10px;
-        padding-top: 5px;
-        padding-bottom: 5px;
-    }
-    th{
-        padding-right: 10px;
-        padding-left: 10px;
-    }
 </style>
 <h1>
     {{ course.name }}
@@ -28,77 +18,70 @@
 <h2>
     Groups: {{ groups|length }}
 </h2>
-<div class="row">
-    <table>
+<table class="table">
+    <tr>
+        <th>Group name</th>
+        <th>Participants</th>
+        <th>Unregister group from course</th>
+    </tr>
+    {% for group in groups %}
         <tr>
-            <th>Group name</th>
-            <th>Participants</th>
-            <th>Unregister group from course</th>
+            <td>
+                <a href="{% url 'admin_view_group' group.id %}">
+                    {{ group }}
+                </a>
+            </td>
+            <td>
+                {{group.users|length}}
+            </td>
+            <td>
+                <a href="{% url 'admin_unregister_group_from_course' course.id group.id %}">
+                    <span class="glyphicon glyphicon-remove red" aria-hidden="true"> Unregister
+                </a>
+            </td>
         </tr>
-        {% for group in groups %}
-            <tr>
-                <td>
-                    <a href="{% url 'admin_view_group' group.id %}">
-                        {{ group }}
-                    </a>
-                </td>
-                <td>
-                    {{group.users|length}}
-                </td>
-                <td>
-                    <a href="{% url 'admin_unregister_group_from_course' course.id group.id %}">
-                        <span class="glyphicon glyphicon-remove red" aria-hidden="true"> Unregister
-                    </a>
-                </td>
-            </tr>
-        {% endfor %}
-    </table>
-</div>
+    {% endfor %}
+</table>
 <h2>
     Participants without groups: {{ participants|length }}
 </h2>
-<div class="row">
-    <table>
+<table class="table">
+    <tr>
+        <th>Username</th>
+        <th>Has logged in</th>
+        <th>Unregister user from course</th>
+    </tr>
+    {% for participant in participants %}
         <tr>
-            <th>Username</th>
-            <th>Has logged in</th>
-            <th>Unregister user from course</th>
+            <td>
+                <a href="{% url 'admin_view_user' participant.id %}">
+                    {{ participant }}
+                </a>
+            </td>
+            <td>
+                {% if participant.last_login %}
+                    Yes
+                {% else %}
+                    No
+                {% endif %}
+            </td>
+            <td>
+                <a href="{% url 'admin_unregister_user_from_course' course.id participant.id %}">
+                    <span class="glyphicon glyphicon-remove red" aria-hidden="true"> Unregister
+                </a>
+            </td>
         </tr>
-        {% for participant in participants %}
-            <tr>
-                <td>
-                    <a href="{% url 'admin_view_user' participant.id %}">
-                        {{ participant }}
-                    </a>
-                </td>
-                <td>
-                    {% if participant.last_login %}
-                        Yes
-                    {% else %}
-                        No
-                    {% endif %}
-                </td>
-                <td>
-                    <a href="{% url 'admin_unregister_user_from_course' course.id participant.id %}">
-                        <span class="glyphicon glyphicon-remove red" aria-hidden="true"> Unregister
-                    </a>
-                </td>
-            </tr>
-        {% endfor %}
-    </table>
-</div>
+    {% endfor %}
+</table>
 
 <h2>
     Tests: {{ tests|length }}
 </h2>
-<div class="row">
-    <ul>
-        {% for test in tests %}
-        <li>
-            <a href="{% url 'admin_view_test' test.id %}">{{ test }}</a>
-            
-        </li>
-        {% endfor %}
-    </ul>
-</div>
+<ul class="list-group">
+    {% for test in tests %}
+    <li class="list-group-item">
+        <a href="{% url 'admin_view_test' test.id %}">{{ test }}</a>
+    </li>
+    {% endfor %}
+</ul>
 {% endblock %}

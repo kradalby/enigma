@@ -4,18 +4,16 @@
 <h1>
     Edit test
 </h1>
-<div class="row">
-    <h4>
-        Test: {{ test }}
-    </h4>
-    <form action="" method="post">
-        {% csrf_token %}
-        <table class="table">
-            {{ form.as_table }}
-        </table>
-        <br/>
-        <input type="submit" class="btn btn-success" value="Save" />
-        <a href="{% url 'admin_add_questions_to_test' test.id %}" class="btn btn-danger">Cancel</a>
-    </form>
-</div>
+<h4>
+    Test: {{ test }}
+</h4>
+<form action="" method="post">
+    {% csrf_token %}
+    <table class="table">
+        {{ form.as_table }}
+    </table>
+    <br/>
+    <input type="submit" class="btn btn-success" value="Save" />
+    <a href="{% url 'admin_add_questions_to_test' test.id %}" class="btn btn-danger">Cancel</a>
+</form>
 {% endblock %}

@@ -16,22 +16,22 @@
 
 <div>
     <h2>Multiple choice questions</h2>
-    <ul>
+    <ul class="list-group">
         {% for question in test.multiple_choice_questions %}
-            <li>
+            <li class="list-group-item">
                 <a href="{% url 'admin_delete_multiple_choice_question_from_test' test.id question.id %}">
                     <span class="glyphicon glyphicon-remove red" aria-hidden="true"></span>
                 </a>
                 <a href="{% url 'admin_edit_multiple_choice_question_for_test' test.id question.id %}">
                     {{ question }}
                 </a>
-            </li>
+            </li class="list-group-item">
         {% empty %}
-            <li>
+            <li class="list-group-item">
                 No multiple choice questions added.
-            </li>
+            </li class="list-group-item">
         {% endfor %}
-    </ul>
+    </ul class="list-group">
     <a href="{% url 'admin_new_multiple_choice_question_to_test' test.id %}" class="btn btn-default">Add new multiple choice question</a>
     <a href="{% url 'admin_list_multiple_choice_questions_not_in_test' test.id %}" class="btn btn-default">Add existing multiple choice question</a>
 </div>
@@ -40,22 +40,22 @@
 
 <div>
     <h2>Multiple choice questions with image</h2>
-    <ul>
+    <ul class="list-group">
         {% for question in test.multiple_choice_questions_with_image %}
-            <li>
+            <li class="list-group-item">
                 <a href="{% url 'admin_delete_multiple_choice_question_with_image_from_test' test.id question.id %}">
                     <span class="glyphicon glyphicon-remove red" aria-hidden="true"></span>
                 </a>
                 <a href="{% url 'admin_edit_multiple_choice_question_with_image' question.id %}">
                     {{ question }}
                 </a>
-            </li>
+            </li class="list-group-item">
         {% empty %}
-            <li>
+            <li class="list-group-item">
                 No multiple choice questions with image added.
-            </li>
+            </li class="list-group-item">
         {% endfor %}
-    </ul>
+    </ul class="list-group">
     <a href="{% url 'admin_new_multiple_choice_question_with_image_to_test' test.id %}" class="btn btn-default">Add new multiple choice question with image</a>
     <a href="{% url 'admin_list_multiple_choice_questions_with_image_not_in_test' test.id %}" class="btn btn-default">Add existing multiple choice question with image</a>
 </div>
@@ -64,22 +64,22 @@
 
 <div>
     <h2>Multiple choice questions with video</h2>
-    <ul>
+    <ul class="list-group">
         {% for question in test.multiple_choice_questions_with_video %}
-            <li>
+            <li class="list-group-item">
                 <a href="{% url 'admin_delete_multiple_choice_question_with_video_from_test' test.id question.id %}">
                     <span class="glyphicon glyphicon-remove red" aria-hidden="true"></span>
                 </a>
                 <a href="{% url 'admin_edit_multiple_choice_question_with_video' question.id %}">
                     {{ question }}
                 </a>
-            </li>
+            </li class="list-group-item">
         {% empty %}
-            <li>
+            <li class="list-group-item">
                 No multiple choice questions with video added.
-            </li>
+            </li class="list-group-item">
         {% endfor %}
-    </ul>
+    </ul class="list-group">
     <a href="{% url 'admin_new_multiple_choice_question_with_video_to_test' test.id %}" class="btn btn-default">Add new multiple choice question with video</a>
     <a href="{% url 'admin_list_multiple_choice_questions_with_video_not_in_test' test.id %}" class="btn btn-default">Add existing multiple choice question with video</a>
 </div>
@@ -88,22 +88,22 @@
 
 <div>
     <h2>Landmark questions</h2>
-    <ul>
+    <ul class="list-group">
         {% for question in test.landmark_questions %}
-            <li>
+            <li class="list-group-item">
                 <a href="{% url 'admin_delete_landmark_question_from_test' test.id question.id %}">
                     <span class="glyphicon glyphicon-remove red" aria-hidden="true"></span>
                 </a>
                 <a href="{% url 'admin_draw_landmark' test.id question.id %}">
                     {{ question }}
                 </a>
-            </li>
+            </li class="list-group-item">
         {% empty %}
-            <li>
+            <li class="list-group-item">
                 No landmark question added.
-            </li>
+            </li class="list-group-item">
         {% endfor %}
-    </ul>
+    </ul class="list-group">
     <a href="{% url 'admin_add_landmark_question_to_test' test.id %}" class="btn btn-default">Add new landmark question</a>
     <a href="{% url 'admin_list_landmark_questions_not_in_test' test.id %}" class="btn btn-default">Add existing landmark question</a>
 </div>
@@ -112,22 +112,22 @@
 
 <div>
     <h2>Outline questions</h2>
-    <ul>
+    <ul class="list-group">
         {% for question in test.outline_questions %}
-            <li>
+            <li class="list-group-item">
                 <a href="{% url 'admin_delete_outline_question_from_test' test.id question.id %}">
                     <span class="glyphicon glyphicon-remove red" aria-hidden="true"></span>
                 </a>
                 <a href="{% url 'admin_draw_outline' question.id test.id %}">
                     {{ question }}
                 </a>
-            </li>
+            </li class="list-group-item">
         {% empty %}
-            <li>
+            <li class="list-group-item">
                 No outline question added.
-            </li>
+            </li class="list-group-item">
         {% endfor %}
-    </ul>
+    </ul class="list-group">
     <a href="{% url 'admin_add_outline_question_to_test' test.id %}" class="btn btn-default">Add new outline question</a>
     <a href="{% url 'admin_list_outline_questions_not_in_test' test.id %}" class="btn btn-default">Add existing outline question</a>
 </div>
