@@ -22,6 +22,21 @@
 
 <div class="container">
     <div style="height:20px;"></div>
+    {% if messages %}
+        {% for message in messages %}
+            {% if message.tags == "danger" or message.tags == "info" or message.tags == "success" or message.tags == "warning" %}
+                <div class="alert alert-{{message.tags}}">
+                    <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                    <strong>{{ message.tags|upper }}</strong> {{ message|escape }}
+                </div>
+            {% elif message.tags == "error" %}
+                <div class="alert alert-danger">
+                    <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                    <strong>ERROR</strong> {{ message|escape }}
+                </div>
+            {% endif %}
+        {% endfor %}
+    {% endif %}
     {% for course in courses %}
         <div class="panel panel-default">
             <div class="panel-heading">
