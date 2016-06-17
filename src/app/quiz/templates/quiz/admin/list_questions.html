@@ -185,4 +185,39 @@
         </tr>
     {% endfor %}
 </table>
+<h1 class="page-header">
+    Outline solution questions
+</h1>
+<table class="table">
+    <tr>
+        <th>Question name</th>
+        <th>Times used</th>
+        <th>Edit question</th>
+        <th>Delete question</th>
+    </tr>
+    {% for question in outline_solution_question %}
+        <tr>
+            <td>
+               {{ question }} 
+            </td>
+            <td>
+                {{ question.times_used }}
+            </td>
+            <td>
+                <a href="{% url 'admin_edit_outlinesolution' question.id %}">
+                    <span class="glyphicon glyphicon-pencil" aria-hidden="true"> Edit</span>
+                </a>
+            </td>
+            <td>
+                <a href="{% url 'admin_delete_outline_solution_question' question.id %}">
+                    <span class="glyphicon glyphicon-remove red" aria-hidden="true"> Delete</span>
+                </a>
+            </td>
+        </tr>
+    {% empty %}
+        <tr>
+            <td colspan="4">No questions created.</td>
+        </tr>
+    {% endfor %}
+</table>
 {% endblock %}

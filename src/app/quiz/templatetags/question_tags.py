@@ -10,7 +10,8 @@ question_types = {
     MultipleChoiceQuestion : "Multiple choice questions",
     MultipleChoiceQuestionWithImage : "Multiple choice questions with image",
     MultipleChoiceQuestionWithVideo : "Multiple choice questions with video",
-    OutlineQuestion : "Outline questions"
+    OutlineQuestion : "Outline questions",
+    OutlineSolutionQuestion : "Outline solution question"
 }
 
 @register.filter
@@ -23,7 +24,8 @@ question_type_ids = [
     MultipleChoiceQuestionWithImage,
     MultipleChoiceQuestionWithVideo,
     LandmarkQuestion,
-    OutlineQuestion
+    OutlineQuestion,
+    OutlineSolutionQuestion
 ]
 
 @register.filter
@@ -50,6 +52,16 @@ def is_outline(test):
         return True
     try:
         return type(test) is TestUnit and test.outlinequestion
+    except ObjectDoesNotExist:
+        pass
+    return False
+
+@register.filter
+def is_outline_solution_question(test):
+    if type(test) is OutlineSolutionQuestion:
+        return True
+    try:
+        return type(test) is TestUnit and test.outlinesolutionquestion
     except ObjectDoesNotExist:
         pass
     return False

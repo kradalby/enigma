@@ -175,7 +175,7 @@ class LandmarkQuestion(TestUnit):
         </script>
         """.format("landmark-container-" + str(self.id), original_image, landmark_drawing, height, width, self.id)
         return html
-    
+
 class OutlineQuestion(TestUnit):
     original_image = models.ImageField()
     outline_drawing = models.ImageField(blank=True)
@@ -200,6 +200,29 @@ class OutlineQuestion(TestUnit):
         </script>
         """.format("outline-container-" + str(self.id), original_image, outline_drawing, height, width, self.id)
         return html
+
+class OutlineSolutionQuestion(TestUnit):
+    original_image = models.ImageField()
+    
+    def __str__(self):
+        return self.question or "[OUTLINE-SOLUTION] - {0}".format(self.original_image.name)
+    
+    def regions(self):
+        return OutlineSolutionRegion.objects.filter(outline_solution_question=self)
+    
+    def as_html(self):
+        original_image = self.original_image.url
+        width = self.original_image.width
+        height = self.original_image.height
+        html = """
+        <div id="{0}" class="outline-container">
+        </div>
+        <script>
+            var a = answerRegions();
+            a.enableOutline("{0}", "{1}", "", "{3}", "{4}", "{5}");
+        </script>
+        """.format("outline-container-" + str(self.id), original_image, height, width, self.id)
+        return html
         
 class LandmarkRegion(models.Model):
     landmark_question = models.ForeignKey(LandmarkQuestion)
@@ -211,6 +234,14 @@ class LandmarkRegion(models.Model):
         
 class OutlineRegion(models.Model):
     outline_question = models.ForeignKey(OutlineQuestion)
+    color = models.CharField(max_length=50)
+    name = models.CharField(max_length=255)
+    
+    def __str__(self):
+        return self.name
+        
+class OutlineSolutionRegion(models.Model):
+    outline_solution_question = models.ForeignKey(OutlineSolutionQuestion)
     color = models.CharField(max_length=50)
     name = models.CharField(max_length=255)
     

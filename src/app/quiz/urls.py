@@ -75,4 +75,10 @@ urlpatterns = [
     url(r'^admin/(?P<test_id>\d+)/outline/$', admin.add_outline_question_to_test, name='admin_add_outline_question_to_test'),
     url(r'^admin/outline/add/(?P<test_id>\d+)/$', admin.list_outline_questions_not_in_test, name='admin_list_outline_questions_not_in_test'),
     url(r'^admin/outline/delete/(?P<question_id>\d+)/$', admin.delete_outline_question, name='admin_delete_outline_question'),
+
+    # OUTLINE SOLUTION
+    url(r'^admin/outlinesolution/new/$', admin.new_outline_solution_question, name='admin_new_outline_solution_question'),
+    url(r'^admin/outlinesolution/delete/(?P<question_id>\d+)/$', admin.delete_outline_solution_question, name='admin_delete_outline_solution_question'),
+    url(r'^admin/outlinesolution/edit/(?P<question_id>\d+)/$', admin.edit_outlinesolution, name='admin_edit_outlinesolution'),
+
 ]

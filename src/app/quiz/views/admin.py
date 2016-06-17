@@ -48,7 +48,7 @@ def edit_test(request, test_id):
     
 @staff_member_required
 def add_questions_to_test(request, test_id):
-    test = Test.objects.get(id=test_id)
+    test = get_object_or_404(Test, id=test_id)
     return render(request, 'quiz/admin/add_questions_to_test.html', {
         "test" : test
     })
@@ -118,12 +118,14 @@ def list_questions(request):
     multiple_choice_questions_with_video = MultipleChoiceQuestionWithVideo.objects.all()
     landmark_questions = LandmarkQuestion.objects.all()
     outline_question = OutlineQuestion.objects.all()
+    outline_solution_question = OutlineSolutionQuestion.objects.all()
     return render(request, 'quiz/admin/list_questions.html', {
         "multiple_choice_questions" : multiple_choice_questions,
         "multiple_choice_questions_with_image" : multiple_choice_questions_with_image,
         "multiple_choice_questions_with_video" : multiple_choice_questions_with_video,
         "landmark_questions" : landmark_questions,
-        "outline_questions" : outline_question
+        "outline_questions" : outline_question,
+        "outline_solution_question" : outline_solution_question
     })
 
 #
@@ -181,7 +183,11 @@ def _generic_new_question(request, form_type):
 @staff_member_required
 def _generic_edit_question(request, form_type, object_type, question_id, test_id=None):
     instance = get_object_or_404(object_type, id=question_id)
-    form = form_type(request.POST or None, instance=instance)
+    print("HERE WE ARE!")
+    print(instance)
+    print(request.POST)
+    print(request.FILES)
+    form = form_type(request.POST or None, request.FILES or None,instance=instance)
     if request.method == 'POST':
         if form.is_valid():
             question = form.save()
@@ -422,6 +428,7 @@ def delete_landmark_question(request, question_id):
 #
 # Outline
 #
+@transaction.atomic
 @staff_member_required
 def add_outline_question_to_test(request, test_id):
     test = Test.objects.get(id=test_id)
@@ -438,7 +445,7 @@ def add_outline_question_to_test(request, test_id):
         "test" : test,
         "form" : form
     })
-    
+
 @staff_member_required
 @transaction.atomic
 def draw_outline(request, question_id, test_id = None):
@@ -514,7 +521,34 @@ def new_outline_question(request):
     return render(request, 'quiz/admin/new_outline_question.html', {
         "form" : form
     })
+
+
+#
+# OULINE SOLUTION QUESTION
+#
+@staff_member_required
+def new_outline_solution_question(request):
+    if request.method == 'POST':
+        form = OutlineSolutionQuestionForm(request.POST, request.FILES)
+        if form.is_valid():
+            question = form.save()
+            return redirect(list_questions)
+    else:
+        form = OutlineSolutionQuestionForm()
     
+    return render(request, 'quiz/admin/new_question.html', {
+        "form" : form
+    })
+
+@staff_member_required
+def delete_outline_solution_question(request, question_id):
+    _generic_delete_question(request, OutlineSolutionQuestion, question_id)
+    return redirect(list_questions)
+
+@staff_member_required
+def edit_outlinesolution(request, question_id):
+    return _generic_edit_question(request, OutlineSolutionQuestionForm, OutlineSolutionQuestion, question_id)
+
 #
 # Test result
 #
