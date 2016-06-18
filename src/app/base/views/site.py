@@ -15,7 +15,7 @@ def index(request):
     else:
         userprofile = UserProfile.objects.get(user=user)
         groups = userprofile.groups.all()
-        courses = Course.objects.filter(groups=groups)
+        courses = Course.objects.filter(groups__in=groups)
     tests = Test.objects.all()
     return render(request, 'base/site/index.html', {
         "courses" : courses,

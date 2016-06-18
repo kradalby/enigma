@@ -9,8 +9,6 @@ except ImportError:
           $ make dev
           or
           $ make prod
-          
-          For now, we import development settings, because Heroku is misbehaving.
           """)
-    #raise ImportError
-    from settings.development import *
+    raise ImportError
+    # from settings.development import *

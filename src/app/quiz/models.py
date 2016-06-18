@@ -218,13 +218,14 @@ class OutlineSolutionQuestion(TestUnit):
         width = self.original_image.width
         height = self.original_image.height
         html = """
+        Draw around {5}:
         <div id="{0}" class="outline-container">
         </div>
         <script>
             var a = answerRegions();
-            a.enableOutline("{0}", "{1}", "", "{3}", "{4}", "{5}");
+            a.enableOutlineSolution("{0}", "{1}", "{2}", "{3}", "{4}");
         </script>
-        """.format("outline-container-" + str(self.id), original_image, height, width, self.id)
+        """.format("outline-container-" + str(self.id), original_image, height, width, self.id, self)
         return html
         
 class LandmarkRegion(models.Model):
@@ -237,14 +238,6 @@ class LandmarkRegion(models.Model):
         
 class OutlineRegion(models.Model):
     outline_question = models.ForeignKey(OutlineQuestion)
-    color = models.CharField(max_length=50)
-    name = models.CharField(max_length=255)
-    
-    def __str__(self):
-        return self.name
-        
-class OutlineSolutionRegion(models.Model):
-    outline_solution_question = models.ForeignKey(OutlineSolutionQuestion)
     color = models.CharField(max_length=50)
     name = models.CharField(max_length=255)
     

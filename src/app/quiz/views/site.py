@@ -29,7 +29,8 @@ def single_test (request, test_id):
     multiple_choice_video = test.multiple_choice_questions_with_video()
     landmark = [question for question in test.landmark_questions() if question.regions()]
     outline = [question for question in test.outline_questions() if question.regions()]
-    questions = [multiple_choice, multiple_choice_image, landmark, multiple_choice_video, outline]
+    outline_solution = [question for question in test.outline_solution_questions()]
+    questions = [multiple_choice, multiple_choice_image, landmark, multiple_choice_video, outline, outline_solution]
     questions = [item for sublist in questions for item in sublist]
     return render(request, 'quiz/site/single_test.html', {
         "test" : test,
@@ -149,6 +150,17 @@ def submit_test(request, test_id):
             test_unit_result.score = _get_score(OutlineQuestion, True, float(answer) if answer else 99999)
             test_unit_result.correct_answer = 0 < test_unit_result.score
             test_unit_result.max_score = settings.outline_points
+            test_unit_result.save()
+        elif testunit_name.startswith("outline_solution_question-"):
+            question_id = testunit_name.split("-", 1)[1]
+            question_model = OutlineSolutionQuestion.objects.get(id=question_id)
+            test_unit_result = TestUnitResult()
+            test_unit_result.test_result = testresult
+            test_unit_result.test_unit = question_model
+            test_unit_result.score = settings.outline_solution_points
+            test_unit_result.max_score = settings.outline_solution_points
+            test_unit_result.correct_answer = True
+            test_unit_result.answer_image = _get_answer_image(request, question_id)
             test_unit_result.save()
            
     return redirect('/survey/')

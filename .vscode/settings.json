@@ -6,6 +6,8 @@
 		"**/*.pyc" : true,
 		"**/__pycache__" : true,
 		"**/.vagrant" : true,
+		"**/src/mediafiles" : true,
+		"**/src/staticfiles" : true,
 		"**/venv" : true
 	}
 }

@@ -46,6 +46,7 @@ var answerRegions = (function(){
         clicksAddedSinceLastCalculation = false,
         erasing = false,
         erase = [],
+        isOutline = false,
         
         /**
          * COMMON STUFF
@@ -353,7 +354,7 @@ var answerRegions = (function(){
                 return closest;
             }
             
-            if(!clicksAddedSinceLastCalculation){
+            if(!clicksAddedSinceLastCalculation || !isOutline){
                 return;
             }
             
@@ -468,7 +469,9 @@ var answerRegions = (function(){
             parentDiv.appendChild(hiddenImageData);
 
             // Register other necessities
-            setTargetRegion(questionId);
+            if(answerImg){
+                setTargetRegion(questionId);
+            }
             originalImage = image;
             setImageRatios(height, width);
             addPencilButton();
@@ -482,7 +485,7 @@ var answerRegions = (function(){
         
         enableLandmark = function(targetDivId, image, answerImg, height, width, id){
             enableCommon(targetDivId, image, answerImg, height, width, id);
-            
+
             canvas.id = "landmark_canvas-" + questionId;
             hiddenAnswerField.setAttribute("name", "landmark_question-" + questionId);
             
@@ -499,9 +502,31 @@ var answerRegions = (function(){
             
             canvas.id = "outline_canvas-" + questionId;
             hiddenAnswerField.setAttribute("name", "outline_question-" + questionId);
+            isOutline = true;
                         
             registerColoredRegions(answerImg, function(){
                 drawImage(context, originalImage);
+                resourceLoaded();
+            });
+            
+            var clearButtonDiv = $('<div class="btn btn-default pull-right">Clear</div>');
+            $(parentDiv)
+                .parent()
+                .parent()
+                .children(".panel-heading")
+                .prepend(clearButtonDiv);
+            clearButtonDiv.click(function(){
+                clearOutline();
+            });
+        },
+        
+        enableOutlineSolution = function(targetDivId, image, height, width, id){
+            enableCommon(targetDivId, image, null, height, width, id);
+
+            canvas.id = "outline_solution_canvas-" + questionId;
+            hiddenAnswerField.setAttribute("name", "outline_solution_question-" + questionId);
+            
+            drawImage(context, originalImage, function(){
                 resourceLoaded();
             });
             
@@ -518,6 +543,7 @@ var answerRegions = (function(){
 
     return {
 		enableLandmark: enableLandmark,
-		enableOutline: enableOutline
+		enableOutline: enableOutline,
+        enableOutlineSolution: enableOutlineSolution
 	};
 });
