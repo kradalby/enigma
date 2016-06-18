@@ -39,7 +39,7 @@ def edit_test(request, test_id):
         if form.is_valid():
             test = form.save()
             messages.success(request, 'Successfully updated test: %s.' % test)
-            return redirect('admin_add_questions_to_test', test.id)
+            return redirect(add_questions_to_test, test.id)
 
     return render(request, 'quiz/admin/edit_test.html',{
         'form' : form,
@@ -139,7 +139,7 @@ def _generic_new_multiple_choice_question_to_test(request, form_type, test_id):
         if form.is_valid():
             question = form.save()
             question.test.add(test)
-            return redirect('admin_add_questions_to_test', test.id)
+            return redirect(add_questions_to_test, test.id)
     else:
         form = form_type()
 
@@ -183,17 +183,13 @@ def _generic_new_question(request, form_type):
 @staff_member_required
 def _generic_edit_question(request, form_type, object_type, question_id, test_id=None):
     instance = get_object_or_404(object_type, id=question_id)
-    print("HERE WE ARE!")
-    print(instance)
-    print(request.POST)
-    print(request.FILES)
     form = form_type(request.POST or None, request.FILES or None,instance=instance)
     if request.method == 'POST':
         if form.is_valid():
             question = form.save()
             messages.success(request, 'Successfully saved question: %s.' % question)
             if test_id:
-                return redirect('admin_add_questions_to_test', test.id)
+                return redirect(add_questions_to_test, test_id)
             return redirect(list_questions)
 
     return render(request, 'quiz/admin/edit_question.html',{
@@ -248,7 +244,7 @@ def list_multiple_choice_questions_not_in_test(request, test_id):
 @staff_member_required
 def delete_multiple_choice_question_from_test(request, test_id, question_id):
     _generic_remove_question_from_test(request, MultipleChoiceQuestion, test_id, question_id)
-    return redirect('admin_add_questions_to_test', test_id)
+    return redirect(add_questions_to_test, test_id)
     
 @staff_member_required
 def delete_multiple_choice_question(request, question_id):
@@ -282,7 +278,7 @@ def list_multiple_choice_questions_with_image_not_in_test(request, test_id):
 @staff_member_required
 def delete_multiple_choice_question_with_image_from_test(request, test_id, question_id):
     _generic_remove_question_from_test(request, MultipleChoiceQuestionWithImage, test_id, question_id)
-    return redirect('admin_add_questions_to_test', test_id)
+    return redirect(add_questions_to_test, test_id)
     
 @staff_member_required
 def delete_multiple_choice_question_with_image(request, question_id):
@@ -316,7 +312,7 @@ def list_multiple_choice_questions_with_video_not_in_test(request, test_id):
 @staff_member_required
 def delete_multiple_choice_question_with_video_from_test(request, test_id, question_id):
     _generic_remove_question_from_test(request, MultipleChoiceQuestionWithVideo, test_id, question_id)
-    return redirect('admin_add_questions_to_test', test_id)
+    return redirect(add_questions_to_test, test_id)
     
 @staff_member_required
 def delete_multiple_choice_question_with_video(request, question_id):
@@ -384,7 +380,7 @@ def draw_landmark(request, question_id, test_id = None):
                 region.landmark_question = question
                 region.save()
         if test:
-            return redirect('admin_add_questions_to_test', test.id)
+            return redirect(add_questions_to_test, test.id)
         else:
             return redirect(list_questions)
     return render(request, 'quiz/admin/draw_landmark.html', {
@@ -414,7 +410,7 @@ def add_landmark_regions(request, test_id, question_id):
 @staff_member_required
 def delete_landmark_question_from_test(request, test_id, question_id):
     _generic_remove_question_from_test(request, LandmarkQuestion, test_id, question_id)
-    return redirect('admin_add_questions_to_test', test_id)
+    return redirect(add_questions_to_test, test_id)
         
 @staff_member_required
 def list_landmark_questions_not_in_test(request, test_id):
@@ -486,7 +482,7 @@ def draw_outline(request, question_id, test_id = None):
                 region.outline_question = question
                 region.save()
         if test:
-            return redirect('admin_add_questions_to_test', test.id)
+            return redirect(add_questions_to_test, test.id)
         else:
             return redirect(list_questions)
     return render(request, 'quiz/admin/draw_outline.html', {
@@ -497,7 +493,7 @@ def draw_outline(request, question_id, test_id = None):
 @staff_member_required
 def delete_outline_question_from_test(request, test_id, question_id):
     _generic_remove_question_from_test(request, OutlineQuestion, test_id, question_id)
-    return redirect('admin_add_questions_to_test', test_id)
+    return redirect(add_questions_to_test, test_id)
         
 @staff_member_required
 def list_outline_questions_not_in_test(request, test_id):
@@ -539,6 +535,28 @@ def new_outline_solution_question(request):
     return render(request, 'quiz/admin/new_question.html', {
         "form" : form
     })
+    
+@transaction.atomic
+@staff_member_required
+def add_outline_solution_question_to_test(request, test_id):
+    test = Test.objects.get(id=test_id)
+    if request.method == 'POST':
+        form = OutlineSolutionQuestionForm(request.POST, request.FILES)
+        if form.is_valid():
+            question = form.save()
+            question.test.add(test)
+            return redirect(add_questions_to_test, test.id)
+    else:
+        form = OutlineSolutionQuestionForm()
+
+    return render(request, 'quiz/admin/new_outline_solution_question.html', {
+        "test" : test,
+        "form" : form
+    })
+    
+@staff_member_required
+def list_outline_solution_questions_not_in_test(request, test_id):
+    return _generic_list_question_not_in_test(request, OutlineSolutionQuestion, test_id)  
 
 @staff_member_required
 def delete_outline_solution_question(request, question_id):
@@ -548,7 +566,15 @@ def delete_outline_solution_question(request, question_id):
 @staff_member_required
 def edit_outlinesolution(request, question_id):
     return _generic_edit_question(request, OutlineSolutionQuestionForm, OutlineSolutionQuestion, question_id)
-
+        
+@staff_member_required
+def delete_outline_solution_question_from_test(request, test_id, question_id):
+    _generic_remove_question_from_test(request, OutlineSolutionQuestion, test_id, question_id)
+    return redirect(add_questions_to_test, test_id)
+    
+@staff_member_required
+def edit_outline_solution_question_for_test(request, test_id, question_id):
+    return _generic_edit_question(request, OutlineSolutionQuestionForm, OutlineSolutionQuestion, question_id, test_id)
 #
 # Test result
 #

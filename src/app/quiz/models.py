@@ -33,6 +33,9 @@ class Test(models.Model):
         
     def outline_questions(self):
         return OutlineQuestion.objects.filter(test = self)
+        
+    def outline_solution_questions(self):
+        return OutlineSolutionQuestion.objects.filter(test = self)
                
 class TestResult(models.Model):
     test = models.ForeignKey(Test)

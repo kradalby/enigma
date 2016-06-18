@@ -131,4 +131,28 @@
     <a href="{% url 'admin_add_outline_question_to_test' test.id %}" class="btn btn-default">Add new outline question</a>
     <a href="{% url 'admin_list_outline_questions_not_in_test' test.id %}" class="btn btn-default">Add existing outline question</a>
 </div>
+
+<hr/>
+
+<div>
+    <h2>Outline solution questions</h2>
+    <ul class="list-group">
+        {% for question in test.outline_solution_questions %}
+            <li class="list-group-item">
+                <a href="{% url 'admin_delete_outline_solution_question_from_test' test.id question.id %}">
+                    <span class="glyphicon glyphicon-remove red" aria-hidden="true"></span>
+                </a>
+                <a href="{% url 'admin_edit_outline_solution_question_for_test' test.id question.id %}">
+                    {{ question }}
+                </a>
+            </li class="list-group-item">
+        {% empty %}
+            <li class="list-group-item">
+                No outline solution question added.
+            </li class="list-group-item">
+        {% endfor %}
+    </ul class="list-group">
+    <a href="{% url 'admin_add_outline_solution_question_to_test' test.id %}" class="btn btn-default">Add new outline solution question</a>
+    <a href="{% url 'admin_list_outline_solution_questions_not_in_test' test.id %}" class="btn btn-default">Add existing outline solution question</a>
+</div>
 {% endblock %}
