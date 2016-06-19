@@ -45,8 +45,8 @@ class OutlineQuestionForm(ModelForm):
 class OutlineSolutionQuestionForm(ModelForm):
     class Meta:
         model = OutlineSolutionQuestion
-        fields = ["question","original_image", ]
+        fields = ["question","outline_region","original_image", ]
 
     def __init__(self, *args, **kwargs):
         super(OutlineSolutionQuestionForm, self).__init__(*args, **kwargs)
-        self.fields['question'].label = "Outline region"
+        self.fields['question'].label = "Name"

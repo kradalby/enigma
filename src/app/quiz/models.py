@@ -206,7 +206,8 @@ class OutlineQuestion(TestUnit):
 
 class OutlineSolutionQuestion(TestUnit):
     original_image = models.ImageField()
-    
+    outline_region = models.CharField(max_length=255)
+
     def __str__(self):
         return self.question or "[OUTLINE-SOLUTION] - {0}".format(self.original_image.name)
     
