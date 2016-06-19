@@ -79,7 +79,12 @@
                 <td>{{ test_unit }}</td>
             </tr>
             <tr>
-                <th>Correct answer</th>
+                <th>
+                {% if not test_unit|is_outline_solution_question %}
+                    Correct answer
+                {% endif %}
+                </th>
+
                 <td>
                     {% if test_unit|is_landmark %}
                         <div class="img-container">
@@ -91,6 +96,32 @@
                             <img class="top" src="{{ test_unit.outlinequestion.outline_drawing.url }}" />
                             <img class="bottom" src="{{ test_unit.outlinequestion.original_image.url }}" />
                         </div>
+
+
+
+                    {% elif test_unit|is_outline_solution_question %}
+                        <table class="table">
+                             <tr>
+                                 <td rowspan='{{ test_unit_results|length|add:"1"}}'>
+                                <div class="img-container">
+                                    <img class="bottom" src="{{ test_unit.outlinesolutionquestion.original_image.url }}" />    
+                                    {% for test_unit_result in test_unit_results %}
+                                    <img class="top" id="{{ forloop.counter}}" src="{{ test_unit_result.answer_image.url }}" />       
+                                    {% endfor %}
+                                </div>
+                                 </td>
+                            </tr>
+                            {% for test_unit_result in test_unit_results %}
+                            <tr>
+                                <td>{{ test_unit_result.test_result.user }}'s answer:</td>
+                                <td><input type="checkbox" class="user-solution-checkbox" id="{{ forloop.counter}}" checked></td>
+                            </tr>
+                            {% endfor %}
+
+                        
+                    </table>
+
+
                     {% elif test_unit|is_multiple_choice_question %}
                         {{ test_unit.multiplechoicequestion.correct_answer }}
                     {% elif test_unit|is_multiple_choice_question_with_image %}
@@ -103,6 +134,7 @@
         </table>
     </div>
 
+{% if not test_unit|is_outline_solution_question %}
     <div class="panel panel-info">
         <div class="panel-heading">
             <h3 class="panel-title">Answers</h3>
@@ -212,6 +244,7 @@
         {% endfor %}
     </div>
 </div>
+{% endif %}
 {% endfor %}
 {% endblock %}
 
@@ -254,6 +287,21 @@
         offText : "Off",
         onSwitchChange : function(event, state) {
             var img = $(this).parent().parent().parent().parent().parent().find('img.top:first');
+            if(state){ // SHOW
+                img.show();
+            } else{
+                img.hide();
+            }
+        }
+    });
+    //Outline solution question
+    $(".user-solution-checkbox").bootstrapSwitch({
+        offColor : "danger",
+        onColor : "success",
+        onText : "Show",
+        offText : "Hide",
+        onSwitchChange : function(event, state) {
+            var img = $(this).parent().parent().parent().parent().parent().find('img.top#'+this.id);
             if(state){ // SHOW
                 img.show();
             } else{

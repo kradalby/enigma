@@ -539,6 +539,7 @@ var answerRegions = (function(){
             clearButtonDiv.click(function(){
                 clearOutline();
             });
+            lineWidth = 1;
         };
 
     return {
