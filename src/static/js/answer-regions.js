@@ -32,6 +32,7 @@ var answerRegions = (function(){
         hiddenAnswerField,
         hiddenImageData,
         targetRegionColor,
+        drawColor = "#c02f1d",
         coloredRegions = [],
         colorsHashTable,
         originalImage,
@@ -99,7 +100,7 @@ var answerRegions = (function(){
 
             function drawX(x, y) {
                 regionContext.beginPath();
-                regionContext.strokeStyle="#FF0000";
+                regionContext.strokeStyle=drawColor;
                 regionContext.lineWidth = 3;
                 
                 regionContext.moveTo(x - 10, y - 10);
@@ -253,7 +254,7 @@ var answerRegions = (function(){
 					regionContext.lineWidth = 15;
 				}else{
 					regionContext.globalCompositeOperation = "source-over";
-					regionContext.strokeStyle = "#ff0000";
+					regionContext.strokeStyle = drawColor;
 					regionContext.lineWidth = lineWidth;
 				}
 				
@@ -539,7 +540,7 @@ var answerRegions = (function(){
             clearButtonDiv.click(function(){
                 clearOutline();
             });
-            lineWidth = 1;
+            lineWidth = 2;
         };
 
     return {
