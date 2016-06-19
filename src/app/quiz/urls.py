@@ -84,5 +84,6 @@ urlpatterns = [
     url(r'^admin/(?P<test_id>\d+)/outline_solution/$', admin.add_outline_solution_question_to_test, name='admin_add_outline_solution_question_to_test'),
     url(r'^admin/outline_solution/add/(?P<test_id>\d+)/$', admin.list_outline_solution_questions_not_in_test, name='admin_list_outline_solution_questions_not_in_test'),
     url(r'^admin/(?P<test_id>\d+)/outline_solution/edit/(?P<question_id>\d+)/$', admin.edit_outline_solution_question_for_test, name='admin_edit_outline_solution_question_for_test'),
-
+    url(r'^admin/outline_solution_to_outline/(?P<question_id>\d+)/(?P<test_result_id>\d+)/$', admin.create_outline_from_outline_solution, name='admin_create_outline_from_outline_solution'),
+    
 ]

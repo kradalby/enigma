@@ -97,8 +97,6 @@
                             <img class="bottom" src="{{ test_unit.outlinequestion.original_image.url }}" />
                         </div>
 
-
-
                     {% elif test_unit|is_outline_solution_question %}
                         <table class="table">
                              <tr>
@@ -114,11 +112,14 @@
                             {% for test_unit_result in test_unit_results %}
                             <tr>
                                 <td>{{ test_unit_result.test_result.user }}'s answer:</td>
-                                <td><input type="checkbox" class="user-solution-checkbox" id="{{ forloop.counter}}" checked></td>
+                                <td>
+                                    <input type="checkbox" class="user-solution-checkbox" id="{{ forloop.counter}}" checked>
+                                    <a class="btn btn-primary" href="{% url 'admin_create_outline_from_outline_solution' test_unit.id test_unit_result.id %}"> Create outline </a>
+                                </td>
                             </tr>
                             {% endfor %}
 
-                        
+                            
                     </table>
 
 
