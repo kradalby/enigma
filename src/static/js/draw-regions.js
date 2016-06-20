@@ -127,20 +127,26 @@ var drawRegions = (function () {
             var canvasX = 0;
             var canvasY = 0;
             var currentElement = canvas;
+            var origX = event.pageX;
+            if(!origX) {
+                origX = event.changedTouches[0].pageX;
+            }
+            if(!origY){
+                var origY = event.pageY || event.changedTouches[0].pageY;
+            }
 
             do{
                 totalOffsetX += currentElement.offsetLeft;
                 totalOffsetY += currentElement.offsetTop;
             }
             while(currentElement = currentElement.offsetParent)
-
-            canvasX = event.pageX - totalOffsetX;
-            canvasY = event.pageY - totalOffsetY;
+            canvasX = origX - totalOffsetX;
+            canvasY = origY - totalOffsetY;
 
             return {
-				x : canvasX, 
-				y : canvasY
-			}
+                x: canvasX, 
+                y: canvasY
+            }
         },
 
 		// Add mouse and touch event listeners to the canvas
