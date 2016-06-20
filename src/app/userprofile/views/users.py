@@ -90,7 +90,7 @@ def delete_user(request, user_id):
 @staff_member_required
 def delete_user_from_course(request, user_id, course_id):
     try:
-        user = UserProfile.objects.get(id=user_id)
+        user = get_object_or_404(UserProfile, id=user_id)
         username = user.user.username
         for hidden_group in user.groups.hidden():
             hidden_group.delete()
@@ -101,3 +101,16 @@ def delete_user_from_course(request, user_id, course_id):
         messages.warning(request, 'The user has already been deleted. You may have clicked twice.')
     return redirect("admin_view_course", course_id)
     
+@transaction.atomic
+@staff_member_required
+def reset_password_for_user(request, user_id, view_user_after = None):
+    user = get_object_or_404(UserProfile, id=user_id)
+    user.user.set_password(user.user.username)
+    user.user.save()
+    user.password = user.user.username
+    user.save()
+    messages.success(request, 'Successfully reset password for user %s.' % user.user.username)
+    
+    if view_user_after:
+        return redirect(view_user, user_id)
+    return redirect(list_users)
