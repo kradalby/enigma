@@ -21,4 +21,5 @@ urlpatterns = [
     url(r'^admin/group/(?P<group_id>\d+)/unregister/(?P<user_id>\d+)$', groups.unregister_user_from_group, name='admin_unregister_user_from_group'),
     url(r'^admin/group/(?P<group_id>\d+)/generateuser$', groups.generate_user_for_group, name='admin_generate_user_for_group'),
     url(r'^admin/group/print/(?P<group_id>\d+)/$', groups.group_print_preview, name='admin_group_print_preview'),
+    url(r'^admin/group/(?P<group_id>\d+)/remove_user/(?P<user_id>\d+)/$', groups.remove_user_from_group, name='admin_remove_user_from_group'),
 ]

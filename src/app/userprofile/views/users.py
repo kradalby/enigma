@@ -85,7 +85,7 @@ def delete_user(request, user_id):
         messages.success(request, 'Successfully deleted user %s.' % username)
     except ObjectDoesNotExist:
         messages.warning(request, 'The user has already been deleted. You may have clicked twice.')
-    return redirect("admin_list_users")
+    return redirect(list_users)
     
 @staff_member_required
 def delete_user_from_course(request, user_id, course_id):
