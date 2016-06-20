@@ -9,3 +9,16 @@ class GlobalSettings(models.Model):
     outline_solution_points = models.PositiveSmallIntegerField(verbose_name="Points for outline solution questions")
     outline_min_threshold = models.PositiveSmallIntegerField(verbose_name="Outline minimum threshold")
     outline_max_threshold = models.PositiveSmallIntegerField(verbose_name="Outline maximum threshold")
+    
+global_settings = GlobalSettings.objects.all().first()
+if not global_settings:
+    global_settings = GlobalSettings()
+    global_settings.mpc_points = 1
+    global_settings.mpci_points = 1
+    global_settings.mpcv_points = 1
+    global_settings.landmark_points = 1
+    global_settings.outline_points = 1
+    global_settings.outline_max_threshold = 5
+    global_settings.outline_min_threshold = 5
+    global_settings.outline_solution_points = 1
+    global_settings.save()

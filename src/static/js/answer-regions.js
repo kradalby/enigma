@@ -339,9 +339,9 @@ var answerRegions = (function(){
             function closestPoint(data, x2, y2){
                 var closest = 4200;
                 for (var i = 0; i < data.length; i += 4 * 5){
-                    if(data[i] == 255 && 
-                        data[i + 1] == 0 && 
-                        data[i + 2] == 0 && 
+                    if(data[i] == 192 && 
+                        data[i + 1] == 47 && 
+                        data[i + 2] == 29 && 
                         data[i + 3] == 255)
                     {
                         var x1 = Math.floor((i / 4) % canvasWidth);
@@ -354,7 +354,7 @@ var answerRegions = (function(){
                 }
                 return closest;
             }
-            
+
             if(!clicksAddedSinceLastCalculation || !isOutline){
                 return;
             }
@@ -364,7 +364,6 @@ var answerRegions = (function(){
                 var targetRegionPoints = colorsHashTable.get(targetRegionColor);
                 var data = regionContext.getImageData(0, 0, canvasWidth, canvasHeight).data;
                 var totalDistance = 0;
-                
                 for (var index in targetRegionPoints) {
                     if (targetRegionPoints.hasOwnProperty(index)) {
                         var x2 = targetRegionPoints[index].x;
@@ -477,7 +476,7 @@ var answerRegions = (function(){
             setImageRatios(height, width);
             addPencilButton();
             // addRubberButton();
-            
+
             // We have to do the following because the next button does not exist yet...
             $(document).on('click', 'li.next > a.test-navigation', function(){{
                 updateOutlineAnswer();

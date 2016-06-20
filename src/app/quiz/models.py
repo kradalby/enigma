@@ -226,7 +226,7 @@ class OutlineSolutionQuestion(TestUnit):
             var a = answerRegions();
             a.enableOutlineSolution("{0}", "{1}", "{2}", "{3}", "{4}");
         </script>
-        """.format("outline-container-" + str(self.id), original_image, height, width, self.id, self)
+        """.format("outline-container-" + str(self.id), original_image, height, width, self.id, self.outline_region)
         return html
         
 class LandmarkRegion(models.Model):
