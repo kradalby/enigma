@@ -9,12 +9,12 @@
     }
 </style>
 <h1>
-    User: {{ user }}
+    User: {{ userprofile}}
 </h1>
 <div class="row">
-    <a href="{% url 'admin_list_groups_user_is_not_member_of' user.id %}" class="btn btn-primary btn-lg">Add to group</a>
-    <a href="{% url 'admin_list_courses_user_is_not_attending' user.id %}" class="btn btn-primary btn-lg">Add to course</a>
-    <a href="{% url 'admin_edit_user' user.id %}" class="btn btn-primary btn-lg">Edit user</a>
+    <a href="{% url 'admin_list_groups_user_is_not_member_of' userprofile.id %}" class="btn btn-primary btn-lg">Add to group</a>
+    <a href="{% url 'admin_list_courses_user_is_not_attending' userprofile.id %}" class="btn btn-primary btn-lg">Add to course</a>
+    <a href="{% url 'admin_edit_user' userprofile.id %}" class="btn btn-primary btn-lg">Edit user</a>
 </div>
 
 <br/>
@@ -22,13 +22,13 @@
     Courses attending:
 </h2>
 <table class="table">
-    {% if user|courses_attending %}
+    {% if userprofile|courses_attending %}
         <tr>
             <th>Course name</th>
             <th>Unregister from course</th>
         </tr>
     {% endif %}
-    {% for course in user|courses_attending %}
+    {% for course in userprofile|courses_attending %}
         <tr>
             <td>
                 <a href="{% url 'admin_view_course' course.id %}">
@@ -44,7 +44,7 @@
     {% empty %}
         <tr>
             <td>
-                This user is not attending any courses.
+                This userprofile is not attending any courses.
             </td>
         </tr>
     {% endfor %}
@@ -68,7 +68,7 @@
                 </a>
             </td>
             <td>
-                <a href="{% url 'admin_unregister_user_from_group' group.id user.id %}">
+                <a href="{% url 'admin_unregister_user_from_group' group.id userprofile.id %}">
                     <span class="glyphicon glyphicon-remove red" aria-hidden="true"> Unregister</span>
                 </a>
             </td>
@@ -95,7 +95,7 @@
     {% for result in test_results %}
         <tr>
             <td>
-                <a href="{% url 'admin_view_test_result_for_user' result.test.id user.id %}">
+                <a href="{% url 'admin_view_test_result_for_user' result.test.id userprofile.id %}">
                     {{result.test }} <span class="badge">{{ result.score_fraction }}</span>
                 </a>
             </td>

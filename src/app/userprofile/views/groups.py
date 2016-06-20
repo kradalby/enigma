@@ -95,7 +95,7 @@ def remove_user_from_group(request, group_id, user_id):
         user = get_object_or_404(UserProfile, id=user_id)
         group = get_object_or_404(UserGroup, id=group_id)
         user.groups.remove(group)
-        messages.success(request, 'Successfully removed user from %s.' % groupname)
+        messages.success(request, 'Successfully removed user from %s.' % group.name)
     except ObjectDoesNotExist:
         messages.warning(request, 'The user has already been removed. You may have clicked twice.')
     return redirect(view_group, group_id)

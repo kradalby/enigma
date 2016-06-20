@@ -33,7 +33,7 @@ def view_user(request, user_id):
     groups = userprofile.groups.non_hidden()
     test_results = TestResult.objects.filter(user = userprofile.user)
     return render(request, 'userprofile/admin/view_user.html',{
-        'user' : userprofile,
+        'userprofile' : userprofile,
         'groups' : groups,
         'test_results' : test_results
     })
