@@ -48,7 +48,12 @@ prod:
 	$(PYTHON) src/manage.py collectstatic --noinput
 
 run:
-	$(PYTHON) src/manage.py runserver $(shell ifconfig eth0 | grep -Eo 'inet (addr:)?([0-9]*\.){3}[0-9]*' | grep -Eo '([0-9]*\.){3}[0-9]*' | grep -v '127.0.0.1' | awk '{print $1}'):8000
+	@IPADDRESS=$(shell ifconfig eth0 | grep -Eo 'inet (addr:)?([0-9]*\.){3}[0-9]*' | grep -Eo '([0-9]*\.){3}[0-9]*' | grep -v '127.0.0.1' | awk '{print $1}')
+ifndef IPADDRESS
+	$(PYTHON) src/manage.py runserver 0.0.0.0:8000
+else	
+	$(PYTHON) src/manage.py runserver $(IPADDRESS):8000
+endif
 
 sync:
 	$(PYTHON) src/manage.py makemigrations quiz userprofile course base
