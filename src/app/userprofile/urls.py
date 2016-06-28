@@ -10,7 +10,7 @@ urlpatterns = [
     url(r'^admin/user/(?P<user_id>\d+)/edit/$', users.edit_user, name='admin_edit_user'),
     url(r'^admin/user/(?P<user_id>\d+)/delete/$', users.delete_user, name='admin_delete_user'),
     url(r'^admin/user/(?P<user_id>\d+)/addgroup$', users.list_groups_user_is_not_member_of, name='admin_list_groups_user_is_not_member_of'),
-    url(r'^admin/user/(?P<user_id>\d+)/resetpassword$', users.reset_password_for_user, name='admin_reset_password_for_user'),
+    url(r'^admin/user/(?P<user_id>\d+)/resetpassword$', users.reset_password_for_user, name='admin_reset_password'),
     url(r'^admin/user/(?P<user_id>\d+)/resetpassword/(?P<view_user_after>\d+)$', users.reset_password_for_user, name='admin_reset_password_for_user'),
 
     # Group admin
