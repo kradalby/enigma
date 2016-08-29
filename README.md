@@ -7,7 +7,7 @@ First, install [Vagrant](http://www.vagrantup.com).
 After installation has completed, open a command window and type `vagrant`, just to be sure it installed successfully.
 Navigate to where you want to clone this repository and do the following:
 
-    git clone git@bitbucket.org:hammerstad/medimgquiz.git
+    git clone
     cd medimgquiz
     vagrant up     # This will take a little while
     vagrant ssh    # This may take a little while the first time.
