@@ -1,7 +1,9 @@
-from settings.base import INSTALLED_APPS, MIDDLEWARE_CLASSES, TEMPLATES, BASE_DIR
+from settings.base import *
 import os
 
 DEBUG = True
+
+SECRET_KEY = "dev"
 
 def custom_show_toolbar(request):
     return DEBUG
@@ -18,8 +20,11 @@ DEBUG_TOOLBAR_CONFIG = {
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'project.db')
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': 'postgres',
+        'USER': 'postgres',
+        'HOST': 'db',
+        'PORT': 5432,
     }
 }
 
@@ -30,3 +35,4 @@ MIDDLEWARE_CLASSES += (
 TEMPLATES[0]['OPTIONS']['context_processors'] += (
    'django.core.context_processors.debug',
 )
+
