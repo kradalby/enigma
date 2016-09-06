@@ -1,0 +1,20 @@
+version: '2'
+services:
+    db:
+        image: postgres:latest
+        volumes:
+            - ./db:/var/lib/postgresql/data
+              #  command: /bin/true
+        ports:
+            - "5432"
+    web:
+        build: .
+        command: python manage.py runserver 0.0.0.0:8000
+        volumes:
+            - ./src:/srv/app
+        ports:
+            - "8000:8000"
+        links:
+            - db
+        environment:
+            - DJANGO_SETTINGS_MODULE=settings.development
