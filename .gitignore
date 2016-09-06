@@ -1,3 +1,6 @@
+# Project spesific
+
+db/
 
 # Created by https://www.gitignore.io/api/osx,windows,intellij,webstorm,vim,emacs,django,python
 
@@ -101,7 +104,7 @@ fabric.properties
 
 # *.iml
 # modules.xml
-# .idea/misc.xml 
+# .idea/misc.xml
 # *.ipr
 
 
@@ -156,7 +159,7 @@ fabric.properties
 
 # *.iml
 # modules.xml
-# .idea/misc.xml 
+# .idea/misc.xml
 # *.ipr
 
 
