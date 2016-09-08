@@ -59,11 +59,11 @@ class TestResult(models.Model):
         test_unit_results = self.test_unit_results()
         score = sum([x.score for x in test_unit_results])
         max_score = sum([x.max_score for x in test_unit_results])
-        return str(score) + "/" + str(max_score)
+        return str(score) + '/' + str(max_score)
 
 
 class TestUnit(models.Model):
-    question = models.CharField(max_length=255, verbose_name="Question")
+    question = models.CharField(max_length=255, verbose_name='Question')
     test = models.ManyToManyField(Test)
 
     def __str__(self):
@@ -73,7 +73,7 @@ class TestUnit(models.Model):
         ordering = ('question',)
 
     def as_html(self):
-        return "<h1>THIS MODEL HAS NOT IMPLEMENTED AS_HTML</h1>"
+        return '<h1>THIS MODEL HAS NOT IMPLEMENTED AS_HTML</h1>'
 
     def times_used(self):
         return self.test.count()
@@ -81,11 +81,11 @@ class TestUnit(models.Model):
 
 class MultipleChoiceQuestion(TestUnit):
     correct_answer = models.CharField(
-        max_length=255, verbose_name="Correct answer")
+        max_length=255, verbose_name='Correct answer')
     wrong_answer_1 = models.CharField(
-        max_length=255, verbose_name="Wrong answer")
+        max_length=255, verbose_name='Wrong answer')
     wrong_answer_2 = models.CharField(
-        max_length=255, verbose_name="Wrong answer")
+        max_length=255, verbose_name='Wrong answer')
 
     def as_html(self):
         html = '<div><ul class="list-group">'
@@ -101,27 +101,27 @@ class MultipleChoiceQuestion(TestUnit):
                 <div class="highlight"></div>
             </li>
             """ % (self.id, alternative, alternative, alternative)
-        html += "</ul></div>"
+        html += '</ul></div>'
         return html
 
 
 class MultipleChoiceQuestionWithImage(TestUnit):
     correct_answer = models.CharField(
-        max_length=255, verbose_name="Correct answer")
+        max_length=255, verbose_name='Correct answer')
     wrong_answer_1 = models.CharField(
-        max_length=255, verbose_name="Wrong answer")
+        max_length=255, verbose_name='Wrong answer')
     wrong_answer_2 = models.CharField(
-        max_length=255, verbose_name="Wrong answer")
+        max_length=255, verbose_name='Wrong answer')
     image = models.ImageField()
 
     def as_html(self):
         html = """
         <div>
-            <img src="%s" />
+            <img src="{}" />
         </div>
         <div>
             <ul class="list-group">
-        """ % (self.image.url)
+        """.format(self.image.url)
 
         alternatives = [self.correct_answer,
                         self.wrong_answer_1, self.wrong_answer_2]
@@ -135,17 +135,17 @@ class MultipleChoiceQuestionWithImage(TestUnit):
                 <div class="highlight"></div>
             </li>
             """ % (self.id, alternative, alternative, alternative)
-        html += "</ul></div>"
+        html += '</ul></div>'
         return html
 
 
 class MultipleChoiceQuestionWithVideo(TestUnit):
     correct_answer = models.CharField(
-        max_length=255, verbose_name="Correct answer")
+        max_length=255, verbose_name='Correct answer')
     wrong_answer_1 = models.CharField(
-        max_length=255, verbose_name="Wrong answer")
+        max_length=255, verbose_name='Wrong answer')
     wrong_answer_2 = models.CharField(
-        max_length=255, verbose_name="Wrong answer")
+        max_length=255, verbose_name='Wrong answer')
     video = models.FileField()
 
     def as_html(self):
@@ -169,7 +169,7 @@ class MultipleChoiceQuestionWithVideo(TestUnit):
                 <div class="highlight"></div>
             </li>
             """ % (self.id, alternative, alternative, alternative)
-        html += "</ul></div>"
+        html += '</ul></div>'
         return html
 
 
@@ -178,7 +178,7 @@ class LandmarkQuestion(TestUnit):
     landmark_drawing = models.ImageField(blank=True)
 
     def __str__(self):
-        return self.question or "[LANDMARK] - {0}".format(self.original_image.name)
+        return self.question or '[LANDMARK] - {0}'.format(self.original_image.name)
 
     def regions(self):
         return LandmarkRegion.objects.filter(landmark_question=self)
@@ -195,7 +195,7 @@ class LandmarkQuestion(TestUnit):
             var a = answerRegions();
             a.enableLandmark("{0}", "{1}", "{2}", "{3}", "{4}", "{5}");
         </script>
-        """.format("landmark-container-" + str(self.id), original_image, landmark_drawing, height, width, self.id)
+        """.format('landmark-container-' + str(self.id), original_image, landmark_drawing, height, width, self.id)
         return html
 
 
@@ -204,7 +204,7 @@ class OutlineQuestion(TestUnit):
     outline_drawing = models.ImageField(blank=True)
 
     def __str__(self):
-        return self.question or "[OUTLINE] - {0}".format(self.original_image.name)
+        return self.question or '[OUTLINE] - {0}'.format(self.original_image.name)
 
     def regions(self):
         return OutlineRegion.objects.filter(outline_question=self)
@@ -221,7 +221,7 @@ class OutlineQuestion(TestUnit):
             var a = answerRegions();
             a.enableOutline("{0}", "{1}", "{2}", "{3}", "{4}", "{5}");
         </script>
-        """.format("outline-container-" + str(self.id), original_image, outline_drawing, height, width, self.id)
+        """.format('outline-container-' + str(self.id), original_image, outline_drawing, height, width, self.id)
         return html
 
 
@@ -230,7 +230,7 @@ class OutlineSolutionQuestion(TestUnit):
     outline_region = models.CharField(max_length=255)
 
     def __str__(self):
-        return self.question or "[OUTLINE-SOLUTION] - {0}".format(self.original_image.name)
+        return self.question or '[OUTLINE-SOLUTION] - {0}'.format(self.original_image.name)
 
     def regions(self):
         return OutlineSolutionRegion.objects.filter(outline_solution_question=self)
@@ -247,7 +247,7 @@ class OutlineSolutionQuestion(TestUnit):
             var a = answerRegions();
             a.enableOutlineSolution("{0}", "{1}", "{2}", "{3}", "{4}");
         </script>
-        """.format("outline-container-" + str(self.id), original_image, height, width, self.id, self.outline_region)
+        """.format('outline-container-' + str(self.id), original_image, height, width, self.id, self.outline_region)
         return html
 
 
@@ -273,7 +273,7 @@ class TestUnitResult(models.Model):
     test_unit = models.ForeignKey(TestUnit)
     correct_answer = models.BooleanField()
     test_result = models.ForeignKey(TestResult)
-    answer = models.CharField(max_length=255, blank=True, null=True, default="")
+    answer = models.CharField(max_length=255, blank=True, null=True, default='')
     answer_image = models.ImageField(blank=True)
     target_color_region = models.CharField(max_length=255)
     score = models.PositiveSmallIntegerField()

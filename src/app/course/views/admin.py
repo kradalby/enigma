@@ -24,7 +24,7 @@ def new_course(request):
         if form.is_valid():
             course = form.save()
             messages.success(
-                request, 'Successfully created new course: %s.' % course.name)
+                request, 'Successfully created new course: {}.'.format(course.name))
             return redirect(view_course, course.id)
     else:
         form = CourseForm()
@@ -49,7 +49,7 @@ def delete_course(request, course_id):
         course_name = course.name
         course.delete()
         messages.success(
-            request, 'Successfully deleted course: %s.' % course_name)
+            request, 'Successfully deleted course: {}.'.format(course_name))
     except ObjectDoesNotExist:
         messages.warning(
             request, 'The course has already been deleted. You may have clicked twice.')
@@ -80,7 +80,7 @@ def edit_course(request, course_id):
         if form.is_valid():
             course = form.save()
             messages.success(
-                request, 'Successfully changed name of course to %s.' % course.name)
+                request, 'Successfully changed name of course to {}.'.format(course.name))
             return redirect(view_course, course_id=course.id)
     else:
         form = EditCourseForm()
@@ -99,7 +99,7 @@ def generate_user_for_course(request, course_id):
     course = get_object_or_404(Course, id=course_id)
     util_generate_user_for_course(course)
     messages.success(
-        request, 'Successfully generated a user for %s.' % course.name)
+        request, 'Successfully generated a user for {}.'.format(course.name))
     return redirect(view_course, course_id=course_id)
 
 
@@ -118,15 +118,15 @@ def register_user_to_course(request, user_id, course_id):
     course = get_object_or_404(Course, id=course_id)
     user = get_object_or_404(UserProfile, id=user_id)
     if user.groups.filter(id__in=course.groups.all()):
-        messages.warning(request, '%s is already attending %s.' %
-                         (user, course.name))
+        messages.warning(request, '{} is already attending {}.'
+                         .format(user, course.name))
     else:
         group = create_hidden_group_for_course(course)
         user.groups.add(group)
         course.groups.add(group)
         messages.success(
-            request, 'Successfully added %s user to %s.' % (user, course.name))
-    return redirect("admin_view_user", user_id=user_id)
+            request, 'Successfully added %s user to {}.'.format(user, course.name))
+    return redirect('admin_view_user', user_id=user_id)
 
 
 @staff_member_required
@@ -146,15 +146,15 @@ def register_existing_user_to_course(request, user_id, course_id):
     course = get_object_or_404(Course, id=course_id)
     user = get_object_or_404(UserProfile, id=user_id)
     if user.groups.filter(id__in=course.groups.all()):
-        messages.warning(request, '%s is already attending %s.' %
-                         (user, course.name))
+        messages.warning(request, '{} is already attending {}.'
+                         .format(user, course.name))
     else:
         group = create_hidden_group_for_course(course)
         user.groups.add(group)
         course.groups.add(group)
         messages.success(
-            request, 'Successfully added %s user to %s.' % (user, course.name))
-    return redirect("admin_view_course", course_id=course_id)
+            request, 'Successfully added {} user to {}.'.format(user, course.name))
+    return redirect('admin_view_course', course_id=course_id)
 
 
 @staff_member_required
@@ -164,7 +164,7 @@ def unregister_user_from_course(request, course_id, user_id):
     hidden_group = user.groups.hidden().get(id__in=course.groups.all())
     hidden_group.delete()
     messages.success(request, 'Successfully removed user from course')
-    return redirect("admin_view_course", course_id)
+    return redirect('admin_view_course', course_id)
 
 #
 # Course and group related
@@ -188,7 +188,7 @@ def register_group_to_course(request, course_id, group_id):
     group = get_object_or_404(UserGroup, id=group_id)
     course = get_object_or_404(Course, id=course_id)
     course.groups.add(group)
-    return redirect("admin_view_course", course_id)
+    return redirect('admin_view_course', course_id)
 
 
 @staff_member_required
@@ -197,4 +197,4 @@ def unregister_group_from_course(request, course_id, group_id):
     course = get_object_or_404(Course, id=course_id)
     course.groups.remove(group)
     messages.success(request, 'Successfully removed group from course')
-    return redirect("admin_view_course", course_id)
+    return redirect('admin_view_course', course_id)

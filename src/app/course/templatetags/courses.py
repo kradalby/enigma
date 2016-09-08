@@ -1,8 +1,7 @@
+from ..models import Course
 from django import template
 
 register = template.Library()
-
-from ..models import Course
 
 
 @register.filter(name='courses_attending')

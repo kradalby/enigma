@@ -19,8 +19,8 @@ def index(request):
         courses = Course.objects.filter(groups__in=groups)
     tests = Test.objects.all()
     return render(request, 'base/site/index.html', {
-        "courses": courses,
-        "tests": tests
+        'courses': courses,
+        'tests': tests
     })
 
 

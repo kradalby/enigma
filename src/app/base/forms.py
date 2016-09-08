@@ -12,5 +12,5 @@ class GlobalSettingsForm(ModelForm):
 
 
 class ChangePasswordForm(Form):
-    password = CharField(widget=PasswordInput(), label="New password")
-    verify_password = CharField(widget=PasswordInput(), label="Once more")
+    password = CharField(widget=PasswordInput(), label='New password')
+    verify_password = CharField(widget=PasswordInput(), label='Once more')

@@ -6,7 +6,7 @@ from app.userprofile.util import generate_user
 
 def create_hidden_group_for_course(course):
     group = UserGroup()
-    group.name = "custom_group-%s-%s" % (course.name, randint(0, 1000000))
+    group.name = 'custom_group-{}-{}'.format(course.name, randint(0, 1000000))
     group.is_hidden = True
     group.save()
     return group
