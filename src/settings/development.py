@@ -4,6 +4,7 @@ DEBUG = True
 
 SECRET_KEY = "dev"
 
+
 def custom_show_toolbar(request):
     return DEBUG
 
@@ -14,7 +15,8 @@ INSTALLED_APPS += (
 DEBUG_TOOLBAR_CONFIG = {
     'SHOW_TOOLBAR_CALLBACK': custom_show_toolbar,
     'HIDE_DJANGO_SQL': False,
-    'INTERCEPT_REDIRECTS': False,  # Set to True if you want to see requests before you are redirected
+    # Set to True if you want to see requests before you are redirected
+    'INTERCEPT_REDIRECTS': False,
 }
 
 DATABASES = {

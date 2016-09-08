@@ -4,6 +4,7 @@ register = template.Library()
 
 from ..models import Course
 
+
 @register.filter(name='courses_attending')
 def courses_attending(user):
     '''

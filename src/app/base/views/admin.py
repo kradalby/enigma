@@ -6,10 +6,12 @@ from django.contrib import messages
 from ..forms import GlobalSettingsForm
 from ..models import GlobalSettings
 
+
 @staff_member_required
-def index (request):
+def index(request):
     return render(request, 'base/admin/index.html')
-    
+
+
 @transaction.atomic
 @staff_member_required
 def settings(request):
@@ -23,6 +25,6 @@ def settings(request):
         instance = GlobalSettings.objects.all().first()
         form = GlobalSettingsForm(instance=instance)
 
-    return render(request, 'base/admin/settings.html',{
-        "form" : form
+    return render(request, 'base/admin/settings.html', {
+        "form": form
     })

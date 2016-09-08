@@ -7,9 +7,10 @@ from django.forms import ModelForm
 from .models import UserProfile, UserGroup
 from .util import generate_users
 
+
 class UserProfileForm(ModelForm):
     username = CharField()
-    
+
     def __init__(self, *args, **kwargs):
         super(UserProfileForm, self).__init__(*args, **kwargs)
         try:
@@ -19,8 +20,8 @@ class UserProfileForm(ModelForm):
 
     class Meta:
         model = UserProfile
-        fields = ["username",]
-        
+        fields = ["username", ]
+
     def save(self, commit=True):
         user = User()
         user.username = self.cleaned_data['username']
@@ -33,15 +34,17 @@ class UserProfileForm(ModelForm):
                 pass
         self.instance.user = user
         return super(UserProfileForm, self).save(commit=commit)
-        
+
+
 class UserGroupForm(ModelForm):
+
     class Meta:
         model = UserGroup
-        fields = ["name",]
-        
+        fields = ["name", ]
+
     generated_participants_amount = IntegerField(min_value=0)
     generated_participants_prefix = CharField()
-        
+
     def clean(self):
         super(UserGroupForm, self).clean()
         amount = self.cleaned_data.get("generated_participants_amount")
@@ -51,8 +54,9 @@ class UserGroupForm(ModelForm):
         if not prefix and self._errors.get('generated_participants_prefix'):
             del self._errors['generated_participants_prefix']
         if amount and amount > 0 and not prefix:
-            self.add_error(None, "Generated participants prefix and amount have to be specified together")
-        
+            self.add_error(
+                None, "Generated participants prefix and amount have to be specified together")
+
     def save(self, commit=True):
         amount = self.cleaned_data.get('generated_participants_amount')
         prefix = self.cleaned_data.get('generated_participants_prefix')
