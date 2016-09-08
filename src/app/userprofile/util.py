@@ -2,7 +2,6 @@ from django.contrib.auth.models import User
 from django.db import transaction
 
 from .models import UserProfile
-import random
 
 @transaction.atomic
 def generate_users(amount, group, prefix):

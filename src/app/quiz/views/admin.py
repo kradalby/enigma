@@ -527,7 +527,7 @@ def new_outline_solution_question(request):
     if request.method == 'POST':
         form = OutlineSolutionQuestionForm(request.POST, request.FILES)
         if form.is_valid():
-            question = form.save()
+            form.save()
             return redirect(list_questions)
     else:
         form = OutlineSolutionQuestionForm()

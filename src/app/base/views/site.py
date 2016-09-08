@@ -3,7 +3,7 @@ from django.contrib.auth.decorators import login_required
 
 from app.quiz.models import Test
 from app.course.models import Course
-from app.userprofile.models import UserProfile, UserGroup
+from app.userprofile.models import UserProfile
 
 from ..forms import ChangePasswordForm
 

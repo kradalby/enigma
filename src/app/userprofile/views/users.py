@@ -2,11 +2,11 @@ from django.contrib import messages
 from django.contrib.admin.views.decorators import staff_member_required
 from django.contrib.auth.models import User
 from django.core.exceptions import ObjectDoesNotExist
-from django.db import IntegrityError, transaction
+from django.db import transaction
 from django.shortcuts import render, get_object_or_404, redirect
 
 from app.userprofile.models import UserProfile, UserGroup
-from app.userprofile.forms import UserProfileForm, UserGroupForm
+from app.userprofile.forms import UserProfileForm
 from app.quiz.models import TestResult
 
 @staff_member_required

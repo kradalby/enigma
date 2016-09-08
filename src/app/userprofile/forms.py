@@ -1,7 +1,8 @@
 from django.contrib.auth.models import User
 from django.core.exceptions import ObjectDoesNotExist
-from django.core.validators import validate_slug
-from django.forms import ModelForm, TextInput, CharField, IntegerField
+from django.forms import CharField
+from django.forms import IntegerField
+from django.forms import ModelForm
 
 from .models import UserProfile, UserGroup
 from .util import generate_users

@@ -1,14 +1,12 @@
 from django.contrib import messages
 from django.contrib.admin.views.decorators import staff_member_required
-from django.contrib.auth.models import User
 from django.core.exceptions import ObjectDoesNotExist
-from django.db import IntegrityError, transaction
+from django.db import transaction
 from django.shortcuts import render, get_object_or_404, redirect
 
-import random
 
 from ..models import UserProfile, UserGroup
-from ..forms import UserProfileForm, UserGroupForm
+from ..forms import UserGroupForm
 from ..util import generate_user
 
 @staff_member_required

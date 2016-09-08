@@ -3,7 +3,6 @@ from django import template
 register = template.Library()
 
 from ..models import Course
-from app.userprofile.models import UserProfile
 
 @register.filter(name='courses_attending')
 def courses_attending(user):

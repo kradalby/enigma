@@ -9,7 +9,6 @@ from ..models import Course
 from ..util import generate_user_for_course as util_generate_user_for_course, create_hidden_group_for_course
 
 from app.userprofile.models import UserProfile, UserGroup
-from app.userprofile.util import generate_user
 from app.quiz.models import Test
 
 #
