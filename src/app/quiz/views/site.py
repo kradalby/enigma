@@ -15,7 +15,7 @@ from ..models import *
 from app.base.models import GlobalSettings
 
 from app.base.views.site import index
-   
+
 @login_required
 def single_test (request, test_id):
     test = get_object_or_404(Test, pk=test_id)
@@ -69,7 +69,7 @@ def _add_test_result(question_type, question_id, testresult, answer, max_score):
     test_unit_result.score = _get_score(question_type, test_unit_result.correct_answer)
     test_unit_result.max_score = max_score
     test_unit_result.save()
-    
+
 def _json_color_to_rgb(json_color):
     try:
         selected_color = json.loads(json_color)
@@ -79,13 +79,13 @@ def _json_color_to_rgb(json_color):
         return '#' + format(red, 'x') + format(green, 'x') + format(blue, 'x')
     except KeyError:
         return None
-    
+
 def _colors_match(json_color, target_color):
     return _json_color_to_rgb(json_color) == target_color
-    
+
 def _randomword(length):
    return ''.join(random.choice(string.ascii_lowercase) for i in range(length))
-        
+
 def _get_answer_image(request, question_id):
     dataUrlPattern = re.compile('data:image/(png|jpeg);base64,(.*)$')
     image_data = request.POST.get('hidden-image-data-' + question_id)
@@ -98,8 +98,8 @@ def _get_answer_image(request, question_id):
     image_data = base64.b64decode(image_data)
     return ContentFile(image_data, _randomword(15) + ".png")
 
-@login_required   
-@transaction.atomic 
+@login_required
+@transaction.atomic
 def submit_test(request, test_id):
     if not request.method == 'POST':
         return redirect('/')
@@ -162,9 +162,9 @@ def submit_test(request, test_id):
             test_unit_result.correct_answer = True
             test_unit_result.answer_image = _get_answer_image(request, question_id)
             test_unit_result.save()
-           
+
     return redirect('/survey/')
-    
+
 @login_required
 def view_test_result(request, test_result_id):
     test_result = get_object_or_404(TestResult, id=test_result_id)
@@ -179,7 +179,7 @@ def view_test_result(request, test_result_id):
         "test_result" : test_result,
         "test_units" : test_units
     })
-    
+
 @login_required
 def delete_test_result(request, test_result_id):
     try:

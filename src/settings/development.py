@@ -31,8 +31,3 @@ DATABASES = {
 MIDDLEWARE_CLASSES += (
     'debug_toolbar.middleware.DebugToolbarMiddleware',
 )
-
-TEMPLATES[0]['OPTIONS']['context_processors'] += (
-   'django.core.context_processors.debug',
-)
-
