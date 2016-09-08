@@ -18,5 +18,7 @@ help:
 migrate:
 	docker-compose run web python manage.py migrate
 
+test:
+	docker-compose run web python manage.py test
 
 .PHONY: migrate
