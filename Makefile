@@ -24,4 +24,10 @@ test:
 createsuper:
 	docker-compose run web python manage.py createsuperuser
 
+rebuild:
+	docker-compose up --build
+
+run:
+	docker-compose up
+
 .PHONY: migrate
