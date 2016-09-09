@@ -21,4 +21,7 @@ migrate:
 test:
 	docker-compose run web python manage.py test
 
+createsuper:
+	docker-compose run web python manage.py createsuperuser
+
 .PHONY: migrate
