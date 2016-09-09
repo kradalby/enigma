@@ -33,7 +33,7 @@
                     </button>
                     <a class="navbar-brand" href="/">MedImgQuiz</a>
                 </div>
-                
+
                 <!-- Collect the nav links, forms, and other content for toggling -->
                 <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                     <ul class="nav navbar-nav navbar-right">
@@ -53,11 +53,11 @@
                         {% endif %}
                         <li>
                             {% if user.is_authenticated %}
-                            <a href="{% url 'django.contrib.auth.views.logout' %}">
+                            <a href="{% url 'logout' %}">
                                 Log out
                             </a>
                             {% else %}
-                            <a href="{% url 'django.contrib.auth.views.login' %}">
+                            <a href="{% url 'login' %}">
                                 Log in
                             </a>
                             {% endif %}
@@ -66,11 +66,11 @@
                 </div>
             </div>
         </nav>
-        
+
         <div class="container-fluid">
             <div class="row main-content">
-                {% block content %} 
-                    This is hidden candy that only you, as developer, are able to see. APPRECIATE! 
+                {% block content %}
+                    This is hidden candy that only you, as developer, are able to see. APPRECIATE!
                 {% endblock %}
             </div>
         </div>
@@ -89,7 +89,7 @@
         });
         </script>
         <script src="{% static "js/bootstrap.min.js" %}"></script>
-        
+
         {% block end %} {% endblock %}
     </div>
 </body>

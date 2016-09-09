@@ -9,7 +9,7 @@ urlpatterns = [
     url(r'^course/', include('app.course.urls')),
     url(r'^profile/', include('app.userprofile.urls')),
     url(r'^accounts/login/$', auth_views.login, name='login'),
-    url(r'^accounts/logout/$', auth_views.logout),
+    url(r'^accounts/logout/$', auth_views.logout, name='logout'),
 ]
 
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
