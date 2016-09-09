@@ -1,6 +1,6 @@
 django==1.10.1
 pillow==3.1.1
-django-debug-toolbar==1.4
+django-debug-toolbar==1.5
 whitenoise==3.0rc1
 psycopg2==2.6.1
 dj-database-url==0.4.1
