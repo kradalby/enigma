@@ -1,8 +1,9 @@
-from django.conf.urls import url
+from django.conf.urls import url, include
 
 from .views import admin, site
 
 urlpatterns = [
+
     # Site
     url(r'^view/(?P<test_id>\d+)/$', site.single_test, name='single_test'),
     url(r'^submit/(?P<test_id>\d+)/$', site.submit_test, name='submit_test'),
