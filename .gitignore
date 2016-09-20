@@ -1,6 +1,7 @@
 # Project spesific
 
 db/
+*.png
 
 # Created by https://www.gitignore.io/api/osx,windows,intellij,webstorm,vim,emacs,django,python
 
