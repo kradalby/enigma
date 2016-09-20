@@ -13,6 +13,8 @@ urlpatterns = [
     url(r'^accounts/logout/$', auth_views.logout, name='logout'),
     url(r'^api/quiz/', include('app.quiz.api_urls')),
     url(r'^api/user/', include('app.userprofile.api_urls')),
+    url(r'^api/course/', include('app.course.api_urls')),
+
 ]
 
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
