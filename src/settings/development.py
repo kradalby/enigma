@@ -10,6 +10,7 @@ def custom_show_toolbar(request):
 
 INSTALLED_APPS += (
     'debug_toolbar',
+    'django_extensions'
 )
 
 DEBUG_TOOLBAR_CONFIG = {
