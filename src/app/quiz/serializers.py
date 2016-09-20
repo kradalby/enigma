@@ -14,6 +14,13 @@ from .models import (Test,
                      OutlineSolutionQuestion)
 
 
+class TestSerializer(serializers.HyperlinkedModelSerializer):
+
+    class Meta:
+        model = Test
+        field = '__all__'
+
+
 class TestResultSerializer(serializers.HyperlinkedModelSerializer):
 
     class Meta:

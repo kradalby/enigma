@@ -5,6 +5,7 @@ from .views import api
 from rest_framework import routers
 
 router = routers.DefaultRouter()
+router.register(r'test', api.TestViewSet)
 router.register(r'testresult', api.TestResultViewSet)
 router.register(r'testunit', api.TestUnitViewSet)
 router.register(r'testunitresult', api.TestUnitResultViewSet)

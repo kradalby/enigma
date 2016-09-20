@@ -11,7 +11,8 @@ from ..models import (Test,
                       OutlineRegion,
                       OutlineSolutionQuestion)
 
-from ..serializers import (TestResultSerializer,
+from ..serializers import (TestSerializer,
+                           TestResultSerializer,
                            TestUnitSerializer,
                            TestUnitResultSerializer,
                            MultipleChoiceQuestionSerializer,
@@ -24,6 +25,11 @@ from ..serializers import (TestResultSerializer,
                            OutlineSolutionQuestionSerializer)
 
 from rest_framework import viewsets
+
+
+class TestViewSet(viewsets.ModelViewSet):
+    queryset = Test.objects.all()
+    serializer_class = TestSerializer
 
 
 class TestResultViewSet(viewsets.ModelViewSet):
