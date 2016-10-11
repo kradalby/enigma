@@ -18,7 +18,8 @@ COPY docker-entrypoint.sh /docker-entrypoint.sh
 
 ENV DJANGO_SETTINGS_MODULE settings.production
 
-EXPOSE 8000
+EXPOSE 8080
+EXPOSE 8081
 
 
 
