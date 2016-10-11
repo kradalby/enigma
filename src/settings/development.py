@@ -22,7 +22,7 @@ DEBUG_TOOLBAR_CONFIG = {
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'ENGINE': 'django.db.backends.sqlite3',
         'NAME': 'postgres',
         'USER': 'postgres',
         'HOST': 'db',

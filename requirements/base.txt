@@ -5,3 +5,4 @@ django-debug-toolbar==1.5
 whitenoise==3.0rc1
 psycopg2==2.6.1
 dj-database-url==0.4.1
+django-extensions

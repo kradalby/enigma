@@ -1,0 +1,40 @@
+build:
+    image: kradalby/ci-tox:latest
+    pull: true
+    environment:
+      - DJANGO_SETTINGS_MODULE=settings.production
+    commands:
+        - make env
+        - make dev
+        - make flake8
+        - tox
+
+publish:
+  docker:
+    registry: gengar.l.fap.no:5000
+    repo: turbo/turbo
+    tag: latest
+    insecure: true
+    when:
+        branch: master
+  docker:
+    registry: gengar.l.fap.no:5000
+    repo: turbo/turbo
+    tag: $$TAG
+    insecure: true
+    when:
+        event: tag
+
+deploy:
+  ssh:
+    host:
+     - gengar.l.fap.no
+    user: root
+    port: 22
+    sleep: 3
+    commands:
+      - docker pull registry.fap.no/turbo/turbo:latest
+      - docker-compose -f /srv/docker/turbo/docker-compose.yml stop
+      - docker-compose -f /srv/docker/turbo/docker-compose.yml up -d
+    when:
+        branch: master
