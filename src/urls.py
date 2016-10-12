@@ -3,6 +3,29 @@ from django.conf.urls import include, url
 from django.conf import settings
 from django.contrib.auth import views as auth_views
 from django.contrib import admin
+from app.course.views import api as course_api
+from app.quiz.views import api as quiz_api
+from app.userprofile.views import api as userprofile_api
+
+from rest_framework import routers
+
+router = routers.DefaultRouter()
+router.register(r'course', course_api.CourseViewSet)
+router.register(r'test', quiz_api.TestViewSet)
+router.register(r'testresult', quiz_api.TestResultViewSet)
+router.register(r'testunit', quiz_api.TestUnitViewSet)
+router.register(r'testunitresult', quiz_api.TestUnitResultViewSet)
+router.register(r'mcq', quiz_api.MultipleChoiceQuestionViewSet)
+router.register(r'mcq/image', quiz_api.MultipleChoiceQuestionWithImageViewSet)
+router.register(r'mcq/video', quiz_api.MultipleChoiceQuestionWithVideoViewSet)
+router.register(r'landmarkquestion', quiz_api.LandmarkQuestionViewSet)
+router.register(r'landmarkregion', quiz_api.LandmarkRegionViewSet)
+router.register(r'outline/question', quiz_api.OutlineQuestionViewSet)
+router.register(r'outline/region', quiz_api.OutlineRegionViewSet)
+router.register(r'outline/solution', quiz_api.OutlineSolutionQuestionViewSet)
+router.register(r'user', userprofile_api.UserViewSet)
+router.register(r'userprofile', userprofile_api.UserProfileViewSet)
+router.register(r'usergroup', userprofile_api.UserGroupViewSet)
 
 urlpatterns = [
     url(r'^', include('app.base.urls')),
@@ -11,9 +34,7 @@ urlpatterns = [
     url(r'^profile/', include('app.userprofile.urls')),
     url(r'^accounts/login/$', auth_views.login, name='login'),
     url(r'^accounts/logout/$', auth_views.logout, name='logout'),
-    url(r'^api/quiz/', include('app.quiz.api_urls')),
-    url(r'^api/user/', include('app.userprofile.api_urls')),
-    url(r'^api/course/', include('app.course.api_urls')),
+    url(r'^api/', include(router.urls)),
 
 ]
 
