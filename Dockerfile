@@ -16,7 +16,7 @@ COPY src/. $APP_DIR
 
 COPY docker-entrypoint.sh /docker-entrypoint.sh
 
-ENV DJANGO_SETTINGS_MODULE settings.production
+ENV DJANGO_SETTINGS_MODULE=settings.production
 RUN python manage.py collectstatic --noinput --clear
 
 EXPOSE 8080
