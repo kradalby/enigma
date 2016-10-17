@@ -6,6 +6,6 @@ services:
             - ./test.py:/srv/app/settings/production.py
         ports:
             - "8311:8080"
-            - "8312:8080"
+            - "8312:8081"
         environment:
             - DJANGO_SETTINGS_MODULE=settings.production
