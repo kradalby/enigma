@@ -10,24 +10,22 @@ build:
 
 publish:
   docker:
-    registry: gengar.l.fap.no:5000
+    registry: registry.fap.no
     repo: turbo/turbo
     tag: latest
-    insecure: true
     when:
         branch: master
   docker:
-    registry: gengar.l.fap.no:5000
+    registry: registry.fap.no
     repo: turbo/turbo
     tag: $$TAG
-    insecure: true
     when:
         event: tag
 
 deploy:
   ssh:
     host:
-     - gengar.l.fap.no
+     - docker1.fap.no
     user: root
     port: 22
     sleep: 3
