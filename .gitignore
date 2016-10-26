@@ -3,6 +3,7 @@
 db/
 *.png
 mediafiles/
+src/postgres
 
 # Created by https://www.gitignore.io/api/osx,windows,intellij,webstorm,vim,emacs,django,python
 

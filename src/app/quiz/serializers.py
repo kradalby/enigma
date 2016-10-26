@@ -75,6 +75,7 @@ class LandmarkRegionSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = LandmarkRegion
         field = '__all__'
+        depth = 1
 
 
 class OutlineQuestionSerializer(serializers.HyperlinkedModelSerializer):
