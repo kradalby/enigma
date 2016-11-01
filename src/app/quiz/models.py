@@ -89,8 +89,9 @@ class MultipleChoiceQuestion(TestUnit):
 
     def as_html(self):
         html = '<div><ul class="list-group">'
-        alternatives = [self.correct_answer,
-                        self.wrong_answer_1, self.wrong_answer_2]
+        alternatives = [
+            self.correct_answer, self.wrong_answer_1, self.wrong_answer_2
+        ]
         shuffle(alternatives)
 
         for alternative in alternatives:
@@ -123,8 +124,9 @@ class MultipleChoiceQuestionWithImage(TestUnit):
             <ul class="list-group">
         """.format(self.image.url)
 
-        alternatives = [self.correct_answer,
-                        self.wrong_answer_1, self.wrong_answer_2]
+        alternatives = [
+            self.correct_answer, self.wrong_answer_1, self.wrong_answer_2
+        ]
         shuffle(alternatives)
 
         for alternative in alternatives:
@@ -157,8 +159,9 @@ class MultipleChoiceQuestionWithVideo(TestUnit):
             <ul class="list-group">
         """ % (self.id, self.video.url)
 
-        alternatives = [self.correct_answer,
-                        self.wrong_answer_1, self.wrong_answer_2]
+        alternatives = [
+            self.correct_answer, self.wrong_answer_1, self.wrong_answer_2
+        ]
         shuffle(alternatives)
 
         for alternative in alternatives:
@@ -178,7 +181,8 @@ class LandmarkQuestion(TestUnit):
     landmark_drawing = models.ImageField(blank=True)
 
     def __str__(self):
-        return self.question or '[LANDMARK] - {0}'.format(self.original_image.name)
+        return self.question or '[LANDMARK] - {0}'.format(
+            self.original_image.name)
 
     def regions(self):
         return LandmarkRegion.objects.filter(landmark_question=self)
@@ -195,7 +199,8 @@ class LandmarkQuestion(TestUnit):
             var a = answerRegions();
             a.enableLandmark("{0}", "{1}", "{2}", "{3}", "{4}", "{5}");
         </script>
-        """.format('landmark-container-' + str(self.id), original_image, landmark_drawing, height, width, self.id)
+        """.format('landmark-container-' + str(self.id), original_image,
+                   landmark_drawing, height, width, self.id)
         return html
 
 
@@ -204,7 +209,8 @@ class OutlineQuestion(TestUnit):
     outline_drawing = models.ImageField(blank=True)
 
     def __str__(self):
-        return self.question or '[OUTLINE] - {0}'.format(self.original_image.name)
+        return self.question or '[OUTLINE] - {0}'.format(
+            self.original_image.name)
 
     def regions(self):
         return OutlineRegion.objects.filter(outline_question=self)
@@ -221,7 +227,8 @@ class OutlineQuestion(TestUnit):
             var a = answerRegions();
             a.enableOutline("{0}", "{1}", "{2}", "{3}", "{4}", "{5}");
         </script>
-        """.format('outline-container-' + str(self.id), original_image, outline_drawing, height, width, self.id)
+        """.format('outline-container-' + str(self.id), original_image,
+                   outline_drawing, height, width, self.id)
         return html
 
 
@@ -230,10 +237,12 @@ class OutlineSolutionQuestion(TestUnit):
     outline_region = models.CharField(max_length=255)
 
     def __str__(self):
-        return self.question or '[OUTLINE-SOLUTION] - {0}'.format(self.original_image.name)
+        return self.question or '[OUTLINE-SOLUTION] - {0}'.format(
+            self.original_image.name)
 
     def regions(self):
-        return OutlineSolutionRegion.objects.filter(outline_solution_question=self)
+        return OutlineSolutionRegion.objects.filter(
+            outline_solution_question=self)
 
     def as_html(self):
         original_image = self.original_image.url
@@ -247,7 +256,8 @@ class OutlineSolutionQuestion(TestUnit):
             var a = answerRegions();
             a.enableOutlineSolution("{0}", "{1}", "{2}", "{3}", "{4}");
         </script>
-        """.format('outline-container-' + str(self.id), original_image, height, width, self.id, self.outline_region)
+        """.format('outline-container-' + str(self.id), original_image, height,
+                   width, self.id, self.outline_region)
         return html
 
 
@@ -281,18 +291,23 @@ class TestUnitResult(models.Model):
 
     def target_outline_region(self):
         try:
-            return OutlineRegion.objects.filter(outline_question=self.test_unit).get(color=self.target_color_region)
+            return OutlineRegion.objects.filter(
+                outline_question=self.test_unit).get(
+                    color=self.target_color_region)
         except:
             return None
 
     def target_landmark_region(self):
         try:
-            return LandmarkRegion.objects.filter(landmark_question=self.test_unit).get(color=self.target_color_region)
+            return LandmarkRegion.objects.filter(
+                landmark_question=self.test_unit).get(
+                    color=self.target_color_region)
         except:
             return None
 
     def answered_landmark_region(self):
         try:
-            return LandmarkRegion.objects.filter(landmark_question=self.test_unit).get(color=self.answer)
+            return LandmarkRegion.objects.filter(
+                landmark_question=self.test_unit).get(color=self.answer)
         except:
             return None

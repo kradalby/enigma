@@ -7,39 +7,60 @@ class TestForm(ModelForm):
 
     class Meta:
         model = Test
-        fields = ["name", "course", "user_can_see_test_result",
-                  "user_can_delete_test_result", ]
+        fields = [
+            "name",
+            "course",
+            "user_can_see_test_result",
+            "user_can_delete_test_result",
+        ]
 
 
 class MultipleChoiceQuestionForm(ModelForm):
 
     class Meta:
         model = MultipleChoiceQuestion
-        fields = ["question", "correct_answer",
-                  "wrong_answer_1", "wrong_answer_2", ]
+        fields = [
+            "question",
+            "correct_answer",
+            "wrong_answer_1",
+            "wrong_answer_2",
+        ]
 
 
 class MultipleChoiceQuestionWithImageForm(ModelForm):
 
     class Meta:
         model = MultipleChoiceQuestionWithImage
-        fields = ["question", "correct_answer",
-                  "wrong_answer_1", "wrong_answer_2", "image", ]
+        fields = [
+            "question",
+            "correct_answer",
+            "wrong_answer_1",
+            "wrong_answer_2",
+            "image",
+        ]
 
 
 class MultipleChoiceQuestionWithVideoForm(ModelForm):
 
     class Meta:
         model = MultipleChoiceQuestionWithVideo
-        fields = ["question", "correct_answer",
-                  "wrong_answer_1", "wrong_answer_2", "video", ]
+        fields = [
+            "question",
+            "correct_answer",
+            "wrong_answer_1",
+            "wrong_answer_2",
+            "video",
+        ]
 
 
 class LandmarkQuestionForm(ModelForm):
 
     class Meta:
         model = LandmarkQuestion
-        fields = ["question", "original_image", ]
+        fields = [
+            "question",
+            "original_image",
+        ]
 
     def __init__(self, *args, **kwargs):
         super(LandmarkQuestionForm, self).__init__(*args, **kwargs)
@@ -51,7 +72,10 @@ class OutlineQuestionForm(ModelForm):
 
     class Meta:
         model = OutlineQuestion
-        fields = ["question", "original_image", ]
+        fields = [
+            "question",
+            "original_image",
+        ]
 
     def __init__(self, *args, **kwargs):
         super(OutlineQuestionForm, self).__init__(*args, **kwargs)
@@ -63,7 +87,11 @@ class OutlineSolutionQuestionForm(ModelForm):
 
     class Meta:
         model = OutlineSolutionQuestion
-        fields = ["question", "outline_region", "original_image", ]
+        fields = [
+            "question",
+            "outline_region",
+            "original_image",
+        ]
 
     def __init__(self, *args, **kwargs):
         super(OutlineSolutionQuestionForm, self).__init__(*args, **kwargs)

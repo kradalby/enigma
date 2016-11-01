@@ -19,6 +19,7 @@ class GlobalSettings(models.Model):
     outline_max_threshold = models.PositiveSmallIntegerField(
         verbose_name='Outline maximum threshold')
 
+
 try:
     global_settings = GlobalSettings.objects.all().first()
     if not global_settings:

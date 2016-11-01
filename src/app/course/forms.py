@@ -7,11 +7,11 @@ class CourseForm(ModelForm):
 
     class Meta:
         model = Course
-        fields = ['name', ]
+        fields = ['name',]
 
 
 class EditCourseForm(ModelForm):
 
     class Meta:
         model = Course
-        fields = ['name', ]
+        fields = ['name',]

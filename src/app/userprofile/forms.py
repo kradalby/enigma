@@ -20,7 +20,7 @@ class UserProfileForm(ModelForm):
 
     class Meta:
         model = UserProfile
-        fields = ["username", ]
+        fields = ["username",]
 
     def save(self, commit=True):
         user = User()
@@ -40,7 +40,7 @@ class UserGroupForm(ModelForm):
 
     class Meta:
         model = UserGroup
-        fields = ["name", ]
+        fields = ["name",]
 
     generated_participants_amount = IntegerField(min_value=0)
     generated_participants_prefix = CharField()
@@ -49,13 +49,16 @@ class UserGroupForm(ModelForm):
         super(UserGroupForm, self).clean()
         amount = self.cleaned_data.get("generated_participants_amount")
         prefix = self.cleaned_data.get("generated_participants_prefix")
-        if (not amount or amount == 0) and self._errors.get('generated_participants_amount'):
+        if (not amount or amount == 0
+           ) and self._errors.get('generated_participants_amount'):
             del self._errors['generated_participants_amount']
         if not prefix and self._errors.get('generated_participants_prefix'):
             del self._errors['generated_participants_prefix']
         if amount and amount > 0 and not prefix:
             self.add_error(
-                None, "Generated participants prefix and amount have to be specified together")
+                None,
+                "Generated participants prefix and amount have to be specified together"
+            )
 
     def save(self, commit=True):
         amount = self.cleaned_data.get('generated_participants_amount')

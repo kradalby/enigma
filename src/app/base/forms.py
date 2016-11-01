@@ -7,8 +7,16 @@ class GlobalSettingsForm(ModelForm):
 
     class Meta:
         model = GlobalSettings
-        fields = ['mpc_points', 'mpci_points', 'mpcv_points', 'landmark_points',
-                  'outline_solution_points', 'outline_points', 'outline_min_threshold', 'outline_max_threshold', ]
+        fields = [
+            'mpc_points',
+            'mpci_points',
+            'mpcv_points',
+            'landmark_points',
+            'outline_solution_points',
+            'outline_points',
+            'outline_min_threshold',
+            'outline_max_threshold',
+        ]
 
 
 class ChangePasswordForm(Form):

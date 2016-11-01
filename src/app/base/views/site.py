@@ -18,10 +18,9 @@ def index(request):
         groups = userprofile.groups.all()
         courses = Course.objects.filter(groups__in=groups)
     tests = Test.objects.all()
-    return render(request, 'base/site/index.html', {
-        'courses': courses,
-        'tests': tests
-    })
+    return render(request, 'base/site/index.html',
+                  {'courses': courses,
+                   'tests': tests})
 
 
 @login_required
@@ -47,8 +46,7 @@ def change_password(request):
     else:
         form = ChangePasswordForm()
 
-    return render(request, 'base/site/change_password.html', {
-        'form': form,
-        'user': user,
-        'userprofile': userprofile
-    })
+    return render(request, 'base/site/change_password.html',
+                  {'form': form,
+                   'user': user,
+                   'userprofile': userprofile})

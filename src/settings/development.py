@@ -8,10 +8,8 @@ SECRET_KEY = "dev"
 def custom_show_toolbar(request):
     return DEBUG
 
-INSTALLED_APPS += (
-    'debug_toolbar',
-    'django_extensions'
-)
+
+INSTALLED_APPS += ('debug_toolbar', 'django_extensions')
 
 DEBUG_TOOLBAR_CONFIG = {
     'SHOW_TOOLBAR_CALLBACK': custom_show_toolbar,
@@ -30,6 +28,4 @@ DATABASES = {
     }
 }
 
-MIDDLEWARE_CLASSES += (
-    'debug_toolbar.middleware.DebugToolbarMiddleware',
-)
+MIDDLEWARE_CLASSES += ('debug_toolbar.middleware.DebugToolbarMiddleware',)

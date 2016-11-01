@@ -19,13 +19,10 @@ question_types = {
 def question_type(question):
     return question_types.get(type(question), "Questions")
 
+
 question_type_ids = [
-    None,
-    MultipleChoiceQuestion,
-    MultipleChoiceQuestionWithImage,
-    MultipleChoiceQuestionWithVideo,
-    LandmarkQuestion,
-    OutlineQuestion,
+    None, MultipleChoiceQuestion, MultipleChoiceQuestionWithImage,
+    MultipleChoiceQuestionWithVideo, LandmarkQuestion, OutlineQuestion,
     OutlineSolutionQuestion
 ]
 

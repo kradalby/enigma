@@ -25,6 +25,4 @@ def settings(request):
         instance = GlobalSettings.objects.all().first()
         form = GlobalSettingsForm(instance=instance)
 
-    return render(request, 'base/admin/settings.html', {
-        'form': form
-    })
+    return render(request, 'base/admin/settings.html', {'form': form})

@@ -51,4 +51,5 @@ def delete_user(sender, instance=None, **kwargs):
     else:
         instance.user.delete()
 
+
 signals.post_delete.connect(delete_user, sender=UserProfile)
