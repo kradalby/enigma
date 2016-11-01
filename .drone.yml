@@ -25,7 +25,7 @@ publish:
 deploy:
   ssh:
     host:
-     - docker1.fap.no
+     - docker.terra.fap.no
     user: root
     port: 22
     sleep: 3
