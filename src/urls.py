@@ -25,10 +25,10 @@ router.register(
     quiz_api.LandmarkQuestionViewSet,
     base_name='quiz/mcq_image/')
 # router.register(r'quiz/landmarkregion', quiz_api.LandmarkRegionViewSet)
-router.register(r'quiz/outline/question', quiz_api.OutlineQuestionViewSet)
-router.register(r'quiz/outline/region', quiz_api.OutlineRegionViewSet)
-router.register(r'quiz/outline/solution',
-                quiz_api.OutlineSolutionQuestionViewSet)
+router.register(
+    r'quiz/outlinequestion',
+    quiz_api.OutlineQuestionViewSet,
+    base_name='quiz/outlinequestion')
 
 urlpatterns = [
     url(r'^', include('app.base.urls')),

@@ -7,75 +7,6 @@ from .models import (LandmarkQuestion, LandmarkRegion, MultipleChoiceQuestion,
                      TestUnit, TestUnitResult)
 
 
-class TestSerializer(serializers.HyperlinkedModelSerializer):
-    class Meta:
-        model = Test
-        field = '__all__'
-
-
-class TestResultSerializer(serializers.HyperlinkedModelSerializer):
-    class Meta:
-        model = TestResult
-        field = '__all__'
-
-
-class TestUnitSerializer(serializers.HyperlinkedModelSerializer):
-    class Meta:
-        model = TestUnit
-        field = '__all__'
-
-
-class TestUnitResultSerializer(serializers.HyperlinkedModelSerializer):
-    class Meta:
-        model = TestUnitResult
-        field = '__all__'
-
-
-# class MultipleChoiceQuestionSerializer(serializers.HyperlinkedModelSerializer):
-
-#     class Meta:
-#         model = MultipleChoiceQuestion
-#         field = '__all__'
-
-# class MultipleChoiceQuestionWithImageSerializer(serializers.HyperlinkedModelSerializer):
-
-#     class Meta:
-#         model = MultipleChoiceQuestionWithImage
-#         field = '__all__'
-
-# class MultipleChoiceQuestionWithVideoSerializer(serializers.HyperlinkedModelSerializer):
-
-#     class Meta:
-#         model = MultipleChoiceQuestionWithVideo
-#         field = '__all__'
-
-# class LandmarkRegionSerializer(serializers.HyperlinkedModelSerializer):
-
-#     class Meta:
-#         model = LandmarkRegion
-#         field = '__all__'
-#         depth = 1
-
-
-class OutlineQuestionSerializer(serializers.HyperlinkedModelSerializer):
-    class Meta:
-        model = OutlineQuestion
-        field = '__all__'
-
-
-class OutlineRegionSerializer(serializers.HyperlinkedModelSerializer):
-    class Meta:
-        model = OutlineRegion
-        field = '__all__'
-
-
-class OutlineSolutionQuestionSerializer(
-        serializers.HyperlinkedModelSerializer):
-    class Meta:
-        model = OutlineSolutionQuestion
-        field = '__all__'
-
-
 class WrongAnswerListField(serializers.ListField):
     child = serializers.CharField(max_length=255)
 
@@ -106,3 +37,14 @@ class LandmarkQuestionSerializer(serializers.Serializer):
     original_image = serializers.URLField()
     landmark_drawing = serializers.URLField()
     landmark_regions = LandmarkRegionSerializer(many=True, read_only=True)
+
+
+class OutlineRegionSerializer(serializers.Serializer):
+    color = serializers.CharField(max_length=50)
+    name = serializers.CharField(max_length=255)
+
+
+class OutlineQuestionSerializer(serializers.Serializer):
+    original_image = serializers.URLField()
+    outline_drawing = serializers.URLField()
+    outline_regions = OutlineRegionSerializer(many=True, read_only=True)

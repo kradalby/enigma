@@ -12,57 +12,8 @@ from ..serializers import (
     MultipleChoiceQuestionSerializer,
     MultipleChoiceQuestionWithImageSerializer,
     MultipleChoiceQuestionWithVideoSerializer, OutlineQuestionSerializer,
-    OutlineRegionSerializer, OutlineSolutionQuestionSerializer,
-    TestResultSerializer, TestSerializer, TestUnitResultSerializer,
-    TestUnitSerializer)
-
-
-class TestViewSet(viewsets.ModelViewSet):
-    queryset = Test.objects.all()
-    serializer_class = TestSerializer
-
-
-class TestResultViewSet(viewsets.ModelViewSet):
-    queryset = TestResult.objects.all()
-    serializer_class = TestResultSerializer
-
-
-class TestUnitViewSet(viewsets.ModelViewSet):
-    queryset = TestUnit.objects.all()
-    serializer_class = TestUnitSerializer
-
-
-class TestUnitResultViewSet(viewsets.ModelViewSet):
-    queryset = TestUnitResult.objects.all()
-    serializer_class = TestUnitResultSerializer
-
-
-# class MultipleChoiceQuestionViewSet(viewsets.ModelViewSet):
-#     queryset = MultipleChoiceQuestion.objects.all()
-#     serializer_class = MultipleChoiceQuestionSerializer
-
-# class MultipleChoiceQuestionWithImageViewSet(viewsets.ModelViewSet):
-#     queryset = MultipleChoiceQuestionWithImage.objects.all()
-#     serializer_class = MultipleChoiceQuestionWithImageSerializer
-
-# class MultipleChoiceQuestionWithVideoViewSet(viewsets.ModelViewSet):
-#     queryset = MultipleChoiceQuestionWithVideo.objects.all()
-#     serializer_class = MultipleChoiceQuestionWithVideoSerializer
-
-
-class OutlineQuestionViewSet(viewsets.ModelViewSet):
-    queryset = OutlineQuestion.objects.all()
-    serializer_class = OutlineQuestionSerializer
-
-
-class OutlineRegionViewSet(viewsets.ModelViewSet):
-    queryset = OutlineRegion.objects.all()
-    serializer_class = OutlineRegionSerializer
-
-
-class OutlineSolutionQuestionViewSet(viewsets.ModelViewSet):
-    queryset = OutlineSolutionQuestion.objects.all()
-    serializer_class = OutlineSolutionQuestionSerializer
+    OutlineRegionSerializer, TestResultSerializer, TestSerializer,
+    TestUnitResultSerializer, TestUnitSerializer)
 
 
 class MultipleChoiceQuestionViewSet(viewsets.ViewSet):
@@ -74,9 +25,10 @@ class MultipleChoiceQuestionViewSet(viewsets.ViewSet):
                 'wrong_answers': [
                     mcq.wrong_answer_1,
                     mcq.wrong_answer_2
-                    ]},
-                    MultipleChoiceQuestion.objects.all()
-                    )
+                    ]
+                },
+                MultipleChoiceQuestion.objects.all()
+            )
         serializer = MultipleChoiceQuestionSerializer(queryset, many=True)
         return Response(serializer.data)
 
@@ -157,8 +109,8 @@ class LandmarkQuestionViewSet(viewsets.ViewSet):
             lambda lq: {
                 'question': lq.question,
                 'original_image': lq.original_image.url,
-                'landmark_drawing': lq.landmark_drawing.url,
-                'landmark_regions': LandmarkRegionSerializer(lq.regions, many=True)
+                'landmark_drawing': lq.landmark_drawing.url if lq.landmark_drawing else '',
+                'landmark_regions': LandmarkRegionSerializer(lq.regions(), many=True).data
             }, LandmarkQuestion.objects.all()
         )
 
@@ -171,10 +123,41 @@ class LandmarkQuestionViewSet(viewsets.ViewSet):
         lq_transformed = {
             'question': lq.question,
             'original_image': lq.original_image.url,
-            'landmark_drawing': lq.landmark_drawing.url,
+            'landmark_drawing': lq.landmark_drawing.url
+            if lq.landmark_drawing else '',
             'landmark_regions': LandmarkRegionSerializer(
-                lq.regions, many=True)
+                lq.regions(), many=True).data
         }
         serializer = LandmarkQuestionSerializer(lq_transformed)
+
+        return Response(serializer.data)
+
+
+class OutlineQuestionViewSet(viewsets.ViewSet):
+    def list(self, request):
+        queryset = map(
+            lambda oq: {
+                'question': oq.question,
+                'original_image': oq.original_image.url,
+                'outline_drawing': oq.outline_drawing.url if oq.outline_drawing else '',
+                'outline_regions': OutlineRegionSerializer(oq.regions(), many=True).data
+            }, OutlineQuestion.objects.all()
+        )
+
+        serializer = OutlineQuestionSerializer(queryset, many=True)
+
+        return Response(serializer.data)
+
+    def retrieve(self, request, pk=None):
+        oq = get_object_or_404(OutlineQuestion, pk=pk)
+        oq_transformed = {
+            'question': oq.question,
+            'original_image': oq.original_image.url,
+            'outline_drawing': oq.outline_drawing.url
+            if oq.outline_drawing else '',
+            'outline_regions': OutlineRegionSerializer(
+                oq.regions(), many=True).data
+        }
+        serializer = LandmarkQuestionSerializer(oq_transformed)
 
         return Response(serializer.data)
