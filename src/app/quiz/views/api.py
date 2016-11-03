@@ -2,18 +2,15 @@ from django.shortcuts import get_object_or_404
 from rest_framework import viewsets
 from rest_framework.response import Response
 
-from ..models import (LandmarkQuestion, LandmarkRegion, MultipleChoiceQuestion,
+from ..models import (LandmarkQuestion, MultipleChoiceQuestion,
                       MultipleChoiceQuestionWithImage,
-                      MultipleChoiceQuestionWithVideo, OutlineQuestion,
-                      OutlineRegion, OutlineSolutionQuestion, Test, TestResult,
-                      TestUnit, TestUnitResult)
-from ..serializers import (
-    LandmarkQuestionSerializer, LandmarkRegionSerializer,
-    MultipleChoiceQuestionSerializer,
-    MultipleChoiceQuestionWithImageSerializer,
-    MultipleChoiceQuestionWithVideoSerializer, OutlineQuestionSerializer,
-    OutlineRegionSerializer, TestResultSerializer, TestSerializer,
-    TestUnitResultSerializer, TestUnitSerializer)
+                      MultipleChoiceQuestionWithVideo, OutlineQuestion)
+from ..serializers import (LandmarkQuestionSerializer,
+                           LandmarkRegionSerializer,
+                           MultipleChoiceQuestionSerializer,
+                           MultipleChoiceQuestionWithImageSerializer,
+                           MultipleChoiceQuestionWithVideoSerializer,
+                           OutlineQuestionSerializer, OutlineRegionSerializer)
 
 
 class MultipleChoiceQuestionViewSet(viewsets.ViewSet):
