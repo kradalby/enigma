@@ -23,8 +23,7 @@ router.register(
 router.register(
     r'quiz/landmarkquestion',
     quiz_api.LandmarkQuestionViewSet,
-    base_name='quiz/mcq_image/')
-# router.register(r'quiz/landmarkregion', quiz_api.LandmarkRegionViewSet)
+    base_name='quiz/landmarkquestion/')
 router.register(
     r'quiz/outlinequestion',
     quiz_api.OutlineQuestionViewSet,
