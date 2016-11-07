@@ -5,23 +5,24 @@ from django.urls import RegexURLResolver
 from urls import urlpatterns
 
 
-class UrlsTest(test.TestCase):
-    def test_responses(self):
-        print(urlpatterns)
-        urlpatterns_with_namespace = get_urlpatterns_with_namespace(
-            urlpatterns, '')
-
-        print(urlpatterns_with_namespace)
-
-        resolvable_urls = explore_url_tree(urlpatterns_with_namespace, ())
-
-        print(resolvable_urls)
-
-        for url in resolvable_urls:
-            reverse_url = reverse(url)
-            print('Testing: ', reverse_url)
-            response = self.client.get(reverse_url)
-            self.assertTrue(response.status_code in [200, 302])
+# class UrlsTest(test.TestCase):
+#     def test_responses(self):
+#         print(urlpatterns)
+#         urlpatterns_with_namespace = get_urlpatterns_with_namespace(
+#             urlpatterns, '')
+#
+#         print(urlpatterns_with_namespace)
+#
+#         resolvable_urls = explore_url_tree(urlpatterns_with_namespace, ())
+#
+#         print(resolvable_urls)
+#
+#         for url in resolvable_urls[::-1]:
+#             reverse_url = reverse(url)
+#             print('URL: ', url)
+#             print('Testing: ', reverse_url)
+#             response = self.client.get(reverse_url)
+#             self.assertTrue(response.status_code in [200, 302])
 
 
 def get_urlpatterns_with_namespace(patterns, namespace):
@@ -46,7 +47,7 @@ def explore_url_tree(urllist, urlnames):
                                                          '') + tail
             return explore_url_tree(new_urllist, urlnames)
     else:
-        if hasattr(url.regex, 'group'):
+        if hasattr(url.regex, 'groups') and url.regex.groups > 0:
             return explore_url_tree(tail, urlnames)
         else:
             new_urlnames = urlnames + ('{}{}'.format(namespace, url.name), )
