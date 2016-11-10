@@ -8,6 +8,17 @@ build:
         # - make flake8
         - tox
 
+notify:
+  email:
+    from: drone@fap.no
+    host: mail.ntnu.fap.no
+    port: 25
+    recipients:
+      - kradalby@kradalby.no
+      - tornvall@stud.ntnu.no
+    when:
+        branch: master
+
 publish:
   docker:
     registry: registry.fap.no
