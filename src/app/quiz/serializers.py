@@ -13,6 +13,7 @@ class WrongAnswerListField(serializers.ListField):
 
 class MultipleChoiceQuestionSerializer(serializers.Serializer):
     pk = serializers.IntegerField()
+    question = serializers.CharField(max_length=255)
     correct_answer = serializers.CharField(max_length=255)
     wrong_answers = WrongAnswerListField()
 

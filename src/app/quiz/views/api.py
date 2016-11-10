@@ -18,6 +18,7 @@ class MultipleChoiceQuestionViewSet(viewsets.ViewSet):
         queryset = map(
             lambda mcq: {
                 'pk': mcq.pk,
+                'question': mcq.question,
                 'correct_answer': mcq.correct_answer,
                 'wrong_answers': [
                     mcq.wrong_answer_1,
@@ -33,6 +34,7 @@ class MultipleChoiceQuestionViewSet(viewsets.ViewSet):
         mcq = get_object_or_404(MultipleChoiceQuestion, pk=pk)
         mcq_transformed = {
             'pk': mcq.pk,
+            'question': mcq.question,
             'correct_answer': mcq.correct_answer,
             'wrong_answers': [mcq.wrong_answer_1, mcq.wrong_answer_2]
         }
@@ -45,6 +47,7 @@ class MultipleChoiceQuestionWithImageViewSet(viewsets.ViewSet):
         queryset = map(
             lambda mcq: {
                 'pk': mcq.pk,
+                'question': mcq.question,
                 'correct_answer': mcq.correct_answer,
                 'wrong_answers': [
                     mcq.wrong_answer_1,
@@ -62,6 +65,7 @@ class MultipleChoiceQuestionWithImageViewSet(viewsets.ViewSet):
         mcq = get_object_or_404(MultipleChoiceQuestionWithImage, pk=pk)
         mcq_transformed = {
             'pk': mcq.pk,
+            'question': mcq.question,
             'correct_answer': mcq.correct_answer,
             'wrong_answers': [mcq.wrong_answer_1, mcq.wrong_answer_2],
             'image': mcq.image.url
@@ -75,6 +79,7 @@ class MultipleChoiceQuestionWithVideoViewSet(viewsets.ViewSet):
         queryset = map(
             lambda mcq: {
                 'pk': mcq.pk,
+                'question': mcq.question,
                 'correct_answer': mcq.correct_answer,
                 'wrong_answers': [
                     mcq.wrong_answer_1,
@@ -92,6 +97,7 @@ class MultipleChoiceQuestionWithVideoViewSet(viewsets.ViewSet):
         mcq = get_object_or_404(MultipleChoiceQuestionWithVideo, pk=pk)
         mcq_transformed = {
             'pk': mcq.pk,
+            'question': mcq.question,
             'correct_answer': mcq.correct_answer,
             'wrong_answers': [mcq.wrong_answer_1, mcq.wrong_answer_2],
             'video': mcq.video.url
