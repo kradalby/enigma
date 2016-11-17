@@ -1,6 +1,7 @@
 from django.shortcuts import get_object_or_404
 from rest_framework import viewsets
 from rest_framework.response import Response
+from random import random
 
 from ..models import (LandmarkQuestion, MultipleChoiceQuestion,
                       MultipleChoiceQuestionWithImage,
@@ -13,95 +14,65 @@ from ..serializers import (LandmarkQuestionSerializer,
                            OutlineQuestionSerializer, OutlineRegionSerializer)
 
 
+def transform_data(mcq):
+    data = {
+        'pk': mcq.pk,
+        'question': mcq.question,
+        'answers': sorted(
+            [mcq.correct_answer, mcq.wrong_answer_1, mcq.wrong_answer_2],
+            key=lambda k: random())
+    }
+    data['correct'] = data['answers'].index(mcq.correct_answer)
+
+    if hasattr(mcq, 'image'):
+        data['image'] = mcq.image.url
+
+    if hasattr(mcq, 'video'):
+        data['video'] = mcq.video.url
+
+    return data
+
+
 class MultipleChoiceQuestionViewSet(viewsets.ViewSet):
     def list(self, request):
-        queryset = map(
-            lambda mcq: {
-                'pk': mcq.pk,
-                'question': mcq.question,
-                'correct_answer': mcq.correct_answer,
-                'wrong_answers': [
-                    mcq.wrong_answer_1,
-                    mcq.wrong_answer_2
-                    ]
-                },
-                MultipleChoiceQuestion.objects.all()
-            )
+        queryset = map(lambda mcq: transform_data(mcq),
+                       MultipleChoiceQuestion.objects.all())
         serializer = MultipleChoiceQuestionSerializer(queryset, many=True)
         return Response(serializer.data)
 
     def retrieve(self, request, pk=None):
         mcq = get_object_or_404(MultipleChoiceQuestion, pk=pk)
-        mcq_transformed = {
-            'pk': mcq.pk,
-            'question': mcq.question,
-            'correct_answer': mcq.correct_answer,
-            'wrong_answers': [mcq.wrong_answer_1, mcq.wrong_answer_2]
-        }
+        mcq_transformed = transform_data(mcq)
         serializer = MultipleChoiceQuestionSerializer(mcq_transformed)
         return Response(serializer.data)
 
 
 class MultipleChoiceQuestionWithImageViewSet(viewsets.ViewSet):
     def list(self, request):
-        queryset = map(
-            lambda mcq: {
-                'pk': mcq.pk,
-                'question': mcq.question,
-                'correct_answer': mcq.correct_answer,
-                'wrong_answers': [
-                    mcq.wrong_answer_1,
-                    mcq.wrong_answer_2
-                ],
-                'image': mcq.image.url
-            },
-            MultipleChoiceQuestionWithImage.objects.all()
-        )
+        queryset = map(lambda mcq: transform_data(mcq),
+                       MultipleChoiceQuestionWithImage.objects.all())
         serializer = MultipleChoiceQuestionWithImageSerializer(
             queryset, many=True)
         return Response(serializer.data)
 
     def retrieve(self, request, pk=None):
         mcq = get_object_or_404(MultipleChoiceQuestionWithImage, pk=pk)
-        mcq_transformed = {
-            'pk': mcq.pk,
-            'question': mcq.question,
-            'correct_answer': mcq.correct_answer,
-            'wrong_answers': [mcq.wrong_answer_1, mcq.wrong_answer_2],
-            'image': mcq.image.url
-        }
+        mcq_transformed = transform_data(mcq)
         serializer = MultipleChoiceQuestionWithImageSerializer(mcq_transformed)
         return Response(serializer.data)
 
 
 class MultipleChoiceQuestionWithVideoViewSet(viewsets.ViewSet):
     def list(self, request):
-        queryset = map(
-            lambda mcq: {
-                'pk': mcq.pk,
-                'question': mcq.question,
-                'correct_answer': mcq.correct_answer,
-                'wrong_answers': [
-                    mcq.wrong_answer_1,
-                    mcq.wrong_answer_2
-                ],
-                'video': mcq.video.url
-            },
-            MultipleChoiceQuestionWithVideo.objects.all()
-        )
+        queryset = map(lambda mcq: transform_data(mcq),
+                       MultipleChoiceQuestionWithVideo.objects.all())
         serializer = MultipleChoiceQuestionWithVideoSerializer(
             queryset, many=True)
         return Response(serializer.data)
 
     def retrieve(self, request, pk=None):
         mcq = get_object_or_404(MultipleChoiceQuestionWithVideo, pk=pk)
-        mcq_transformed = {
-            'pk': mcq.pk,
-            'question': mcq.question,
-            'correct_answer': mcq.correct_answer,
-            'wrong_answers': [mcq.wrong_answer_1, mcq.wrong_answer_2],
-            'video': mcq.video.url
-        }
+        mcq_transformed = transform_data(mcq)
         serializer = MultipleChoiceQuestionWithVideoSerializer(mcq_transformed)
         return Response(serializer.data)
 

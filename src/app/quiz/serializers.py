@@ -7,15 +7,15 @@ from .models import (LandmarkQuestion, LandmarkRegion, MultipleChoiceQuestion,
                      TestUnit, TestUnitResult)
 
 
-class WrongAnswerListField(serializers.ListField):
+class AnswerListField(serializers.ListField):
     child = serializers.CharField(max_length=255)
 
 
 class MultipleChoiceQuestionSerializer(serializers.Serializer):
     pk = serializers.IntegerField()
     question = serializers.CharField(max_length=255)
-    correct_answer = serializers.CharField(max_length=255)
-    wrong_answers = WrongAnswerListField()
+    correct = serializers.IntegerField()
+    answers = AnswerListField()
 
 
 class MultipleChoiceQuestionWithImageSerializer(
