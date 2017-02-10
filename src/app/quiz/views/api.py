@@ -81,6 +81,7 @@ class LandmarkQuestionViewSet(viewsets.ViewSet):
     def list(self, request):
         queryset = map(
             lambda lq: {
+                'pk': lq.pk,
                 'question': lq.question,
                 'original_image': lq.original_image.url,
                 'landmark_drawing': lq.landmark_drawing.url if lq.landmark_drawing else '',
@@ -95,6 +96,7 @@ class LandmarkQuestionViewSet(viewsets.ViewSet):
     def retrieve(self, request, pk=None):
         lq = get_object_or_404(LandmarkQuestion, pk=pk)
         lq_transformed = {
+            'pk': lq.pk,
             'question': lq.question,
             'original_image': lq.original_image.url,
             'landmark_drawing': lq.landmark_drawing.url
@@ -111,6 +113,7 @@ class OutlineQuestionViewSet(viewsets.ViewSet):
     def list(self, request):
         queryset = map(
             lambda oq: {
+                'pk': oq.pk,
                 'question': oq.question,
                 'original_image': oq.original_image.url,
                 'outline_drawing': oq.outline_drawing.url if oq.outline_drawing else '',
@@ -125,6 +128,7 @@ class OutlineQuestionViewSet(viewsets.ViewSet):
     def retrieve(self, request, pk=None):
         oq = get_object_or_404(OutlineQuestion, pk=pk)
         oq_transformed = {
+            'pk': oq.pk,
             'question': oq.question,
             'original_image': oq.original_image.url,
             'outline_drawing': oq.outline_drawing.url
