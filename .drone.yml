@@ -1,48 +1,40 @@
-build:
-    image: kradalby/ci-tox:latest
-    pull: true
+pipeline:
+  test:
+    image: python:3.5.2
     environment:
       - DJANGO_SETTINGS_MODULE=settings.production
     commands:
-        # - pip install flake8
-        # - make flake8
-        - tox
+      - pip install tox
+      - tox
 
-notify:
-  email:
-    from: drone@fap.no
-    host: mail.ntnu.fap.no
-    port: 25
-    recipients:
-      - kradalby@kradalby.no
-      - tornvall@stud.ntnu.no
+  docker:
+    image: plugins/docker
+    repo: registry.fap.no/turbo/turbo
+    insecure: true
+    tags:
+        - latest
     when:
         branch: master
 
-publish:
-  docker:
-    registry: registry.fap.no
-    repo: turbo/turbo
-    tag: latest
-    when:
-        branch: master
-  docker:
-    registry: registry.fap.no
-    repo: turbo/turbo
-    tag: $$TAG
-    when:
-        event: tag
-
-deploy:
   ssh:
+    image: appleboy/drone-ssh
     host:
-     - docker.terra.fap.no
+     - primeape.terra.fap.no
     user: root
     port: 22
-    sleep: 3
-    commands:
+    script:
       - docker pull registry.fap.no/turbo/turbo:latest
       - docker-compose -f /srv/docker/turbo/docker-compose.yml stop
       - docker-compose -f /srv/docker/turbo/docker-compose.yml up -d
     when:
+        status: success
         branch: master
+
+  notify:
+    image: drillster/drone-email
+    host: mail.ntnu.fap.no
+    port: 25
+    from: drone@drone.fap.no
+    recipients: [ kradalby@kradalby.no ]
+    when:
+      status: [ success, changed, failure ]
