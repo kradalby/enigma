@@ -1,0 +1,35 @@
+{
+  "name": "enigma",
+  "version": "0.0.1",
+  "description": "",
+  "main": "src/index.js",
+  "scripts": {
+    "build": "webpack",
+    "watch": "webpack -w",
+    "dev": "webpack-dev-server --port 3000",
+    "dev-pub": "webpack-dev-server --port 3000 --host 0.0.0.0",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/kradalby/elm-enigma.git"
+  },
+  "keywords": [],
+  "author": "Kristoffer Dalby <kradalby@kradalby.no>",
+  "license": "BSD3",
+  "bugs": {
+    "url": "https://github.com/kradalby/elm-enigma/issues"
+  },
+  "homepage": "https://github.com/kradalby/elm-enigma",
+  "devDependencies": {
+    "copy-webpack-plugin": "^4.0.1",
+    "css-loader": "^0.26.1",
+    "elm-webpack-loader": "^4.2.0",
+    "file-loader": "^0.10.0",
+    "style-loader": "^0.13.1",
+    "url-loader": "^0.5.7",
+    "webpack": "^2.2.1",
+    "webpack-dev-middleware": "^1.10.1",
+    "webpack-dev-server": "^2.4.1"
+  }
+}

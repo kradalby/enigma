@@ -1,0 +1,179 @@
+body {
+  font-size: 16px;
+  font-family: 'Open Sans', sans-serif;
+  font-weight: 300;
+  line-height: 1.625;
+  background-color: #f1f1f1;
+}
+
+img {
+  display: inline-block;
+  height: 100%;
+}
+
+select {
+  background: transparent;
+  min-width: 120px;
+  width: 33%;
+  max-width: 200px;
+  padding: 5px 35px 5px 5px;
+  font-size: 16px;
+  border: none;
+  border-bottom: 1px solid #444;
+  border-radius: 0px;
+  height: 34px;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  background: url(arrowdown.svg) 96% / 15% no-repeat #fdf23e;
+}
+
+input[type=text] {
+  margin: 17px 0 17px 0;
+  background-color: #2fce03;
+  width: 90%;
+  min-width: 80px;
+  height: 40px;
+  font-size: 20px;
+  text-align: center;
+  border: none;
+  border-bottom: 1px solid #444;
+  border-radius: 0px;
+}
+
+h2 {
+  padding-top: 5px;
+  font-size: 28px;
+}
+
+h3 {
+  padding-top: 5px;
+  font-size: 24px;
+}
+
+h4 {
+  font-size: 20px;
+}
+
+h5 {
+  font-size: 16px;
+}
+
+a {
+  color: #222;
+}
+
+a:visited {
+  color: #444;
+}
+
+.wrapper {
+  width: 100%;
+  max-width: 960px;
+  margin: 0 auto;
+}
+
+.container {
+  display: flex;
+  flex-direction: column;
+}
+
+.row-white {
+  background-color: #ffffff;
+}
+
+.row-yellow {
+  background-color: #fdf23e;
+}
+
+.row-green {
+  background-color: #2fce03;
+}
+
+.row-orange {
+  background-color: #ffbf35;
+}
+
+.row-light-pink {
+  background-color: #fa80a7;
+}
+
+.row-pink {
+  background-color: #ff3d84;
+}
+
+footer {
+  background-color: #f1f1f1;
+  text-align: center;
+  padding-top: 10px;
+}
+
+#logo {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 10px 0 10px 0;
+  width: 100%;
+}
+
+#logo img {
+  width: 100%;
+  max-width: 480px;
+}
+
+#language {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  height: 60px;
+}
+
+#translate {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-around;
+  height: 200px;
+}
+
+#stats {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  height: 60px;
+}
+
+#books {
+  text-align: center;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  min-height: 100px;
+}
+
+.book {
+  display: inline-block;
+  width: 120px;
+  height: 100px;
+  border: 1px solid #666;
+  border-radius: 5px;
+  margin: 10px;
+}
+
+#chapters {
+  text-align: center;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  min-height: 100px;
+}
+
+.chapter {
+  display: inline-block;
+  width: 120px;
+  border: 1px solid #666;
+  border-radius: 5px;
+  margin: 10px;
+}
