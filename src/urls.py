@@ -21,6 +21,10 @@ router.register(
     quiz_api.MultipleChoiceQuestionWithVideoViewSet,
     base_name='quiz/mcq_video/')
 router.register(
+    r'quiz/mcq_all',
+    quiz_api.MultipleChoiceQuestionAllViewSet,
+    base_name='quiz/mcq_all/')
+router.register(
     r'quiz/landmarkquestion',
     quiz_api.LandmarkQuestionViewSet,
     base_name='quiz/landmarkquestion/')
