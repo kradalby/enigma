@@ -1,5 +1,5 @@
-require('./styles/reset.css');
-require('./styles/main.css');
+// require('./styles/reset.css');
+// require('./styles/main.css');
 require('./index.html');
 
 var Elm = require('./Main.elm');
