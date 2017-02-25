@@ -4,12 +4,14 @@ import App.Types exposing (..)
 import Html exposing (..)
 import Html.Attributes exposing (type_, checked, name, disabled, value, class, src, id, selected, for, href)
 import Date exposing (Date)
+import Mcq.View
 
 
 root : Model -> Html Msg
 root model =
     div [ class "wrapper" ]
         [ h1 [] [ text "enigma" ]
+        , div [ class "mcq" ] [ Mcq.View.root model.mcq ]
         , viewFooter model
         ]
 
@@ -22,7 +24,7 @@ viewFooter model =
             [ text
                 ("Copyright "
                     ++ (toString
-                            (case model.date of
+                            (case model.global.date of
                                 Nothing ->
                                     1337
 
@@ -32,6 +34,8 @@ viewFooter model =
                        )
                     ++ " "
                 )
+            , a [ href "https://github.com/freboto" ] [ text "Fredrik Borgen Tørnvall" ]
+            , text " and "
             , a [ href "https://kradalby.no" ] [ text "Kristoffer Dalby" ]
             ]
         ]

@@ -7,7 +7,7 @@ import Mcq.Types exposing (..)
 import App.Rest exposing (base_url)
 
 
-root : Model -> Html Msg
+root : Mcq.Types.Model -> Html Msg
 root model =
     div []
         [ a [ onClick (StartQuiz 1) ] [ text "start" ]
@@ -35,8 +35,7 @@ viewMultipleChoiceQuestion mcq =
                 p [] []
         , case mcq.video of
             Just video ->
-                -- This should be a video tag
-                img [ src (base_url ++ video) ] []
+                node "video" [ src (base_url ++ video) ] []
 
             Nothing ->
                 p [] []

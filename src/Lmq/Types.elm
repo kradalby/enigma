@@ -14,3 +14,11 @@ type alias LandMarkRegion =
     { color : String
     , name : String
     }
+
+
+type alias Model =
+    {}
+
+
+type Msg
+    = ToggleShowAnswer
