@@ -21,6 +21,8 @@ type alias Model =
     , correctQuestions : List MultipleQuestion
     , currentQuestion : Maybe MultipleQuestion
     , showAnswer : Bool
+    , numberOfQuestionsInputField : String
+    , error : Maybe String
     }
 
 
@@ -32,3 +34,6 @@ type Msg
     | Wrong
     | GetMultipleChoiceQuestions
     | SetMultipleChoiceQuestions (Result Http.Error (List MultipleQuestion))
+    | NumberOfQuestionsInput String
+    | SetError String
+    | ClearError

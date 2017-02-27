@@ -14,6 +14,8 @@ init =
             , correctQuestions = []
             , currentQuestion = Nothing
             , showAnswer = False
+            , numberOfQuestionsInputField = "0"
+            , error = Nothing
             }
     in
         model ! [ getMultipleChoiceQuestions ]
@@ -80,11 +82,16 @@ update msg model =
             ( { model | questions = questions }, Cmd.none )
 
         SetMultipleChoiceQuestions (Err _) ->
-            let
-                _ =
-                    Debug.log "error"
-            in
-                ( model, Cmd.none )
+            ( model, Cmd.none )
+
+        NumberOfQuestionsInput number ->
+            ( { model | numberOfQuestionsInputField = number }, Cmd.none )
+
+        SetError error ->
+            ( { model | error = Just error }, Cmd.none )
+
+        ClearError ->
+            ( { model | error = Nothing }, Cmd.none )
 
 
 subscriptions : Model -> Sub Msg

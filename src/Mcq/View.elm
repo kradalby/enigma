@@ -5,14 +5,17 @@ import Html.Events exposing (..)
 import Html.Attributes exposing (type_, checked, name, disabled, value, class, src, id, selected, for, href)
 import Mcq.Types exposing (..)
 import App.Rest exposing (base_url)
+import Util exposing (onEnter, viewErrorBox)
 
 
 root : Mcq.Types.Model -> Html Msg
 root model =
     div []
-        [ a [ onClick (StartQuiz 1) ] [ text "start" ]
+        [ viewError model
+        , a [ onClick (StartQuiz 1) ] [ text "start" ]
         , a [ onClick NextQuestion ] [ text "next" ]
         , a [ onClick GetMultipleChoiceQuestions ] [ text "fetch questions" ]
+        , viewStartQuiz model
         , case model.currentQuestion of
             Nothing ->
                 p [] [ text "No current question" ]
@@ -21,6 +24,57 @@ root model =
                 viewMultipleChoiceQuestion currentQuestion
         , viewSessionInformation model
         ]
+
+
+viewError : Model -> Html Msg
+viewError model =
+    div [ class "row" ]
+        [ case model.error of
+            Nothing ->
+                div [] []
+
+            Just error ->
+                viewErrorBox error
+        ]
+
+
+viewStartQuiz : Model -> Html Msg
+viewStartQuiz model =
+    div []
+        [ input
+            [ id "wordInput"
+            , type_ "number"
+            , onInput NumberOfQuestionsInput
+            , value model.numberOfQuestionsInputField
+            , onEnter (validateNumberOfQuestionsInputFieldAndCreateResponseMsg model)
+            ]
+            []
+        , button
+            [ class "btn"
+            , onClick (validateNumberOfQuestionsInputFieldAndCreateResponseMsg model)
+            ]
+            [ text "Start" ]
+        ]
+
+
+validateNumberOfQuestionsInputFieldAndCreateResponseMsg : Model -> Msg
+validateNumberOfQuestionsInputFieldAndCreateResponseMsg model =
+    case String.toInt model.numberOfQuestionsInputField of
+        Err msg ->
+            SetError "You did not enter a valid number"
+
+        Ok value ->
+            let
+                derp =
+                    Debug.log (toString value)
+
+                merp =
+                    Debug.log (toString (List.length model.questions))
+            in
+                if value > (List.length model.questions) then
+                    StartQuiz value
+                else
+                    SetError "We dont have that many questions..."
 
 
 viewMultipleChoiceQuestion : MultipleQuestion -> Html Msg

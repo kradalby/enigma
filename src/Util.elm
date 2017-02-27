@@ -6,15 +6,10 @@ import Html.Attributes exposing (..)
 import Json.Decode exposing (Decoder, int, string, list, nullable)
 
 
-type Msg
-    = NoOp
-
-
-
 -- Listen for enter
 
 
-onEnter : Msg -> Attribute Msg
+onEnter : msg -> Attribute msg
 onEnter msg =
     let
         isEnter code =
@@ -26,9 +21,17 @@ onEnter msg =
         on "keydown" (Json.Decode.andThen isEnter keyCode)
 
 
-radio : String -> String -> Bool -> Msg -> Html Msg
+radio : String -> String -> Bool -> msg -> Html msg
 radio labelName groupName isSelected msg =
     label []
         [ input [ type_ "radio", checked isSelected, name groupName, onClick msg ] []
         , text labelName
+        ]
+
+
+viewErrorBox : String -> Html msg
+viewErrorBox errorString =
+    div [ class "card-panel red lighten-1" ]
+        [ span [ class "bold" ] [ text "Error: " ]
+        , text errorString
         ]
