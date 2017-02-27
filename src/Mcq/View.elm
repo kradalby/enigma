@@ -64,17 +64,10 @@ validateNumberOfQuestionsInputFieldAndCreateResponseMsg model =
             SetError "You did not enter a valid number"
 
         Ok value ->
-            let
-                derp =
-                    Debug.log (toString value)
-
-                merp =
-                    Debug.log (toString (List.length model.questions))
-            in
-                if value > (List.length model.questions) then
-                    StartQuiz value
-                else
-                    SetError "We dont have that many questions..."
+            if value <= (List.length model.questions) then
+                StartQuiz value
+            else
+                SetError "We dont have that many questions..."
 
 
 viewMultipleChoiceQuestion : MultipleQuestion -> Html Msg
