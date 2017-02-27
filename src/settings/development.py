@@ -10,6 +10,8 @@ def custom_show_toolbar(request):
 
 
 # INSTALLED_APPS += ('debug_toolbar', 'django_extensions')
+INSTALLED_APPS = ('corsheaders', *INSTALLED_APPS)
+MIDDLEWARE_CLASSES = ('corsheaders.middleware.CorsMiddleware', *MIDDLEWARE_CLASSES)
 
 
 DEBUG_TOOLBAR_CONFIG = {
@@ -30,3 +32,10 @@ DATABASES = {
 }
 
 # MIDDLEWARE_CLASSES += ('debug_toolbar.middleware.DebugToolbarMiddleware',)
+
+CORS_ORIGIN_WHITELIST = (
+    'localhost:8080',
+    'localhost:8000',
+    'localhost:9000',
+    '127.0.0.1:9000'
+)
