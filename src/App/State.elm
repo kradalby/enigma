@@ -12,15 +12,19 @@ init =
     let
         global =
             { date = Nothing
+            , mode = Main
             }
+
+        ( mcqModel, mcqCmd ) =
+            Mcq.State.init
 
         model =
             { global = global
-            , mcq = Mcq.State.init
+            , mcq = mcqModel
             , lmq = Lmq.State.init
             }
     in
-        model ! [ now ]
+        model ! [ now, (Cmd.map McqMsg mcqCmd) ]
 
 
 update : Msg -> Model -> ( Model, Cmd Msg )
@@ -35,6 +39,18 @@ update msg model =
 
             SetDate date ->
                 ( { model | global = { global | date = Just date } }, Cmd.none )
+
+            McqMsg mcqMsg ->
+                let
+                    ( mcqModel, mcqCmd ) =
+                        Mcq.State.update mcqMsg model.mcq
+                in
+                    ( { model | mcq = mcqModel }
+                    , Cmd.map McqMsg mcqCmd
+                    )
+
+            ChangeMode mode ->
+                ( { model | global = { global | mode = mode } }, Cmd.none )
 
 
 subscriptions : Model -> Sub Msg

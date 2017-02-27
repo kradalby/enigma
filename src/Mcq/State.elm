@@ -4,7 +4,7 @@ import Mcq.Types exposing (..)
 import Mcq.Rest exposing (getMultipleChoiceQuestions)
 
 
-init : Model
+init : ( Model, Cmd Msg )
 init =
     let
         model =
@@ -16,7 +16,7 @@ init =
             , showAnswer = False
             }
     in
-        model
+        model ! [ getMultipleChoiceQuestions ]
 
 
 update : Msg -> Model -> ( Model, Cmd Msg )

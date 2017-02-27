@@ -8,10 +8,13 @@ import Lmq.Types
 type Msg
     = NoOp
     | SetDate Date
+    | McqMsg Mcq.Types.Msg
+    | ChangeMode Mode
 
 
 type alias Global =
     { date : Maybe Date
+    , mode : Mode
     }
 
 
@@ -20,3 +23,9 @@ type alias Model =
     , mcq : Mcq.Types.Model
     , lmq : Lmq.Types.Model
     }
+
+
+type Mode
+    = Main
+    | MultipleChoiceQuestions
+    | LandmarkQuestions
