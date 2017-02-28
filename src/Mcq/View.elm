@@ -15,13 +15,20 @@ root model =
         , a [ onClick (StartQuiz 1) ] [ text "start" ]
         , a [ onClick NextQuestion ] [ text "next" ]
         , a [ onClick GetMultipleChoiceQuestions ] [ text "fetch questions" ]
-        , viewStartQuiz model
-        , case model.currentQuestion of
-            Nothing ->
-                p [] [ text "No current question" ]
+        , case model.mode of
+            Start ->
+                viewStartQuiz model
 
-            Just currentQuestion ->
-                viewMultipleChoiceQuestion currentQuestion
+            Running ->
+                case model.currentQuestion of
+                    Nothing ->
+                        viewStartQuiz model
+
+                    Just currentQuestion ->
+                        viewMultipleChoiceQuestion currentQuestion
+
+            Result ->
+                text "result"
         , viewSessionInformation model
         ]
 

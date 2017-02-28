@@ -4,6 +4,8 @@ import Mcq.Types exposing (..)
 import Mcq.Rest exposing (getMultipleChoiceQuestions)
 import Util exposing (delay)
 import Time
+import Random.List exposing (shuffle)
+import Random
 
 
 init : ( Model, Cmd Msg )
@@ -11,6 +13,7 @@ init =
     let
         model =
             { questions = []
+            , mode = Start
             , unAnsweredQuestions = []
             , wrongQuestions = []
             , correctQuestions = []
@@ -18,6 +21,7 @@ init =
             , showAnswer = False
             , numberOfQuestionsInputField = "0"
             , error = Nothing
+            , seed = Random.initialSeed 583345035
             }
     in
         model ! [ getMultipleChoiceQuestions ]
@@ -30,13 +34,30 @@ update msg model =
             ( { model | showAnswer = not model.showAnswer }, Cmd.none )
 
         StartQuiz number ->
-            ( { model
-                | unAnsweredQuestions = model.questions
-                , correctQuestions = []
-                , wrongQuestions = []
-              }
-            , Cmd.none
-            )
+            let
+                ( shuffeledQuestions, seed ) =
+                    Random.step (shuffle model.questions) model.seed
+
+                ( h, t ) =
+                    case (List.take number shuffeledQuestions) of
+                        [] ->
+                            ( Nothing, [] )
+
+                        h :: t ->
+                            ( Just h, t )
+
+                -- shuffle model.questions
+            in
+                ( { model
+                    | unAnsweredQuestions = t
+                    , currentQuestion = h
+                    , correctQuestions = []
+                    , wrongQuestions = []
+                    , seed = seed
+                    , mode = Running
+                  }
+                , Cmd.none
+                )
 
         NextQuestion ->
             let
@@ -94,6 +115,9 @@ update msg model =
 
         ClearError ->
             ( { model | error = Nothing }, Cmd.none )
+
+        ChangeMode mode ->
+            ( { model | mode = mode }, Cmd.none )
 
 
 subscriptions : Model -> Sub Msg

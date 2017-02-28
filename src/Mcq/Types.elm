@@ -1,6 +1,7 @@
 module Mcq.Types exposing (..)
 
 import Http
+import Random
 
 
 type alias MultipleQuestion =
@@ -16,6 +17,7 @@ type alias MultipleQuestion =
 
 type alias Model =
     { questions : List MultipleQuestion
+    , mode : Mode
     , unAnsweredQuestions : List MultipleQuestion
     , wrongQuestions : List MultipleQuestion
     , correctQuestions : List MultipleQuestion
@@ -23,6 +25,7 @@ type alias Model =
     , showAnswer : Bool
     , numberOfQuestionsInputField : String
     , error : Maybe String
+    , seed : Random.Seed
     }
 
 
@@ -37,3 +40,10 @@ type Msg
     | NumberOfQuestionsInput String
     | SetError String
     | ClearError
+    | ChangeMode Mode
+
+
+type Mode
+    = Start
+    | Running
+    | Result

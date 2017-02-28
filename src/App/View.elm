@@ -21,7 +21,7 @@ root model =
                     div [ class "mcq" ] [ Html.map McqMsg (Mcq.View.root model.mcq) ]
 
                 LandmarkQuestions ->
-                    p [] [ text "some landmark" ]
+                    text "landmark"
             ]
         , viewFooter model
         ]
