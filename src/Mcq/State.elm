@@ -2,6 +2,8 @@ module Mcq.State exposing (init, update, subscriptions)
 
 import Mcq.Types exposing (..)
 import Mcq.Rest exposing (getMultipleChoiceQuestions)
+import Util exposing (delay)
+import Time
 
 
 init : ( Model, Cmd Msg )
@@ -88,7 +90,7 @@ update msg model =
             ( { model | numberOfQuestionsInputField = number }, Cmd.none )
 
         SetError error ->
-            ( { model | error = Just error }, Cmd.none )
+            ( { model | error = Just error }, (delay (Time.second * 5) <| ClearError) )
 
         ClearError ->
             ( { model | error = Nothing }, Cmd.none )

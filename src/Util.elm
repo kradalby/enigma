@@ -4,6 +4,9 @@ import Html exposing (..)
 import Html.Events exposing (..)
 import Html.Attributes exposing (..)
 import Json.Decode exposing (Decoder, int, string, list, nullable)
+import Process
+import Time exposing (..)
+import Task
 
 
 -- Listen for enter
@@ -35,3 +38,10 @@ viewErrorBox errorString =
         [ span [ class "bold" ] [ text "Error: " ]
         , text errorString
         ]
+
+
+delay : Time -> msg -> Cmd msg
+delay time msg =
+    Process.sleep time
+        |> Task.andThen (always <| Task.succeed msg)
+        |> Task.perform identity
