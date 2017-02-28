@@ -31,7 +31,7 @@ viewError model =
     div [ class "row" ]
         [ case model.error of
             Nothing ->
-                div [] []
+                text ""
 
             Just error ->
                 viewErrorBox error
@@ -79,13 +79,13 @@ viewMultipleChoiceQuestion mcq =
                 img [ src (base_url ++ image) ] []
 
             Nothing ->
-                p [] []
+                text ""
         , case mcq.video of
             Just video ->
                 node "video" [ src (base_url ++ video) ] []
 
             Nothing ->
-                p [] []
+                text ""
         , div [ class "multiple-choice-question-alternaltives" ] (viewMultipleChoiceQuestionAlternaltives mcq.answers mcq.correct)
         ]
 
