@@ -18,13 +18,16 @@ init =
         ( mcqModel, mcqCmd ) =
             Mcq.State.init
 
+        ( lmqModel, lmqCmd ) =
+            Lmq.State.init
+
         model =
             { global = global
             , mcq = mcqModel
-            , lmq = Lmq.State.init
+            , lmq = lmqModel
             }
     in
-        model ! [ now, (Cmd.map McqMsg mcqCmd) ]
+        model ! [ now, (Cmd.map McqMsg mcqCmd), (Cmd.map LmqMsg lmqCmd) ]
 
 
 update : Msg -> Model -> ( Model, Cmd Msg )
@@ -47,6 +50,15 @@ update msg model =
                 in
                     ( { model | mcq = mcqModel }
                     , Cmd.map McqMsg mcqCmd
+                    )
+
+            LmqMsg lmqMsg ->
+                let
+                    ( lmqModel, lmqCmd ) =
+                        Lmq.State.update lmqMsg model.lmq
+                in
+                    ( { model | lmq = lmqModel }
+                    , Cmd.map LmqMsg lmqCmd
                     )
 
             ChangeMode mode ->

@@ -9,6 +9,7 @@ type Msg
     = NoOp
     | SetDate Date
     | McqMsg Mcq.Types.Msg
+    | LmqMsg Lmq.Types.Msg
     | ChangeMode Mode
 
 

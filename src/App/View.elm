@@ -6,6 +6,7 @@ import Html.Events exposing (onClick)
 import Html.Attributes exposing (type_, checked, name, class, src, id, href, attribute)
 import Date exposing (Date)
 import Mcq.View
+import Lmq.View
 
 
 root : Model -> Html Msg
@@ -21,7 +22,7 @@ root model =
                     div [ class "mcq" ] [ Html.map McqMsg (Mcq.View.root model.mcq) ]
 
                 LandmarkQuestions ->
-                    text "landmark"
+                    div [ class "lmq" ] [ Html.map LmqMsg (Lmq.View.root model.lmq) ]
             ]
         , viewFooter model
         ]

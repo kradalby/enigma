@@ -11,7 +11,7 @@ getLandmarkQuestions : Cmd Msg
 getLandmarkQuestions =
     let
         url =
-            createApiUrl "/quiz/mcq_all"
+            createApiUrl "/quiz/landmarkquestion"
 
         request =
             Http.get url (list landmarkQuestionDecoder)
@@ -24,7 +24,13 @@ landmarkQuestionDecoder =
     decode LandmarkQuestion
         |> required "pk" int
         |> required "question" string
-        |> required "correct" int
-        |> required "answers" (list string)
-        |> optional "image" (nullable string) Nothing
-        |> optional "video" (nullable string) Nothing
+        |> required "original_image" string
+        |> required "landmark_drawing" string
+        |> required "landmark_regions" (list landmarkRegionDecoder)
+
+
+landmarkRegionDecoder : Decoder LandmarkRegion
+landmarkRegionDecoder =
+    decode LandmarkRegion
+        |> required "color" string
+        |> required "name" string
