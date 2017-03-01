@@ -2,9 +2,13 @@ module Lmq.View exposing (root)
 
 import Lmq.Types exposing (..)
 import Html exposing (..)
-import Html.Events exposing (..)
+import Html.Events exposing (onInput, onClick)
 import Html.Attributes exposing (type_, checked, name, disabled, value, class, src, id, selected, for, href)
 import Util exposing (onEnter, viewErrorBox)
+import Canvas exposing (Size, Error, DrawOp(..), DrawImageParams(..), Canvas)
+import Canvas.Point exposing (Point)
+import Canvas.Point as Point
+import Canvas.Events as Events
 
 
 root : Model -> Html Msg
@@ -21,7 +25,7 @@ root model =
                         viewStartQuiz model
 
                     Just currentQuestion ->
-                        viewLandmarkQuestion currentQuestion
+                        viewLandmarkQuestion model currentQuestion
 
             Result ->
                 text "result"
@@ -72,9 +76,40 @@ validateNumberOfQuestionsInputFieldAndCreateResponseMsg model =
                 SetError "We dont have that many questions..."
 
 
-viewLandmarkQuestion : LandmarkQuestion -> Html Msg
-viewLandmarkQuestion lmq =
+viewLandmarkQuestion : Model -> LandmarkQuestion -> Html Msg
+viewLandmarkQuestion model lmq =
     div [ class "landmark-question" ]
         [ h2 [] [ text lmq.question ]
-        , img [ src lmq.original_image ] []
+        , viewCanvas model
         ]
+
+
+viewCanvas : Model -> Html Msg
+viewCanvas model =
+    let
+        drawOps =
+            case model.solution of
+                Loading ->
+                    []
+
+                GotCanvas canvas ->
+                    [ createDrawImage canvas ]
+    in
+        case model.image of
+            GotCanvas canvas ->
+                Canvas.initialize (Size 601 606)
+                    |> Canvas.batch
+                        ((createDrawImage canvas)
+                            :: drawOps
+                        )
+                    |> Canvas.toHtml []
+                    |> List.singleton
+                    |> div []
+
+            Loading ->
+                p [] [ text "Image loading..." ]
+
+
+createDrawImage : Canvas -> Canvas.DrawOp
+createDrawImage canvas =
+    DrawImage canvas (Scaled (Point.fromInts ( 0, 0 )) (Size 601 606))

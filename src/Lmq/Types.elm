@@ -2,6 +2,7 @@ module Lmq.Types exposing (..)
 
 import Http
 import Random
+import Canvas exposing (DrawOp, Canvas, Error)
 
 
 type alias LandmarkQuestion =
@@ -19,6 +20,11 @@ type alias LandmarkRegion =
     }
 
 
+type Image
+    = Loading
+    | GotCanvas Canvas
+
+
 type alias Model =
     { questions : List LandmarkQuestion
     , mode : Mode
@@ -31,6 +37,8 @@ type alias Model =
     , numberOfQuestionsInputField : String
     , error : Maybe String
     , seed : Random.Seed
+    , image : Image
+    , solution : Image
     }
 
 
@@ -44,6 +52,8 @@ type Msg
     | SetError String
     | ClearError
     | ChangeMode Mode
+    | ImageLoaded (Result Error Canvas)
+    | SolutionLoaded (Result Error Canvas)
 
 
 type Mode

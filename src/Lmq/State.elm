@@ -6,6 +6,13 @@ import Random
 import Random.List exposing (shuffle)
 import Time
 import Util exposing (delay)
+import Task
+import Canvas
+import App.Rest exposing (base_url)
+import Canvas exposing (Size, Error, DrawOp(..), DrawImageParams(..), Canvas)
+import Canvas.Point exposing (Point)
+import Canvas.Point as Point
+import Canvas.Events as Events
 
 
 init : ( Model, Cmd Msg )
@@ -22,7 +29,9 @@ init =
             , showAnswer = False
             , numberOfQuestionsInputField = "0"
             , error = Nothing
-            , seed = Random.initialSeed 98657938465945786
+            , seed = Random.initialSeed 986579348465945786
+            , image = Loading
+            , solution = Loading
             }
     in
         model ! [ getLandmarkQuestions ]
@@ -58,7 +67,25 @@ update msg model =
                     , seed = seed
                     , mode = Running
                   }
-                , Cmd.none
+                , Cmd.batch
+                    [ (case h of
+                        Nothing ->
+                            Cmd.none
+
+                        Just question ->
+                            loadImage question.original_image
+                      )
+                    , if model.showAnswer then
+                        (case h of
+                            Nothing ->
+                                Cmd.none
+
+                            Just question ->
+                                loadSolution question.landmark_drawing
+                        )
+                      else
+                        Cmd.none
+                    ]
                 )
 
         NextQuestion ->
@@ -89,6 +116,42 @@ update msg model =
         ChangeMode mode ->
             ( { model | mode = mode }, Cmd.none )
 
+        ImageLoaded result ->
+            case Result.toMaybe result of
+                Just canvas ->
+                    ( { model | image = GotCanvas canvas }
+                    , Cmd.none
+                    )
+
+                Nothing ->
+                    ( { model | image = Loading }
+                    , (case model.currentQuestion of
+                        Nothing ->
+                            Cmd.none
+
+                        Just lmq ->
+                            loadImage lmq.original_image
+                      )
+                    )
+
+        SolutionLoaded result ->
+            case Result.toMaybe result of
+                Just canvas ->
+                    ( { model | solution = GotCanvas canvas }
+                    , Cmd.none
+                    )
+
+                Nothing ->
+                    ( { model | solution = Loading }
+                    , (case model.currentQuestion of
+                        Nothing ->
+                            Cmd.none
+
+                        Just lmq ->
+                            loadSolution lmq.landmark_drawing
+                      )
+                    )
+
 
 subscriptions : Model -> Sub Msg
 subscriptions model =
@@ -107,3 +170,17 @@ nextQuestion model =
                 Just tail ->
                     tail
     }
+
+
+loadImage : String -> Cmd Msg
+loadImage image_url =
+    Task.attempt
+        ImageLoaded
+        (Canvas.loadImage (base_url ++ image_url))
+
+
+loadSolution : String -> Cmd Msg
+loadSolution image_url =
+    Task.attempt
+        SolutionLoaded
+        (Canvas.loadImage (base_url ++ image_url))
