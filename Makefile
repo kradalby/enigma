@@ -20,8 +20,8 @@ prod:
 	$(PIP) install -r requirements/prod.txt --upgrade
 
 init:
-	tar xJvf media.tar.gz --directory src/
-	tar xJvf postgres.tar.gz --directory src/
+	tar xJvf media.tar.xz --directory src/
+	tar xJvf postgres.tar.xz --directory src/
 
 env:
 	virtualenv -p `which python3` env
