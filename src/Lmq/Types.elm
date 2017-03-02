@@ -3,6 +3,7 @@ module Lmq.Types exposing (..)
 import Http
 import Random
 import Canvas exposing (DrawOp, Canvas, Error)
+import Canvas.Point exposing (Point)
 
 
 type alias LandmarkQuestion =
@@ -39,6 +40,7 @@ type alias Model =
     , seed : Random.Seed
     , image : Image
     , solution : Image
+    , draw : List DrawOp
     }
 
 
@@ -54,6 +56,7 @@ type Msg
     | ChangeMode Mode
     | ImageLoaded (Result Error Canvas)
     | SolutionLoaded (Result Error Canvas)
+    | CanvasClick Point
 
 
 type Mode

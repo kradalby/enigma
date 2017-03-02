@@ -90,10 +90,10 @@ viewCanvas model =
         drawOps =
             case model.solution of
                 Loading ->
-                    []
+                    model.draw
 
                 GotCanvas canvas ->
-                    [ createDrawImage canvas ]
+                    (createDrawImage canvas) :: model.draw
     in
         case model.image of
             GotCanvas canvas ->
@@ -102,7 +102,7 @@ viewCanvas model =
                         ((createDrawImage canvas)
                             :: drawOps
                         )
-                    |> Canvas.toHtml []
+                    |> Canvas.toHtml [ Events.onClick CanvasClick ]
                     |> List.singleton
                     |> div []
 

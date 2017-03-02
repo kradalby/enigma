@@ -13,6 +13,8 @@ import Canvas exposing (Size, Error, DrawOp(..), DrawImageParams(..), Canvas)
 import Canvas.Point exposing (Point)
 import Canvas.Point as Point
 import Canvas.Events as Events
+import Color.Convert
+import Color
 
 
 init : ( Model, Cmd Msg )
@@ -32,6 +34,7 @@ init =
             , seed = Random.initialSeed 986579348465945786
             , image = Loading
             , solution = Loading
+            , draw = []
             }
     in
         model ! [ getLandmarkQuestions ]
@@ -151,6 +154,62 @@ update msg model =
                             loadSolution lmq.landmark_drawing
                       )
                     )
+
+        CanvasClick position ->
+            let
+                color =
+                    (case model.currentQuestion of
+                        Nothing ->
+                            Color.rgb 0 0 0
+
+                        Just lmq ->
+                            (case List.head lmq.landmark_regions of
+                                Nothing ->
+                                    Color.rgb 0 0 0
+
+                                Just region ->
+                                    (case Color.Convert.hexToColor region.color of
+                                        Ok color ->
+                                            color
+
+                                        Err errorMsg ->
+                                            Color.rgb 0 0 0
+                                    )
+                            )
+                    )
+
+                ( x, y ) =
+                    Point.toInts position
+
+                p0 =
+                    Point.fromInts ( x - 10, y - 10 )
+
+                p1 =
+                    Point.fromInts ( x + 10, y + 10 )
+
+                p2 =
+                    Point.fromInts ( x - 10, y + 10 )
+
+                p3 =
+                    Point.fromInts ( x + 10, y - 10 )
+
+                newDraw =
+                    [ BeginPath
+                    , LineWidth 5
+                    , StrokeStyle color
+                    , LineCap "round"
+                    , MoveTo p0
+                    , LineTo p1
+                    , Stroke
+                    , BeginPath
+                    , LineWidth 5
+                    , LineCap "round"
+                    , MoveTo p2
+                    , LineTo p3
+                    , Stroke
+                    ]
+            in
+                ( { model | draw = newDraw }, Cmd.none )
 
 
 subscriptions : Model -> Sub Msg
