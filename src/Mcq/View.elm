@@ -5,16 +5,13 @@ import Html.Events exposing (..)
 import Html.Attributes exposing (type_, checked, name, disabled, value, class, src, id, selected, for, href)
 import Mcq.Types exposing (..)
 import App.Rest exposing (base_url)
-import Util exposing (onEnter, viewErrorBox)
+import Util exposing (onEnter, viewErrorBox, viewProgressbar)
 
 
 root : Mcq.Types.Model -> Html Msg
 root model =
     div []
         [ viewError model
-        , a [ onClick (StartQuiz 1) ] [ text "start" ]
-        , a [ onClick NextQuestion ] [ text "next" ]
-        , a [ onClick GetMultipleChoiceQuestions ] [ text "fetch questions" ]
         , case model.mode of
             Start ->
                 viewStartQuiz model
@@ -25,7 +22,11 @@ root model =
                         viewStartQuiz model
 
                     Just currentQuestion ->
-                        viewMultipleChoiceQuestion currentQuestion
+                        div []
+                            [ viewProgressbar (percentageOfQuestionsLeft model)
+                            , viewMultipleChoiceQuestion
+                                currentQuestion
+                            ]
 
             Result ->
                 text "result"
@@ -122,3 +123,18 @@ viewSessionInformation model =
         , h5 [] [ text ("Left: " ++ (toString (List.length model.unAnsweredQuestions))) ]
         , h5 [] [ text ("Total: " ++ (toString (List.length model.questions))) ]
         ]
+
+
+percentageOfQuestionsLeft : Model -> Float
+percentageOfQuestionsLeft model =
+    let
+        unAnswered =
+            toFloat (List.length model.unAnsweredQuestions)
+
+        correct =
+            toFloat (List.length model.correctQuestions)
+
+        wrong =
+            toFloat (List.length model.wrongQuestions)
+    in
+        100 - (100 * (unAnswered / (unAnswered + correct + wrong)))

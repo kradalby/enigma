@@ -109,7 +109,7 @@ viewSpinningLoader =
         ]
 
 
-viewProgressbar : Int -> Html msg
+viewProgressbar : Float -> Html msg
 viewProgressbar percentage =
     div [ class "progress" ]
         [ div [ class "determinate", attribute "style" ("width: " ++ (toString percentage) ++ "%") ]
