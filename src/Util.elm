@@ -32,6 +32,13 @@ radio labelName groupName isSelected msg =
         ]
 
 
+delay : Time -> msg -> Cmd msg
+delay time msg =
+    Process.sleep time
+        |> Task.andThen (always <| Task.succeed msg)
+        |> Task.perform identity
+
+
 viewErrorBox : String -> Html msg
 viewErrorBox errorString =
     div [ class "card-panel red lighten-1" ]
@@ -40,8 +47,71 @@ viewErrorBox errorString =
         ]
 
 
-delay : Time -> msg -> Cmd msg
-delay time msg =
-    Process.sleep time
-        |> Task.andThen (always <| Task.succeed msg)
-        |> Task.perform identity
+viewSpinningLoader : Html msg
+viewSpinningLoader =
+    div [ class "preloader-wrapper active" ]
+        [ div [ class "spinner-layer spinner-blue" ]
+            [ div [ class "circle-clipper left" ]
+                [ div [ class "circle" ]
+                    []
+                ]
+            , div [ class "gap-patch" ]
+                [ div [ class "circle" ]
+                    []
+                ]
+            , div [ class "circle-clipper right" ]
+                [ div [ class "circle" ]
+                    []
+                ]
+            ]
+        , div [ class "spinner-layer spinner-red" ]
+            [ div [ class "circle-clipper left" ]
+                [ div [ class "circle" ]
+                    []
+                ]
+            , div [ class "gap-patch" ]
+                [ div [ class "circle" ]
+                    []
+                ]
+            , div [ class "circle-clipper right" ]
+                [ div [ class "circle" ]
+                    []
+                ]
+            ]
+        , div [ class "spinner-layer spinner-yellow" ]
+            [ div [ class "circle-clipper left" ]
+                [ div [ class "circle" ]
+                    []
+                ]
+            , div [ class "gap-patch" ]
+                [ div [ class "circle" ]
+                    []
+                ]
+            , div [ class "circle-clipper right" ]
+                [ div [ class "circle" ]
+                    []
+                ]
+            ]
+        , div [ class "spinner-layer spinner-green" ]
+            [ div [ class "circle-clipper left" ]
+                [ div [ class "circle" ]
+                    []
+                ]
+            , div [ class "gap-patch" ]
+                [ div [ class "circle" ]
+                    []
+                ]
+            , div [ class "circle-clipper right" ]
+                [ div [ class "circle" ]
+                    []
+                ]
+            ]
+        ]
+
+
+viewProgressbar : Int -> Html msg
+viewProgressbar percentage =
+    div [ class "progress" ]
+        [ div [ class "determinate", attribute "style" ("width: " ++ (toString percentage) ++ "%") ]
+            []
+        ]
