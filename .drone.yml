@@ -5,7 +5,8 @@ pipeline:
     commands:
       - npm prune
       - npm install -g --silent elm
-      - npm install --silent
+      - make install
+      - make fix_module_canvas
       - npm run build
 
 
