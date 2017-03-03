@@ -17,7 +17,7 @@ clean: ;@echo "-- Cleaning up dist files"
 	rm -rf 1171*
 
 install: ;@echo "-- Installing dependencies"
-	elm package install
+	elm package install -y
 	npm i --silent
 	git submodule init
 	git submodule update
