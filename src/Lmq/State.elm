@@ -12,7 +12,7 @@ import App.Rest exposing (base_url)
 import Canvas exposing (Size, Error, DrawOp(..), DrawImageParams(..), Canvas)
 import Canvas.Point exposing (Point)
 import Canvas.Point as Point
-import Canvas.Events as Events
+import Canvas.Pixel as Pixel
 import Color.Convert
 import Color
 
@@ -25,8 +25,8 @@ init =
             , mode = Start
             , unAnsweredQuestions =
                 []
-                -- , wrongQuestions = []
-                -- , correctQuestions = []
+            , wrongQuestions = []
+            , correctQuestions = []
             , currentQuestion = Nothing
             , showAnswer = False
             , numberOfQuestionsInputField = "0"
@@ -34,7 +34,7 @@ init =
             , seed = Random.initialSeed 986579348465945786
             , image = Loading
             , solution = Loading
-            , draw = []
+            , clickData = initClickData
             }
     in
         model ! [ getLandmarkQuestions ]
@@ -58,37 +58,17 @@ update msg model =
 
                         h :: t ->
                             ( Just h, t )
-
-                -- shuffle model.questions
             in
                 ( { model
                     | unAnsweredQuestions = t
                     , currentQuestion =
                         h
-                        -- , correctQuestions = []
-                        -- , wrongQuestions = []
+                    , correctQuestions = []
+                    , wrongQuestions = []
                     , seed = seed
                     , mode = Running
                   }
-                , Cmd.batch
-                    [ (case h of
-                        Nothing ->
-                            Cmd.none
-
-                        Just question ->
-                            loadImage question.original_image
-                      )
-                    , if model.showAnswer then
-                        (case h of
-                            Nothing ->
-                                Cmd.none
-
-                            Just question ->
-                                loadSolution question.landmark_drawing
-                        )
-                      else
-                        Cmd.none
-                    ]
+                , Cmd.batch (getListOfLoadImageMessages h)
                 )
 
         NextQuestion ->
@@ -97,6 +77,38 @@ update msg model =
                     nextQuestion model
             in
                 ( nextModel, Cmd.none )
+
+        Correct ->
+            let
+                nextModel =
+                    nextQuestion model
+            in
+                ( case model.currentQuestion of
+                    Nothing ->
+                        nextModel
+
+                    Just question ->
+                        { nextModel
+                            | correctQuestions = question :: model.correctQuestions
+                        }
+                , Cmd.batch (getListOfLoadImageMessages nextModel.currentQuestion)
+                )
+
+        Wrong ->
+            let
+                nextModel =
+                    nextQuestion model
+            in
+                ( case model.currentQuestion of
+                    Nothing ->
+                        nextModel
+
+                    Just question ->
+                        { nextModel
+                            | wrongQuestions = question :: model.wrongQuestions
+                        }
+                , Cmd.batch (getListOfLoadImageMessages nextModel.currentQuestion)
+                )
 
         GetLandmarkQuestions ->
             ( model, getLandmarkQuestions )
@@ -158,40 +170,17 @@ update msg model =
         CanvasClick position ->
             let
                 color =
-                    (case model.currentQuestion of
-                        Nothing ->
-                            Color.rgb 0 0 0
+                    getColorFromRegion model
 
-                        Just lmq ->
-                            (case List.head lmq.landmark_regions of
-                                Nothing ->
-                                    Color.rgb 0 0 0
+                ( p0, p1, p2, p3 ) =
+                    getCoordinatesForCross position
 
-                                Just region ->
-                                    (case Color.Convert.hexToColor region.color of
-                                        Ok color ->
-                                            color
-
-                                        Err errorMsg ->
-                                            Color.rgb 0 0 0
-                                    )
-                            )
-                    )
-
-                ( x, y ) =
-                    Point.toInts position
-
-                p0 =
-                    Point.fromInts ( x - 10, y - 10 )
-
-                p1 =
-                    Point.fromInts ( x + 10, y + 10 )
-
-                p2 =
-                    Point.fromInts ( x - 10, y + 10 )
-
-                p3 =
-                    Point.fromInts ( x + 10, y - 10 )
+                answerMsg =
+                    Debug.log "Color"
+                        (checkAnswer
+                            model
+                            position
+                        )
 
                 newDraw =
                     [ BeginPath
@@ -200,16 +189,18 @@ update msg model =
                     , LineCap "round"
                     , MoveTo p0
                     , LineTo p1
-                    , Stroke
-                    , BeginPath
-                    , LineWidth 5
-                    , LineCap "round"
                     , MoveTo p2
                     , LineTo p3
                     , Stroke
                     ]
+
+                clickData =
+                    { draw = newDraw
+                    , color = color
+                    , answerMsg = answerMsg
+                    }
             in
-                ( { model | draw = newDraw }, Cmd.none )
+                ( { model | clickData = clickData }, Cmd.none )
 
 
 subscriptions : Model -> Sub Msg
@@ -228,7 +219,27 @@ nextQuestion model =
 
                 Just tail ->
                     tail
+        , clickData = initClickData
     }
+
+
+getListOfLoadImageMessages : Maybe LandmarkQuestion -> List (Cmd Msg)
+getListOfLoadImageMessages lmq =
+    [ (case lmq of
+        Nothing ->
+            Cmd.none
+
+        Just question ->
+            loadImage question.original_image
+      )
+    , (case lmq of
+        Nothing ->
+            Cmd.none
+
+        Just question ->
+            loadSolution question.landmark_drawing
+      )
+    ]
 
 
 loadImage : String -> Cmd Msg
@@ -243,3 +254,69 @@ loadSolution image_url =
     Task.attempt
         SolutionLoaded
         (Canvas.loadImage (base_url ++ image_url))
+
+
+getCoordinatesForCross : Point -> ( Point, Point, Point, Point )
+getCoordinatesForCross point =
+    let
+        size =
+            10
+
+        ( x, y ) =
+            Point.toInts point
+
+        p0 =
+            Point.fromInts ( x - size, y - size )
+
+        p1 =
+            Point.fromInts ( x + size, y + size )
+
+        p2 =
+            Point.fromInts ( x - size, y + size )
+
+        p3 =
+            Point.fromInts ( x + size, y - size )
+    in
+        ( p0, p1, p2, p3 )
+
+
+getColorFromRegion : Model -> Color.Color
+getColorFromRegion model =
+    case model.currentQuestion of
+        Nothing ->
+            wrongColor
+
+        Just lmq ->
+            (case List.head lmq.landmark_regions of
+                Nothing ->
+                    wrongColor
+
+                Just region ->
+                    (case Color.Convert.hexToColor region.color of
+                        Ok color ->
+                            color
+
+                        Err errorMsg ->
+                            wrongColor
+                    )
+            )
+
+
+checkAnswer : Model -> Point -> Msg
+checkAnswer model point =
+    let
+        pixelColor =
+            (case model.solution of
+                Loading ->
+                    wrongColor
+
+                GotCanvas canvas ->
+                    Canvas.initialize canvasSize
+                        |> Canvas.batch [ DrawImage canvas (Scaled (Point.fromInts ( 0, 0 )) canvasSize) ]
+                        |> Pixel.get point
+            )
+    in
+        if pixelColor == (wrongColor) then
+            Wrong
+        else
+            Correct

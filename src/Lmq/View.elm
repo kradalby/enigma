@@ -81,6 +81,7 @@ viewLandmarkQuestion model lmq =
     div [ class "landmark-question" ]
         [ h2 [] [ text lmq.question ]
         , viewCanvas model
+        , button [ class "btn", onClick model.clickData.answerMsg ] [ text "Submit" ]
         ]
 
 
@@ -88,16 +89,19 @@ viewCanvas : Model -> Html Msg
 viewCanvas model =
     let
         drawOps =
-            case model.solution of
-                Loading ->
-                    model.draw
+            if model.showAnswer then
+                case model.solution of
+                    Loading ->
+                        model.clickData.draw
 
-                GotCanvas canvas ->
-                    (createDrawImage canvas) :: model.draw
+                    GotCanvas canvas ->
+                        (createDrawImage canvas) :: model.clickData.draw
+            else
+                model.clickData.draw
     in
         case model.image of
             GotCanvas canvas ->
-                Canvas.initialize (Size 601 606)
+                Canvas.initialize canvasSize
                     |> Canvas.batch
                         ((createDrawImage canvas)
                             :: drawOps
@@ -112,4 +116,4 @@ viewCanvas model =
 
 createDrawImage : Canvas -> Canvas.DrawOp
 createDrawImage canvas =
-    DrawImage canvas (Scaled (Point.fromInts ( 0, 0 )) (Size 601 606))
+    DrawImage canvas (Scaled (Point.fromInts ( 0, 0 )) canvasSize)
