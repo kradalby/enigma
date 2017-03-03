@@ -4,7 +4,7 @@ import Lmq.Types exposing (..)
 import Html exposing (..)
 import Html.Events exposing (onInput, onClick)
 import Html.Attributes exposing (type_, checked, name, disabled, value, class, src, id, selected, for, href)
-import Util exposing (onEnter, viewErrorBox)
+import Util exposing (onEnter, viewErrorBox, viewSpinningLoader, viewProgressbar)
 import Canvas exposing (Size, Error, DrawOp(..), DrawImageParams(..), Canvas)
 import Canvas.Point exposing (Point)
 import Canvas.Point as Point
@@ -111,7 +111,7 @@ viewCanvas model =
                     |> div []
 
             Loading ->
-                p [] [ text "Image loading..." ]
+                viewSpinningLoader
 
 
 createDrawImage : Canvas -> Canvas.DrawOp
