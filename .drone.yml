@@ -1,11 +1,13 @@
 pipeline:
   build:
-    image: node:7.2.1
+    image: node:7.6.0
     pull: true
     commands:
       - npm prune
       - npm install -g --silent elm
-      - npm install --silent
+      - make install
+      - make fix_module_canvas
+      - mkdir -p src/assets
       - npm run build
 
 
@@ -16,7 +18,7 @@ pipeline:
     key: ${SSH_KEY}
     port: 22
     source: dist/
-    target: /usr/local/www/glossary.kradalby.no/
+    target: /usr/local/www/ldu.no/
     delete: true
     recursive: true
     exclude:
@@ -30,6 +32,6 @@ pipeline:
     host: mail.ntnu.fap.no
     port: 25
     from: drone@drone.fap.no
-    recipients: [ kradalby@kradalby.no ]
+    recipients: [ kradalby@kradalby.no, tornvall@stud.ntnu.no ]
     when:
       status: [ success, changed, failure ]
