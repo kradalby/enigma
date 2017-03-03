@@ -3,7 +3,7 @@ module App.Rest exposing (base_url, createApiUrl)
 
 base_url : String
 base_url =
-    "http://localhost:8000"
+    ""
 
 
 base_api_url : String
