@@ -23,7 +23,7 @@ install: ;@echo "-- Installing dependencies"
 	git submodule update
 
 fix_module_canvas:
-	perl -pi -E 's/elm\_community\$canvas/kradalby\$elm\_enigma/g' canvas/src/Native/Canvas.js
+	perl -pi -E 's/elm\_community\$$canvas/kradalby\$$elm\_enigma/g' canvas/src/Native/Canvas.js
 
 deinstall: ;@echo "-- Removing dependencies"
 	rm -rf elm-stuff/
