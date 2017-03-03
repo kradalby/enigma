@@ -32,6 +32,8 @@ services:
         dockerfile: Dockerfile
     volumes:
       - ../elm-enigma/:/srv/app
+    environment:
+      - TMPDIR=/tmp/
     working_dir: /srv/app
     # entrypoint: elm-reactor -a 0.0.0.0 -p 8000
     entrypoint: npm run dev-pub
