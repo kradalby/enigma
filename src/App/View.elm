@@ -11,18 +11,18 @@ import Lmq.View
 
 root : Model -> Html Msg
 root model =
-    div [ class "wrapper" ]
+    div []
         [ viewHeader model
-        , div [ class "row" ]
+        , div [ class "container" ]
             [ case model.global.mode of
                 Main ->
                     viewModeMenu
 
                 MultipleChoiceQuestions ->
-                    div [ class "mcq" ] [ Html.map McqMsg (Mcq.View.root model.mcq) ]
+                    div [] [ Html.map McqMsg (Mcq.View.root model.mcq) ]
 
                 LandmarkQuestions ->
-                    div [ class "lmq" ] [ Html.map LmqMsg (Lmq.View.root model.lmq) ]
+                    div [] [ Html.map LmqMsg (Lmq.View.root model.lmq) ]
             ]
         , viewFooter model
         ]
@@ -30,7 +30,7 @@ root model =
 
 viewModeMenu : Html Msg
 viewModeMenu =
-    div [ class "container" ]
+    div []
         [ button [ class "btn waves-effect waves-light", onClick (ChangeMode MultipleChoiceQuestions) ] [ text "Multiple Choice Questions" ]
         , button [ class "btn waves-effect waves-light", onClick (ChangeMode LandmarkQuestions) ] [ text "Landmark Questions" ]
         ]

@@ -79,7 +79,7 @@ validateNumberOfQuestionsInputFieldAndCreateResponseMsg model =
 viewLandmarkQuestion : Model -> LandmarkQuestion -> Html Msg
 viewLandmarkQuestion model lmq =
     div [ class "landmark-question" ]
-        [ h2 [] [ text lmq.question ]
+        [ h3 [] [ text lmq.question ]
         , viewCanvas model
         , button [ class "btn", onClick model.clickData.answerMsg ] [ text "Submit" ]
         ]

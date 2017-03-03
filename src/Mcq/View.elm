@@ -2,7 +2,7 @@ module Mcq.View exposing (root)
 
 import Html exposing (..)
 import Html.Events exposing (..)
-import Html.Attributes exposing (type_, checked, name, disabled, value, class, src, id, selected, for, href)
+import Html.Attributes exposing (type_, checked, name, value, class, src, id, href, style)
 import Mcq.Types exposing (..)
 import App.Rest exposing (base_url)
 import Util exposing (onEnter, viewErrorBox, viewProgressbar)
@@ -30,7 +30,6 @@ root model =
 
             Result ->
                 text "result"
-        , viewSessionInformation model
         ]
 
 
@@ -49,7 +48,8 @@ viewError model =
 viewStartQuiz : Model -> Html Msg
 viewStartQuiz model =
     div []
-        [ input
+        [ h3 [] [ text "How many questions?" ]
+        , input
             [ id "wordInput"
             , type_ "number"
             , onInput NumberOfQuestionsInput
@@ -80,21 +80,23 @@ validateNumberOfQuestionsInputFieldAndCreateResponseMsg model =
 
 viewMultipleChoiceQuestion : MultipleQuestion -> Html Msg
 viewMultipleChoiceQuestion mcq =
-    div [ class "multiple-choice-question" ]
-        [ h2 [] [ text mcq.question ]
-        , case mcq.image of
-            Just image ->
-                img [ src (base_url ++ image) ] []
+    div []
+        [ h3 [] [ text mcq.question ]
+        , div [ class "row" ]
+            [ case mcq.image of
+                Just image ->
+                    img [ class "responsive-img", src (base_url ++ image) ] []
 
-            Nothing ->
-                text ""
-        , case mcq.video of
-            Just video ->
-                node "video" [ src (base_url ++ video) ] []
+                Nothing ->
+                    text ""
+            , case mcq.video of
+                Just video ->
+                    node "video" [ src (base_url ++ video) ] []
 
-            Nothing ->
-                text ""
-        , div [ class "multiple-choice-question-alternaltives" ] (viewMultipleChoiceQuestionAlternaltives mcq.answers mcq.correct)
+                Nothing ->
+                    text ""
+            ]
+        , div [ class "row" ] (viewMultipleChoiceQuestionAlternaltives mcq.answers mcq.correct)
         ]
 
 
@@ -102,15 +104,19 @@ viewMultipleChoiceQuestionAlternaltives : List String -> Int -> List (Html Msg)
 viewMultipleChoiceQuestionAlternaltives alternaltives correctAnswer =
     List.indexedMap
         (\i alternaltive ->
-            button
-                [ onClick
-                    (if i == correctAnswer then
-                        Correct
-                     else
-                        Wrong
-                    )
+            div [ class "col s12 m6 l3" ]
+                [ button
+                    [ class "btn indigo lighten-5 black-text"
+                    , style [ ( "width", "100%" ) ]
+                    , onClick
+                        (if i == correctAnswer then
+                            Correct
+                         else
+                            Wrong
+                        )
+                    ]
+                    [ text alternaltive ]
                 ]
-                [ text alternaltive ]
         )
         alternaltives
 
@@ -129,7 +135,7 @@ percentageOfQuestionsLeft : Model -> Float
 percentageOfQuestionsLeft model =
     let
         unAnswered =
-            toFloat (List.length model.unAnsweredQuestions)
+            toFloat (List.length model.unAnsweredQuestions) + 1
 
         correct =
             toFloat (List.length model.correctQuestions)
