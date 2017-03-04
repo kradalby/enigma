@@ -64,7 +64,12 @@ update msg model =
                 nextModel =
                     nextQuestion model
             in
-                ( { nextModel | showAnswer = False }, Cmd.none )
+                case nextModel.currentQuestion of
+                    Nothing ->
+                        ( { nextModel | showAnswer = False, mode = Result }, Cmd.none )
+
+                    _ ->
+                        ( { nextModel | showAnswer = False }, Cmd.none )
 
         Correct ->
             ( case model.currentQuestion of

@@ -30,7 +30,7 @@ root model =
                             ]
 
             Result ->
-                text "result"
+                viewResult model
         ]
 
 
@@ -131,6 +131,16 @@ viewMultipleChoiceQuestionAlternaltives alternaltives correctAnswer showAnswer =
                 ]
         )
         alternaltives
+
+
+viewResult : Model -> Html Msg
+viewResult model =
+    div []
+        [ h3 [] [ text "Results" ]
+        , h5 [] [ text ("Correct: " ++ (toString (List.length model.correctQuestions))) ]
+        , h5 [] [ text ("Wrong: " ++ (toString (List.length model.wrongQuestions))) ]
+        , button [ class "btn", onClick (ChangeMode Start) ] [ text "Start new quiz" ]
+        ]
 
 
 viewSessionInformation : Model -> Html Msg
