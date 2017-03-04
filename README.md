@@ -1,10 +1,16 @@
-# Medical Imaging Quiz
+# turbo-enigma
 
-## Setup
+## Development setup
 
-Install docker from [here](https://www.docker.com/products/docker)
+1. Install docker
 
+    brew install docker
 
+2. Copy static files
 
-## Development
+    make init
+
+3. Run development environment
+
+    docker-compose up
 
