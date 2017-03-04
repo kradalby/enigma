@@ -26,6 +26,7 @@ root model =
                             [ viewProgressbar (percentageOfQuestionsLeft model)
                             , viewMultipleChoiceQuestion
                                 currentQuestion
+                                model.showAnswer
                             ]
 
             Result ->
@@ -78,8 +79,8 @@ validateNumberOfQuestionsInputFieldAndCreateResponseMsg model =
                 SetError "We dont have that many questions..."
 
 
-viewMultipleChoiceQuestion : MultipleQuestion -> Html Msg
-viewMultipleChoiceQuestion mcq =
+viewMultipleChoiceQuestion : MultipleQuestion -> Bool -> Html Msg
+viewMultipleChoiceQuestion mcq showAnswer =
     div []
         [ h3 [] [ text mcq.question ]
         , div [ class "row" ]
@@ -96,17 +97,28 @@ viewMultipleChoiceQuestion mcq =
                 Nothing ->
                     text ""
             ]
-        , div [ class "row" ] (viewMultipleChoiceQuestionAlternaltives mcq.answers mcq.correct)
+        , div [ class "row" ] (viewMultipleChoiceQuestionAlternaltives mcq.answers mcq.correct showAnswer)
         ]
 
 
-viewMultipleChoiceQuestionAlternaltives : List String -> Int -> List (Html Msg)
-viewMultipleChoiceQuestionAlternaltives alternaltives correctAnswer =
+viewMultipleChoiceQuestionAlternaltives : List String -> Int -> Bool -> List (Html Msg)
+viewMultipleChoiceQuestionAlternaltives alternaltives correctAnswer showAnswer =
     List.indexedMap
         (\i alternaltive ->
             div [ class "col s12 m6 l3" ]
                 [ button
-                    [ class "btn indigo lighten-5 black-text"
+                    [ class
+                        (case showAnswer of
+                            False ->
+                                "btn indigo lighten-5 black-text"
+
+                            True ->
+                                (if i == correctAnswer then
+                                    "btn green"
+                                 else
+                                    "btn red"
+                                )
+                        )
                     , style [ ( "width", "100%" ) ]
                     , onClick
                         (if i == correctAnswer then

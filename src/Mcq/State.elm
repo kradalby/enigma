@@ -64,39 +64,33 @@ update msg model =
                 nextModel =
                     nextQuestion model
             in
-                ( nextModel, Cmd.none )
+                ( { nextModel | showAnswer = False }, Cmd.none )
 
         Correct ->
-            let
-                nextModel =
-                    nextQuestion model
-            in
-                ( case model.currentQuestion of
-                    Nothing ->
-                        nextModel
+            ( case model.currentQuestion of
+                Nothing ->
+                    model
 
-                    Just question ->
-                        { nextModel
-                            | correctQuestions = question :: model.correctQuestions
-                        }
-                , Cmd.none
-                )
+                Just question ->
+                    { model
+                        | correctQuestions = question :: model.correctQuestions
+                        , showAnswer = True
+                    }
+            , (delay (Time.second * 3) <| NextQuestion)
+            )
 
         Wrong ->
-            let
-                nextModel =
-                    nextQuestion model
-            in
-                ( case model.currentQuestion of
-                    Nothing ->
-                        nextModel
+            ( case model.currentQuestion of
+                Nothing ->
+                    model
 
-                    Just question ->
-                        { nextModel
-                            | wrongQuestions = question :: model.wrongQuestions
-                        }
-                , Cmd.none
-                )
+                Just question ->
+                    { model
+                        | wrongQuestions = question :: model.wrongQuestions
+                        , showAnswer = True
+                    }
+            , (delay (Time.second * 3) <| NextQuestion)
+            )
 
         GetMultipleChoiceQuestions ->
             ( model, getMultipleChoiceQuestions )
