@@ -157,7 +157,7 @@ percentageOfQuestionsLeft : Model -> Float
 percentageOfQuestionsLeft model =
     let
         unAnswered =
-            toFloat (List.length model.unAnsweredQuestions) + 1
+            toFloat (List.length model.unAnsweredQuestions)
 
         correct =
             toFloat (List.length model.correctQuestions)
@@ -165,4 +165,4 @@ percentageOfQuestionsLeft model =
         wrong =
             toFloat (List.length model.wrongQuestions)
     in
-        100 - (100 * (unAnswered / (unAnswered + correct + wrong)))
+        (100 * ((correct + wrong) / (unAnswered + correct + wrong + 1)))
