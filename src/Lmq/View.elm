@@ -25,7 +25,10 @@ root model =
                         viewStartQuiz model
 
                     Just currentQuestion ->
-                        viewLandmarkQuestion model currentQuestion
+                        div []
+                            [ viewProgressbar (percentageOfQuestionsLeft model)
+                            , viewLandmarkQuestion model currentQuestion
+                            ]
 
             Result ->
                 text "result"
@@ -47,7 +50,10 @@ viewError model =
 viewStartQuiz : Model -> Html Msg
 viewStartQuiz model =
     div []
-        [ input
+        [ h3
+            []
+            [ text "How many questions?" ]
+        , input
             [ id "wordInput"
             , type_ "number"
             , onInput NumberOfQuestionsInput
@@ -78,7 +84,7 @@ validateNumberOfQuestionsInputFieldAndCreateResponseMsg model =
 
 viewLandmarkQuestion : Model -> LandmarkQuestion -> Html Msg
 viewLandmarkQuestion model lmq =
-    div [ class "landmark-question" ]
+    div []
         [ h3 [] [ text lmq.question ]
         , viewCanvas model
         , button [ class "btn", onClick model.clickData.answerMsg ] [ text "Submit" ]
@@ -117,3 +123,18 @@ viewCanvas model =
 createDrawImage : Canvas -> Canvas.DrawOp
 createDrawImage canvas =
     DrawImage canvas (Scaled (Point.fromInts ( 0, 0 )) canvasSize)
+
+
+percentageOfQuestionsLeft : Model -> Float
+percentageOfQuestionsLeft model =
+    let
+        unAnswered =
+            toFloat (List.length model.unAnsweredQuestions)
+
+        correct =
+            toFloat (List.length model.correctQuestions)
+
+        wrong =
+            toFloat (List.length model.wrongQuestions)
+    in
+        (100 * ((correct + wrong) / (unAnswered + correct + wrong + 1)))
