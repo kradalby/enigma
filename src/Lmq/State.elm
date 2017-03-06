@@ -76,39 +76,38 @@ update msg model =
                 nextModel =
                     nextQuestion model
             in
-                ( nextModel, Cmd.none )
+                case nextModel.currentQuestion of
+                    Nothing ->
+                        ( { nextModel | showAnswer = False, mode = Result }, Cmd.none )
+
+                    _ ->
+                        ( { nextModel | showAnswer = False }, Cmd.batch (getListOfLoadImageMessages nextModel.currentQuestion) )
 
         Correct ->
-            let
-                nextModel =
-                    nextQuestion model
-            in
-                ( case model.currentQuestion of
-                    Nothing ->
-                        nextModel
+            ( case model.currentQuestion of
+                Nothing ->
+                    model
 
-                    Just question ->
-                        { nextModel
-                            | correctQuestions = question :: model.correctQuestions
-                        }
-                , Cmd.batch (getListOfLoadImageMessages nextModel.currentQuestion)
-                )
+                Just question ->
+                    { model
+                        | correctQuestions = question :: model.correctQuestions
+                        , showAnswer = True
+                    }
+            , (delay (Time.second * 3) <| NextQuestion)
+            )
 
         Wrong ->
-            let
-                nextModel =
-                    nextQuestion model
-            in
-                ( case model.currentQuestion of
-                    Nothing ->
-                        nextModel
+            ( case model.currentQuestion of
+                Nothing ->
+                    model
 
-                    Just question ->
-                        { nextModel
-                            | wrongQuestions = question :: model.wrongQuestions
-                        }
-                , Cmd.batch (getListOfLoadImageMessages nextModel.currentQuestion)
-                )
+                Just question ->
+                    { model
+                        | wrongQuestions = question :: model.wrongQuestions
+                        , showAnswer = True
+                    }
+            , (delay (Time.second * 3) <| NextQuestion)
+            )
 
         GetLandmarkQuestions ->
             ( model, getLandmarkQuestions )
