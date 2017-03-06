@@ -25,6 +25,9 @@ install: ;@echo "-- Installing dependencies"
 fix_module_canvas:
 	perl -pi -E 's/elm\_community\$$canvas/kradalby\$$elm\_enigma/g' canvas/src/Native/Canvas.js
 
+fix_sass_bin_in_docker:
+	docker-compose -f ../turbo-enigma/docker-compose.yml run --entrypoint="bash -c" elm "/usr/local/bin/npm install  --force node-sass"
+
 deinstall: ;@echo "-- Removing dependencies"
 	rm -rf elm-stuff/
 	rm -rf node_modules/
