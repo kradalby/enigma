@@ -31,7 +31,7 @@ root model =
                             ]
 
             Result ->
-                text "result"
+                viewResult model
         ]
 
 
@@ -123,6 +123,16 @@ viewCanvas model =
 createDrawImage : Canvas -> Canvas.DrawOp
 createDrawImage canvas =
     DrawImage canvas (Scaled (Point.fromInts ( 0, 0 )) canvasSize)
+
+
+viewResult : Model -> Html Msg
+viewResult model =
+    div []
+        [ h3 [] [ text "Results" ]
+        , h5 [] [ text ("Correct: " ++ (toString (List.length model.correctQuestions))) ]
+        , h5 [] [ text ("Wrong: " ++ (toString (List.length model.wrongQuestions))) ]
+        , button [ class "btn", onClick (ChangeMode Start) ] [ text "Start new quiz" ]
+        ]
 
 
 percentageOfQuestionsLeft : Model -> Float
