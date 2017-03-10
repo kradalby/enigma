@@ -30,3 +30,4 @@ type Mode
     = Main
     | MultipleChoiceQuestions
     | LandmarkQuestions
+
