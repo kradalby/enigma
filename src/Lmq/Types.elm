@@ -5,6 +5,7 @@ import Random
 import Canvas exposing (DrawOp, Canvas, Error, Size)
 import Canvas.Point exposing (Point)
 import Color
+import Types exposing (Region, canvasSize, wrongColor, Image)
 
 
 type alias LandmarkQuestion =
@@ -12,19 +13,8 @@ type alias LandmarkQuestion =
     , question : String
     , original_image : String
     , landmark_drawing : String
-    , landmark_regions : List LandmarkRegion
+    , landmark_regions : List Region
     }
-
-
-type alias LandmarkRegion =
-    { color : String
-    , name : String
-    }
-
-
-type Image
-    = Loading
-    | GotCanvas Canvas
 
 
 type alias ClickData =
@@ -32,16 +22,6 @@ type alias ClickData =
     , answerMsg : Msg
     , color : Color.Color
     }
-
-
-canvasSize : Size
-canvasSize =
-    (Size 601 606)
-
-
-wrongColor : Color.Color
-wrongColor =
-    Color.rgba 0 0 0 0
 
 
 initClickData : ClickData
