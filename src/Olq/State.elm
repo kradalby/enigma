@@ -1,5 +1,6 @@
 module Olq.State exposing (init, update, subscriptions)
 
+import Types exposing (..)
 import Olq.Types exposing (..)
 import Olq.Rest exposing (getOutlineQuestions)
 import Random
@@ -143,8 +144,8 @@ update msg model =
                         Nothing ->
                             Cmd.none
 
-                        Just lmq ->
-                            loadImage lmq.original_image
+                        Just olq ->
+                            loadImage olq.original_image
                       )
                     )
 
@@ -161,8 +162,8 @@ update msg model =
                         Nothing ->
                             Cmd.none
 
-                        Just lmq ->
-                            loadSolution lmq.landmark_drawing
+                        Just olq ->
+                            loadSolution olq.outline_drawing
                       )
                     )
 
@@ -223,20 +224,20 @@ nextQuestion model =
 
 
 getListOfLoadImageMessages : Maybe OutlineQuestion -> List (Cmd Msg)
-getListOfLoadImageMessages lmq =
-    [ (case lmq of
+getListOfLoadImageMessages olq =
+    [ (case olq of
         Nothing ->
             Cmd.none
 
         Just question ->
             loadImage question.original_image
       )
-    , (case lmq of
+    , (case olq of
         Nothing ->
             Cmd.none
 
         Just question ->
-            loadSolution question.landmark_drawing
+            loadSolution question.outline_drawing
       )
     ]
 
@@ -285,8 +286,8 @@ getColorFromRegion model =
         Nothing ->
             wrongColor
 
-        Just lmq ->
-            (case List.head lmq.landmark_regions of
+        Just olq ->
+            (case List.head olq.outline_regions of
                 Nothing ->
                     wrongColor
 

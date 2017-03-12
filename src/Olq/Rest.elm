@@ -12,26 +12,25 @@ getOutlineQuestions : Cmd Msg
 getOutlineQuestions =
     let
         url =
-            createApiUrl "/quiz/landmarkquestion"
+            createApiUrl "/quiz/outlinequestion"
 
         request =
-            Http.get url (list landmarkQuestionDecoder)
+            Http.get url (list outlineQuestionDecoder)
     in
         Http.send SetOutlineQuestions request
 
 
-landmarkQuestionDecoder : Decoder OutlineQuestion
-landmarkQuestionDecoder =
+outlineQuestionDecoder : Decoder OutlineQuestion
+outlineQuestionDecoder =
     decode OutlineQuestion
         |> required "pk" int
-        |> required "question" string
         |> required "original_image" string
-        |> required "landmark_drawing" string
-        |> required "landmark_regions" (list landmarkRegionDecoder)
+        |> required "outline_drawing" string
+        |> required "outline_regions" (list outlineRegionDecoder)
 
 
-landmarkRegionDecoder : Decoder Region
-landmarkRegionDecoder =
+outlineRegionDecoder : Decoder Region
+outlineRegionDecoder =
     decode Region
         |> required "color" string
         |> required "name" string

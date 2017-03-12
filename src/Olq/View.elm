@@ -84,9 +84,9 @@ validateNumberOfQuestionsInputFieldAndCreateResponseMsg model =
 
 
 viewOutlineQuestion : Model -> OutlineQuestion -> Html Msg
-viewOutlineQuestion model lmq =
+viewOutlineQuestion model olq =
     div [ class "col s12" ]
-        [ h3 [] [ text lmq.question ]
+        [ h3 [] [ text olq.question ]
         , viewCanvas model
         , button [ class "btn", onClick model.clickData.answerMsg ] [ text "Submit" ]
         ]
