@@ -1,5 +1,6 @@
 module Lmq.Rest exposing (..)
 
+import Types exposing (Region)
 import Lmq.Types exposing (..)
 import App.Rest exposing (createApiUrl)
 import Http
@@ -29,8 +30,8 @@ landmarkQuestionDecoder =
         |> required "landmark_regions" (list landmarkRegionDecoder)
 
 
-landmarkRegionDecoder : Decoder LandmarkRegion
+landmarkRegionDecoder : Decoder Region
 landmarkRegionDecoder =
-    decode LandmarkRegion
+    decode Region
         |> required "color" string
         |> required "name" string

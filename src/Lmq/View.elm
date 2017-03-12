@@ -1,5 +1,6 @@
 module Lmq.View exposing (root)
 
+import Types exposing (..)
 import Lmq.Types exposing (..)
 import Html exposing (..)
 import Html.Events exposing (onInput, onClick)
