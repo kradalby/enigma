@@ -1,7 +1,7 @@
 module Types exposing (..)
 
 import Color
-import Canvas exposing (Size)
+import Canvas exposing (Canvas, Size)
 
 
 type alias Region =
