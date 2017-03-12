@@ -176,11 +176,10 @@ update msg model =
                     getCoordinatesForCross position
 
                 answerMsg =
-                    Debug.log "Color"
-                        (checkAnswer
-                            model
-                            position
-                        )
+                    (checkAnswer
+                        model
+                        position
+                    )
 
                 newDraw =
                     [ BeginPath
