@@ -8,7 +8,7 @@ import Color
 import Types exposing (Region, canvasSize, wrongColor, Image)
 
 
-type alias LandmarkQuestion =
+type alias OutlineQuestion =
     { pk : Int
     , original_image : String
     , outline_drawing : String
@@ -29,13 +29,13 @@ initClickData =
 
 
 type alias Model =
-    { questions : List LandmarkQuestion
+    { questions : List OutlineQuestion
     , mode : Mode
     , unAnsweredQuestions :
-        List LandmarkQuestion
-    , wrongQuestions : List LandmarkQuestion
-    , correctQuestions : List LandmarkQuestion
-    , currentQuestion : Maybe LandmarkQuestion
+        List OutlineQuestion
+    , wrongQuestions : List OutlineQuestion
+    , correctQuestions : List OutlineQuestion
+    , currentQuestion : Maybe OutlineQuestion
     , showAnswer : Bool
     , numberOfQuestionsInputField : String
     , error : Maybe String
@@ -52,8 +52,8 @@ type Msg
     | NextQuestion
     | Correct
     | Wrong
-    | GetLandmarkQuestions
-    | SetLandmarkQuestions (Result Http.Error (List LandmarkQuestion))
+    | GetOutlineQuestions
+    | SetOutlineQuestions (Result Http.Error (List OutlineQuestion))
     | NumberOfQuestionsInput String
     | SetError String
     | ClearError

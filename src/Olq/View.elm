@@ -1,5 +1,6 @@
 module Olq.View exposing (root)
 
+import Types exposing (..)
 import Olq.Types exposing (..)
 import Html exposing (..)
 import Html.Events exposing (onInput, onClick)
@@ -27,7 +28,7 @@ root model =
                     Just currentQuestion ->
                         div []
                             [ viewProgressbar (percentageOfQuestionsLeft model)
-                            , viewLandmarkQuestion model currentQuestion
+                            , viewOutlineQuestion model currentQuestion
                             ]
 
             Result ->
@@ -82,8 +83,8 @@ validateNumberOfQuestionsInputFieldAndCreateResponseMsg model =
                 SetError "We dont have that many questions..."
 
 
-viewLandmarkQuestion : Model -> LandmarkQuestion -> Html Msg
-viewLandmarkQuestion model lmq =
+viewOutlineQuestion : Model -> OutlineQuestion -> Html Msg
+viewOutlineQuestion model lmq =
     div [ class "col s12" ]
         [ h3 [] [ text lmq.question ]
         , viewCanvas model

@@ -1,7 +1,7 @@
 module Olq.State exposing (init, update, subscriptions)
 
 import Olq.Types exposing (..)
-import Olq.Rest exposing (getLandmarkQuestions)
+import Olq.Rest exposing (getOutlineQuestions)
 import Random
 import Random.List exposing (shuffle)
 import Time
@@ -37,7 +37,7 @@ init =
             , clickData = initClickData
             }
     in
-        model ! [ getLandmarkQuestions ]
+        model ! [ getOutlineQuestions ]
 
 
 update : Msg -> Model -> ( Model, Cmd Msg )
@@ -109,13 +109,13 @@ update msg model =
             , (delay (Time.second * 3) <| NextQuestion)
             )
 
-        GetLandmarkQuestions ->
-            ( model, getLandmarkQuestions )
+        GetOutlineQuestions ->
+            ( model, getOutlineQuestions )
 
-        SetLandmarkQuestions (Ok questions) ->
+        SetOutlineQuestions (Ok questions) ->
             ( { model | questions = questions }, Cmd.none )
 
-        SetLandmarkQuestions (Err _) ->
+        SetOutlineQuestions (Err _) ->
             ( model, Cmd.none )
 
         NumberOfQuestionsInput number ->
@@ -222,7 +222,7 @@ nextQuestion model =
     }
 
 
-getListOfLoadImageMessages : Maybe LandmarkQuestion -> List (Cmd Msg)
+getListOfLoadImageMessages : Maybe OutlineQuestion -> List (Cmd Msg)
 getListOfLoadImageMessages lmq =
     [ (case lmq of
         Nothing ->
