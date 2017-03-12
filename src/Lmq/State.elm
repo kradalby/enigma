@@ -1,5 +1,6 @@
 module Lmq.State exposing (init, update, subscriptions)
 
+import Types exposing (..)
 import Lmq.Types exposing (..)
 import Lmq.Rest exposing (getLandmarkQuestions)
 import Random
