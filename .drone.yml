@@ -18,7 +18,7 @@ pipeline:
     key: ${SSH_KEY}
     port: 22
     source: dist/
-    target: /usr/local/www/ldu.no/
+    target: /usr/local/www/ldu.no/app/
     delete: true
     recursive: true
     exclude:
