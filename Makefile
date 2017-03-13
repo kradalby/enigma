@@ -40,3 +40,6 @@ run:
 freeze:
 	mkdir -p requirements
 	$(PIP) freeze > requirements/base.txt
+
+createsuperuser:
+	docker-compose run --entrypoint="bash -c" turbo "./manage.py createsuperuser"
