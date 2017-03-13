@@ -58,6 +58,7 @@ module.exports = {
 
   devServer: {
     inline: true,
-    stats: { colors: true }
+    stats: { colors: true },
+    publicPath: "/app"
   }
 };
