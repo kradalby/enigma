@@ -10,9 +10,6 @@ collect_static:
 flake8:
 	$(ENV)/flake8 ./src
 
-migrate:
-	$(MANAGE) migrate
-
 dev:
 	$(PIP) install -r requirements/dev.txt --upgrade
 
@@ -43,3 +40,9 @@ freeze:
 
 createsuperuser:
 	docker-compose run --entrypoint="bash -c" turbo "./manage.py createsuperuser"
+
+loaddata:
+	docker-compose run --entrypoint="bash -c" turbo "./manage.py loaddata 200916.json"
+
+migrate:
+	docker-compose run --entrypoint="bash -c" turbo "./manage.py migrate"
