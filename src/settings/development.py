@@ -11,8 +11,8 @@ def custom_show_toolbar(request):
 
 # INSTALLED_APPS += ('debug_toolbar', 'django_extensions')
 INSTALLED_APPS = ('corsheaders', *INSTALLED_APPS)
-MIDDLEWARE_CLASSES = ('corsheaders.middleware.CorsMiddleware', *MIDDLEWARE_CLASSES)
-
+MIDDLEWARE_CLASSES = ('corsheaders.middleware.CorsMiddleware',
+                      *MIDDLEWARE_CLASSES)
 
 DEBUG_TOOLBAR_CONFIG = {
     'SHOW_TOOLBAR_CALLBACK': custom_show_toolbar,
@@ -33,9 +33,7 @@ DATABASES = {
 
 # MIDDLEWARE_CLASSES += ('debug_toolbar.middleware.DebugToolbarMiddleware',)
 
-CORS_ORIGIN_WHITELIST = (
-    'localhost:8080',
-    'localhost:8000',
-    'localhost:9000',
-    '127.0.0.1:9000'
-)
+CORS_ORIGIN_WHITELIST = ('localhost:8080', 'localhost:8000', 'localhost:9000',
+                         '127.0.0.1:9000')
+
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
