@@ -46,3 +46,6 @@ loaddata:
 
 migrate:
 	docker-compose run --entrypoint="bash -c" turbo "./manage.py migrate"
+
+makemigrations:
+	docker-compose run --entrypoint="bash -c" turbo "./manage.py makemigrations ${ARGS}"
