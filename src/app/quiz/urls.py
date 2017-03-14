@@ -201,4 +201,9 @@ urlpatterns = [
     url(r'^admin/outline_solution_to_outline/(?P<question_id>\d+)/(?P<test_result_id>\d+)/$',
         admin.create_outline_from_outline_solution,
         name='admin_create_outline_from_outline_solution'),
+
+    # Image
+    url(r'^admin/image/new/$',
+        admin.new_generic_image,
+        name='admin_new_generic_image'),
 ]

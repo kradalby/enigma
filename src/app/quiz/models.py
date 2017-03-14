@@ -70,7 +70,7 @@ class TestUnit(models.Model):
         return self.question
 
     class Meta:
-        ordering = ('question',)
+        ordering = ('question', )
 
     def as_html(self):
         return '<h1>THIS MODEL HAS NOT IMPLEMENTED AS_HTML</h1>'
@@ -261,6 +261,16 @@ class OutlineSolutionQuestion(TestUnit):
         return html
 
 
+class GenericImage(models.Model):
+    image = models.ImageField()
+    name = models.CharField(max_length=200)
+    machine = models.CharField(max_length=200)
+    reconstruction_method = models.CharField(max_length=200)
+
+    def __str__(self):
+        return self.name
+
+
 class LandmarkRegion(models.Model):
     landmark_question = models.ForeignKey(LandmarkQuestion)
     color = models.CharField(max_length=50)
@@ -283,7 +293,8 @@ class TestUnitResult(models.Model):
     test_unit = models.ForeignKey(TestUnit)
     correct_answer = models.BooleanField()
     test_result = models.ForeignKey(TestResult)
-    answer = models.CharField(max_length=255, blank=True, null=True, default='')
+    answer = models.CharField(
+        max_length=255, blank=True, null=True, default='')
     answer_image = models.ImageField(blank=True)
     target_color_region = models.CharField(max_length=255)
     score = models.PositiveSmallIntegerField()
