@@ -697,7 +697,7 @@ def create_outline_from_outline_solution(request, question_id, test_result_id):
     outline_region = OutlineRegion()
     outline_region.outline_question = outline_question
     outline_region.name = question.outline_region
-    outline_region.color = "#c02f1d"
+    outline_region.color = "#659b41"
     outline_region.save()
 
     return redirect(draw_outline, outline_question.id)

@@ -5,6 +5,7 @@ db/
 mediafiles/
 src/postgres
 .vscode/
+.idea/
 
 # Created by https://www.gitignore.io/api/osx,windows,intellij,webstorm,vim,emacs,django,python
 
