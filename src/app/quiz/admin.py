@@ -4,7 +4,7 @@ from .models import (LandmarkQuestion, LandmarkRegion, MultipleChoiceQuestion,
                      MultipleChoiceQuestionWithImage,
                      MultipleChoiceQuestionWithVideo, OutlineQuestion,
                      OutlineRegion, OutlineSolutionQuestion, Test, TestResult,
-                     TestUnit, TestUnitResult)
+                     TestUnit, TestUnitResult, GenericImage)
 
 
 class OutlineQuestionAdmin(admin.ModelAdmin):
@@ -87,3 +87,10 @@ class TestUnitResultAdmin(admin.ModelAdmin):
 
 
 admin.site.register(TestUnitResult, TestUnitResultAdmin)
+
+
+class GenericImageAdmin(admin.ModelAdmin):
+    pass
+
+
+admin.site.register(GenericImage, GenericImageAdmin)
