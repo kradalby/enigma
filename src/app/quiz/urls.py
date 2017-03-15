@@ -207,7 +207,7 @@ urlpatterns = [
         admin.new_generic_image,
         name='admin_new_generic_image'),
     url(r'^admin/image/$', admin.image_overview, name='admin_image_overview'),
-    url(r'^admin/image/suggestion/(?P<image_id>\d+)/(?P<suggestion_id>\d+)$',
+    url(r'^admin/image/suggestion/(?P<image_id>\d+)/$',
         admin.draw_suggestion,
         name='admin_draw_suggestion'),
 ]
