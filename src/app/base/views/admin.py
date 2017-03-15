@@ -1,7 +1,7 @@
-from django.contrib.admin.views.decorators import staff_member_required
-from django.shortcuts import render
-from django.db import transaction
 from django.contrib import messages
+from django.contrib.admin.views.decorators import staff_member_required
+from django.db import transaction
+from django.shortcuts import render
 
 from ..forms import GlobalSettingsForm
 from ..models import GlobalSettings

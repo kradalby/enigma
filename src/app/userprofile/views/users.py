@@ -3,11 +3,11 @@ from django.contrib.admin.views.decorators import staff_member_required
 from django.contrib.auth.models import User
 from django.core.exceptions import ObjectDoesNotExist
 from django.db import transaction
-from django.shortcuts import render, get_object_or_404, redirect
+from django.shortcuts import get_object_or_404, redirect, render
 
-from app.userprofile.models import UserProfile, UserGroup
-from app.userprofile.forms import UserProfileForm
 from app.quiz.models import TestResult
+from app.userprofile.forms import UserProfileForm
+from app.userprofile.models import UserGroup, UserProfile
 
 
 @staff_member_required

@@ -1,7 +1,9 @@
+from pprint import pprint
+from random import random
+
 from django.shortcuts import get_object_or_404
 from rest_framework import viewsets
 from rest_framework.response import Response
-from random import random
 
 from ..models import (LandmarkQuestion, MultipleChoiceQuestion,
                       MultipleChoiceQuestionWithImage,
@@ -12,8 +14,6 @@ from ..serializers import (LandmarkQuestionSerializer,
                            MultipleChoiceQuestionWithImageSerializer,
                            MultipleChoiceQuestionWithVideoSerializer,
                            OutlineQuestionSerializer, OutlineRegionSerializer)
-
-from pprint import pprint
 
 
 def transform_data(mcq):

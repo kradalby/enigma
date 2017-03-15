@@ -1,9 +1,9 @@
 from django.forms import ModelForm
 
-from .models import (Test, MultipleChoiceQuestion,
+from .models import (GenericImage, LandmarkQuestion, MultipleChoiceQuestion,
                      MultipleChoiceQuestionWithImage,
-                     MultipleChoiceQuestionWithVideo, LandmarkQuestion,
-                     OutlineQuestion, OutlineSolutionQuestion, GenericImage)
+                     MultipleChoiceQuestionWithVideo, OutlineQuestion,
+                     OutlineSolutionQuestion, Test)
 
 
 class TestForm(ModelForm):
@@ -102,7 +102,7 @@ class GenericImageForm(ModelForm):
         fields = ['name', 'machine', 'reconstruction_method', 'image']
 
     def __init__(self, *args, **kwargs):
-        super(OutlineSolutionQuestionForm, self).__init__(*args, **kwargs)
+        super(GenericImageForm, self).__init__(*args, **kwargs)
         self.fields['name'].label = 'Name'
         self.fields['machine'].label = 'Machine'
         self.fields['reconstruction_method'].label = 'Reconstruction method'

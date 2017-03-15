@@ -1,6 +1,6 @@
 from django.conf.urls import url
 
-from .views import users, groups
+from .views import groups, users
 
 urlpatterns = [
     # User admin

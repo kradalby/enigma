@@ -1,4 +1,4 @@
-from django.conf.urls import url, include
+from django.conf.urls import include, url
 
 from .views import admin, site
 
@@ -206,4 +206,8 @@ urlpatterns = [
     url(r'^admin/image/new/$',
         admin.new_generic_image,
         name='admin_new_generic_image'),
+    url(r'^admin/image/$', admin.image_overview, name='admin_image_overview'),
+    url(r'^admin/image/suggestion/(?P<image_id>\d+)/(?P<suggestion_id>\d+)$',
+        admin.draw_suggestion,
+        name='admin_draw_suggestion'),
 ]

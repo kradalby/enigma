@@ -1,19 +1,20 @@
-from django.core.exceptions import ObjectDoesNotExist
-from django.contrib.auth.decorators import login_required
-from django.core.files.base import ContentFile
-from django.db import transaction
-from django.shortcuts import render, get_object_or_404, redirect
-from django.contrib import messages
 import base64
 import json
-import re
 import random
+import re
 import string
 
-from ..models import *
-from app.base.models import GlobalSettings
+from django.contrib import messages
+from django.contrib.auth.decorators import login_required
+from django.core.exceptions import ObjectDoesNotExist
+from django.core.files.base import ContentFile
+from django.db import transaction
+from django.shortcuts import get_object_or_404, redirect, render
 
+from app.base.models import GlobalSettings
 from app.base.views.site import index
+
+from ..models import *
 
 
 @login_required

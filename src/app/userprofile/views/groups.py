@@ -2,10 +2,10 @@ from django.contrib import messages
 from django.contrib.admin.views.decorators import staff_member_required
 from django.core.exceptions import ObjectDoesNotExist
 from django.db import transaction
-from django.shortcuts import render, get_object_or_404, redirect
+from django.shortcuts import get_object_or_404, redirect, render
 
-from ..models import UserProfile, UserGroup
 from ..forms import UserGroupForm
+from ..models import UserGroup, UserProfile
 from ..util import generate_user
 
 

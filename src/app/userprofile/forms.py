@@ -1,10 +1,8 @@
 from django.contrib.auth.models import User
 from django.core.exceptions import ObjectDoesNotExist
-from django.forms import CharField
-from django.forms import IntegerField
-from django.forms import ModelForm
+from django.forms import CharField, IntegerField, ModelForm
 
-from .models import UserProfile, UserGroup
+from .models import UserGroup, UserProfile
 from .util import generate_users
 
 

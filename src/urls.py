@@ -1,13 +1,13 @@
-from django.conf.urls.static import static
-from django.conf.urls import include, url
 from django.conf import settings
-from django.contrib.auth import views as auth_views
+from django.conf.urls import include, url
+from django.conf.urls.static import static
 from django.contrib import admin
+from django.contrib.auth import views as auth_views
+from rest_framework import routers
+
 from app.course.views import api as course_api
 from app.quiz.views import api as quiz_api
 from app.userprofile.views import api as userprofile_api
-
-from rest_framework import routers
 
 router = routers.DefaultRouter()
 router.register(

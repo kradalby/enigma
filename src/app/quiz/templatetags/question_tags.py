@@ -1,9 +1,12 @@
 import random
+
 from django import template
 from django.core.exceptions import ObjectDoesNotExist
-register = template.Library()
 
 from ..models import *
+
+register = template.Library()
+
 
 question_types = {
     LandmarkQuestion: "Landmark questions",

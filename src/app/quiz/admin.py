@@ -1,6 +1,10 @@
 from django.contrib import admin
 
-from .models import OutlineQuestion, OutlineRegion, OutlineSolutionQuestion, Test, TestResult, TestUnit, MultipleChoiceQuestion, MultipleChoiceQuestionWithImage, MultipleChoiceQuestionWithVideo, LandmarkQuestion, LandmarkRegion, TestUnitResult
+from .models import (LandmarkQuestion, LandmarkRegion, MultipleChoiceQuestion,
+                     MultipleChoiceQuestionWithImage,
+                     MultipleChoiceQuestionWithVideo, OutlineQuestion,
+                     OutlineRegion, OutlineSolutionQuestion, Test, TestResult,
+                     TestUnit, TestUnitResult)
 
 
 class OutlineQuestionAdmin(admin.ModelAdmin):
