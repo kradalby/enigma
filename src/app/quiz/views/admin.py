@@ -138,17 +138,17 @@ def list_questions(request):
     outline_solution_question = OutlineSolutionQuestion.objects.all()
     return render(request, 'quiz/admin/list_questions.html', {
         'multiple_choice_questions':
-            multiple_choice_questions,
+        multiple_choice_questions,
         'multiple_choice_questions_with_image':
-            multiple_choice_questions_with_image,
+        multiple_choice_questions_with_image,
         'multiple_choice_questions_with_video':
-            multiple_choice_questions_with_video,
+        multiple_choice_questions_with_video,
         'landmark_questions':
-            landmark_questions,
+        landmark_questions,
         'outline_questions':
-            outline_question,
+        outline_question,
         'outline_solution_question':
-            outline_solution_question
+        outline_solution_question
     })
 
 
@@ -185,7 +185,8 @@ def _generic_delete_question(request, question_type, question_id):
     except ObjectDoesNotExist:
         messages.warning(
             request,
-            'The question has already been deleted. You may have clicked twice.')
+            'The question has already been deleted. You may have clicked twice.'
+        )
 
 
 @staff_member_required
@@ -205,8 +206,8 @@ def _generic_new_question(request, form_type):
         if form.is_valid():
             question = form.save()
 
-            messages.success(request, 'Successfully created new question: %s.' %
-                             question)
+            messages.success(
+                request, 'Successfully created new question: %s.' % question)
 
     return render(request, 'quiz/admin/new_question.html', {'form': form})
 
@@ -292,8 +293,8 @@ def list_multiple_choice_questions_not_in_test(request, test_id):
 
 @staff_member_required
 def delete_multiple_choice_question_from_test(request, test_id, question_id):
-    _generic_remove_question_from_test(request, MultipleChoiceQuestion, test_id,
-                                       question_id)
+    _generic_remove_question_from_test(request, MultipleChoiceQuestion,
+                                       test_id, question_id)
 
 
 @staff_member_required
@@ -341,8 +342,8 @@ def list_multiple_choice_questions_with_image_not_in_test(request, test_id):
 @staff_member_required
 def delete_multiple_choice_question_with_image_from_test(request, test_id,
                                                          question_id):
-    _generic_remove_question_from_test(request, MultipleChoiceQuestionWithImage,
-                                       test_id, question_id)
+    _generic_remove_question_from_test(
+        request, MultipleChoiceQuestionWithImage, test_id, question_id)
 
 
 @staff_member_required
@@ -391,8 +392,8 @@ def list_multiple_choice_questions_with_video_not_in_test(request, test_id):
 @staff_member_required
 def delete_multiple_choice_question_with_video_from_test(request, test_id,
                                                          question_id):
-    _generic_remove_question_from_test(request, MultipleChoiceQuestionWithVideo,
-                                       test_id, question_id)
+    _generic_remove_question_from_test(
+        request, MultipleChoiceQuestionWithVideo, test_id, question_id)
 
 
 @staff_member_required
@@ -595,7 +596,8 @@ def delete_outline_question_from_test(request, test_id, question_id):
 
 @staff_member_required
 def list_outline_questions_not_in_test(request, test_id):
-    return _generic_list_question_not_in_test(request, OutlineQuestion, test_id)
+    return _generic_list_question_not_in_test(request, OutlineQuestion,
+                                              test_id)
 
 
 def delete_outline_question(request, question_id):
@@ -704,7 +706,8 @@ def create_outline_from_outline_solution(request, question_id, test_result_id):
 @staff_member_required
 def edit_outline_solution_question_for_test(request, test_id, question_id):
     return _generic_edit_question(request, OutlineSolutionQuestionForm,
-                                  OutlineSolutionQuestion, question_id, test_id)
+                                  OutlineSolutionQuestion, question_id,
+                                  test_id)
 
 
 def view_test_results_for_single_test(request, test_id):
@@ -763,7 +766,8 @@ def delete_test_results_in_test(request, test_id):
 @staff_member_required
 def image_overview(request):
     images = GenericImage.objects.all()
-    return render(request, 'quiz/admin/image_overview.html', {'images': images})
+    return render(request, 'quiz/admin/image_overview.html',
+                  {'images': images})
 
 
 def draw_suggestion(request, image_id, suggestion_id=None):
@@ -791,8 +795,7 @@ def draw_suggestion(request, image_id, suggestion_id=None):
         image_data = base64.b64decode(image_data)
         suggestion = ImageSuggestion()
         suggestion.suggestion = ContentFile(
-            image_data,
-            'solution-' + os.path.basename(image.original_image.name))
+            image_data, 'solution-' + os.path.basename(image.image.name))
         suggestion.user = request.user
         suggestion.image = image
         suggestion.save()
