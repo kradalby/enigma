@@ -51,16 +51,10 @@ def edit_user(request, user_id):
     if request.method == 'POST':
         if form.is_valid():
             user = form.save(commit=False)
-            if User.objects.filter(username=user.user.username).exists():
-                messages.warning(
-                    request,
-                    'Username "%s" already exists. Try another one.' % user)
-            else:
-                user = form.save()
-                messages.success(request,
-                                 'Successfully changed name of user to %s.' %
-                                 user)
-                return redirect(view_user, user.id)
+
+            messages.success(request,
+                             'Successfully changed name of user to %s.' % user)
+            return redirect(view_user, user.id)
 
     return render(request, 'userprofile/admin/edit_user.html',
                   {'form': form,
