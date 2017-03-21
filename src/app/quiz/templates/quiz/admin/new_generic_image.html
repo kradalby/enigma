@@ -2,7 +2,11 @@
 
 {% block admincontent %}
 <h1>
-    Upload image
+        {% if test %}
+        Add Image to test
+    {% else %}
+        Upload image
+    {% endif %}
 </h1>
 {% if test %}
     <h4>
@@ -14,6 +18,11 @@
     <table class="table">
         {{ form.as_table }}
     </table>
-    <input type="submit" class="btn btn-success" value="Continue" />
+        {% if test %}
+        <input type="submit" class="btn btn-success" value="Add" />
+        <a href="{% url 'admin_add_questions_to_test' test.id %}" class="btn btn-danger">Cancel</a>
+    {% else %}
+        <input type="submit" class="btn btn-success" value="Create" />
+    {% endif %}
 </form>
 {% endblock %}

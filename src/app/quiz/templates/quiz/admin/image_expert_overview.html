@@ -1,0 +1,40 @@
+{% extends "base/admin/index.html" %}
+
+{% block admincontent %}
+<h1>
+Image expert overview
+</h1>
+<table class="table table-striped">
+    <tr>
+        <th>Name</th>
+        <th>Username</th>
+        <th>Sent email</th>
+        <th>Answered</th>
+    </tr>
+{% for user in users %}
+    <tr>
+        <td>{{ user.user.first_name }} {{ user.user.last_name }}</td>
+        <td>{{ user.user.username }}</td>
+        {% if user in image.users_with_received_emails %}
+        <td>x</td>
+        {% else %}
+        <td></td>
+        {% endif %}
+        
+        {% if user in image.users_with_suggestions %}
+        <td>x</td>
+        {% else %}
+        <td></td>
+        {% endif %}
+
+    </tr>
+    {% empty %}
+    <tr>
+        <td>No users available</td>
+        <td></td>
+        <td></td>
+        <td></td>
+    </tr>
+    {% endfor %}
+{% endblock %}
+</table>4

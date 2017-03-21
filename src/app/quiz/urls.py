@@ -1,4 +1,4 @@
-from django.conf.urls import include, url
+from django.conf.urls import url
 
 from .views import admin, site
 
@@ -22,6 +22,9 @@ urlpatterns = [
     url(r'^admin/(?P<test_id>\d+)/$',
         admin.add_questions_to_test,
         name='admin_add_questions_to_test'),
+    url(r'^admin/email/(?P<test_id>\d+)/$',
+        admin.send_email_to_participants_of_test,
+        name='admin_send_email_to_participants_of_test'),
     url(r'^admin/(?P<test_id>\d+)/$',
         admin.add_questions_to_test,
         name='admin_view_test'),
@@ -207,7 +210,19 @@ urlpatterns = [
         admin.new_generic_image,
         name='admin_new_generic_image'),
     url(r'^admin/image/$', admin.image_overview, name='admin_image_overview'),
-    url(r'^admin/image/suggestion/(?P<image_id>\d+)/$',
-        admin.draw_suggestion,
-        name='admin_draw_suggestion'),
+    url(r'^admin/image/expert/overview/(?P<image_id>\d+)/$',
+        admin.image_expert_overview,
+        name='admin_image_expert_overview'),
+    url(r'^admin/(?P<test_id>\d+)/image/(?P<question_id>\d+)/delete/$',
+        admin.delete_image_suggestion_from_test,
+        name='admin_delete_image_suggestion_from_test'),
+    url(r'^admin/(?P<test_id>\d+)/image/$',
+        admin.add_image_suggestion_to_test,
+        name='admin_add_image_suggestion_to_test'),
+    url(r'^admin/image/add/(?P<test_id>\d+)/$',
+        admin.list_image_suggestion_not_in_test,
+        name='admin_list_image_suggestion_not_in_test'),
+    url(r'^admin/image/delete/(?P<question_id>\d+)/$',
+        admin.delete_image_suggestion,
+        name='admin_delete_image_suggestion'),
 ]

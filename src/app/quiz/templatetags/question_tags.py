@@ -14,7 +14,8 @@ question_types = {
     MultipleChoiceQuestionWithImage: "Multiple choice questions with image",
     MultipleChoiceQuestionWithVideo: "Multiple choice questions with video",
     OutlineQuestion: "Outline questions",
-    OutlineSolutionQuestion: "Outline solution question"
+    OutlineSolutionQuestion: "Outline solution question",
+    GenericImage: "Image"
 }
 
 
@@ -26,7 +27,7 @@ def question_type(question):
 question_type_ids = [
     None, MultipleChoiceQuestion, MultipleChoiceQuestionWithImage,
     MultipleChoiceQuestionWithVideo, LandmarkQuestion, OutlineQuestion,
-    OutlineSolutionQuestion
+    OutlineSolutionQuestion, GenericImage
 ]
 
 
@@ -61,6 +62,15 @@ def is_outline(test):
         pass
     return False
 
+@register.filter
+def is_image_suggestion(test):
+    if type(test) is GenericImage:
+        return True
+    try:
+        return type(test) is TestUnit and test.genericimage
+    except ObjectDoesNotExist:
+        pass
+    return False
 
 @register.filter
 def is_outline_solution_question(test):

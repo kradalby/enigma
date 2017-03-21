@@ -12,6 +12,7 @@
     </h1>
     <a href="{% url 'admin_view_test_results_for_single_test' test.id %}" class="btn btn-primary">View results</a>
     <a href="{% url 'admin_edit_test' test.id %}" class="btn btn-primary">Edit test</a>
+    <a href="{% url 'admin_send_email_to_participants_of_test' test.id %}" class="btn btn-primary">Send email to users</a>
 </div>
 
 <div>
@@ -154,5 +155,26 @@
     </ul class="list-group">
     <a href="{% url 'admin_add_outline_solution_question_to_test' test.id %}" class="btn btn-default">Add new outline solution question</a>
     <a href="{% url 'admin_list_outline_solution_questions_not_in_test' test.id %}" class="btn btn-default">Add existing outline solution question</a>
+</div>
+
+<div>
+    <h2>Image suggestion questions</h2>
+    <ul class="list-group">
+        {% for question in test.image_suggestion_question %}
+            <li class="list-group-item">
+                <a href="{% url 'admin_delete_image_suggestion_from_test' test.id question.id %}">
+                    <span class="glyphicon glyphicon-remove red" aria-hidden="true"></span>
+                </a>
+                {{ question }}
+
+            </li class="list-group-item">
+        {% empty %}
+            <li class="list-group-item">
+                No image added.
+            </li class="list-group-item">
+        {% endfor %}
+    </ul class="list-group">
+    <a href="{% url 'admin_add_image_suggestion_to_test' test.id %}" class="btn btn-default">Add new image</a>
+    <a href="{% url 'admin_list_image_suggestion_not_in_test' test.id %}" class="btn btn-default">Add existing image</a>
 </div>
 {% endblock %}

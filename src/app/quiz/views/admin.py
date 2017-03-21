@@ -2,23 +2,30 @@ import base64
 import os
 import re
 
+from django.conf import settings
 from django.contrib import messages
 from django.contrib.admin.views.decorators import staff_member_required
 from django.core.exceptions import ObjectDoesNotExist
 from django.core.files.base import ContentFile
+from django.core.mail import send_mail
 from django.db import transaction
 from django.shortcuts import get_object_or_404, redirect, render
+from django.urls import reverse
 
-from app.userprofile.views.users import view_user
 from app.userprofile.models import UserProfile
+from app.userprofile.views.users import view_user
 
-from ..forms import TestForm, MultipleChoiceQuestionForm, MultipleChoiceQuestionWithImageForm, MultipleChoiceQuestionWithVideoForm, LandmarkQuestionForm, OutlineQuestionForm, OutlineSolutionQuestionForm, GenericImageForm
+from ..forms import (
+    GenericImageForm, LandmarkQuestionForm, MultipleChoiceQuestionForm,
+    MultipleChoiceQuestionWithImageForm, MultipleChoiceQuestionWithVideoForm,
+    OutlineQuestionForm, OutlineSolutionQuestionForm, TestForm)
 from ..models import (GenericImage, LandmarkQuestion, LandmarkRegion,
                       MultipleChoiceQuestion, MultipleChoiceQuestionWithImage,
                       MultipleChoiceQuestionWithVideo, OutlineQuestion,
-                      OutlineRegion, OutlineSolutionQuestion, ImageSuggestion,
-                      Region, Test, TestResult, TestUnit, TestUnitResult)
+                      OutlineRegion, OutlineSolutionQuestion, Test, TestResult,
+                      TestUnit, TestUnitResult)
 from ..templatetags.question_tags import question_type_from_id
+
 #
 # Test related
 #
@@ -58,6 +65,51 @@ def add_questions_to_test(request, test_id):
     test = get_object_or_404(Test, id=test_id)
     return render(request, 'quiz/admin/add_questions_to_test.html',
                   {'test': test})
+
+
+# Denne trenger url
+# knapp
+@staff_member_required
+def send_email_to_participants_of_test(request, test_id):
+    test = get_object_or_404(Test, id=test_id)
+    users = test.course.get_users
+
+    print(users)
+
+    DATA = {
+        'url':
+        settings.BASE_URL + reverse(
+            'single_test', kwargs={'test_id': test_id})
+    }
+
+    print(DATA)
+
+    FROM = 'noreply@enigma.no'
+    TO = [user.email for user in users]
+    SUBJECT = 'New questionear is available'
+    MESSAGE = '''Hi
+
+There are new images available for expert review:
+
+{url}
+
+--
+Best regards
+Teamname
+'''.format(**DATA)
+
+    result = send_mail(SUBJECT, MESSAGE, FROM, TO)
+    if result:
+        messages.success(request, 'Successfully sent test to group members')
+    else:
+        messages.error(
+            request,
+            'Something went wrong sending the message, contact the system administrator.'
+        )
+
+    print(TO)
+
+    return redirect(add_questions_to_test, test.id)
 
 
 @staff_member_required
@@ -208,8 +260,6 @@ def _generic_new_question(request, form_type):
 
             messages.success(
                 request, 'Successfully created new question: %s.' % question)
-
-    return render(request, 'quiz/admin/new_question.html', {'form': form})
 
 
 @staff_member_required
@@ -489,10 +539,10 @@ def new_landmark_question(request):
                   {'form': form})
 
 
-@staff_member_required
-def add_landmark_regions(request, test_id, question_id):
-    test = Test.objects.get(id=test_id)
-    question = LandmarkQuestion.objects.get(id=question_id)
+# @staff_member_required
+# def add_landmark_regions(request, test_id, question_id):
+#     test = Test.objects.get(id=test_id)
+#     question = LandmarkQuestion.objects.get(id=question_id)
 
 
 @staff_member_required
@@ -600,6 +650,7 @@ def list_outline_questions_not_in_test(request, test_id):
                                               test_id)
 
 
+@staff_member_required
 def delete_outline_question(request, question_id):
     _generic_delete_question(request, OutlineQuestion, question_id)
     return redirect(list_questions)
@@ -710,6 +761,10 @@ def edit_outline_solution_question_for_test(request, test_id, question_id):
                                   test_id)
 
 
+#
+
+
+@staff_member_required
 def view_test_results_for_single_test(request, test_id):
     test = get_object_or_404(Test, id=test_id)
     test_results = TestResult.objects.filter(test=test)
@@ -722,9 +777,9 @@ def view_test_results_for_single_test(request, test_id):
 
     return render(request, 'quiz/admin/view_test_results_for_single_test.html',
                   {
-                      'test': test,
-                      'test_units': test_units,
-                      'test_unit_results': test_unit_results
+                      "test": test,
+                      "test_units": test_units,
+                      "test_unit_results": test_unit_results
                   })
 
 
@@ -770,56 +825,6 @@ def image_overview(request):
                   {'images': images})
 
 
-def draw_suggestion(request, image_id, suggestion_id=None):
-    image = GenericImage.objects.get(pk=image_id)
-    suggestion = ImageSuggestion.objects.get(
-        id=suggestion_id) if suggestion_id else None
-
-    if request.method == 'POST':
-        dataUrlPattern = re.compile('data:image/(png|jpeg);base64,(.*)$')
-        image_data = request.POST.get('hidden-image-data')
-        try:
-            image_data = dataUrlPattern.match(image_data).group(2)
-        except AttributeError:
-            messages.error(request,
-                           'You can\'t leave any regions blank or empty.')
-            return render(request, 'quiz/admin/draw_suggestion.html',
-                          {'image': image,
-                           'suggestion': suggestion})
-        if (image_data is None or len(image_data) == 0):
-            messages.error(request,
-                           'You can\'t leave any regions blank or empty.')
-            return render(request, 'quiz/admin/draw_suggestion.html',
-                          {'image': image,
-                           'suggestion': suggestion})
-        image_data = base64.b64decode(image_data)
-        suggestion = ImageSuggestion()
-        suggestion.suggestion = ContentFile(
-            image_data, 'solution-' + os.path.basename(image.image.name))
-        suggestion.user = request.user
-        suggestion.image = image
-        suggestion.save()
-        # image.regions().delete()
-        for k, v in request.POST.items():
-            if k.startswith('#') and len(k) == 7:
-                region = Region()
-                region.color = k
-                if not v:
-                    messages.error(request,
-                                   'You have to give name to all regions.')
-                    return render(request, 'quiz/admin/draw_suggestion.html',
-                                  {'image': image})
-                region.name = v
-                region.outline_suggestion = suggestion
-                region.save()
-
-        return redirect(image_overview)
-
-    return render(request, 'quiz/admin/draw_suggestion.html',
-                  {'image': image,
-                   'suggestion': suggestion})
-
-
 @staff_member_required
 def new_generic_image(request):
     if request.method == 'POST':
@@ -831,3 +836,49 @@ def new_generic_image(request):
         form = GenericImageForm()
 
     return render(request, 'quiz/admin/new_generic_image.html', {'form': form})
+
+
+@transaction.atomic
+@staff_member_required
+def add_image_suggestion_to_test(request, test_id):
+    test = Test.objects.get(id=test_id)
+    if request.method == 'POST':
+        form = GenericImageForm(request.POST, request.FILES)
+        if form.is_valid():
+            question = form.save()
+            question.test.add(test)
+            return redirect(add_questions_to_test, test.id)
+    else:
+        form = GenericImageForm()
+
+    return render(request, 'quiz/admin/new_generic_image.html',
+                  {'test': test,
+                   'form': form})
+
+
+@staff_member_required
+def list_image_suggestion_not_in_test(request, test_id):
+    return _generic_list_question_not_in_test(request, GenericImage, test_id)
+
+
+@staff_member_required
+def delete_image_suggestion(request, question_id):
+    _generic_delete_question(request, GenericImage, question_id)
+    return redirect(list_questions)
+
+
+@staff_member_required
+def delete_image_suggestion_from_test(request, test_id, question_id):
+    _generic_remove_question_from_test(request, GenericImage, test_id,
+                                       question_id)
+    return redirect(add_questions_to_test, test_id)
+
+
+@staff_member_required
+def image_expert_overview(request, image_id):
+    image = GenericImage.objects.get(pk=image_id)
+    users = UserProfile.objects.all()
+
+    return render(request, 'quiz/admin/image_expert_overview.html',
+                  {'image': image,
+                   'users': users})
