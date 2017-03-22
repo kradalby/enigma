@@ -481,10 +481,10 @@ def draw_landmark(request, question_id, test_id=None):
     test = Test.objects.get(id=test_id) if test_id else None
     question = LandmarkQuestion.objects.get(id=question_id)
     if request.method == 'POST':
-        dataUrlPattern = re.compile('data:image/(png|jpeg);base64,(.*)$')
+        data_url_pattern = re.compile('data:image/(png|jpeg);base64,(.*)$')
         image_data = request.POST.get('hidden-image-data')
         try:
-            image_data = dataUrlPattern.match(image_data).group(2)
+            image_data = data_url_pattern.match(image_data).group(2)
         except AttributeError:
             messages.error(request,
                            'You can\'t leave any regions blank or empty.')
@@ -523,6 +523,58 @@ def draw_landmark(request, question_id, test_id=None):
     return render(request, 'quiz/admin/draw_landmark.html',
                   {'test': test,
                    'question': question})
+
+
+@staff_member_required
+@transaction.atomic
+def draw_landmark_from_image(request, image_id, question_id=None):
+    img = GenericImage.objects.get(pk=image_id)
+    if question_id:
+        question = LandmarkQuestion.objects.get(id=question_id)
+    else:
+        question = LandmarkQuestion()
+        question.original_image = img.image
+        question.name = 'landmark_' + img.name
+
+    if request.method == 'POST':
+        data_url_pattern = re.compile('data:image/(png|jpeg);base64,(.*)$')
+        image_data = request.POST.get('hidden-image-data')
+        try:
+            image_data = data_url_pattern.match(image_data).group(2)
+        except AttributeError:
+            messages.error(request,
+                           'You can\'t leave any regions blank or empty.')
+            return render(request, 'quiz/admin/draw_landmark.html',
+                          {'question': question})
+
+        if (image_data is None or len(image_data) == 0):
+            messages.error(request,
+                           'You can\'t leave any regions blank or empty.')
+            return render(request, 'quiz/admin/draw_landmark.html',
+                          {'question': question})
+        image_data = base64.b64decode(image_data)
+        question.landmark_drawing = ContentFile(
+            image_data,
+            'solution-' + os.path.basename(question.original_image.name))
+
+        question.regions().delete()
+        for k, v in request.POST.items():
+            if k.startswith('#') and len(k) == 7:
+                region = LandmarkRegion()
+                region.color = k
+                if not v:
+                    messages.error(request,
+                                   'You have to give name to all regions.')
+                    return render(request, 'quiz/admin/draw_landmark.html',
+                                  {'question': question})
+                region.name = v
+                question.save()
+                region.landmark_question = question
+                region.save()
+        question.save()
+        return redirect(list_questions)
+    return render(request, 'quiz/admin/draw_landmark.html',
+                  {'question': question})
 
 
 @staff_member_required
@@ -635,6 +687,58 @@ def draw_outline(request, question_id, test_id=None):
     return render(request, 'quiz/admin/draw_outline.html',
                   {'test': test,
                    'question': question})
+
+
+@staff_member_required
+@transaction.atomic
+def draw_outline_from_image(request, image_id, question_id=None):
+    img = GenericImage.objects.get(pk=image_id)
+    if question_id:
+        question = OutlineQuestion.objects.get(id=question_id)
+    else:
+        question = OutlineQuestion()
+        question.original_image = img.image
+        question.name = 'outline_' + img.name
+
+    if request.method == 'POST':
+        data_url_pattern = re.compile('data:image/(png|jpeg);base64,(.*)$')
+        image_data = request.POST.get('hidden-image-data')
+        try:
+            image_data = data_url_pattern.match(image_data).group(2)
+        except AttributeError:
+            messages.error(request,
+                           'You can\'t leave any regions blank or empty.')
+            return render(request, 'quiz/admin/draw_outline.html',
+                          {'question': question})
+
+        if (image_data is None or len(image_data) == 0):
+            messages.error(request,
+                           'You can\'t leave any regions blank or empty.')
+            return render(request, 'quiz/admin/draw_outline.html',
+                          {'question': question})
+        image_data = base64.b64decode(image_data)
+        question.outline_drawing = ContentFile(
+            image_data,
+            'solution-' + os.path.basename(question.original_image.name))
+
+        question.regions().delete()
+        for k, v in request.POST.items():
+            if k.startswith('#') and len(k) == 7:
+                region = OutlineRegion()
+                region.color = k
+                if not v:
+                    messages.error(request,
+                                   'You have to give name to all regions.')
+                    return render(request, 'quiz/admin/draw_outline.html',
+                                  {'question': question})
+                region.name = v
+                question.save()
+                region.outline_question = question
+                region.save()
+        question.save()
+        return redirect(list_questions)
+    return render(request, 'quiz/admin/draw_outline.html',
+                  {'question': question})
 
 
 @staff_member_required
@@ -759,9 +863,6 @@ def edit_outline_solution_question_for_test(request, test_id, question_id):
     return _generic_edit_question(request, OutlineSolutionQuestionForm,
                                   OutlineSolutionQuestion, question_id,
                                   test_id)
-
-
-#
 
 
 @staff_member_required
