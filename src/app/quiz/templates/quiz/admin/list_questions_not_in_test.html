@@ -16,7 +16,20 @@
 <ul class="list-group">
     {% for question in questions %}
         <li class="list-group-item">
+            <div class="row">
+            <div class="col-md-8">
             <a class="list-item" href="{% url 'admin_add_question_to_test' test.id question.id question|question_type_id %}">{{ question }}</a>
+            </div>
+            {% if question.image %}
+            <div class="col-md-2 pull-right">
+                <img height="100px" src="{{ question.image.url }}">
+            </div>            
+            {% elif question.original_image.url %}
+            <div class="col-md-2 pull-right">
+                <img height="100px" src="{{ question.original_image.url }}">
+            </div>
+            {% endif %}
+            </div>
         </li>
     {% empty %}
         <li class="list-group-item">
