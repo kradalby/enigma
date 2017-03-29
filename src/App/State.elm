@@ -20,7 +20,7 @@ init flags =
             }
 
         ( mcqModel, mcqCmd ) =
-            Mcq.State.init
+            Mcq.State.init flags.currentTime
 
         ( lmqModel, lmqCmd ) =
             Lmq.State.init flags.currentTime flags.width flags.height

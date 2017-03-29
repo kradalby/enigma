@@ -8,8 +8,8 @@ import Random.List exposing (shuffle)
 import Random
 
 
-init : ( Model, Cmd Msg )
-init =
+init : Int -> ( Model, Cmd Msg )
+init initialSeed =
     let
         model =
             { questions = []
@@ -21,7 +21,7 @@ init =
             , showAnswer = False
             , numberOfQuestionsInputField = "0"
             , error = Nothing
-            , seed = Random.initialSeed 583345035
+            , seed = Random.initialSeed initialSeed
             }
     in
         model ! [ getMultipleChoiceQuestions ]
