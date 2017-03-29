@@ -7,6 +7,7 @@ import Json.Decode exposing (Decoder, int, string, list, nullable)
 import Process
 import Time exposing (..)
 import Task
+import Canvas exposing (Size)
 
 
 -- Listen for enter
@@ -115,3 +116,35 @@ viewProgressbar percentage =
         [ div [ class "determinate", attribute "style" ("width: " ++ (toString percentage) ++ "%") ]
             []
         ]
+
+
+calculateImageSize : Int -> Int -> Int -> Int -> Size
+calculateImageSize imageWidth imageHeight windowWidth windowHeight =
+    let
+        aspectRatioWidthHeight =
+            (toFloat imageWidth) / (toFloat imageHeight)
+
+        aspectRatioHeightWidth =
+            (toFloat imageHeight) / (toFloat imageWidth)
+
+        ( canvasHeight, canvasWidth ) =
+            if windowWidth > windowHeight then
+                let
+                    canvasHeight =
+                        Basics.min (toFloat imageHeight) ((toFloat windowHeight) * 0.65)
+
+                    canvasWidth =
+                        canvasHeight * aspectRatioWidthHeight
+                in
+                    ( canvasHeight, canvasWidth )
+            else
+                let
+                    canvasWidth =
+                        Basics.min (toFloat imageWidth) ((toFloat windowWidth) * 0.9)
+
+                    canvasHeight =
+                        canvasWidth * aspectRatioHeightWidth
+                in
+                    ( canvasHeight, canvasWidth )
+    in
+        Size (round canvasWidth) (round canvasHeight)

@@ -5,7 +5,7 @@ import Lmq.Types exposing (..)
 import Html exposing (..)
 import Html.Events exposing (onInput, onClick)
 import Html.Attributes exposing (type_, checked, name, disabled, value, class, src, id, selected, for, href)
-import Util exposing (onEnter, viewErrorBox, viewSpinningLoader, viewProgressbar)
+import Util exposing (onEnter, viewErrorBox, viewSpinningLoader, viewProgressbar, calculateImageSize)
 import Canvas exposing (Size, Error, DrawOp(..), DrawImageParams(..), Canvas)
 import Canvas.Point exposing (Point)
 import Canvas.Point as Point
@@ -102,27 +102,41 @@ viewCanvas model =
                         model.clickData.draw
 
                     GotCanvas canvas ->
-                        (createDrawImage canvas) :: model.clickData.draw
+                        let
+                            imageSize =
+                                Canvas.getSize canvas
+
+                            canvasSize =
+                                calculateImageSize imageSize.width imageSize.height model.windowWidth model.windowHeight
+                        in
+                            (createDrawImage canvas canvasSize) :: model.clickData.draw
             else
                 model.clickData.draw
     in
         case model.image of
             GotCanvas canvas ->
-                Canvas.initialize canvasSize
-                    |> Canvas.batch
-                        ((createDrawImage canvas)
-                            :: drawOps
-                        )
-                    |> Canvas.toHtml [ Events.onClick CanvasClick ]
-                    |> List.singleton
-                    |> div []
+                let
+                    imageSize =
+                        Canvas.getSize canvas
+
+                    canvasSize =
+                        calculateImageSize imageSize.width imageSize.height model.windowWidth model.windowHeight
+                in
+                    Canvas.initialize canvasSize
+                        |> Canvas.batch
+                            ((createDrawImage canvas canvasSize)
+                                :: drawOps
+                            )
+                        |> Canvas.toHtml [ Events.onClick CanvasClick ]
+                        |> List.singleton
+                        |> div []
 
             Loading ->
                 viewSpinningLoader
 
 
-createDrawImage : Canvas -> Canvas.DrawOp
-createDrawImage canvas =
+createDrawImage : Canvas -> Size -> Canvas.DrawOp
+createDrawImage canvas canvasSize =
     DrawImage canvas (Scaled (Point.fromInts ( 0, 0 )) canvasSize)
 
 
