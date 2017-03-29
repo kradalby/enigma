@@ -6,7 +6,7 @@ import Lmq.Rest exposing (getLandmarkQuestions)
 import Random
 import Random.List exposing (shuffle)
 import Time
-import Util exposing (delay)
+import Util exposing (delay, calculateImageSize)
 import Task
 import Canvas
 import App.Rest exposing (base_url)
@@ -18,8 +18,8 @@ import Color.Convert
 import Color
 
 
-init : ( Model, Cmd Msg )
-init =
+init : Int -> Int -> Int -> ( Model, Cmd Msg )
+init initialSeed width height =
     let
         model =
             { questions = []
@@ -32,10 +32,12 @@ init =
             , showAnswer = False
             , numberOfQuestionsInputField = "0"
             , error = Nothing
-            , seed = Random.initialSeed 986579348465945786
+            , seed = Random.initialSeed initialSeed
             , image = Loading
             , solution = Loading
             , clickData = initClickData
+            , windowWidth = width
+            , windowHeight = height
             }
     in
         model ! [ getLandmarkQuestions ]
@@ -134,9 +136,13 @@ update msg model =
         ImageLoaded result ->
             case Result.toMaybe result of
                 Just canvas ->
-                    ( { model | image = GotCanvas canvas }
-                    , Cmd.none
-                    )
+                    let
+                        derp =
+                            Debug.log "image" (Canvas.getSize canvas)
+                    in
+                        ( { model | image = GotCanvas canvas }
+                        , Cmd.none
+                        )
 
                 Nothing ->
                     ( { model | image = Loading }
@@ -310,9 +316,16 @@ checkAnswer model point =
                     wrongColor
 
                 GotCanvas canvas ->
-                    Canvas.initialize canvasSize
-                        |> Canvas.batch [ DrawImage canvas (Scaled (Point.fromInts ( 0, 0 )) canvasSize) ]
-                        |> Pixel.get point
+                    let
+                        imageSize =
+                            Canvas.getSize canvas
+
+                        canvasSize =
+                            calculateImageSize imageSize.width imageSize.height model.windowWidth model.windowHeight
+                    in
+                        Canvas.initialize canvasSize
+                            |> Canvas.batch [ DrawImage canvas (Scaled (Point.fromInts ( 0, 0 )) canvasSize) ]
+                            |> Pixel.get point
             )
     in
         if pixelColor == (wrongColor) then

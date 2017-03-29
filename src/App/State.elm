@@ -7,11 +7,15 @@ import Lmq.State
 import Date exposing (Date)
 
 
-init : ( Model, Cmd Msg )
-init =
+init : Flags -> ( Model, Cmd Msg )
+init flags =
     let
+        derp =
+            Debug.log "Flags" flags
+
         global =
-            { date = Nothing
+            { initialTime = flags.currentTime
+            , date = Nothing
             , mode = Main
             }
 
@@ -19,7 +23,7 @@ init =
             Mcq.State.init
 
         ( lmqModel, lmqCmd ) =
-            Lmq.State.init
+            Lmq.State.init flags.currentTime flags.width flags.height
 
         model =
             { global = global

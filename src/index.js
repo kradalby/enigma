@@ -6,4 +6,8 @@ require('./index.html');
 var Elm = require('./Main.elm');
 var mountNode = document.getElementById('root');
 
-var app = Elm.Main.embed(mountNode);
+var app = Elm.Main.embed(mountNode, {
+    width: window.innerWidth,
+    height: window.innerHeight,
+    currentTime: Date.now()
+});

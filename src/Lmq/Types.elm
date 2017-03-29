@@ -44,6 +44,8 @@ type alias Model =
     , image : Image
     , solution : Image
     , clickData : ClickData
+    , windowWidth : Int
+    , windowHeight : Int
     }
 
 

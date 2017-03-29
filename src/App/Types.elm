@@ -1,8 +1,8 @@
 module App.Types exposing (..)
 
-import Date exposing (Date)
 import Mcq.Types
 import Lmq.Types
+import Date exposing (Date)
 
 
 type Msg
@@ -14,8 +14,16 @@ type Msg
 
 
 type alias Global =
-    { date : Maybe Date
+    { initialTime : Int
+    , date : Maybe Date
     , mode : Mode
+    }
+
+
+type alias Flags =
+    { width : Int
+    , height : Int
+    , currentTime : Int
     }
 
 
@@ -30,4 +38,3 @@ type Mode
     = Main
     | MultipleChoiceQuestions
     | LandmarkQuestions
-
