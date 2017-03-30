@@ -2,6 +2,7 @@ from random import shuffle
 
 from django.contrib.auth.models import User
 from django.db import models
+from django.core.validators import MaxValueValidator, MinValueValidator
 
 from app.course.models import Course
 from app.userprofile.models import UserProfile
@@ -272,6 +273,11 @@ class GenericImage(TestUnit):
     machine = models.CharField(max_length=200)
     reconstruction_method = models.CharField(max_length=200)
 
+    @property
+    def rating(self):
+        ratings = [rating.rating for rating in self.rating_set]
+        return sum(ratings) / len(ratings)
+
     def __str__(self):
         return self.name
 
@@ -299,6 +305,16 @@ class Region(models.Model):
 
     def __str__(self):
         return self.name
+
+
+class Rating(models.Model):
+    image = models.ForeignKey(GenericImage)
+    rating = models.PositiveSmallIntegerField(
+        validators=[MaxValueValidator(10), MinValueValidator(1)])
+    user = models.ForeignKey(User)
+
+    class Meta:
+        unique_together = (('image', 'user'), )
 
 
 class LandmarkRegion(models.Model):

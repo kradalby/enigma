@@ -13,6 +13,7 @@ urlpatterns = [
     url(r'^result/delete/(?P<test_result_id>\d+)/$',
         site.delete_test_result,
         name='delete_test_result'),
+    url(r'^rate/$', site.rate_picture, name='rate_picture'),
 
     # Admin
     url(r'^admin/new/$', admin.new_test, name='admin_new_test'),

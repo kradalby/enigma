@@ -3,7 +3,7 @@ from django.forms import ModelForm
 from .models import (GenericImage, LandmarkQuestion, MultipleChoiceQuestion,
                      MultipleChoiceQuestionWithImage,
                      MultipleChoiceQuestionWithVideo, OutlineQuestion,
-                     OutlineSolutionQuestion, Test)
+                     OutlineSolutionQuestion, Test, Rating)
 
 
 class TestForm(ModelForm):
@@ -107,3 +107,9 @@ class GenericImageForm(ModelForm):
         self.fields['machine'].label = 'Machine'
         self.fields['reconstruction_method'].label = 'Reconstruction method'
         self.fields['image'].label = 'Image'
+
+
+class RatingForm(ModelForm):
+    class Meta:
+        model = Rating
+        fields = ['rating']
