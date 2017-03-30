@@ -59,6 +59,12 @@
                             <img class="top" src="{{ test_unit.outlinequestion.outline_drawing.url }}" />
                             <img class="bottom" src="{{ test_unit.outlinequestion.original_image.url }}" />
                         </div>
+                    {% elif test_unit|is_image_suggestion %}
+                        <h1>Mean average suggestion</h1>
+                        <div class="img-container">
+                            <img class="top" src="{{ test_unit.genericimage.answer_image.url }}" />
+                            <img class="bottom" src="{{ test_unit.genericimage.image.url }}" />
+                        </div>
                     {% elif test_unit|is_multiple_choice_question %}
                         {{ test_unit.multiplechoicequestion.correct_answer }}
                     {% elif test_unit|is_multiple_choice_question_with_image %}
@@ -112,6 +118,26 @@
                                     <img class="top" src="{{ test_unit_result.answer_image.url }}" />
                                     <img class="middle" src="{{ test_unit.outlinequestion.outline_drawing.url }}" />
                                     <img class="bottom" src="{{ test_unit.outlinequestion.original_image.url }}" />
+                                </div>
+                            </td>
+                            <td>
+                                User answer: <input type="checkbox" class="user-answer-checkbox" checked>
+                                <br/>
+                                Correct answer: <input type="checkbox" class="correct-answer-checkbox" checked>
+                            </td>
+                        </tr>
+                    {% elif test_unit|is_image_suggestion %}
+                        <tr>
+                            <td>Target region </td>
+                            <td style="color:{{test_unit_result.target_color_region}};">
+                                {{ test_unit_result.target_outline_region }}
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <div class="img-container">
+                                    <img class="top" src="{{ test_unit.genericimage.answer_image.url }}" />
+                                    <img class="bottom" src="{{ test_unit.genericimage.image.url }}" />
                                 </div>
                             </td>
                             <td>

@@ -836,13 +836,13 @@ def delete_outline_solution_question_from_test(request, test_id, question_id):
 @staff_member_required
 @transaction.atomic
 def create_outline_from_outline_solution(request, question_id, test_result_id):
-    question = get_object_or_404(OutlineSolutionQuestion, id=question_id)
+    question = get_object_or_404(GenericImage, id=question_id)
     test_result = get_object_or_404(TestUnitResult, id=test_result_id)
 
     outline_question = OutlineQuestion()
     outline_question.question = question.question
-    new_file = ContentFile(question.original_image.read())
-    new_file.name = question.original_image.name
+    new_file = ContentFile(question.image.read())
+    new_file.name = question.image.name
     outline_question.original_image = new_file
     new_file2 = ContentFile(test_result.answer_image.read())
     new_file2.name = test_result.answer_image.name
@@ -851,8 +851,8 @@ def create_outline_from_outline_solution(request, question_id, test_result_id):
 
     outline_region = OutlineRegion()
     outline_region.outline_question = outline_question
-    outline_region.name = question.outline_region
-    outline_region.color = '#659b41'
+    outline_region.name = ""
+    outline_region.color = ""
     outline_region.save()
 
     return redirect(draw_outline, outline_question.id)
