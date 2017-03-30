@@ -273,6 +273,11 @@ class GenericImage(TestUnit):
     machine = models.CharField(max_length=200)
     reconstruction_method = models.CharField(max_length=200)
 
+    @property
+    def rating(self):
+        ratings = [rating.rating for rating in self.rating_set]
+        return sum(ratings) / len(ratings)
+
     def __str__(self):
         return self.name
 
@@ -308,6 +313,9 @@ class Rating(models.Model):
         validators=[MaxValueValidator(10), MinValueValidator(1)])
     user = models.ForeignKey(User)
 
+    class Meta:
+        unique_together = (('image', 'user'), )
+
 
 class LandmarkRegion(models.Model):
     landmark_question = models.ForeignKey(LandmarkQuestion)
@@ -333,6 +341,7 @@ class TestUnitResult(models.Model):
     test_result = models.ForeignKey(TestResult)
     answer = models.CharField(
         max_length=255, blank=True, null=True, default='')
+    answer_image = models.ImageField(blank=True)
     target_color_region = models.CharField(max_length=255)
     score = models.PositiveSmallIntegerField()
     max_score = models.PositiveSmallIntegerField()

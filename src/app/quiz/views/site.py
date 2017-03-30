@@ -14,11 +14,13 @@ from django.shortcuts import get_object_or_404, redirect, render
 from app.base.models import GlobalSettings
 from app.base.views.site import index
 
-from ..models import (GenericImage, LandmarkQuestion, LandmarkRegion,
-                      MultipleChoiceQuestion, MultipleChoiceQuestionWithImage,
-                      MultipleChoiceQuestionWithVideo, OutlineQuestion,
-                      OutlineRegion, OutlineSolutionQuestion, Region, Test,
-                      TestResult, TestUnit, TestUnitResult, GenericImage)
+from ..models import (
+    GenericImage, LandmarkQuestion, LandmarkRegion, MultipleChoiceQuestion,
+    MultipleChoiceQuestionWithImage, MultipleChoiceQuestionWithVideo,
+    OutlineQuestion, OutlineRegion, OutlineSolutionQuestion, Region, Test,
+    TestResult, TestUnit, TestUnitResult, GenericImage, Rating)
+
+from ..forms import RatingForm
 
 
 @login_required
@@ -244,3 +246,18 @@ def delete_test_result(request, test_result_id):
             'The test result has already been deleted. You may have clicked twice.'
         )
     return redirect(index)
+
+
+@login_required
+def rate_picture(request):
+    user = request.user
+    images = GenericImage.objects.all()
+    rated_images = [
+        rating.image for rating in Rating.objects.filter(user=user)
+    ]
+
+    not_rated_images = [image for image in images if image not in rated_images]
+    if len(not_rated_images):
+        image = not_rated_images[0]
+
+    return render(request, 'quiz/site/rate_picture.html', {'image': image})
