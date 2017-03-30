@@ -1,4 +1,4 @@
-FROM python:3.5.2
+FROM python:3.6.1
 MAINTAINER kradalby@kradalby.no
 
 ENV APP_DIR=/srv/app
