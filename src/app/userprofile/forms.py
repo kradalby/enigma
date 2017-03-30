@@ -1,30 +1,31 @@
 from django.contrib.auth.models import User
 from django.core.exceptions import ObjectDoesNotExist
-from django.forms import CharField
-from django.forms import IntegerField
-from django.forms import ModelForm
+from django.forms import CharField, IntegerField, ModelForm, EmailField
 
-from .models import UserProfile, UserGroup
+from .models import UserGroup, UserProfile
 from .util import generate_users
 
 
 class UserProfileForm(ModelForm):
     username = CharField()
+    email = EmailField()
 
     def __init__(self, *args, **kwargs):
         super(UserProfileForm, self).__init__(*args, **kwargs)
         try:
             self.fields['username'].initial = self.instance.user.username
+            self.fields['email'].initial = self.instance.user.email
         except User.DoesNotExist:
             pass
 
     class Meta:
         model = UserProfile
-        fields = ["username",]
+        fields = ['username']
 
     def save(self, commit=True):
         user = User()
         user.username = self.cleaned_data['username']
+        user.email = self.cleaned_data['email']
         user.set_password(user.username)
         if commit:
             user.save()
@@ -37,10 +38,11 @@ class UserProfileForm(ModelForm):
 
 
 class UserGroupForm(ModelForm):
-
     class Meta:
         model = UserGroup
-        fields = ["name",]
+        fields = [
+            "name",
+        ]
 
     generated_participants_amount = IntegerField(min_value=0)
     generated_participants_prefix = CharField()
@@ -50,7 +52,7 @@ class UserGroupForm(ModelForm):
         amount = self.cleaned_data.get("generated_participants_amount")
         prefix = self.cleaned_data.get("generated_participants_prefix")
         if (not amount or amount == 0
-           ) and self._errors.get('generated_participants_amount'):
+            ) and self._errors.get('generated_participants_amount'):
             del self._errors['generated_participants_amount']
         if not prefix and self._errors.get('generated_participants_prefix'):
             del self._errors['generated_participants_prefix']

@@ -1,19 +1,26 @@
-from django.core.exceptions import ObjectDoesNotExist
-from django.contrib.auth.decorators import login_required
-from django.core.files.base import ContentFile
-from django.db import transaction
-from django.shortcuts import render, get_object_or_404, redirect
-from django.contrib import messages
 import base64
 import json
-import re
 import random
+import re
 import string
 
-from ..models import *
-from app.base.models import GlobalSettings
+from django.contrib import messages
+from django.contrib.auth.decorators import login_required
+from django.core.exceptions import ObjectDoesNotExist
+from django.core.files.base import ContentFile
+from django.db import transaction
+from django.shortcuts import get_object_or_404, redirect, render
 
+from app.base.models import GlobalSettings
 from app.base.views.site import index
+
+from ..models import (
+    GenericImage, LandmarkQuestion, LandmarkRegion, MultipleChoiceQuestion,
+    MultipleChoiceQuestionWithImage, MultipleChoiceQuestionWithVideo,
+    OutlineQuestion, OutlineRegion, OutlineSolutionQuestion, Region, Test,
+    TestResult, TestUnit, TestUnitResult, GenericImage, Rating)
+
+from ..forms import RatingForm
 
 
 @login_required
@@ -27,7 +34,8 @@ def single_test(request, test_id):
     multiple_choice_image = test.multiple_choice_questions_with_image()
     multiple_choice_video = test.multiple_choice_questions_with_video()
     landmark = [
-        question for question in test.landmark_questions() if question.regions()
+        question for question in test.landmark_questions()
+        if question.regions()
     ]
     outline = [
         question for question in test.outline_questions() if question.regions()
@@ -35,10 +43,14 @@ def single_test(request, test_id):
     outline_solution = [
         question for question in test.outline_solution_questions()
     ]
+
+    image = [question for question in test.image_suggestion_question()]
+
     questions = [
-        multiple_choice, multiple_choice_image, landmark, multiple_choice_video,
-        outline, outline_solution
+        multiple_choice, multiple_choice_image, landmark,
+        multiple_choice_video, outline, outline_solution, image
     ]
+
     questions = [item for sublist in questions for item in sublist]
     return render(request, 'quiz/site/single_test.html', {
         "test": test,
@@ -70,7 +82,8 @@ def _get_score(question_type, correct_answer, distance=None):
             return int((max - distance) / (max - min) * points)
 
 
-def _add_test_result(question_type, question_id, testresult, answer, max_score):
+def _add_test_result(question_type, question_id, testresult, answer,
+                     max_score):
     test_unit_result = TestUnitResult()
     test_unit_result.test_result = testresult
     test_unit_result.test_unit = question_type.objects.get(id=question_id)
@@ -98,7 +111,8 @@ def _colors_match(json_color, target_color):
 
 
 def _randomword(length):
-    return ''.join(random.choice(string.ascii_lowercase) for i in range(length))
+    return ''.join(
+        random.choice(string.ascii_lowercase) for i in range(length))
 
 
 def _get_answer_image(request, question_id):
@@ -108,7 +122,7 @@ def _get_answer_image(request, question_id):
         image_data = dataUrlPattern.match(image_data).group(2)
     except AttributeError:
         return
-    if (image_data == None or len(image_data) == 0):
+    if (image_data is None or len(image_data) == 0):
         return
     image_data = base64.b64decode(image_data)
     return ContentFile(image_data, _randomword(15) + ".png")
@@ -152,8 +166,8 @@ def submit_test(request, test_id):
                     test_unit_result.target_color_region = v
             test_unit_result.answer_image = _get_answer_image(request,
                                                               question_id)
-            test_unit_result.score = _get_score(LandmarkQuestion,
-                                                test_unit_result.correct_answer)
+            test_unit_result.score = _get_score(
+                LandmarkQuestion, test_unit_result.correct_answer)
             test_unit_result.max_score = settings.landmark_points
             test_unit_result.save()
         elif testunit_name.startswith("outline_question-"):
@@ -170,14 +184,27 @@ def submit_test(request, test_id):
             test_unit_result.answer_image = _get_answer_image(request,
                                                               question_id)
             test_unit_result.score = _get_score(OutlineQuestion, True,
-                                                float(answer) if answer else
-                                                99999)
+                                                float(answer)
+                                                if answer else 99999)
             test_unit_result.correct_answer = 0 < test_unit_result.score
             test_unit_result.max_score = settings.outline_points
             test_unit_result.save()
         elif testunit_name.startswith("outline_solution_question-"):
             question_id = testunit_name.split("-", 1)[1]
-            question_model = OutlineSolutionQuestion.objects.get(id=question_id)
+            question_model = OutlineSolutionQuestion.objects.get(
+                id=question_id)
+            test_unit_result = TestUnitResult()
+            test_unit_result.test_result = testresult
+            test_unit_result.test_unit = question_model
+            test_unit_result.score = settings.outline_solution_points
+            test_unit_result.max_score = settings.outline_solution_points
+            test_unit_result.correct_answer = True
+            test_unit_result.answer_image = _get_answer_image(request,
+                                                              question_id)
+            test_unit_result.save()
+        elif testunit_name.startswith("image_suggestion-"):
+            question_id = testunit_name.split("-", 1)[1]
+            question_model = GenericImage.objects.get(id=question_id)
             test_unit_result = TestUnitResult()
             test_unit_result.test_result = testresult
             test_unit_result.test_unit = question_model
@@ -219,3 +246,18 @@ def delete_test_result(request, test_result_id):
             'The test result has already been deleted. You may have clicked twice.'
         )
     return redirect(index)
+
+
+@login_required
+def rate_picture(request):
+    user = request.user
+    images = GenericImage.objects.all()
+    rated_images = [
+        rating.image for rating in Rating.objects.filter(user=user)
+    ]
+
+    not_rated_images = [image for image in images if image not in rated_images]
+    if len(not_rated_images):
+        image = not_rated_images[0]
+
+    return render(request, 'quiz/site/rate_picture.html', {'image': image})

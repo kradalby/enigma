@@ -1,19 +1,30 @@
-from django.core.exceptions import ObjectDoesNotExist
-from django.core.files.base import ContentFile
-from django.contrib.admin.views.decorators import staff_member_required
-from django.contrib import messages
-from django.db import transaction
-from django.shortcuts import render, redirect, get_object_or_404
-import re
 import base64
 import os
+import re
 
-from ..forms import *
-from ..models import *
-from ..templatetags.question_tags import question_type_from_id
+from django.conf import settings
+from django.contrib import messages
+from django.contrib.admin.views.decorators import staff_member_required
+from django.core.exceptions import ObjectDoesNotExist
+from django.core.files.base import ContentFile
+from django.core.mail import send_mail
+from django.db import transaction
+from django.shortcuts import get_object_or_404, redirect, render
+from django.urls import reverse
 
 from app.userprofile.models import UserProfile
 from app.userprofile.views.users import view_user
+
+from ..forms import (
+    GenericImageForm, LandmarkQuestionForm, MultipleChoiceQuestionForm,
+    MultipleChoiceQuestionWithImageForm, MultipleChoiceQuestionWithVideoForm,
+    OutlineQuestionForm, OutlineSolutionQuestionForm, TestForm)
+from ..models import (GenericImage, LandmarkQuestion, LandmarkRegion,
+                      MultipleChoiceQuestion, MultipleChoiceQuestionWithImage,
+                      MultipleChoiceQuestionWithVideo, OutlineQuestion,
+                      OutlineRegion, OutlineSolutionQuestion, Test, TestResult,
+                      TestUnit, TestUnitResult)
+from ..templatetags.question_tags import question_type_from_id
 
 #
 # Test related
@@ -53,13 +64,58 @@ def edit_test(request, test_id):
 def add_questions_to_test(request, test_id):
     test = get_object_or_404(Test, id=test_id)
     return render(request, 'quiz/admin/add_questions_to_test.html',
-                  {"test": test})
+                  {'test': test})
+
+
+# Denne trenger url
+# knapp
+@staff_member_required
+def send_email_to_participants_of_test(request, test_id):
+    test = get_object_or_404(Test, id=test_id)
+    users = test.course.get_users
+
+    print(users)
+
+    DATA = {
+        'url':
+        settings.BASE_URL + reverse(
+            'single_test', kwargs={'test_id': test_id})
+    }
+
+    print(DATA)
+
+    FROM = 'noreply@enigma.no'
+    TO = [user.email for user in users]
+    SUBJECT = 'New questionear is available'
+    MESSAGE = '''Hi
+
+There are new images available for expert review:
+
+{url}
+
+--
+Best regards
+Teamname
+'''.format(**DATA)
+
+    result = send_mail(SUBJECT, MESSAGE, FROM, TO)
+    if result:
+        messages.success(request, 'Successfully sent test to group members')
+    else:
+        messages.error(
+            request,
+            'Something went wrong sending the message, contact the system administrator.'
+        )
+
+    print(TO)
+
+    return redirect(add_questions_to_test, test.id)
 
 
 @staff_member_required
 def list_tests(request):
     tests = Test.objects.all()
-    return render(request, 'quiz/admin/test_list.html', {"tests": tests})
+    return render(request, 'quiz/admin/test_list.html', {'tests': tests})
 
 
 @staff_member_required
@@ -84,8 +140,8 @@ def view_list_of_users_taking_test(request, test_id):
         groups__id__in=group_id_to_include)
 
     return render(request, 'quiz/admin/view_list_of_users_taking_test.html',
-                  {"users": users_taking_test,
-                   "test": test})
+                  {'users': users_taking_test,
+                   'test': test})
 
 
 @staff_member_required
@@ -97,11 +153,11 @@ def view_test_result_for_user(request, test_id, user_id):
     test_units = TestUnit.objects.filter(test=test)
 
     return render(request, 'quiz/admin/view_test_result_for_user.html', {
-        "test_unit_results": test_unit_results,
-        "user": user,
-        "test": test,
-        "test_result": test_result,
-        "test_units": test_units
+        'test_unit_results': test_unit_results,
+        'user': user,
+        'test': test,
+        'test_result': test_result,
+        'test_units': test_units
     })
 
 
@@ -133,18 +189,18 @@ def list_questions(request):
     outline_question = OutlineQuestion.objects.all()
     outline_solution_question = OutlineSolutionQuestion.objects.all()
     return render(request, 'quiz/admin/list_questions.html', {
-        "multiple_choice_questions":
-            multiple_choice_questions,
-        "multiple_choice_questions_with_image":
-            multiple_choice_questions_with_image,
-        "multiple_choice_questions_with_video":
-            multiple_choice_questions_with_video,
-        "landmark_questions":
-            landmark_questions,
-        "outline_questions":
-            outline_question,
-        "outline_solution_question":
-            outline_solution_question
+        'multiple_choice_questions':
+        multiple_choice_questions,
+        'multiple_choice_questions_with_image':
+        multiple_choice_questions_with_image,
+        'multiple_choice_questions_with_video':
+        multiple_choice_questions_with_video,
+        'landmark_questions':
+        landmark_questions,
+        'outline_questions':
+        outline_question,
+        'outline_solution_question':
+        outline_solution_question
     })
 
 
@@ -166,8 +222,8 @@ def _generic_new_multiple_choice_question_to_test(request, form_type, test_id):
         form = form_type()
 
     return render(request, 'quiz/admin/add_question_to_test.html',
-                  {"test": test,
-                   "form": form})
+                  {'test': test,
+                   'form': form})
 
 
 @staff_member_required
@@ -181,7 +237,8 @@ def _generic_delete_question(request, question_type, question_id):
     except ObjectDoesNotExist:
         messages.warning(
             request,
-            'The question has already been deleted. You may have clicked twice.')
+            'The question has already been deleted. You may have clicked twice.'
+        )
 
 
 @staff_member_required
@@ -200,13 +257,9 @@ def _generic_new_question(request, form_type):
         form = form_type(request.POST, request.FILES)
         if form.is_valid():
             question = form.save()
-            messages.success(request, 'Successfully created new question: %s.' %
-                             question)
-            return redirect(list_questions)
-    else:
-        form = form_type()
 
-    return render(request, 'quiz/admin/new_question.html', {'form': form})
+            messages.success(
+                request, 'Successfully created new question: %s.' % question)
 
 
 @staff_member_required
@@ -290,9 +343,8 @@ def list_multiple_choice_questions_not_in_test(request, test_id):
 
 @staff_member_required
 def delete_multiple_choice_question_from_test(request, test_id, question_id):
-    _generic_remove_question_from_test(request, MultipleChoiceQuestion, test_id,
-                                       question_id)
-    return redirect(add_questions_to_test, test_id)
+    _generic_remove_question_from_test(request, MultipleChoiceQuestion,
+                                       test_id, question_id)
 
 
 @staff_member_required
@@ -340,9 +392,8 @@ def list_multiple_choice_questions_with_image_not_in_test(request, test_id):
 @staff_member_required
 def delete_multiple_choice_question_with_image_from_test(request, test_id,
                                                          question_id):
-    _generic_remove_question_from_test(request, MultipleChoiceQuestionWithImage,
-                                       test_id, question_id)
-    return redirect(add_questions_to_test, test_id)
+    _generic_remove_question_from_test(
+        request, MultipleChoiceQuestionWithImage, test_id, question_id)
 
 
 @staff_member_required
@@ -391,9 +442,8 @@ def list_multiple_choice_questions_with_video_not_in_test(request, test_id):
 @staff_member_required
 def delete_multiple_choice_question_with_video_from_test(request, test_id,
                                                          question_id):
-    _generic_remove_question_from_test(request, MultipleChoiceQuestionWithVideo,
-                                       test_id, question_id)
-    return redirect(add_questions_to_test, test_id)
+    _generic_remove_question_from_test(
+        request, MultipleChoiceQuestionWithVideo, test_id, question_id)
 
 
 @staff_member_required
@@ -421,8 +471,8 @@ def add_landmark_question_to_test(request, test_id):
         form = LandmarkQuestionForm()
 
     return render(request, 'quiz/admin/new_landmark_question.html',
-                  {"test": test,
-                   "form": form})
+                  {'test': test,
+                   'form': form})
 
 
 @staff_member_required
@@ -431,22 +481,22 @@ def draw_landmark(request, question_id, test_id=None):
     test = Test.objects.get(id=test_id) if test_id else None
     question = LandmarkQuestion.objects.get(id=question_id)
     if request.method == 'POST':
-        dataUrlPattern = re.compile('data:image/(png|jpeg);base64,(.*)$')
+        data_url_pattern = re.compile('data:image/(png|jpeg);base64,(.*)$')
         image_data = request.POST.get('hidden-image-data')
         try:
-            image_data = dataUrlPattern.match(image_data).group(2)
+            image_data = data_url_pattern.match(image_data).group(2)
         except AttributeError:
             messages.error(request,
-                           "You can't leave any regions blank or empty.")
+                           'You can\'t leave any regions blank or empty.')
             return render(request, 'quiz/admin/draw_landmark.html',
-                          {"test": test,
-                           "question": question})
-        if (image_data == None or len(image_data) == 0):
+                          {'test': test,
+                           'question': question})
+        if (image_data is None or len(image_data) == 0):
             messages.error(request,
-                           "You can't leave any regions blank or empty.")
+                           'You can\'t leave any regions blank or empty.')
             return render(request, 'quiz/admin/draw_landmark.html',
-                          {"test": test,
-                           "question": question})
+                          {'test': test,
+                           'question': question})
         image_data = base64.b64decode(image_data)
         question.landmark_drawing = ContentFile(
             image_data,
@@ -459,10 +509,10 @@ def draw_landmark(request, question_id, test_id=None):
                 region.color = k
                 if not v:
                     messages.error(request,
-                                   "You have to give name to all regions.")
+                                   'You have to give name to all regions.')
                     return render(request, 'quiz/admin/draw_landmark.html',
-                                  {"test": test,
-                                   "question": question})
+                                  {'test': test,
+                                   'question': question})
                 region.name = v
                 region.landmark_question = question
                 region.save()
@@ -471,8 +521,60 @@ def draw_landmark(request, question_id, test_id=None):
         else:
             return redirect(list_questions)
     return render(request, 'quiz/admin/draw_landmark.html',
-                  {"test": test,
-                   "question": question})
+                  {'test': test,
+                   'question': question})
+
+
+@staff_member_required
+@transaction.atomic
+def draw_landmark_from_image(request, image_id, question_id=None):
+    img = GenericImage.objects.get(pk=image_id)
+    if question_id:
+        question = LandmarkQuestion.objects.get(id=question_id)
+    else:
+        question = LandmarkQuestion()
+        question.original_image = img.image
+        question.name = 'landmark_' + img.name
+
+    if request.method == 'POST':
+        data_url_pattern = re.compile('data:image/(png|jpeg);base64,(.*)$')
+        image_data = request.POST.get('hidden-image-data')
+        try:
+            image_data = data_url_pattern.match(image_data).group(2)
+        except AttributeError:
+            messages.error(request,
+                           'You can\'t leave any regions blank or empty.')
+            return render(request, 'quiz/admin/draw_landmark.html',
+                          {'question': question})
+
+        if (image_data is None or len(image_data) == 0):
+            messages.error(request,
+                           'You can\'t leave any regions blank or empty.')
+            return render(request, 'quiz/admin/draw_landmark.html',
+                          {'question': question})
+        image_data = base64.b64decode(image_data)
+        question.landmark_drawing = ContentFile(
+            image_data,
+            'solution-' + os.path.basename(question.original_image.name))
+
+        question.regions().delete()
+        for k, v in request.POST.items():
+            if k.startswith('#') and len(k) == 7:
+                region = LandmarkRegion()
+                region.color = k
+                if not v:
+                    messages.error(request,
+                                   'You have to give name to all regions.')
+                    return render(request, 'quiz/admin/draw_landmark.html',
+                                  {'question': question})
+                region.name = v
+                question.save()
+                region.landmark_question = question
+                region.save()
+        question.save()
+        return redirect(list_questions)
+    return render(request, 'quiz/admin/draw_landmark.html',
+                  {'question': question})
 
 
 @staff_member_required
@@ -486,13 +588,13 @@ def new_landmark_question(request):
         form = LandmarkQuestionForm()
 
     return render(request, 'quiz/admin/new_landmark_question.html',
-                  {"form": form})
+                  {'form': form})
 
 
-@staff_member_required
-def add_landmark_regions(request, test_id, question_id):
-    test = Test.objects.get(id=test_id)
-    question = LandmarkQuestion.objects.get(id=question_id)
+# @staff_member_required
+# def add_landmark_regions(request, test_id, question_id):
+#     test = Test.objects.get(id=test_id)
+#     question = LandmarkQuestion.objects.get(id=question_id)
 
 
 @staff_member_required
@@ -533,8 +635,8 @@ def add_outline_question_to_test(request, test_id):
         form = OutlineQuestionForm()
 
     return render(request, 'quiz/admin/new_outline_question.html',
-                  {"test": test,
-                   "form": form})
+                  {'test': test,
+                   'form': form})
 
 
 @staff_member_required
@@ -549,16 +651,16 @@ def draw_outline(request, question_id, test_id=None):
             image_data = dataUrlPattern.match(image_data).group(2)
         except AttributeError:
             messages.error(request,
-                           "You can't leave any regions blank or empty.")
+                           'You can\'t leave any regions blank or empty.')
             return render(request, 'quiz/admin/draw_outline.html',
-                          {"test": test,
-                           "question": question})
-        if (image_data == None or len(image_data) == 0):
+                          {'test': test,
+                           'question': question})
+        if (image_data is None or len(image_data) == 0):
             messages.error(request,
-                           "You can't leave any regions blank or empty.")
+                           'You can\'t leave any regions blank or empty.')
             return render(request, 'quiz/admin/draw_outline.html',
-                          {"test": test,
-                           "question": question})
+                          {'test': test,
+                           'question': question})
         image_data = base64.b64decode(image_data)
         question.outline_drawing = ContentFile(
             image_data,
@@ -571,10 +673,10 @@ def draw_outline(request, question_id, test_id=None):
                 region.color = k
                 if not v:
                     messages.error(request,
-                                   "You have to give name to all regions.")
+                                   'You have to give name to all regions.')
                     return render(request, 'quiz/admin/draw_outline.html',
-                                  {"test": test,
-                                   "question": question})
+                                  {'test': test,
+                                   'question': question})
                 region.name = v
                 region.outline_question = question
                 region.save()
@@ -583,8 +685,60 @@ def draw_outline(request, question_id, test_id=None):
         else:
             return redirect(list_questions)
     return render(request, 'quiz/admin/draw_outline.html',
-                  {"test": test,
-                   "question": question})
+                  {'test': test,
+                   'question': question})
+
+
+@staff_member_required
+@transaction.atomic
+def draw_outline_from_image(request, image_id, question_id=None):
+    img = GenericImage.objects.get(pk=image_id)
+    if question_id:
+        question = OutlineQuestion.objects.get(id=question_id)
+    else:
+        question = OutlineQuestion()
+        question.original_image = img.image
+        question.name = 'outline_' + img.name
+
+    if request.method == 'POST':
+        data_url_pattern = re.compile('data:image/(png|jpeg);base64,(.*)$')
+        image_data = request.POST.get('hidden-image-data')
+        try:
+            image_data = data_url_pattern.match(image_data).group(2)
+        except AttributeError:
+            messages.error(request,
+                           'You can\'t leave any regions blank or empty.')
+            return render(request, 'quiz/admin/draw_outline.html',
+                          {'question': question})
+
+        if (image_data is None or len(image_data) == 0):
+            messages.error(request,
+                           'You can\'t leave any regions blank or empty.')
+            return render(request, 'quiz/admin/draw_outline.html',
+                          {'question': question})
+        image_data = base64.b64decode(image_data)
+        question.outline_drawing = ContentFile(
+            image_data,
+            'solution-' + os.path.basename(question.original_image.name))
+
+        question.regions().delete()
+        for k, v in request.POST.items():
+            if k.startswith('#') and len(k) == 7:
+                region = OutlineRegion()
+                region.color = k
+                if not v:
+                    messages.error(request,
+                                   'You have to give name to all regions.')
+                    return render(request, 'quiz/admin/draw_outline.html',
+                                  {'question': question})
+                region.name = v
+                question.save()
+                region.outline_question = question
+                region.save()
+        question.save()
+        return redirect(list_questions)
+    return render(request, 'quiz/admin/draw_outline.html',
+                  {'question': question})
 
 
 @staff_member_required
@@ -596,7 +750,8 @@ def delete_outline_question_from_test(request, test_id, question_id):
 
 @staff_member_required
 def list_outline_questions_not_in_test(request, test_id):
-    return _generic_list_question_not_in_test(request, OutlineQuestion, test_id)
+    return _generic_list_question_not_in_test(request, OutlineQuestion,
+                                              test_id)
 
 
 @staff_member_required
@@ -616,7 +771,7 @@ def new_outline_question(request):
         form = OutlineQuestionForm()
 
     return render(request, 'quiz/admin/new_outline_question.html',
-                  {"form": form})
+                  {'form': form})
 
 
 #
@@ -632,7 +787,7 @@ def new_outline_solution_question(request):
     else:
         form = OutlineSolutionQuestionForm()
 
-    return render(request, 'quiz/admin/new_question.html', {"form": form})
+    return render(request, 'quiz/admin/new_question.html', {'form': form})
 
 
 @transaction.atomic
@@ -649,8 +804,8 @@ def add_outline_solution_question_to_test(request, test_id):
         form = OutlineSolutionQuestionForm()
 
     return render(request, 'quiz/admin/new_outline_solution_question.html',
-                  {"test": test,
-                   "form": form})
+                  {'test': test,
+                   'form': form})
 
 
 @staff_member_required
@@ -681,13 +836,13 @@ def delete_outline_solution_question_from_test(request, test_id, question_id):
 @staff_member_required
 @transaction.atomic
 def create_outline_from_outline_solution(request, question_id, test_result_id):
-    question = get_object_or_404(OutlineSolutionQuestion, id=question_id)
+    question = get_object_or_404(GenericImage, id=question_id)
     test_result = get_object_or_404(TestUnitResult, id=test_result_id)
 
     outline_question = OutlineQuestion()
     outline_question.question = question.question
-    new_file = ContentFile(question.original_image.read())
-    new_file.name = question.original_image.name
+    new_file = ContentFile(question.image.read())
+    new_file.name = question.image.name
     outline_question.original_image = new_file
     new_file2 = ContentFile(test_result.answer_image.read())
     new_file2.name = test_result.answer_image.name
@@ -696,8 +851,8 @@ def create_outline_from_outline_solution(request, question_id, test_result_id):
 
     outline_region = OutlineRegion()
     outline_region.outline_question = outline_question
-    outline_region.name = question.outline_region
-    outline_region.color = "#659b41"
+    outline_region.name = ""
+    outline_region.color = ""
     outline_region.save()
 
     return redirect(draw_outline, outline_question.id)
@@ -706,12 +861,8 @@ def create_outline_from_outline_solution(request, question_id, test_result_id):
 @staff_member_required
 def edit_outline_solution_question_for_test(request, test_id, question_id):
     return _generic_edit_question(request, OutlineSolutionQuestionForm,
-                                  OutlineSolutionQuestion, question_id, test_id)
-
-
-#
-# Test result
-#
+                                  OutlineSolutionQuestion, question_id,
+                                  test_id)
 
 
 @staff_member_required
@@ -738,7 +889,7 @@ def delete_test_result(request, test_result_id):
     test_result = TestResult.objects.get(id=test_result_id)
     user = UserProfile.objects.get(user=test_result.user)
     test_result.delete()
-    messages.success(request, "Successfully deleted test result")
+    messages.success(request, 'Successfully deleted test result')
 
     return redirect(view_user, user.id)
 
@@ -748,7 +899,7 @@ def delete_test_result_in_test(request, test_result_id):
     test_result = get_object_or_404(TestResult, id=test_result_id)
     test_id = test_result.test.id
     test_result.delete()
-    messages.success(request, "Successfully deleted test result")
+    messages.success(request, 'Successfully deleted test result')
 
     return redirect(view_list_of_users_taking_test, test_id)
 
@@ -758,6 +909,77 @@ def delete_test_results_in_test(request, test_id):
     test = get_object_or_404(Test, id=test_id)
     TestResult.objects.filter(test=test).delete()
     messages.success(request,
-                     "Successfully deleted test results for {0}".format(test))
+                     'Successfully deleted test results for {0}'.format(test))
 
     return redirect(list_tests)
+
+
+#
+# GENERIC IMAGE
+#
+
+
+@staff_member_required
+def image_overview(request):
+    images = GenericImage.objects.all()
+    return render(request, 'quiz/admin/image_overview.html',
+                  {'images': images})
+
+
+@staff_member_required
+def new_generic_image(request):
+    if request.method == 'POST':
+        form = GenericImageForm(request.POST, request.FILES)
+        if form.is_valid():
+            image = form.save()
+            return redirect(draw_suggestion, image.id)
+    else:
+        form = GenericImageForm()
+
+    return render(request, 'quiz/admin/new_generic_image.html', {'form': form})
+
+
+@transaction.atomic
+@staff_member_required
+def add_image_suggestion_to_test(request, test_id):
+    test = Test.objects.get(id=test_id)
+    if request.method == 'POST':
+        form = GenericImageForm(request.POST, request.FILES)
+        if form.is_valid():
+            question = form.save()
+            question.test.add(test)
+            return redirect(add_questions_to_test, test.id)
+    else:
+        form = GenericImageForm()
+
+    return render(request, 'quiz/admin/new_generic_image.html',
+                  {'test': test,
+                   'form': form})
+
+
+@staff_member_required
+def list_image_suggestion_not_in_test(request, test_id):
+    return _generic_list_question_not_in_test(request, GenericImage, test_id)
+
+
+@staff_member_required
+def delete_image_suggestion(request, question_id):
+    _generic_delete_question(request, GenericImage, question_id)
+    return redirect(list_questions)
+
+
+@staff_member_required
+def delete_image_suggestion_from_test(request, test_id, question_id):
+    _generic_remove_question_from_test(request, GenericImage, test_id,
+                                       question_id)
+    return redirect(add_questions_to_test, test_id)
+
+
+@staff_member_required
+def image_expert_overview(request, image_id):
+    image = GenericImage.objects.get(pk=image_id)
+    users = UserProfile.objects.all()
+
+    return render(request, 'quiz/admin/image_expert_overview.html',
+                  {'image': image,
+                   'users': users})

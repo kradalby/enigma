@@ -1,6 +1,6 @@
 from django.conf.urls import url
 
-from .views import site, admin
+from .views import admin, site
 
 urlpatterns = [
     # Site

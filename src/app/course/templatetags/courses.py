@@ -1,5 +1,6 @@
-from ..models import Course
 from django import template
+
+from ..models import Course
 
 register = template.Library()
 

@@ -1,8 +1,11 @@
-from django.contrib.auth.models import User
-from django.db import models
 from random import shuffle
 
+from django.contrib.auth.models import User
+from django.db import models
+from django.core.validators import MaxValueValidator, MinValueValidator
+
 from app.course.models import Course
+from app.userprofile.models import UserProfile
 
 
 class Test(models.Model):
@@ -38,6 +41,9 @@ class Test(models.Model):
     def outline_solution_questions(self):
         return OutlineSolutionQuestion.objects.filter(test=self)
 
+    def image_suggestion_question(self):
+        return GenericImage.objects.filter(test=self)
+
 
 class TestResult(models.Model):
     test = models.ForeignKey(Test)
@@ -70,7 +76,7 @@ class TestUnit(models.Model):
         return self.question
 
     class Meta:
-        ordering = ('question',)
+        ordering = ('question', )
 
     def as_html(self):
         return '<h1>THIS MODEL HAS NOT IMPLEMENTED AS_HTML</h1>'
@@ -261,6 +267,56 @@ class OutlineSolutionQuestion(TestUnit):
         return html
 
 
+class GenericImage(TestUnit):
+    image = models.ImageField()
+    name = models.CharField(max_length=200)
+    machine = models.CharField(max_length=200)
+    reconstruction_method = models.CharField(max_length=200)
+
+    @property
+    def rating(self):
+        ratings = [rating.rating for rating in self.rating_set]
+        return sum(ratings) / len(ratings)
+
+    def __str__(self):
+        return self.name
+
+    def as_html(self):
+        original_image = self.image.url
+        width = self.image.width
+        height = self.image.height
+        html = """
+        Draw around {5}:
+        <div id="{0}" class="outline-container">
+        </div>
+        <script>
+            var a = answerRegions();
+            a.enableImageSuggestion("{0}", "{1}", "{2}", "{3}", "{4}");
+        </script>
+        """.format('image-suggestion-container-' + str(self.id),
+                   original_image, height, width, self.id, '')
+        return html
+
+
+class Region(models.Model):
+    outline_suggestion = models.ForeignKey(GenericImage)
+    color = models.CharField(max_length=50)
+    name = models.CharField(max_length=255)
+
+    def __str__(self):
+        return self.name
+
+
+class Rating(models.Model):
+    image = models.ForeignKey(GenericImage)
+    rating = models.PositiveSmallIntegerField(
+        validators=[MaxValueValidator(10), MinValueValidator(1)])
+    user = models.ForeignKey(User)
+
+    class Meta:
+        unique_together = (('image', 'user'), )
+
+
 class LandmarkRegion(models.Model):
     landmark_question = models.ForeignKey(LandmarkQuestion)
     color = models.CharField(max_length=50)
@@ -283,7 +339,8 @@ class TestUnitResult(models.Model):
     test_unit = models.ForeignKey(TestUnit)
     correct_answer = models.BooleanField()
     test_result = models.ForeignKey(TestResult)
-    answer = models.CharField(max_length=255, blank=True, null=True, default='')
+    answer = models.CharField(
+        max_length=255, blank=True, null=True, default='')
     answer_image = models.ImageField(blank=True)
     target_color_region = models.CharField(max_length=255)
     score = models.PositiveSmallIntegerField()

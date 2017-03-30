@@ -18,12 +18,12 @@ var answerRegions = (function(){
         get: function( key ) {
             return this.hashes[ JSON.stringify( key ) ];
         },
-        
+
         table: function(){
             return this.hashes;
         }
-    };  
-    
+    };
+
     /**
      * The real deal starts here.
      */
@@ -48,11 +48,11 @@ var answerRegions = (function(){
         erasing = false,
         erase = [],
         isOutline = false,
-        
+
         /**
          * COMMON STUFF
          */
-        
+
         relativeMouseCoordinates = function(event){
             var totalOffsetX = 0;
             var totalOffsetY = 0;
@@ -76,16 +76,16 @@ var answerRegions = (function(){
             canvasY = origY - totalOffsetY;
 
             return {
-                x: canvasX, 
+                x: canvasX,
                 y: canvasY
             }
         },
-        
+
         clearCanvas = function(){
             regionContext.clearRect(0, 0, canvasWidth, canvasHeight);
             context.clearRect(0, 0, canvasWidth, canvasHeight);
         },
-        
+
         drawImage = function(contextDest, imgSrc, callback){
             var image = new Image();
             image.src = imgSrc;
@@ -96,11 +96,11 @@ var answerRegions = (function(){
                 }
             }
         },
-        
+
         /**
          * LANDMARK RELATED
          */
-        
+
         drawXOnMouseUp = function(){
             regionCanvas.addEventListener("mouseup", mouseUp, false);
 
@@ -108,7 +108,7 @@ var answerRegions = (function(){
                 regionContext.beginPath();
                 regionContext.strokeStyle=drawColor;
                 regionContext.lineWidth = 3;
-                
+
                 regionContext.moveTo(x - 10, y - 10);
                 regionContext.lineTo(x + 10, y + 10);
                 regionContext.stroke();
@@ -126,10 +126,10 @@ var answerRegions = (function(){
                 });
             }
         },
-        
+
         updateHiddenAnswerOnMouseUp = function(){
             regionCanvas.addEventListener("mouseup", mouseUp, false);
-            
+
             function mouseUp(e){
                 var data = regionData.data,
                     dataIndex = (event.offsetY * canvasWidth * 4) + event.offsetX * 4,
@@ -149,7 +149,7 @@ var answerRegions = (function(){
                 }
             };
         },
-        
+
         registerColoredRegions = function(imgSrc, callback)
         {
             var image = new Image();
@@ -171,12 +171,12 @@ var answerRegions = (function(){
                             alpha: alpha
                         },
                         {
-                            x: Math.floor((i / 4) % canvasWidth), 
+                            x: Math.floor((i / 4) % canvasWidth),
                             y: Math.floor((i / 4) / canvasWidth)
                         });
                     }
                 }
-                
+
                 // Push the regions to global table
                 var colorTable = colorsHashTable.table();
                 for (var color in colorTable) {
@@ -187,14 +187,14 @@ var answerRegions = (function(){
                         });
                     }
                 }
-                
+
                 clearCanvas();
                 if(callback){
                     callback();
                 }
             }
         },
-        
+
         setImageRatios = function(height, width){
             var aspectRatio = width / height;
             canvasHeight = Math.min(height, window.innerHeight*0.65);
@@ -210,12 +210,12 @@ var answerRegions = (function(){
             context.canvas.width = canvasWidth;
             regionContext.canvas.height = canvasHeight;
             regionContext.canvas.width = canvasWidth;
-            
+
             var wrapperDiv = $(canvas).parent();
             wrapperDiv.width(canvasWidth);
             wrapperDiv.height(canvasHeight);
         },
-        
+
         /**
          * OUTLINE SPECIFIC
          */
@@ -225,12 +225,12 @@ var answerRegions = (function(){
 		clickDrag = [],
 		paint = false,
 		imageLoaded = false,
-        
+
         redraw = function (clear) {
             if (!imageLoaded) {
                 return;
             }
-            
+
             if(clear){
                 clearCanvas();
                 drawImage(context, originalImage, updateHiddenImageData);
@@ -239,7 +239,7 @@ var answerRegions = (function(){
                 updateHiddenImageData();
             }
         },
-        
+
         drawRegionOutline = function(){
             // For each point drawn
 			for (var i = 0; i < clickX.length; i += 1) {
@@ -253,7 +253,7 @@ var answerRegions = (function(){
 					regionContext.moveTo(clickX[i] - 1, clickY[i]);
 				}
 				regionContext.lineTo(clickX[i], clickY[i]);
-                
+
                 if(erase[i]){
 					regionContext.globalCompositeOperation = "destination-out";
 					regionContext.strokeStyle = "rgba(0,0,0,1.0)";
@@ -263,7 +263,7 @@ var answerRegions = (function(){
 					regionContext.strokeStyle = drawColor;
 					regionContext.lineWidth = lineWidth;
 				}
-				
+
 				regionContext.lineCap = "round";
 				regionContext.lineJoin = "round";
 				regionContext.stroke();
@@ -282,7 +282,7 @@ var answerRegions = (function(){
             clicksAddedSinceLastCalculation = true;
 			erase.push(erasing);
 		},
-        
+
 		createUserEvents = function () {
 			var press = function (e) {
 				// Mouse down location
@@ -329,25 +329,25 @@ var answerRegions = (function(){
             redraw();
             createUserEvents();
 		},
-        
+
         clearOutline = function(){
             clickY = [];
             clickX = [];
             clickDrag = [];
             redraw(true);
         },
-        
-        updateOutlineAnswer = function(){            
+
+        updateOutlineAnswer = function(){
             function distance(x1,y1,x2,y2){
                 return Math.sqrt(Math.pow(x2-x1, 2) + Math.pow(y2-y1, 2));
             }
-            
+
             function closestPoint(data, x2, y2){
                 var closest = 4200;
                 for (var i = 0; i < data.length; i += 4 * 5){
-                    if(data[i] == 192 && 
-                        data[i + 1] == 47 && 
-                        data[i + 2] == 29 && 
+                    if(data[i] == 192 &&
+                        data[i + 1] == 47 &&
+                        data[i + 2] == 29 &&
                         data[i + 3] == 255)
                     {
                         var x1 = Math.floor((i / 4) % canvasWidth);
@@ -364,7 +364,7 @@ var answerRegions = (function(){
             if(!clicksAddedSinceLastCalculation || !isOutline){
                 return;
             }
-            
+
             $('#outlineModal').modal('show');
             setTimeout(function(){
                 var targetRegionPoints = colorsHashTable.get(targetRegionColor);
@@ -382,7 +382,7 @@ var answerRegions = (function(){
                 clicksAddedSinceLastCalculation = false;
             }, 25);
         },
-        
+
         hexColorToJson = function(hexColor){
             return {
                 "red": parseInt(hexColor.substring(1,3), 16),
@@ -391,17 +391,17 @@ var answerRegions = (function(){
                 "alpha":255
             };
         },
-        
+
         setTargetRegion = function(questionId){
             var hexColor = document.getElementById("region-" + questionId + "-color").getAttribute("value");
             targetRegionColor = hexColorToJson(hexColor);
         },
-        
+
         updateHiddenImageData = function(){
             var imageData = regionCanvas.toDataURL("image/png");
             hiddenImageData.value = imageData;
         },
-        
+
         addRubberButton = function(){
             var rubberButton = $('<div class="btn btn-default pull-right"><span class="glyphicon glyphicon-erase" aria-hidden="true"></span></div>');
             $(parentDiv)
@@ -413,7 +413,7 @@ var answerRegions = (function(){
                 enableEraser(true);
             });
         },
-        
+
         addPencilButton = function(){
             var pencilButton = $('<div class="btn btn-default pull-right"><span class="glyphicon glyphicon-pencil" aria-hidden="true"></span></div>');
             $(parentDiv)
@@ -425,7 +425,7 @@ var answerRegions = (function(){
                 enableEraser(false);
             });
         },
-        
+
 		enableEraser = function(eraseOn){
 			erasing = eraseOn;
 			if(eraseOn){
@@ -434,14 +434,14 @@ var answerRegions = (function(){
 				$(parentDiv).removeClass("erase");
 			}
 		},
-        
+
         /**
          *  EXPORTED
          */
         enableCommon = function(targetDivId, image, answerImg, height, width, id){
             parentDiv = document.getElementById(targetDivId);
             questionId = id;
-            
+
             // Create canvas
             canvas = document.createElement('canvas');
             canvas.style.zIndex = "1";
@@ -450,7 +450,7 @@ var answerRegions = (function(){
 				canvas = G_vmlCanvasManager.initElement(canvas);
 			}
             context = canvas.getContext('2d');
-            
+
             // Create region canvas
             regionCanvas = document.createElement('canvas');
             regionCanvas.style.zIndex = "2";
@@ -460,13 +460,13 @@ var answerRegions = (function(){
 			}
             regionContext = regionCanvas.getContext('2d');
             regionCanvas.id = "region_canvas-" + questionId;
-            
+
             // Create hidden answer field
             hiddenAnswerField = document.createElement("input");
             hiddenAnswerField.setAttribute("type", "hidden");
             hiddenAnswerField.setAttribute("value", "");
             parentDiv.appendChild(hiddenAnswerField);
-            
+
             // Create hidden image field
             hiddenImageData = document.createElement("input");
             hiddenImageData.setAttribute("type", "hidden");
@@ -488,33 +488,33 @@ var answerRegions = (function(){
                 updateOutlineAnswer();
             }});
         },
-        
+
         enableLandmark = function(targetDivId, image, answerImg, height, width, id){
             enableCommon(targetDivId, image, answerImg, height, width, id);
 
             canvas.id = "landmark_canvas-" + questionId;
             hiddenAnswerField.setAttribute("name", "landmark_question-" + questionId);
-            
+
             registerColoredRegions(answerImg, function(){
                 drawImage(context, originalImage);
             });
-            
+
             drawXOnMouseUp();
             updateHiddenAnswerOnMouseUp();
         },
-        
+
         enableOutline = function(targetDivId, image, answerImg, height, width, id){
             enableCommon(targetDivId, image, answerImg, height, width, id);
-            
+
             canvas.id = "outline_canvas-" + questionId;
             hiddenAnswerField.setAttribute("name", "outline_question-" + questionId);
             isOutline = true;
-                        
+
             registerColoredRegions(answerImg, function(){
                 drawImage(context, originalImage);
                 resourceLoaded();
             });
-            
+
             var clearButtonDiv = $('<div class="btn btn-default pull-right">Clear</div>');
             $(parentDiv)
                 .parent()
@@ -525,17 +525,39 @@ var answerRegions = (function(){
                 clearOutline();
             });
         },
-        
+
         enableOutlineSolution = function(targetDivId, image, height, width, id){
             enableCommon(targetDivId, image, null, height, width, id);
 
             canvas.id = "outline_solution_canvas-" + questionId;
             hiddenAnswerField.setAttribute("name", "outline_solution_question-" + questionId);
-            
+
             drawImage(context, originalImage, function(){
                 resourceLoaded();
             });
-            
+
+            var clearButtonDiv = $('<div class="btn btn-default pull-right">Clear</div>');
+            $(parentDiv)
+                .parent()
+                .parent()
+                .children(".panel-heading")
+                .prepend(clearButtonDiv);
+            clearButtonDiv.click(function(){
+                clearOutline();
+            });
+            lineWidth = 2;
+        },
+
+        enableImageSuggestion = function(targetDivId, image, height, width, id){
+            enableCommon(targetDivId, image, null, height, width, id);
+
+            canvas.id = "image_suggestion-" + questionId;
+            hiddenAnswerField.setAttribute("name", "image_suggestion-" + questionId);
+
+            drawImage(context, originalImage, function(){
+                resourceLoaded();
+            });
+
             var clearButtonDiv = $('<div class="btn btn-default pull-right">Clear</div>');
             $(parentDiv)
                 .parent()
@@ -551,6 +573,7 @@ var answerRegions = (function(){
     return {
 		enableLandmark: enableLandmark,
 		enableOutline: enableOutline,
-        enableOutlineSolution: enableOutlineSolution
+        enableOutlineSolution: enableOutlineSolution,
+        enableImageSuggestion: enableImageSuggestion
 	};
 });
