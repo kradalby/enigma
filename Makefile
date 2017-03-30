@@ -3,6 +3,7 @@ SHELL := /bin/bash
 PYTHON=$(ENV)/python
 PIP=$(ENV)/pip
 MANAGE=$(PYTHON) manage.py
+REPO=kradalby/turbo-enigma
 
 collect_static:
 	$(MANAGE) collectstatic --noinput --clear --link
@@ -49,3 +50,6 @@ migrate:
 
 makemigrations:
 	docker-compose run --entrypoint="bash -c" turbo "./manage.py makemigrations ${ARGS}"
+
+sign:
+	drone sign $(REPO)
