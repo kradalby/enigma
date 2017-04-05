@@ -1,8 +1,8 @@
-from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
+from django.shortcuts import redirect, render
 
-from app.quiz.models import Test
 from app.course.models import Course
+from app.quiz.models import Test
 from app.userprofile.models import UserProfile
 
 from ..forms import ChangePasswordForm

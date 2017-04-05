@@ -1,4 +1,4 @@
-from django.forms import ModelForm, CharField, Form, PasswordInput
+from django.forms import CharField, Form, ModelForm, PasswordInput
 
 from .models import GlobalSettings
 

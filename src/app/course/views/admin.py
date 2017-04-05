@@ -2,14 +2,16 @@ from django.contrib import messages
 from django.contrib.admin.views.decorators import staff_member_required
 from django.core.exceptions import ObjectDoesNotExist
 from django.db import transaction
-from django.shortcuts import render, redirect, get_object_or_404
+from django.shortcuts import get_object_or_404, redirect, render
+
+from app.quiz.models import Test
+from app.userprofile.models import UserGroup, UserProfile
 
 from ..forms import CourseForm, EditCourseForm
 from ..models import Course
-from ..util import generate_user_for_course as util_generate_user_for_course, create_hidden_group_for_course
+from ..util import generate_user_for_course as util_generate_user_for_course
+from ..util import create_hidden_group_for_course
 
-from app.userprofile.models import UserProfile, UserGroup
-from app.quiz.models import Test
 
 #
 # Course specific

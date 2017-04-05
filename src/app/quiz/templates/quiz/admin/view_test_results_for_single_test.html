@@ -95,6 +95,20 @@
                             <img class="top" src="{{ test_unit.outlinequestion.outline_drawing.url }}" />
                             <img class="bottom" src="{{ test_unit.outlinequestion.original_image.url }}" />
                         </div>
+                    {% elif test_unit|is_image_suggestion %}
+                                    <table class="table">
+                <tr>
+                    <td rowspan='{{ test_unit_results|length|add:"1"}}'>
+                        <div class="img-container">
+                            <img class="bottom" src="{{ test_unit.genericimage.image.url }}"/>
+
+                            <img class="top" id="average_img_{{ test_unit.id }}"
+                                 src=""/>
+
+                        </div>
+                    </td>
+                </tr>
+            </table>
 
                     {% elif test_unit|is_outline_solution_question %}
                         {{ test_unit.outlinesolutionquestion.outline_region }}
@@ -116,12 +130,12 @@
             <h3 class="panel-title">Answers</h3>
         </div>
 
-        {% if test_unit|is_outline_solution_question %}
+        {% if test_unit|is_image_suggestion %}
             <table class="table">
                 <tr>
                     <td rowspan='{{ test_unit_results|length|add:"1"}}'>
                         <div class="img-container">
-                            <img class="bottom" src="{{ test_unit.outlinesolutionquestion.original_image.url }}" />    
+                            <img class="bottom" src="{{ test_unit.genericimage.image.url }}" />    
                                 {% for test_unit_result in test_unit_results %}
                                     {% if test_unit_result.test_unit == test_unit %}
                                         <img class="top {{ test_unit.id }}" id="{{ forloop.counter}}" src="{{ test_unit_result.answer_image.url }}" alt="{{ test_unit_result.id }}"/>
@@ -142,10 +156,11 @@
                             </tr>
                         {% endif %}        
                     {% endfor %}  
+
             </table>
         {% endif %}
 
-        {% if not test_unit|is_outline_solution_question %}
+        {% if not test_unit|is_image_suggestion %}
         {% for test_unit_result in test_unit_results %}
             {% if test_unit_result.test_unit == test_unit %}
                 <div>
@@ -235,6 +250,7 @@
                                 </td>
                             </tr>
                         </table>
+
                     {% elif test_unit|is_multiple_choice_question %}
                         <b>Answered:</b> {{ test_unit_result.answer }}
                         <span class="badge">{{test_unit_result.score}}/{{test_unit_result.max_score}} points</span>
@@ -262,19 +278,7 @@
             <h3 class="panel-title">Average solution based on selected answers</h3>
         </div>
         {% if test_unit|is_outline_solution_question %}
-            <table class="table">
-                <tr>
-                    <td rowspan='{{ test_unit_results|length|add:"1"}}'>
-                        <div class="img-container">
-                            <img class="bottom" src="{{ test_unit.outlinesolutionquestion.original_image.url }}"/>
 
-                            <img class="top" id="average_img_{{ test_unit.id }}"
-                                 src=""/>
-
-                        </div>
-                    </td>
-                </tr>
-            </table>
         {% endif %}
     </div>
 </div>

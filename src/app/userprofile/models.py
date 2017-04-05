@@ -4,7 +4,6 @@ from django.db.models import signals
 
 
 class UserGroupManager(models.Manager):
-
     def hidden(self):
         return super(UserGroupManager, self).filter(is_hidden=True)
 
@@ -41,6 +40,10 @@ class UserProfile(models.Model):
 
     class Meta:
         ordering = ["user__username"]
+
+    @property
+    def email(self):
+        return self.user.email
 
 
 def delete_user(sender, instance=None, **kwargs):

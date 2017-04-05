@@ -5,6 +5,8 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = '*j2k_e8@7p3bn!=+(@=ge@6l0$uvb*qvy_wxd!3ncj^3h-wkgz'
 
+BASE_URL = 'http://localhost:8000'
+
 ALLOWED_HOSTS = ['*']
 
 INSTALLED_APPS = [

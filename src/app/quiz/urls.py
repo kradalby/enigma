@@ -1,4 +1,4 @@
-from django.conf.urls import url, include
+from django.conf.urls import url
 
 from .views import admin, site
 
@@ -13,6 +13,7 @@ urlpatterns = [
     url(r'^result/delete/(?P<test_result_id>\d+)/$',
         site.delete_test_result,
         name='delete_test_result'),
+    url(r'^rate/$', site.rate_picture, name='rate_picture'),
 
     # Admin
     url(r'^admin/new/$', admin.new_test, name='admin_new_test'),
@@ -22,6 +23,9 @@ urlpatterns = [
     url(r'^admin/(?P<test_id>\d+)/$',
         admin.add_questions_to_test,
         name='admin_add_questions_to_test'),
+    url(r'^admin/email/(?P<test_id>\d+)/$',
+        admin.send_email_to_participants_of_test,
+        name='admin_send_email_to_participants_of_test'),
     url(r'^admin/(?P<test_id>\d+)/$',
         admin.add_questions_to_test,
         name='admin_view_test'),
@@ -146,6 +150,12 @@ urlpatterns = [
     url(r'^admin/(?P<test_id>\d+)/landmark/draw/(?P<question_id>\d+)/$',
         admin.draw_landmark,
         name='admin_draw_landmark'),
+    url(r'^admin/(?P<image_id>\d+)/landmark/draw/image/$',
+        admin.draw_landmark_from_image,
+        name='admin_draw_landmark_from_image'),
+    url(r'^admin/(?P<image_id>\d+)/landmark/draw/image/(?P<question_id>\d+)/$',
+        admin.draw_landmark_from_image,
+        name='admin_draw_landmark_from_image'),
     url(r'^admin/(?P<test_id>\d+)/landmark/(?P<question_id>\d+)/delete/$',
         admin.delete_landmark_question_from_test,
         name='admin_delete_landmark_question_from_test'),
@@ -166,6 +176,12 @@ urlpatterns = [
     url(r'^admin/outline/draw/(?P<question_id>\d+)/$',
         admin.draw_outline,
         name='admin_edit_outline'),
+    url(r'^admin/(?P<image_id>\d+)/outline/draw/image/$',
+        admin.draw_outline_from_image,
+        name='admin_draw_outline_from_image'),
+    url(r'^admin/(?P<image_id>\d+)/outline/draw/image/(?P<question_id>\d+)/$',
+        admin.draw_outline_from_image,
+        name='admin_draw_outline_from_image'),
     url(r'^admin/(?P<question_id>\d+)/outline/draw/(?P<test_id>\d+)/$',
         admin.draw_outline,
         name='admin_draw_outline'),
@@ -207,4 +223,25 @@ urlpatterns = [
     url(r'^admin/outline_solution_to_outline/(?P<question_id>\d+)/(?P<test_result_id>\d+)/$',
         admin.create_outline_from_outline_solution,
         name='admin_create_outline_from_outline_solution'),
+
+    # Image
+    url(r'^admin/image/new/$',
+        admin.new_generic_image,
+        name='admin_new_generic_image'),
+    url(r'^admin/image/$', admin.image_overview, name='admin_image_overview'),
+    url(r'^admin/image/expert/overview/(?P<image_id>\d+)/$',
+        admin.image_expert_overview,
+        name='admin_image_expert_overview'),
+    url(r'^admin/(?P<test_id>\d+)/image/(?P<question_id>\d+)/delete/$',
+        admin.delete_image_suggestion_from_test,
+        name='admin_delete_image_suggestion_from_test'),
+    url(r'^admin/(?P<test_id>\d+)/image/$',
+        admin.add_image_suggestion_to_test,
+        name='admin_add_image_suggestion_to_test'),
+    url(r'^admin/image/add/(?P<test_id>\d+)/$',
+        admin.list_image_suggestion_not_in_test,
+        name='admin_list_image_suggestion_not_in_test'),
+    url(r'^admin/image/delete/(?P<question_id>\d+)/$',
+        admin.delete_image_suggestion,
+        name='admin_delete_image_suggestion'),
 ]

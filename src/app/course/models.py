@@ -12,3 +12,7 @@ class Course(models.Model):
 
     class Meta:
         ordering = ['name']
+
+    @property
+    def get_users(self):
+        return [user for group in self.groups.all() for user in group.users()]
