@@ -55,9 +55,10 @@
         <span aria-hidden="true">&laquo;</span>
       </a>
     </li>
-    {% for test_unit in test_units %}
+        {% for test_unit in test_units %}
     <li>
         <a id="{{ forloop.counter }}" class="navigation" href="#">Q{{ forloop.counter }}</a>
+        <input type="hidden" class="test_unit_id" value={{ test_unit.id }}>
     </li>
     {% endfor %}
     <li>
@@ -123,7 +124,7 @@
                             <img class="bottom" src="{{ test_unit.outlinesolutionquestion.original_image.url }}" />    
                                 {% for test_unit_result in test_unit_results %}
                                     {% if test_unit_result.test_unit == test_unit %}
-                                        <img class="top" id="{{ forloop.counter}}" src="{{ test_unit_result.answer_image.url }}" />       
+                                        <img class="top {{ test_unit.id }}" id="{{ forloop.counter}}" src="{{ test_unit_result.answer_image.url }}" alt="{{ test_unit_result.id }}"/>
                                     {% endif %}
                                 {% endfor %}
                         </div>
@@ -136,6 +137,7 @@
                                 <td>
                                     <input type="checkbox" class="user-solution-checkbox" id="{{ forloop.counter}}" checked>
                                     <a class="btn btn-primary" href="{% url 'admin_create_outline_from_outline_solution' test_unit.id test_unit_result.id %}"> Create outline </a>
+                                    <input type="hidden" class={{ forloop.counter }} value={{ test_unit_result.id }}>
                                 </td>
                             </tr>
                         {% endif %}        
@@ -249,10 +251,46 @@
         {% endfor %}
         {% endif %}
     </div>
+
+
+
+
+
+
+    <div class="panel panel-info">
+        <div class="panel-heading">
+            <h3 class="panel-title">Average solution based on selected answers</h3>
+        </div>
+        {% if test_unit|is_outline_solution_question %}
+            <table class="table">
+                <tr>
+                    <td rowspan='{{ test_unit_results|length|add:"1"}}'>
+                        <div class="img-container">
+                            <img class="bottom" src="{{ test_unit.outlinesolutionquestion.original_image.url }}"/>
+
+                            <img class="top" id="average_img_{{ test_unit.id }}"
+                                 src=""/>
+
+                        </div>
+                    </td>
+                </tr>
+            </table>
+        {% endif %}
+    </div>
 </div>
+
+
+
+
+
+
+
+
+
+
+
 {% endfor %}
 {% endblock %}
-
 {% block end %}
 <script src="{% static "js/bootstrap-switch.min.js" %}"></script>
 <script>
@@ -299,6 +337,44 @@
             }
         }
     });
+
+    function getSelectedUserIds(testUnitId)
+            {
+                return $("."+testUnitId).map(function() {
+                    if (this.style.display != "none"){
+                        return this.alt;
+                    }
+                    else{return null}
+                }).get();
+            }
+
+    function requestCalculateAverage(testUnitId) {
+        var selectedUserIds = getSelectedUserIds(testUnitId);
+        if (selectedUserIds.length != 0){
+            //console.log(selectedUserIds);
+                $.ajax({
+                    type: "POST",
+                    url: '/test/admin/result/view/average_solution/',  //write your server url here...
+                    dataType: 'json',  //The data type expected of the server response.
+                    data: {
+                        csrfmiddlewaretoken: '{{ csrf_token }}',
+                        test_id: {{ test.id }},
+                        question_id: testUnitId,
+                        test_unit_result_ids: selectedUserIds
+                    },
+
+                    success: function(data) {
+                        myServerData = data;  //server response
+                        console.log(data);
+
+                        var img = document.getElementById("average_img_"+data.question_id);
+                        img.src = 'data:image/png;base64,' + data.encodend_img;
+                    }
+                });
+        }
+
+    }
+
     //Outline solution question
     $(".user-solution-checkbox").bootstrapSwitch({
         offColor : "danger",
@@ -307,10 +383,16 @@
         offText : "Hide",
         onSwitchChange : function(event, state) {
             var img = $(this).parent().parent().parent().parent().parent().find('img.top#'+this.id);
+            var testUnitId = $('li.active').find('input').val();
+
             if(state){ // SHOW
+                //send ajax request to calculate average on click event
                 img.show();
+                requestCalculateAverage(testUnitId);
             } else{
+                //send ajax request to calculate average on click event
                 img.hide();
+                requestCalculateAverage(testUnitId);
             }
         }
     });
