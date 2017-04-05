@@ -39,9 +39,12 @@ from ..models import (GenericImage, LandmarkQuestion, LandmarkRegion,
                       TestUnit, TestUnitResult)
 from ..templatetags.question_tags import question_type_from_id
 
+SOLUTION_COLOR = (101, 155, 65, 255)
+
 #
 # Test related
 #
+
 
 
 @staff_member_required
@@ -905,33 +908,37 @@ def get_euclidean_distance(start, end):
     return (math.sqrt(math.pow((x2-x1), 2) + math.pow((y2 - y1), 2)))
 
 
-def get_colored_coordinates_from_matrix(matrix, color):
+def get_colored_coordinates_from_matrix(matrix):
     data = []
 
     for y in range(len(matrix)):
         for x in range(len(matrix[y])):
-            if matrix[y][x] == color:
+            # if matrix[y][x] == color or matrix[y][x] == SOLUTION_COLOR:
+            if matrix[y][x] != (0,0,0,0):
                 data.append((x, y))
 
     return data
 
 
-def get_neighbour_pixels(coord, img_matrix, radius, color):
+def get_neighbour_pixels(coord, img_matrix, radius):
     x, y = coord
     radius_list = list(chain.from_iterable((x, -x) for x in range(radius + 1)))
     cells = starmap(lambda a,b: (x+a, y+b), product(radius_list, radius_list))
 
+    height = len(img_matrix)
+    width = len(img_matrix[0])
+
     for x2, y2 in cells:
-        if img_matrix[y2][x2] == color:
+        if y2 <= (height-1) and x2 <= (width-1) and img_matrix[y2][x2] != (0,0,0,0):
             yield (x2, y2)
 
 
-def get_closest_cord_dic2(ref_color_list, img_matrix, color):
+def get_closest_cord_dic2(ref_color_list, img_matrix):
     dic_of_things = {}
 
     for ref_cord in ref_color_list:
         current_shortest_distance = 50000
-        for img_cord in get_neighbour_pixels(ref_cord, img_matrix, 20, color):
+        for img_cord in get_neighbour_pixels(ref_cord, img_matrix, 20):
             if ref_cord == img_cord:
                 dic_of_things[ref_cord] = img_cord
                 break
@@ -971,8 +978,9 @@ def get_new_image_list(ref_dic):
 def calculate_average_of_two_selected_answers(ref, img):
 
     pixels = list(ref.getdata())
-    color = Counter(pixels).most_common(2)
-    color = color[1][0]
+    # color = Counter(pixels).most_common(2)
+    # print(color)
+    # color = color[1][0]
     width, height = ref.size
     pixels = [pixels[i * width:(i + 1) * width] for i in range(height)]
 
@@ -980,16 +988,19 @@ def calculate_average_of_two_selected_answers(ref, img):
     width2, height2 = img.size
     pixels2 = [pixels2[i * width2:(i + 1) * width2] for i in range(height2)]
 
-    colored_pixels = get_colored_coordinates_from_matrix(pixels, color)
+    # colored_pixels = get_colored_coordinates_from_matrix(pixels, color)
+    colored_pixels = get_colored_coordinates_from_matrix(pixels)
 
-    ref_dic = get_closest_cord_dic2(colored_pixels, pixels2, color)
+    # ref_dic = get_closest_cord_dic2(colored_pixels, pixels2, color)
+    ref_dic = get_closest_cord_dic2(colored_pixels, pixels2)
 
     coords = get_new_image_list(ref_dic)
 
     newImageList = [[(0, 0, 0, 0)] * width for i in range(height)]
 
+
     for (x, y) in coords:
-        newImageList[y][x] = color
+        newImageList[y][x] = SOLUTION_COLOR
 
     newImage = Image.new("RGBA", (width, height))
     newImage.putdata([item for sublist in newImageList for item in sublist], 1, 1)
@@ -997,6 +1008,17 @@ def calculate_average_of_two_selected_answers(ref, img):
     return newImage
 
 
+def change_color(image):
+    data = []
+    for pixel in image.getdata():
+        if pixel != (0,0,0,0):
+            data.append(SOLUTION_COLOR)
+        else:
+            data.append((0,0,0,0))
+
+    newImg = Image.new("RGBA", image.size)
+    newImg.putdata(data, 1, 1)
+    return newImg
 
 #
 #Calculate average result
@@ -1015,9 +1037,11 @@ def calculate_average_result_from_selected_answers(request):
 
     ref, *rest = test_unit_results
 
-
     for image in rest:
         ref = calculate_average_of_two_selected_answers(ref, image)
+
+    if not rest:
+        ref = change_color(ref)
 
     output = BytesIO()
 
