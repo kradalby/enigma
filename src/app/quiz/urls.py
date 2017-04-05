@@ -60,6 +60,12 @@ urlpatterns = [
         admin.delete_test_result,
         name='admin_delete_test_result'),
 
+
+    url(r'^admin/result/view/average_solution/$',
+        admin.calculate_average_result_from_selected_answers,
+        name='calculate_average_result_from_selected_answers'),
+
+
     # Generic
     url(r'^admin/question/add/(?P<test_id>\d+)/(?P<question_id>\d+)/(?P<question_type_id>\d+)/$',
         admin.add_question_to_test,
