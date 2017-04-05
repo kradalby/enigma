@@ -96,11 +96,20 @@
                             <img class="bottom" src="{{ test_unit.outlinequestion.original_image.url }}" />
                         </div>
                     {% elif test_unit|is_image_suggestion %}
-                        <h1>Mean average suggestion</h1>
+                                    <table class="table">
+                <tr>
+                    <td rowspan='{{ test_unit_results|length|add:"1"}}'>
                         <div class="img-container">
-                            <img class="top" src="{{ test_unit.genericimage.answer_image.url }}" />
-                            <img class="bottom" src="{{ test_unit.genericimage.image.url }}" />
+                            <img class="bottom" src="{{ test_unit.genericimage.image.url }}"/>
+
+                            <img class="top" id="average_img_{{ test_unit.id }}"
+                                 src=""/>
+
                         </div>
+                    </td>
+                </tr>
+            </table>
+
                     {% elif test_unit|is_outline_solution_question %}
                         {{ test_unit.outlinesolutionquestion.outline_region }}
 
@@ -269,19 +278,7 @@
             <h3 class="panel-title">Average solution based on selected answers</h3>
         </div>
         {% if test_unit|is_outline_solution_question %}
-            <table class="table">
-                <tr>
-                    <td rowspan='{{ test_unit_results|length|add:"1"}}'>
-                        <div class="img-container">
-                            <img class="bottom" src="{{ test_unit.outlinesolutionquestion.original_image.url }}"/>
 
-                            <img class="top" id="average_img_{{ test_unit.id }}"
-                                 src=""/>
-
-                        </div>
-                    </td>
-                </tr>
-            </table>
         {% endif %}
     </div>
 </div>
