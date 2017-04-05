@@ -11,6 +11,19 @@ from django.core.mail import send_mail
 from django.db import transaction
 from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse
+import math
+
+from ..forms import *
+from ..models import *
+from ..templatetags.question_tags import question_type_from_id
+from django.http import JsonResponse
+
+from PIL import Image
+from PIL import ImageDraw
+from datetime import datetime
+from collections import Counter
+from itertools import product, starmap, chain
+from io import BytesIO
 
 from app.userprofile.models import UserProfile
 from app.userprofile.views.users import view_user
@@ -882,6 +895,147 @@ def view_test_results_for_single_test(request, test_id):
                       "test_units": test_units,
                       "test_unit_results": test_unit_results
                   })
+
+
+def get_euclidean_distance(start, end):
+
+    (x1, y1) = start
+    (x2, y2) = end
+
+    return (math.sqrt(math.pow((x2-x1), 2) + math.pow((y2 - y1), 2)))
+
+
+def get_colored_coordinates_from_matrix(matrix, color):
+    data = []
+
+    for y in range(len(matrix)):
+        for x in range(len(matrix[y])):
+            if matrix[y][x] == color:
+                data.append((x, y))
+
+    return data
+
+
+def get_neighbour_pixels(coord, img_matrix, radius, color):
+    x, y = coord
+    radius_list = list(chain.from_iterable((x, -x) for x in range(radius + 1)))
+    cells = starmap(lambda a,b: (x+a, y+b), product(radius_list, radius_list))
+
+    for x2, y2 in cells:
+        if img_matrix[y2][x2] == color:
+            yield (x2, y2)
+
+
+def get_closest_cord_dic2(ref_color_list, img_matrix, color):
+    dic_of_things = {}
+
+    for ref_cord in ref_color_list:
+        current_shortest_distance = 50000
+        for img_cord in get_neighbour_pixels(ref_cord, img_matrix, 20, color):
+            if ref_cord == img_cord:
+                dic_of_things[ref_cord] = img_cord
+                break
+
+            euclidean_distance = get_euclidean_distance(ref_cord, img_cord)
+
+            if current_shortest_distance > euclidean_distance:
+                dic_of_things[ref_cord] = img_cord
+                current_shortest_distance = euclidean_distance
+
+    return dic_of_things
+
+
+def midpointformula(start, end):
+    (x1, y1) = start
+    (x2, y2) = end
+
+    x3 = ((x1 + x2) / 2)
+    y3 = ((y1 + y2) / 2)
+
+    average = (int(x3), int(y3))
+
+    return average
+
+
+def get_new_image_list(ref_dic):
+    list_of_things = []
+
+    for key, value in ref_dic.items():
+        list_of_things.append(midpointformula(key, value))
+
+    #print(ref_dic)
+
+    return list_of_things
+
+
+def calculate_average_of_two_selected_answers(ref, img):
+
+    pixels = list(ref.getdata())
+    color = Counter(pixels).most_common(2)
+    color = color[1][0]
+    width, height = ref.size
+    pixels = [pixels[i * width:(i + 1) * width] for i in range(height)]
+
+    pixels2 = list(img.getdata())
+    width2, height2 = img.size
+    pixels2 = [pixels2[i * width2:(i + 1) * width2] for i in range(height2)]
+
+    colored_pixels = get_colored_coordinates_from_matrix(pixels, color)
+
+    ref_dic = get_closest_cord_dic2(colored_pixels, pixels2, color)
+
+    coords = get_new_image_list(ref_dic)
+
+    newImageList = [[(0, 0, 0, 0)] * width for i in range(height)]
+
+    for (x, y) in coords:
+        newImageList[y][x] = color
+
+    newImage = Image.new("RGBA", (width, height))
+    newImage.putdata([item for sublist in newImageList for item in sublist], 1, 1)
+
+    return newImage
+
+
+
+#
+#Calculate average result
+#
+@staff_member_required
+def calculate_average_result_from_selected_answers(request):
+
+    test_id = request.POST.get('test_id')
+    question_id = request.POST.get('question_id')
+    test_unit_result_ids = request.POST.getlist('test_unit_result_ids[]')
+
+    #print(test_unit_result_ids)
+
+
+    test_unit_results = [Image.open(x.answer_image) for x in TestUnitResult.objects.filter(pk__in=[int(i) for i in test_unit_result_ids])]
+
+    ref, *rest = test_unit_results
+
+
+    for image in rest:
+        ref = calculate_average_of_two_selected_answers(ref, image)
+
+    output = BytesIO()
+
+    ref.save(output, "PNG")
+    contents = output.getvalue()
+    output.close()
+    img_str = base64.b64encode(contents).decode("utf-8")
+
+
+    data = {
+        'test_id': test_id,
+        'question_id': question_id,
+        'encodend_img': img_str
+    }
+
+    return JsonResponse(data)
+
+
 
 
 @staff_member_required
