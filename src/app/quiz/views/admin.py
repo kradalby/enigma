@@ -11,6 +11,21 @@ from django.core.mail import send_mail
 from django.db import transaction
 from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse
+from django.http import HttpResponseRedirect
+
+import math
+
+from ..forms import *
+from ..models import *
+from ..templatetags.question_tags import question_type_from_id
+from django.http import JsonResponse
+
+from PIL import Image
+from PIL import ImageDraw
+from datetime import datetime
+from collections import Counter
+from itertools import product, starmap, chain
+from io import BytesIO
 
 from app.userprofile.models import UserProfile
 from app.userprofile.views.users import view_user
@@ -26,9 +41,12 @@ from ..models import (GenericImage, LandmarkQuestion, LandmarkRegion,
                       TestUnit, TestUnitResult)
 from ..templatetags.question_tags import question_type_from_id
 
+SOLUTION_COLOR = (101, 155, 65, 255)
+
 #
 # Test related
 #
+
 
 
 @staff_member_required
@@ -106,8 +124,6 @@ Teamname
             request,
             'Something went wrong sending the message, contact the system administrator.'
         )
-
-    print(TO)
 
     return redirect(add_questions_to_test, test.id)
 
@@ -689,6 +705,8 @@ def draw_outline(request, question_id, test_id=None):
                    'question': question})
 
 
+
+
 @staff_member_required
 @transaction.atomic
 def draw_outline_from_image(request, image_id, question_id=None):
@@ -884,6 +902,168 @@ def view_test_results_for_single_test(request, test_id):
                   })
 
 
+def get_euclidean_distance(start, end):
+
+    (x1, y1) = start
+    (x2, y2) = end
+
+    return (math.sqrt(math.pow((x2-x1), 2) + math.pow((y2 - y1), 2)))
+
+
+def get_colored_coordinates_from_matrix(matrix):
+    data = []
+
+    for y in range(len(matrix)):
+        for x in range(len(matrix[y])):
+            # if matrix[y][x] == color or matrix[y][x] == SOLUTION_COLOR:
+            if matrix[y][x] != (0,0,0,0):
+                data.append((x, y))
+
+    return data
+
+
+def get_neighbour_pixels(coord, img_matrix, radius):
+    x, y = coord
+    radius_list = list(chain.from_iterable((x, -x) for x in range(radius + 1)))
+    cells = starmap(lambda a,b: (x+a, y+b), product(radius_list, radius_list))
+
+    height = len(img_matrix)
+    width = len(img_matrix[0])
+
+    for x2, y2 in cells:
+        if y2 <= (height-1) and x2 <= (width-1) and img_matrix[y2][x2] != (0,0,0,0):
+            yield (x2, y2)
+
+
+def get_closest_cord_dic2(ref_color_list, img_matrix):
+    dic_of_things = {}
+
+    for ref_cord in ref_color_list:
+        current_shortest_distance = 50000
+        for img_cord in get_neighbour_pixels(ref_cord, img_matrix, 20):
+            if ref_cord == img_cord:
+                dic_of_things[ref_cord] = img_cord
+                break
+
+            euclidean_distance = get_euclidean_distance(ref_cord, img_cord)
+
+            if current_shortest_distance > euclidean_distance:
+                dic_of_things[ref_cord] = img_cord
+                current_shortest_distance = euclidean_distance
+
+    return dic_of_things
+
+
+def midpointformula(start, end):
+    (x1, y1) = start
+    (x2, y2) = end
+
+    x3 = ((x1 + x2) / 2)
+    y3 = ((y1 + y2) / 2)
+
+    average = (int(x3), int(y3))
+
+    return average
+
+
+def get_new_image_list(ref_dic):
+    list_of_things = []
+
+    for key, value in ref_dic.items():
+        list_of_things.append(midpointformula(key, value))
+
+    #print(ref_dic)
+
+    return list_of_things
+
+
+def calculate_average_of_two_selected_answers(ref, img):
+
+    pixels = list(ref.getdata())
+    # color = Counter(pixels).most_common(2)
+    # print(color)
+    # color = color[1][0]
+    width, height = ref.size
+    pixels = [pixels[i * width:(i + 1) * width] for i in range(height)]
+
+    pixels2 = list(img.getdata())
+    width2, height2 = img.size
+    pixels2 = [pixels2[i * width2:(i + 1) * width2] for i in range(height2)]
+
+    # colored_pixels = get_colored_coordinates_from_matrix(pixels, color)
+    colored_pixels = get_colored_coordinates_from_matrix(pixels)
+
+    # ref_dic = get_closest_cord_dic2(colored_pixels, pixels2, color)
+    ref_dic = get_closest_cord_dic2(colored_pixels, pixels2)
+
+    coords = get_new_image_list(ref_dic)
+
+    newImageList = [[(0, 0, 0, 0)] * width for i in range(height)]
+
+
+    for (x, y) in coords:
+        newImageList[y][x] = SOLUTION_COLOR
+
+    newImage = Image.new("RGBA", (width, height))
+    newImage.putdata([item for sublist in newImageList for item in sublist], 1, 1)
+
+    return newImage
+
+
+def change_color(image):
+    data = []
+    for pixel in image.getdata():
+        if pixel != (0,0,0,0):
+            data.append(SOLUTION_COLOR)
+        else:
+            data.append((0,0,0,0))
+
+    newImg = Image.new("RGBA", image.size)
+    newImg.putdata(data, 1, 1)
+    return newImg
+
+#
+#Calculate average result
+#
+@staff_member_required
+def calculate_average_result_from_selected_answers(request):
+
+    test_id = request.POST.get('test_id')
+    question_id = request.POST.get('question_id')
+    test_unit_result_ids = request.POST.getlist('test_unit_result_ids[]')
+
+    #print(test_unit_result_ids)
+
+
+    test_unit_results = [Image.open(x.answer_image) for x in TestUnitResult.objects.filter(pk__in=[int(i) for i in test_unit_result_ids])]
+
+    ref, *rest = test_unit_results
+
+    for image in rest:
+        ref = calculate_average_of_two_selected_answers(ref, image)
+
+    if not rest:
+        ref = change_color(ref)
+
+    output = BytesIO()
+
+    ref.save(output, "PNG")
+    contents = output.getvalue()
+    output.close()
+    img_str = base64.b64encode(contents).decode("utf-8")
+
+
+    data = {
+        'test_id': test_id,
+        'question_id': question_id,
+        'encodend_img': img_str
+    }
+
+    return JsonResponse(data)
+
+
+
+
 @staff_member_required
 def delete_test_result(request, test_result_id):
     test_result = TestResult.objects.get(id=test_result_id)
@@ -983,3 +1163,65 @@ def image_expert_overview(request, image_id):
     return render(request, 'quiz/admin/image_expert_overview.html',
                   {'image': image,
                    'users': users})
+
+
+@staff_member_required
+@transaction.atomic
+def create_outline_from_image_suggestion(request, image_id):
+    image = get_object_or_404(GenericImage, id=image_id)
+
+    if request.method == 'POST':
+        dataUrlPattern = re.compile('data:image/(png|jpeg);base64,(.*)$')
+        image_data = request.POST.get('hidden-image-data')
+        try:
+            image_data = dataUrlPattern.match(image_data).group(2)
+        except AttributeError:
+            messages.error(request,
+                           'You can\'t leave any regions blank or empty.')
+            return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
+        if (image_data is None or len(image_data) == 0):
+            messages.error(request,
+                           'You can\'t leave any regions blank or empty.')
+            return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
+        image_data = base64.b64decode(image_data)
+        question = OutlineQuestion()
+        question.original_image = image.image
+        question.outline_drawing = ContentFile(
+            image_data,
+            'solution-' + os.path.basename(question.original_image.name))
+        question.save()
+        question.regions().delete()
+            
+        return redirect(draw_outline, question.pk)
+    return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
+
+
+@staff_member_required
+@transaction.atomic
+def create_landmark_from_image_suggestion(request, image_id):
+    image = get_object_or_404(GenericImage, id=image_id)
+
+    if request.method == 'POST':
+        dataUrlPattern = re.compile('data:image/(png|jpeg);base64,(.*)$')
+        image_data = request.POST.get('hidden-image-data')
+        try:
+            image_data = dataUrlPattern.match(image_data).group(2)
+        except AttributeError:
+            messages.error(request,
+                           'You can\'t leave any regions blank or empty.')
+            return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
+        if (image_data is None or len(image_data) == 0):
+            messages.error(request,
+                           'You can\'t leave any regions blank or empty.')
+            return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
+        image_data = base64.b64decode(image_data)
+        question = LandmarkQuestion()
+        question.original_image = image.image
+        question.outline_drawing = ContentFile(
+            image_data,
+            'solution-' + os.path.basename(question.original_image.name))
+        question.save()
+        question.regions().delete()
+
+        return redirect(draw_landmark, question.pk)
+    return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
