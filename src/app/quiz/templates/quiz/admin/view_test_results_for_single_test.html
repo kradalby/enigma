@@ -105,6 +105,19 @@
                             <img class="top" id="average_img_{{ test_unit.id }}"
                                  src=""/>
 
+                            <form action="" method="post" enctype="multipart/form-data">
+                                {% csrf_token %}
+                                <div id="form-div">
+                                    
+                                </div>
+                                <hr/>
+                                <input type="hidden" name="hidden-image-data" id="hidden-image-data" />
+
+                                <input type="submit" class="btn btn-primary" value="Create outline question" formaction="{% url 'admin_create_outline_from_image_suggestion' test_unit.genericimage.pk %}"/>
+                                {% comment %}<input type="submit" class="btn btn-primary" value="Create landmark question" formaction="{% url 'admin_create_landmark_from_image_suggestion' test_unit.genericimage.pk %}"/>{% endcomment %}
+
+                            </form>
+
                         </div>
                     </td>
                 </tr>
@@ -272,27 +285,6 @@
 
 
 
-
-    <div class="panel panel-info">
-        <div class="panel-heading">
-            <h3 class="panel-title">Average solution based on selected answers</h3>
-        </div>
-        {% if test_unit|is_outline_solution_question %}
-
-        {% endif %}
-    </div>
-</div>
-
-
-
-
-
-
-
-
-
-
-
 {% endfor %}
 {% endblock %}
 {% block end %}
@@ -371,8 +363,11 @@
                         myServerData = data;  //server response
                         console.log(data);
 
+                        inputField = document.getElementById("hidden-image-data")
+
                         var img = document.getElementById("average_img_"+data.question_id);
                         img.src = 'data:image/png;base64,' + data.encodend_img;
+                        inputField.value = 'data:image/png;base64,' + data.encodend_img;
                     }
                 });
         }

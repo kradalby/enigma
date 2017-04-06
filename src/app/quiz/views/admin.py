@@ -11,6 +11,8 @@ from django.core.mail import send_mail
 from django.db import transaction
 from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse
+from django.http import HttpResponseRedirect
+
 import math
 
 from ..forms import *
@@ -122,8 +124,6 @@ Teamname
             request,
             'Something went wrong sending the message, contact the system administrator.'
         )
-
-    print(TO)
 
     return redirect(add_questions_to_test, test.id)
 
@@ -705,6 +705,8 @@ def draw_outline(request, question_id, test_id=None):
                    'question': question})
 
 
+
+
 @staff_member_required
 @transaction.atomic
 def draw_outline_from_image(request, image_id, question_id=None):
@@ -1161,3 +1163,65 @@ def image_expert_overview(request, image_id):
     return render(request, 'quiz/admin/image_expert_overview.html',
                   {'image': image,
                    'users': users})
+
+
+@staff_member_required
+@transaction.atomic
+def create_outline_from_image_suggestion(request, image_id):
+    image = get_object_or_404(GenericImage, id=image_id)
+
+    if request.method == 'POST':
+        dataUrlPattern = re.compile('data:image/(png|jpeg);base64,(.*)$')
+        image_data = request.POST.get('hidden-image-data')
+        try:
+            image_data = dataUrlPattern.match(image_data).group(2)
+        except AttributeError:
+            messages.error(request,
+                           'You can\'t leave any regions blank or empty.')
+            return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
+        if (image_data is None or len(image_data) == 0):
+            messages.error(request,
+                           'You can\'t leave any regions blank or empty.')
+            return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
+        image_data = base64.b64decode(image_data)
+        question = OutlineQuestion()
+        question.original_image = image.image
+        question.outline_drawing = ContentFile(
+            image_data,
+            'solution-' + os.path.basename(question.original_image.name))
+        question.save()
+        question.regions().delete()
+            
+        return redirect(draw_outline, question.pk)
+    return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
+
+
+@staff_member_required
+@transaction.atomic
+def create_landmark_from_image_suggestion(request, image_id):
+    image = get_object_or_404(GenericImage, id=image_id)
+
+    if request.method == 'POST':
+        dataUrlPattern = re.compile('data:image/(png|jpeg);base64,(.*)$')
+        image_data = request.POST.get('hidden-image-data')
+        try:
+            image_data = dataUrlPattern.match(image_data).group(2)
+        except AttributeError:
+            messages.error(request,
+                           'You can\'t leave any regions blank or empty.')
+            return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
+        if (image_data is None or len(image_data) == 0):
+            messages.error(request,
+                           'You can\'t leave any regions blank or empty.')
+            return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
+        image_data = base64.b64decode(image_data)
+        question = LandmarkQuestion()
+        question.original_image = image.image
+        question.outline_drawing = ContentFile(
+            image_data,
+            'solution-' + os.path.basename(question.original_image.name))
+        question.save()
+        question.regions().delete()
+
+        return redirect(draw_landmark, question.pk)
+    return HttpResponseRedirect(request.META.get('HTTP_REFERER'))

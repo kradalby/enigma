@@ -168,6 +168,10 @@ urlpatterns = [
     url(r'^admin/landmark/delete/(?P<question_id>\d+)/$',
         admin.delete_landmark_question,
         name='admin_delete_landmark_question'),
+    url(r'^admin/outline/create_landmark_from_image_suggestion/(?P<image_id>\d+)/$',
+        admin.create_landmark_from_image_suggestion,
+        name='admin_create_landmark_from_image_suggestion'),
+
 
     # OUTLINE
     url(r'^admin/outline/new/$',
@@ -197,6 +201,9 @@ urlpatterns = [
     url(r'^admin/outline/delete/(?P<question_id>\d+)/$',
         admin.delete_outline_question,
         name='admin_delete_outline_question'),
+    url(r'^admin/outline/create_outline_from_image_suggestion/(?P<image_id>\d+)/$',
+        admin.create_outline_from_image_suggestion,
+        name='admin_create_outline_from_image_suggestion'),
 
     # OUTLINE SOLUTION
     url(r'^admin/outlinesolution/new/$',
