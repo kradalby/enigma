@@ -163,7 +163,7 @@
                                 <td>{{ test_unit_result.test_result.user }}'s answer:</td>
                                 <td>
                                     <input type="checkbox" class="user-solution-checkbox" id="{{ forloop.counter}}" checked>
-                                    <a class="btn btn-primary" href="{% url 'admin_create_outline_from_outline_solution' test_unit.id test_unit_result.id %}"> Create outline </a>
+                                    {% comment %}<a class="btn btn-primary" href="{% url 'admin_create_outline_from_outline_solution' test_unit.id test_unit_result.id %}"> Create outline </a>{% endcomment %}
                                     <input type="hidden" class={{ forloop.counter }} value={{ test_unit_result.id }}>
                                 </td>
                             </tr>
