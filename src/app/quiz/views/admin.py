@@ -273,10 +273,15 @@ def _generic_new_question(request, form_type):
         form = form_type(request.POST, request.FILES)
         if form.is_valid():
             question = form.save()
+            messages.success(request, 'Successfully created new question: %s.' % question)
+            return redirect(list_questions)
+    else:
+        form = form_type()
 
-            messages.success(
-                request, 'Successfully created new question: %s.' % question)
-
+    return render(request, 'quiz/admin/new_question.html', {
+        'form': form
+    })
+    
 
 @staff_member_required
 def _generic_edit_question(request,
