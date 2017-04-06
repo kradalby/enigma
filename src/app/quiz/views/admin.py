@@ -1112,7 +1112,7 @@ def new_generic_image(request):
         form = GenericImageForm(request.POST, request.FILES)
         if form.is_valid():
             image = form.save()
-            return redirect(draw_suggestion, image.id)
+            return redirect(image_overview)
     else:
         form = GenericImageForm()
 
