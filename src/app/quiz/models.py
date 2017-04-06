@@ -270,8 +270,8 @@ class OutlineSolutionQuestion(TestUnit):
 class GenericImage(TestUnit):
     image = models.ImageField()
     name = models.CharField(max_length=200)
-    machine = models.CharField(max_length=200)
-    reconstruction_method = models.CharField(max_length=200)
+    machine = models.CharField(max_length=200, blank=True)
+    reconstruction_method = models.CharField(max_length=200, blank=True)
 
     @property
     def rating(self):

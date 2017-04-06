@@ -101,9 +101,23 @@
                     <td rowspan='{{ test_unit_results|length|add:"1"}}'>
                         <div class="img-container">
                             <img class="bottom" src="{{ test_unit.genericimage.image.url }}"/>
+                            <div id="spinner_container" ></div>
 
                             <img class="top" id="average_img_{{ test_unit.id }}"
                                  src=""/>
+
+                            <form action="" method="post" enctype="multipart/form-data">
+                                {% csrf_token %}
+                                <div id="form-div">
+                                    
+                                </div>
+                                <hr/>
+                                <input type="hidden" name="hidden-image-data" id="hidden-image-data" />
+
+                                <input type="submit" class="btn btn-primary" value="Create outline question" formaction="{% url 'admin_create_outline_from_image_suggestion' test_unit.genericimage.pk %}"/>
+                                {% comment %}<input type="submit" class="btn btn-primary" value="Create landmark question" formaction="{% url 'admin_create_landmark_from_image_suggestion' test_unit.genericimage.pk %}"/>{% endcomment %}
+
+                            </form>
 
                         </div>
                     </td>
@@ -150,7 +164,7 @@
                                 <td>{{ test_unit_result.test_result.user }}'s answer:</td>
                                 <td>
                                     <input type="checkbox" class="user-solution-checkbox" id="{{ forloop.counter}}" checked>
-                                    <a class="btn btn-primary" href="{% url 'admin_create_outline_from_outline_solution' test_unit.id test_unit_result.id %}"> Create outline </a>
+                                    {% comment %}<a class="btn btn-primary" href="{% url 'admin_create_outline_from_outline_solution' test_unit.id test_unit_result.id %}"> Create outline </a>{% endcomment %}
                                     <input type="hidden" class={{ forloop.counter }} value={{ test_unit_result.id }}>
                                 </td>
                             </tr>
@@ -160,7 +174,6 @@
 
             <td>
                 <button class="btn btn-primary" id="calculate_avg">Calculate average solution</button>
-                <div id="spinner_test"></div>
             </td>
 
 
@@ -280,6 +293,7 @@
     </div>
 </div>
 
+
 {% endfor %}
 {% endblock %}
 {% block end %}
@@ -340,9 +354,28 @@
                 }).get();
             }
 
+
+    var opts = {
+        lines: 13,
+        length: 28,
+        width: 8,
+        radius: 20,
+        scale: 1,
+        color: '#fff', // #rgb or #rrggbb or array of colors
+        top: '40%',
+        left: '50%',
+        position: 'absolute'
+    };
+
+    var spinner = new Spinner(opts);
+
     function requestCalculateAverage(testUnitId) {
         var selectedUserIds = getSelectedUserIds(testUnitId);
+
         if (selectedUserIds.length != 0){
+             $("#calculate_avg").attr("disabled", true);
+             var target = document.getElementById("spinner_container");
+            spinner.spin(target);
             //console.log(selectedUserIds);
                 $.ajax({
                     type: "POST",
@@ -359,8 +392,12 @@
                         myServerData = data;  //server response
                         console.log(data);
 
+                        inputField = document.getElementById("hidden-image-data");
+
                         var img = document.getElementById("average_img_"+data.question_id);
                         img.src = 'data:image/png;base64,' + data.encodend_img;
+                        inputField.value = 'data:image/png;base64,' + data.encodend_img;
+
                     },
                     complete: function () {
                         $("#calculate_avg").attr("disabled", false);
@@ -369,28 +406,11 @@
                     }
                 });
         }
-
     }
-
-    var opts = {
-        lines: 13,
-        length: 28,
-        width: 8,
-        radius: 20,
-        scale: 1,
-        color: '#fff', // #rgb or #rrggbb or array of colors
-        top: '45%',
-        left: '40%',
-        position: 'absolute'
-    };
-    var target = document.getElementById('spinner_test');
-    var spinner = new Spinner(opts);
 
     $( "#calculate_avg" ).click(function() {
         var testUnitId = $('li.active').find('input').val();
         requestCalculateAverage(testUnitId);
-        $("#calculate_avg").attr("disabled", true);
-        spinner.spin(target);
 
     });
 
