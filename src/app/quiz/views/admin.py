@@ -1005,9 +1005,13 @@ def calculate_average_of_two_selected_answers(ref, img):
 
     newImageList = [[(0, 0, 0, 0)] * width for i in range(height)]
 
-
     for (x, y) in coords:
-        newImageList[y][x] = SOLUTION_COLOR
+        if y <= (height -1) and x <= (width -1):
+            newImageList[y][x] = SOLUTION_COLOR
+            newImageList[y-1][x] = SOLUTION_COLOR
+            newImageList[y+1][x] = SOLUTION_COLOR
+            newImageList[y][x-1] = SOLUTION_COLOR
+            newImageList[y][x+1] = SOLUTION_COLOR
 
     newImage = Image.new("RGBA", (width, height))
     newImage.putdata([item for sublist in newImageList for item in sublist], 1, 1)
@@ -1038,6 +1042,7 @@ def calculate_average_result_from_selected_answers(request):
     test_unit_result_ids = request.POST.getlist('test_unit_result_ids[]')
 
     #print(test_unit_result_ids)
+
 
 
     test_unit_results = [Image.open(x.answer_image) for x in TestUnitResult.objects.filter(pk__in=[int(i) for i in test_unit_result_ids])]
