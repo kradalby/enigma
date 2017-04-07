@@ -30,10 +30,11 @@ init initialSeed width height =
             , correctQuestions = []
             , currentQuestion = Nothing
             , showAnswer = False
-            , numberOfQuestionsInputField = "0"
+            , numberOfQuestionsInputField = ""
             , error = Nothing
             , seed = Random.initialSeed initialSeed
             , image = Loading
+            , imageSize = Nothing
             , solution = Loading
             , clickData = initClickData
             , windowWidth = width
@@ -140,7 +141,10 @@ update msg model =
                         derp =
                             Debug.log "image" (Canvas.getSize canvas)
                     in
-                        ( { model | image = GotCanvas canvas }
+                        ( { model
+                            | image = GotCanvas canvas
+                            , imageSize = Just (Canvas.getSize canvas)
+                          }
                         , Cmd.none
                         )
 
@@ -318,7 +322,12 @@ checkAnswer model point =
                 GotCanvas canvas ->
                     let
                         imageSize =
-                            Canvas.getSize canvas
+                            case model.imageSize of
+                                Nothing ->
+                                    Canvas.getSize canvas
+
+                                Just size ->
+                                    size
 
                         canvasSize =
                             calculateImageSize imageSize.width imageSize.height model.windowWidth model.windowHeight

@@ -104,10 +104,18 @@ viewCanvas model =
                     GotCanvas canvas ->
                         let
                             imageSize =
-                                Canvas.getSize canvas
+                                case model.imageSize of
+                                    Nothing ->
+                                        Canvas.getSize canvas
+
+                                    Just size ->
+                                        size
 
                             canvasSize =
                                 calculateImageSize imageSize.width imageSize.height model.windowWidth model.windowHeight
+
+                            derp =
+                                Debug.log "canvasSize solution" canvasSize
                         in
                             (createDrawImage canvas canvasSize) :: model.clickData.draw
             else
@@ -117,10 +125,18 @@ viewCanvas model =
             GotCanvas canvas ->
                 let
                     imageSize =
-                        Canvas.getSize canvas
+                        case model.imageSize of
+                            Nothing ->
+                                Canvas.getSize canvas
+
+                            Just size ->
+                                size
 
                     canvasSize =
                         calculateImageSize imageSize.width imageSize.height model.windowWidth model.windowHeight
+
+                    derp =
+                        Debug.log "canvasSize image" canvasSize
                 in
                     Canvas.initialize canvasSize
                         |> Canvas.batch

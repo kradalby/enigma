@@ -42,6 +42,7 @@ type alias Model =
     , error : Maybe String
     , seed : Random.Seed
     , image : Image
+    , imageSize : Maybe Size
     , solution : Image
     , clickData : ClickData
     , windowWidth : Int
