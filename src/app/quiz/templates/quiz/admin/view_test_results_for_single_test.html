@@ -375,8 +375,7 @@
         if (selectedUserIds.length != 0){
              $("#calculate_avg").attr("disabled", true);
              var target = document.getElementById("spinner_container");
-            spinner.spin(target);
-            //console.log(selectedUserIds);
+             spinner.spin(target);
                 $.ajax({
                     type: "POST",
                     url: '/test/admin/result/view/average_solution/',  //write your server url here...
@@ -390,7 +389,7 @@
 
                     success: function(data) {
                         myServerData = data;  //server response
-                        console.log(data);
+                        //console.log(data);
 
                         inputField = document.getElementById("hidden-image-data");
 
