@@ -14,7 +14,7 @@ dev: ;@echo "-- Staring dev server"
 
 clean: ;@echo "-- Cleaning up dist files"
 	rm -rf dist/
-	rm -rf 1171*
+	rm -rf 117*.js
 
 install: ;@echo "-- Installing dependencies"
 	elm package install -y
