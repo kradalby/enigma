@@ -19,7 +19,7 @@ init initialSeed =
             , correctQuestions = []
             , currentQuestion = Nothing
             , showAnswer = False
-            , numberOfQuestionsInputField = "0"
+            , numberOfQuestionsInputField = ""
             , error = Nothing
             , seed = Random.initialSeed initialSeed
             }
