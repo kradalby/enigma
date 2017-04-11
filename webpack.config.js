@@ -46,9 +46,9 @@ module.exports = {
   },
 
   plugins: [
-    new CopyWebpackPlugin([
-      { from: 'src/assets', to: 'assets' },
-    ]),
+    // new CopyWebpackPlugin([
+    //   { from: 'src/assets', to: 'assets' },
+    // ]),
     new webpack.optimize.UglifyJsPlugin({
       compress: {
         warnings: false,
