@@ -1,6 +1,6 @@
 // require('./styles/reset.css');
-// require('./styles/main.css');
 require('materialize-css/sass/materialize.scss');
+require('./assets/css/styles.css');
 require('./index.html');
 
 var Elm = require('./Main.elm');
