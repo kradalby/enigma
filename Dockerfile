@@ -6,14 +6,15 @@ ENV APP_DIR=/srv/app
 RUN mkdir -p $APP_DIR
 WORKDIR $APP_DIR
 
-COPY requirements/base.txt $APP_DIR/base.txt
-COPY requirements/prod.txt $APP_DIR/prod.txt
-COPY lol.txt $APP_DIR/lol.txt
+COPY miic/requirements/base.txt $APP_DIR/base.txt
+COPY miic/requirements/prod.txt $APP_DIR/prod.txt
 
 RUN pip install -r $APP_DIR/prod.txt
 
 
-COPY src/. $APP_DIR
+COPY miic/src/. $APP_DIR
+RUN mkdir -p $APP_DIR/enigma_app
+COPY enigma/build/. $APP_DIR/enigma_app
 
 COPY docker-entrypoint.sh /docker-entrypoint.sh
 

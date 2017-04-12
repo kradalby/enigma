@@ -15,4 +15,5 @@ exec uwsgi --chdir=/srv/app \
     --offload-threads=4 \
     --static-map=/static=/srv/app/collected_static \
     --static-map=/media=/srv/app/media \
+    --static-map=/app=/srv/app/enigma_app \
     --vacuum
