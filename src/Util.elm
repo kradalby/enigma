@@ -131,7 +131,7 @@ calculateImageSize imageWidth imageHeight windowWidth windowHeight =
             if windowWidth > windowHeight then
                 let
                     canvasHeight =
-                        Basics.min (toFloat imageHeight) ((toFloat windowHeight) * 0.65)
+                        Basics.min (toFloat imageHeight) ((toFloat windowHeight) * 0.53)
 
                     canvasWidth =
                         canvasHeight * aspectRatioWidthHeight
