@@ -1,3 +1,6 @@
 [submodule "canvas"]
 	path = canvas
 	url = https://github.com/kradalby/elm-canvas.git
+[submodule "enigma/canvas"]
+	path = enigma/canvas
+	url = https://github.com/Elm-Canvas/elm-canvas.git
