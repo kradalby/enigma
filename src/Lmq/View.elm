@@ -5,10 +5,8 @@ import Lmq.Types exposing (..)
 import Html exposing (..)
 import Html.Events exposing (onInput, onClick)
 import Html.Attributes exposing (type_, checked, name, disabled, value, class, src, id, selected, for, href)
-import Util exposing (onEnter, viewErrorBox, viewSpinningLoader, viewProgressbar, calculateImageSize, percentageOfQuestionsLeft)
+import Util exposing (onEnter, viewErrorBox, viewSpinningLoader, viewProgressbar, calculateImageSize, percentageOfQuestionsLeft, createDrawImage)
 import Canvas exposing (Size, Error, DrawOp(..), DrawImageParams(..), Canvas)
-import Canvas.Point exposing (Point)
-import Canvas.Point as Point
 import Canvas.Events as Events
 
 
@@ -161,11 +159,6 @@ viewCanvas model =
 
             Loading ->
                 viewSpinningLoader
-
-
-createDrawImage : Canvas -> Size -> Canvas.DrawOp
-createDrawImage canvas canvasSize =
-    DrawImage canvas (Scaled (Point.fromInts ( 0, 0 )) canvasSize)
 
 
 viewResult : Model -> Html Msg

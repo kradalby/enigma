@@ -7,7 +7,9 @@ import Json.Decode exposing (Decoder, int, string, list, nullable)
 import Process
 import Time exposing (..)
 import Task
-import Canvas exposing (Size)
+import Canvas exposing (Size, Error, DrawOp(..), DrawImageParams(..), Canvas)
+import Canvas.Point exposing (Point)
+import Canvas.Point as Point
 
 
 -- Listen for enter
@@ -148,6 +150,11 @@ calculateImageSize imageWidth imageHeight windowWidth windowHeight =
                     ( canvasHeight, canvasWidth )
     in
         Size (round canvasWidth) (round canvasHeight)
+
+
+createDrawImage : Canvas -> Size -> Canvas.DrawOp
+createDrawImage canvas canvasSize =
+    DrawImage canvas (Scaled (Point.fromInts ( 0, 0 )) canvasSize)
 
 
 percentageOfQuestionsLeft : Bool -> Maybe a -> List a -> List a -> List a -> Float
