@@ -8,30 +8,23 @@ services:
     volumes:
       - ./docker/nginx.conf:/etc/nginx/conf.d/default.conf
     depends_on:
-      # - supersonic
       - turbo
       - elm
     links:
-      #      - supersonic
       - turbo
       - elm
-        #  supersonic:
-        #    image: node:latest
-        #    volumes:
-        #      - ./:/app
-        #    command: bash -c "cd /app; npm run dev"
-  turbo:
+  miic:
     build:
-        context: .
-        dockerfile: Dockerfile.dev
-    volumes:
-      - .:/srv/app
-  elm:
-    build:
-        context: ../elm-enigma
+        context: ./miic
         dockerfile: Dockerfile
     volumes:
-      - ../elm-enigma/:/srv/app
+      - ./miic/:/srv/app
+  enigma:
+    build:
+        context: ./enigma
+        dockerfile: Dockerfile
+    volumes:
+      - ./enigma/:/srv/app
     environment:
       - TMPDIR=/tmp/
     working_dir: /srv/app
