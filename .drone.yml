@@ -1,8 +1,9 @@
 pipeline:
-  frontend:
+  enigma:
     image: node:7.9.0
     pull: true
     commands:
+      - cd enigma
       - npm prune
       - npm install -g --silent elm
       - make install
@@ -10,11 +11,12 @@ pipeline:
       - mkdir -p src/assets
       - npm run build
 
-  backend:
+  miic:
     image: python:3.6.1
     environment:
       - DJANGO_SETTINGS_MODULE=settings.production
     commands:
+      - cd miic
       - pip install tox
       - tox
 
