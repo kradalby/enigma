@@ -4,10 +4,10 @@
   "description": "",
   "main": "src/index.js",
   "scripts": {
-    "build": "webpack",
+    "build": "cross-env NODE_ENV=production webpack",
     "watch": "webpack -w",
-    "dev": "webpack-dev-server --hot --port 8000",
-    "dev-pub": "webpack-dev-server --hot --port 8000 --host 0.0.0.0",
+    "dev": "cross-env NODE_ENV=development webpack-dev-server --hot --port 8000",
+    "dev-pub": "cross-env NODE_ENV=development webpack-dev-server --hot --port 8000 --host 0.0.0.0",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -23,17 +23,18 @@
   "homepage": "https://github.com/kradalby/elm-enigma",
   "devDependencies": {
     "copy-webpack-plugin": "^4.0.1",
-    "css-loader": "^0.26.2",
+    "cross-env": "^4.0.0",
+    "css-loader": "^0.28.0",
     "elm-hot-loader": "^0.5.4",
-    "elm-webpack-loader": "^4.2.0",
-    "file-loader": "^0.10.1",
-    "materialize-css": "^0.98.0",
-    "node-sass": "^4.5.0",
-    "sass-loader": "^6.0.2",
-    "style-loader": "^0.13.2",
+    "elm-webpack-loader": "^4.3.0",
+    "file-loader": "^0.11.1",
+    "materialize-css": "^0.98.1",
+    "node-sass": "^4.5.2",
+    "sass-loader": "^6.0.3",
+    "style-loader": "^0.16.1",
     "url-loader": "^0.5.8",
-    "webpack": "^2.2.1",
+    "webpack": "^2.3.3",
     "webpack-dev-middleware": "^1.10.1",
-    "webpack-dev-server": "^2.4.1"
+    "webpack-dev-server": "^2.4.2"
   }
 }
