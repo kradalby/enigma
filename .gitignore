@@ -1,5 +1,12 @@
 
+media/
+postgres
+117*.js
+
+
 # Created by https://www.gitignore.io/api/vim,linux,osx,vim,python,elm,node,javascript,code
+
+
 
 ### Code ###
 # Visual Studio Code - https://code.visualstudio.com/
