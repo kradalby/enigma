@@ -7,7 +7,10 @@ fix_module_canvas:
 	perl -pi -E 's/elm\_canvas\$$elm\_canvas/kradalby\$$elm\_enigma/g' $(ENIGMA)/canvas/src/Native/Canvas.js
 
 fix_sass_bin_in_docker:
-	docker-compose  run --entrypoint="bash -c" elm "/usr/local/bin/npm install --force node-sass elm"
+	docker-compose  run --entrypoint="bash -c" enigma "/usr/local/bin/npm install --force node-sass elm"
+
+npm_install:
+	docker-compose  run --entrypoint="bash -c" enigma "/usr/local/bin/npm install"
 
 
 # MIIC
@@ -31,9 +34,9 @@ dev:
 prod:
 	$(PIP) install -r $(MIIC)requirements/prod.txt --upgrade
 
-init:
-	tar xJvf media.tar.xz --directory $(ENIGMA_SRC)
-	tar xJvf postgres.tar.xz --directory $(ENIGMA_SRC)
+init_db_media:
+	tar xJvf $(MIIC)/media.tar.xz --directory $(MIIC_SRC)
+	tar xJvf $(MIIC)/postgres.tar.xz --directory $(MIIC_SRC)
 
 env:
 	virtualenv -p `which python3` $(ENV)
@@ -66,3 +69,9 @@ REPO=kradalby/enigma
 
 sign:
 	drone sign $(REPO)
+
+init: npm_install init_db_media migrate
+
+start:
+	docker-compose stop
+	docker-compose up
