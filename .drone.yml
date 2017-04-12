@@ -1,0 +1,37 @@
+pipeline:
+  build:
+    image: node:7.6.0
+    pull: true
+    commands:
+      - npm prune
+      - npm install -g --silent elm
+      - make install
+      - make fix_module_canvas
+      - mkdir -p src/assets
+      - npm run build
+
+
+  deploy:
+    image: drillster/drone-rsync
+    user: www
+    hosts: [ "seel.terra.fap.no" ]
+    key: ${SSH_KEY}
+    port: 22
+    source: dist/
+    target: /usr/local/www/ldu.no/app/
+    delete: true
+    recursive: true
+    exclude:
+    when:
+        branch: master
+    script:
+      - echo "Done"
+
+  notify:
+    image: drillster/drone-email
+    host: mail.ntnu.fap.no
+    port: 25
+    from: drone@drone.fap.no
+    recipients: [ kradalby@kradalby.no, tornvall@stud.ntnu.no ]
+    when:
+      status: [ success, changed, failure ]
