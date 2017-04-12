@@ -3,11 +3,11 @@ pipeline:
     image: node:7.9.0
     pull: true
     commands:
+      - make fix_module_canvas
       - cd enigma
       - npm prune
       - npm install -g --silent elm
       - make install
-      - make fix_module_canvas
       - mkdir -p src/assets
       - npm run build
 
