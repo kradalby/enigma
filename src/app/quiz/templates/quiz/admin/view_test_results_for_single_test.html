@@ -101,6 +101,7 @@
                     <td rowspan='{{ test_unit_results|length|add:"1"}}'>
                         <div class="img-container">
                             <img class="bottom" src="{{ test_unit.genericimage.image.url }}"/>
+                            <div id="spinner_container" ></div>
 
                             <img class="top" id="average_img_{{ test_unit.id }}"
                                  src=""/>
@@ -148,7 +149,7 @@
                 <tr>
                     <td rowspan='{{ test_unit_results|length|add:"1"}}'>
                         <div class="img-container">
-                            <img class="bottom" src="{{ test_unit.genericimage.image.url }}" />    
+                            <img class="bottom" src="{{ test_unit.genericimage.image.url }}"/>
                                 {% for test_unit_result in test_unit_results %}
                                     {% if test_unit_result.test_unit == test_unit %}
                                         <img class="top {{ test_unit.id }}" id="{{ forloop.counter}}" src="{{ test_unit_result.answer_image.url }}" alt="{{ test_unit_result.id }}"/>
@@ -168,7 +169,17 @@
                                 </td>
                             </tr>
                         {% endif %}        
-                    {% endfor %}  
+                    {% endfor %}
+
+
+            <td>
+                <button class="btn btn-primary" id="calculate_avg">Calculate average solution</button>
+            </td>
+
+
+
+
+
 
             </table>
         {% endif %}
@@ -280,15 +291,14 @@
         {% endfor %}
         {% endif %}
     </div>
-
-
-
+</div>
 
 
 {% endfor %}
 {% endblock %}
 {% block end %}
 <script src="{% static "js/bootstrap-switch.min.js" %}"></script>
+<script src="{% static "js/spin.min.js" %}"></script>
 <script>
     $(".user-answer-checkbox").bootstrapSwitch({
         offColor : "danger",
@@ -344,10 +354,28 @@
                 }).get();
             }
 
+
+    var opts = {
+        lines: 13,
+        length: 28,
+        width: 8,
+        radius: 20,
+        scale: 1,
+        color: '#fff', // #rgb or #rrggbb or array of colors
+        top: '40%',
+        left: '50%',
+        position: 'absolute'
+    };
+
+    var spinner = new Spinner(opts);
+
     function requestCalculateAverage(testUnitId) {
         var selectedUserIds = getSelectedUserIds(testUnitId);
+
         if (selectedUserIds.length != 0){
-            //console.log(selectedUserIds);
+             $("#calculate_avg").attr("disabled", true);
+             var target = document.getElementById("spinner_container");
+             spinner.spin(target);
                 $.ajax({
                     type: "POST",
                     url: '/test/admin/result/view/average_solution/',  //write your server url here...
@@ -361,18 +389,29 @@
 
                     success: function(data) {
                         myServerData = data;  //server response
-                        console.log(data);
+                        //console.log(data);
 
-                        inputField = document.getElementById("hidden-image-data")
+                        inputField = document.getElementById("hidden-image-data");
 
                         var img = document.getElementById("average_img_"+data.question_id);
                         img.src = 'data:image/png;base64,' + data.encodend_img;
                         inputField.value = 'data:image/png;base64,' + data.encodend_img;
+
+                    },
+                    complete: function () {
+                        $("#calculate_avg").attr("disabled", false);
+                        spinner.stop();
+
                     }
                 });
         }
-
     }
+
+    $( "#calculate_avg" ).click(function() {
+        var testUnitId = $('li.active').find('input').val();
+        requestCalculateAverage(testUnitId);
+
+    });
 
     //Outline solution question
     $(".user-solution-checkbox").bootstrapSwitch({
@@ -382,16 +421,10 @@
         offText : "Hide",
         onSwitchChange : function(event, state) {
             var img = $(this).parent().parent().parent().parent().parent().find('img.top#'+this.id);
-            var testUnitId = $('li.active').find('input').val();
-
             if(state){ // SHOW
-                //send ajax request to calculate average on click event
                 img.show();
-                requestCalculateAverage(testUnitId);
             } else{
-                //send ajax request to calculate average on click event
                 img.hide();
-                requestCalculateAverage(testUnitId);
             }
         }
     });
