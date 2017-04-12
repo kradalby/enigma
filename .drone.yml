@@ -5,6 +5,7 @@ pipeline:
       - DJANGO_SETTINGS_MODULE=settings.production
     commands:
       - pip install tox
+      - touch lol.txt
       - tox
 
   docker:

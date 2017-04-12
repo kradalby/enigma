@@ -8,6 +8,7 @@ WORKDIR $APP_DIR
 
 COPY requirements/base.txt $APP_DIR/base.txt
 COPY requirements/prod.txt $APP_DIR/prod.txt
+COPY lol.txt $APP_DIR/lol.txt
 
 RUN pip install -r $APP_DIR/prod.txt
 
