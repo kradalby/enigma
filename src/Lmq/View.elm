@@ -88,7 +88,13 @@ viewLandmarkQuestion model lmq =
     div [ class "col s12" ]
         [ h3 [] [ text lmq.question ]
         , viewCanvas model
-        , button [ class "btn", onClick model.clickData.answerMsg ] [ text "Submit" ]
+        , (case model.submitted of
+            False ->
+                button [ class "btn", onClick model.clickData.answerMsg ] [ text "Submit" ]
+
+            True ->
+                button [ class "btn disabled" ] [ text "Submit" ]
+          )
         ]
 
 
@@ -143,7 +149,13 @@ viewCanvas model =
                             ((createDrawImage canvas canvasSize)
                                 :: drawOps
                             )
-                        |> Canvas.toHtml [ Events.onClick CanvasClick ]
+                        |> (case model.submitted of
+                                False ->
+                                    Canvas.toHtml [ Events.onClick CanvasClick ]
+
+                                True ->
+                                    Canvas.toHtml []
+                           )
                         |> List.singleton
                         |> div []
 
