@@ -2,7 +2,7 @@ module Mcq.View exposing (root)
 
 import Html exposing (..)
 import Html.Events exposing (..)
-import Html.Attributes exposing (type_, checked, name, value, class, src, id, href, style)
+import Html.Attributes exposing (type_, checked, name, value, class, src, id, href, style, alt)
 import Mcq.Types exposing (..)
 import App.Rest exposing (base_url)
 import Util exposing (onEnter, viewErrorBox, viewProgressbar)
@@ -120,12 +120,18 @@ viewMultipleChoiceQuestionAlternaltives alternaltives correctAnswer showAnswer =
                                 )
                         )
                     , style [ ( "width", "100%" ) ]
-                    , onClick
-                        (if i == correctAnswer then
-                            Correct
-                         else
-                            Wrong
-                        )
+                    , (case showAnswer of
+                        False ->
+                            onClick
+                                (if i == correctAnswer then
+                                    Correct
+                                 else
+                                    Wrong
+                                )
+
+                        True ->
+                            alt ""
+                      )
                     ]
                     [ text alternaltive ]
                 ]
@@ -156,13 +162,36 @@ viewSessionInformation model =
 percentageOfQuestionsLeft : Model -> Float
 percentageOfQuestionsLeft model =
     let
+        current =
+            case model.currentQuestion of
+                Nothing ->
+                    0
+
+                Just _ ->
+                    1
+
         unAnswered =
-            toFloat (List.length model.unAnsweredQuestions)
+            case model.showAnswer of
+                False ->
+                    toFloat (List.length model.unAnsweredQuestions)
+
+                True ->
+                    toFloat (List.length model.unAnsweredQuestions - 1)
 
         correct =
-            toFloat (List.length model.correctQuestions)
+            case model.showAnswer of
+                False ->
+                    toFloat (List.length model.correctQuestions)
+
+                True ->
+                    toFloat (List.length model.correctQuestions)
 
         wrong =
-            toFloat (List.length model.wrongQuestions)
+            case model.showAnswer of
+                False ->
+                    toFloat (List.length model.wrongQuestions)
+
+                True ->
+                    toFloat (List.length model.wrongQuestions)
     in
-        (100 * ((correct + wrong) / (unAnswered + correct + wrong + 1)))
+        (100 * ((correct + wrong) / (unAnswered + correct + wrong + current)))
