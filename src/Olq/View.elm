@@ -7,8 +7,6 @@ import Html.Events exposing (onInput, onClick)
 import Html.Attributes exposing (type_, checked, name, disabled, value, class, src, id, selected, for, href)
 import Util exposing (onEnter, viewErrorBox, viewSpinningLoader, viewProgressbar, percentageOfQuestionsLeft, calculateImageSize, createDrawImage)
 import Canvas exposing (Size, Error, DrawOp(..), DrawImageParams(..), Canvas)
-import Canvas.Point exposing (Point)
-import Canvas.Point as Point
 import Canvas.Events as Events
 
 
@@ -91,8 +89,8 @@ viewOutlineQuestion model olq =
          ]
             ++ (case model.showAnswer of
                     False ->
-                        [ button [ class "btn", onClick model.clickData.answerMsg ] [ text "Submit" ]
-                        , button [ class "btn red" ] [ text "Clear" ]
+                        [ button [ class "btn", onClick Wrong ] [ text "Submit" ]
+                        , button [ class "btn red", onClick Clear ] [ text "Clear" ]
                         ]
 
                     True ->
@@ -110,7 +108,7 @@ viewCanvas model =
             if model.showAnswer then
                 case model.solution of
                     Loading ->
-                        model.clickData.draw
+                        model.drawData.drawOps
 
                     GotCanvas canvas ->
                         let
@@ -124,13 +122,10 @@ viewCanvas model =
 
                             canvasSize =
                                 calculateImageSize imageSize.width imageSize.height model.windowWidth model.windowHeight
-
-                            derp =
-                                Debug.log "canvasSize solution" canvasSize
                         in
-                            (createDrawImage canvas canvasSize) :: model.clickData.draw
+                            (createDrawImage canvas canvasSize) :: model.drawData.drawOps
             else
-                model.clickData.draw
+                model.drawData.drawOps
     in
         case model.image of
             GotCanvas canvas ->
@@ -145,9 +140,6 @@ viewCanvas model =
 
                     canvasSize =
                         calculateImageSize imageSize.width imageSize.height model.windowWidth model.windowHeight
-
-                    derp =
-                        Debug.log "canvasSize image" canvasSize
                 in
                     Canvas.initialize canvasSize
                         |> Canvas.batch
@@ -156,7 +148,12 @@ viewCanvas model =
                             )
                         |> (case model.showAnswer of
                                 False ->
-                                    Canvas.toHtml [ Events.onClick CanvasClick ]
+                                    case model.draw of
+                                        False ->
+                                            Canvas.toHtml [ Events.onMouseDown MouseDown ]
+
+                                        True ->
+                                            Canvas.toHtml [ Events.onMouseMove MouseMove, Events.onMouseUp MouseUp ]
 
                                 True ->
                                     Canvas.toHtml []

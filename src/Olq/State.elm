@@ -21,9 +21,10 @@ init : Int -> Int -> Int -> ( Model, Cmd Msg )
 init initialSeed width height =
     let
         model =
-            { clickData = initClickData
-            , correctQuestions = []
+            { correctQuestions = []
+            , color = Color.rgba 192 47 29 1
             , currentQuestion = Nothing
+            , drawData = initDrawData
             , error = Nothing
             , image = Loading
             , imageSize = Nothing
@@ -37,6 +38,7 @@ init initialSeed width height =
             , windowHeight = height
             , windowWidth = width
             , wrongQuestions = []
+            , draw = False
             }
     in
         model ! [ getOutlineQuestions ]
@@ -171,32 +173,57 @@ update msg model =
                       )
                     )
 
-        CanvasClick position ->
+        MouseDown point ->
+            ( { model | draw = True }, Cmd.none )
+
+        MouseUp point ->
+            let
+                drawData =
+                    model.drawData
+
+                newDrawData =
+                    { drawData
+                        | points = model.drawData.currentPoints :: model.drawData.points
+                        , currentPoints = []
+                    }
+            in
+                ( { model
+                    | draw = False
+                    , drawData = newDrawData
+                  }
+                , Cmd.none
+                )
+
+        MouseMove point ->
             let
                 color =
                     getColorFromRegion model
 
-                answerMsg =
-                    (checkAnswer
-                        model
-                        position
-                    )
+                newPoints =
+                    model.drawData.currentPoints ++ [ point ]
 
-                newDraw =
-                    [ BeginPath
-                    , LineWidth 5
-                    , StrokeStyle color
-                    , LineCap "round"
-                    , Stroke
-                    ]
+                lineDrawOps =
+                    List.concat
+                        (List.map
+                            (\pointList -> pointListToLineOperations pointList)
+                            (newPoints :: model.drawData.points)
+                        )
 
-                clickData =
-                    { draw = newDraw
-                    , color = color
-                    , answerMsg = answerMsg
-                    }
+                newDrawOps =
+                    concatDrawOps color lineDrawOps
             in
-                ( { model | clickData = clickData }, Cmd.none )
+                ( { model
+                    | drawData =
+                        { currentPoints = newPoints
+                        , drawOps = newDrawOps
+                        , points = model.drawData.points
+                        }
+                  }
+                , Cmd.none
+                )
+
+        Clear ->
+            ( { model | drawData = initDrawData }, Cmd.none )
 
 
 subscriptions : Model -> Sub Msg
@@ -215,7 +242,7 @@ nextQuestion model =
 
                 Just tail ->
                     tail
-        , clickData = initClickData
+        , drawData = initDrawData
     }
 
 
@@ -256,12 +283,12 @@ getColorFromRegion : Model -> Color.Color
 getColorFromRegion model =
     case model.currentQuestion of
         Nothing ->
-            wrongColor
+            model.color
 
         Just olq ->
             (case List.head olq.outline_regions of
                 Nothing ->
-                    wrongColor
+                    model.color
 
                 Just region ->
                     (case Color.Convert.hexToColor region.color of
@@ -269,9 +296,30 @@ getColorFromRegion model =
                             color
 
                         Err errorMsg ->
-                            wrongColor
+                            model.color
                     )
             )
+
+
+pointListToLineOperations : List Point -> List DrawOp
+pointListToLineOperations points =
+    case points of
+        [] ->
+            []
+
+        hd :: tl ->
+            [ MoveTo hd ] ++ (List.map (\point -> LineTo point) tl)
+
+
+concatDrawOps : Color.Color -> List DrawOp -> List DrawOp
+concatDrawOps color drawOps =
+    [ BeginPath
+    , LineWidth 3
+    , StrokeStyle color
+    , LineCap "round"
+    ]
+        ++ drawOps
+        ++ [ Stroke ]
 
 
 checkAnswer : Model -> Point -> Msg

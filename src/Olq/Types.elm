@@ -4,7 +4,7 @@ import Http
 import Random
 import Canvas exposing (DrawOp, Canvas, Error, Size)
 import Canvas.Point exposing (Point)
-import Color
+import Color exposing (Color)
 import Types exposing (Region, canvasSize, wrongColor, Image)
 
 
@@ -16,22 +16,26 @@ type alias OutlineQuestion =
     }
 
 
-type alias ClickData =
-    { draw : List DrawOp
-    , answerMsg : Msg
-    , color : Color.Color
+type alias DrawData =
+    { currentPoints : List Point
+    , points : List (List Point)
+    , drawOps : List DrawOp
     }
 
 
-initClickData : ClickData
-initClickData =
-    { draw = [], answerMsg = Wrong, color = wrongColor }
+initDrawData : DrawData
+initDrawData =
+    { currentPoints = []
+    , points = []
+    , drawOps = []
+    }
 
 
 type alias Model =
-    { clickData : ClickData
-    , correctQuestions : List OutlineQuestion
+    { correctQuestions : List OutlineQuestion
+    , color : Color
     , currentQuestion : Maybe OutlineQuestion
+    , drawData : DrawData
     , error : Maybe String
     , image : Image
     , imageSize : Maybe Size
@@ -45,6 +49,7 @@ type alias Model =
     , windowHeight : Int
     , windowWidth : Int
     , wrongQuestions : List OutlineQuestion
+    , draw : Bool
     }
 
 
@@ -62,7 +67,10 @@ type Msg
     | ChangeMode Mode
     | ImageLoaded (Result Error Canvas)
     | SolutionLoaded (Result Error Canvas)
-    | CanvasClick Point
+    | MouseDown Point
+    | MouseUp Point
+    | MouseMove Point
+    | Clear
 
 
 type Mode
