@@ -1,0 +1,469 @@
+{% extends "base/admin/index.html" %}
+{% load question_tags %}
+{% load staticfiles %}
+
+{% block extrahead %}
+    {{ block.super }}
+    <link rel="stylesheet" href="{% static "css/bootstrap-switch.min.css" %}" type="text/css"> 
+{% endblock %}
+
+{% block admincontent %}
+<style>
+    .img-container { 
+        position: relative; 
+        max-height: 500px;
+        max-width: 500px;
+    }
+
+    .img-container .top{
+        position: absolute;
+        top: 0;
+        left: 0;
+        z-index: 2;
+    }
+    .img-container .middle {
+        position: absolute;
+        top: 0;
+        left: 0;
+        z-index: 1;
+    }
+    
+    .img-container img {
+        width: 100%;
+    }
+    
+    .pagination>.disabled>a, 
+    .pagination>.disabled>a:focus, 
+    .pagination>.disabled>a:hover, 
+    .pagination>.disabled>span, 
+    .pagination>.disabled>span:focus, 
+    .pagination>.disabled>span:hover {
+        z-index: 3;
+        color: black;
+        cursor: default;
+        background-color: #ddd;
+        border-color: #ddd;
+    }
+</style>
+<div class="page-header">
+  <h1>Test results for {{ test }}</h1>
+</div>
+<nav>
+  <ul class="pagination">
+    <li>
+      <a id="previous" class="navigation" href="#" aria-label="Previous">
+        <span aria-hidden="true">&laquo;</span>
+      </a>
+    </li>
+        {% for test_unit in test_units %}
+    <li>
+        <a id="{{ forloop.counter }}" class="navigation" href="#">Q{{ forloop.counter }}</a>
+        <input type="hidden" class="test_unit_id" value={{ test_unit.id }}>
+    </li>
+    {% endfor %}
+    <li>
+      <a id="next" class="navigation" href="#" aria-label="Next">
+        <span aria-hidden="true">&raquo;</span>
+      </a>
+    </li>
+  </ul>
+</nav>
+{% for test_unit in test_units %}
+<div class="test-result" id="{{ forloop.counter }}">
+    <div class="panel panel-info">
+        <div class="panel-heading">
+            <h3 class="panel-title">Question {{ forloop.counter }}</h3>
+        </div>
+        <table class="table">
+            <tr>
+                <th>Question</th>
+                <td>{{ test_unit }}</td>
+            </tr>
+            <tr>
+                <th>
+                    Correct answer
+                </th>
+
+                <td>
+                    {% if test_unit|is_landmark %}
+                        <div class="img-container">
+                            <img class="top" src="{{ test_unit.landmarkquestion.landmark_drawing.url }}" />
+                            <img class="bottom" src="{{ test_unit.landmarkquestion.original_image.url }}" />
+                        </div>
+                    {% elif test_unit|is_outline %}
+                        <div class="img-container">
+                            <img class="top" src="{{ test_unit.outlinequestion.outline_drawing.url }}" />
+                            <img class="bottom" src="{{ test_unit.outlinequestion.original_image.url }}" />
+                        </div>
+                    {% elif test_unit|is_image_suggestion %}
+                                    <table class="table">
+                <tr>
+                    <td rowspan='{{ test_unit_results|length|add:"1"}}'>
+                        <div class="img-container">
+                            <img class="bottom" src="{{ test_unit.genericimage.image.url }}"/>
+                            <div id="spinner_container" ></div>
+
+                            <img class="top" id="average_img_{{ test_unit.id }}"
+                                 src=""/>
+
+                            <form action="" method="post" enctype="multipart/form-data">
+                                {% csrf_token %}
+                                <div id="form-div">
+                                    
+                                </div>
+                                <hr/>
+                                <input type="hidden" name="hidden-image-data" id="hidden-image-data" />
+
+                                <input type="submit" class="btn btn-primary" value="Create outline question" formaction="{% url 'admin_create_outline_from_image_suggestion' test_unit.genericimage.pk %}"/>
+                                {% comment %}<input type="submit" class="btn btn-primary" value="Create landmark question" formaction="{% url 'admin_create_landmark_from_image_suggestion' test_unit.genericimage.pk %}"/>{% endcomment %}
+
+                            </form>
+
+                        </div>
+                    </td>
+                </tr>
+            </table>
+
+                    {% elif test_unit|is_outline_solution_question %}
+                        {{ test_unit.outlinesolutionquestion.outline_region }}
+
+                    {% elif test_unit|is_multiple_choice_question %}
+                        {{ test_unit.multiplechoicequestion.correct_answer }}
+                    {% elif test_unit|is_multiple_choice_question_with_image %}
+                        {{ test_unit.multiplechoicequestionwithimage.correct_answer }}
+                    {% elif test_unit|is_multiple_choice_question_with_video %}
+                        {{ test_unit.multiplechoicequestionwithvideo.correct_answer }}
+                    {% endif %}
+                </td>
+            </tr>
+        </table>
+    </div>
+
+    <div class="panel panel-info">
+        <div class="panel-heading">
+            <h3 class="panel-title">Answers</h3>
+        </div>
+
+        {% if test_unit|is_image_suggestion %}
+            <table class="table">
+                <tr>
+                    <td rowspan='{{ test_unit_results|length|add:"1"}}'>
+                        <div class="img-container">
+                            <img class="bottom" src="{{ test_unit.genericimage.image.url }}"/>
+                                {% for test_unit_result in test_unit_results %}
+                                    {% if test_unit_result.test_unit == test_unit %}
+                                        <img class="top {{ test_unit.id }}" id="{{ forloop.counter}}" src="{{ test_unit_result.answer_image.url }}" alt="{{ test_unit_result.id }}"/>
+                                    {% endif %}
+                                {% endfor %}
+                        </div>
+                    </td>
+                </tr>
+                    {% for test_unit_result in test_unit_results %}
+                        {% if test_unit_result.test_unit == test_unit %}
+                            <tr>
+                                <td>{{ test_unit_result.test_result.user }}'s answer:</td>
+                                <td>
+                                    <input type="checkbox" class="user-solution-checkbox" id="{{ forloop.counter}}" checked>
+                                    {% comment %}<a class="btn btn-primary" href="{% url 'admin_create_outline_from_outline_solution' test_unit.id test_unit_result.id %}"> Create outline </a>{% endcomment %}
+                                    <input type="hidden" class={{ forloop.counter }} value={{ test_unit_result.id }}>
+                                </td>
+                            </tr>
+                        {% endif %}        
+                    {% endfor %}
+
+
+            <td>
+                <button class="btn btn-primary" id="calculate_avg">Calculate average solution</button>
+            </td>
+
+
+
+
+
+
+            </table>
+        {% endif %}
+
+        {% if not test_unit|is_image_suggestion %}
+        {% for test_unit_result in test_unit_results %}
+            {% if test_unit_result.test_unit == test_unit %}
+                <div>
+                    <b>
+                    {{ test_unit_result.test_result.user }}'s answer was 
+                    {% if test_unit_result.correct_answer %}
+                        <span style="color:green;">correct.</span>
+                    {% else %}
+                        <span style="color:red;">incorrect.</span>
+                    {% endif %}
+                    </b>
+                </div>
+                <div>
+                    {% if test_unit|is_landmark %}
+                        <table class="table">
+                            <tr>
+                                <td rowspan="4"> 
+                                    <div class="img-container">
+                                        {% if test_unit_result.answer_image %}
+                                            <img class="top" src="{{ test_unit_result.answer_image.url }}" />
+                                        {% endif %}
+                                        <img class="middle" src="{{ test_unit.landmarkquestion.landmark_drawing.url }}" />
+                                        <img class="bottom" src="{{ test_unit.landmarkquestion.original_image.url }}" />
+                                    </div>
+                                </td>
+                                <td>Target region </td>
+                                <td style="color:{{test_unit_result.target_color_region}};">
+                                    {{ test_unit_result.target_landmark_region }}
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>Answered region</td>
+                                <td style="color:{{test_unit_result.answer}};">
+                                    {{ test_unit_result.answered_landmark_region }}
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>Toggle answer:</td>
+                                <td>
+                                    {% if test_unit_result.answer_image %}
+                                        <input type="checkbox" class="landmark-answer-checkbox" checked>
+                                    {% endif %}
+                                </td>                                
+                            </tr>
+                            <tr>
+                                <td>Score</td>
+                                <td>
+                                    <span class="badge">{{test_unit_result.score}}/{{test_unit_result.max_score}} points</span>
+                                </td>
+                            </tr>
+                        </table>
+                    {% elif test_unit|is_outline %}
+                        <table class="table">
+                            <tr>
+                                <td rowspan="5">
+                                    <div class="img-container">
+                                        <img class="top" src="{{ test_unit_result.answer_image.url }}" />
+                                        <img class="middle" src="{{ test_unit.outlinequestion.outline_drawing.url }}" />
+                                        <img class="bottom" src="{{ test_unit.outlinequestion.original_image.url }}" />
+                                    </div>
+                                </td>
+                                 <td>Target region </td>
+                                <td style="color:{{test_unit_result.target_color_region}};">
+                                    {{ test_unit_result.target_outline_region }}
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>User answer:</td>
+                                <td><input type="checkbox" class="user-answer-checkbox" checked></td>
+                            </tr>
+                            <tr>
+                                <td>Correct answer:</td>
+                                <td><input type="checkbox" class="correct-answer-checkbox" checked></td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    Answer average distance:
+                                </td>
+                                <td>
+                                    {{test_unit_result.answer|floatformat:3}}
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>Score</td>
+                                <td>
+                                    <span class="badge">{{test_unit_result.score}}/{{test_unit_result.max_score}} points</span>
+                                </td>
+                            </tr>
+                        </table>
+
+                    {% elif test_unit|is_multiple_choice_question %}
+                        <b>Answered:</b> {{ test_unit_result.answer }}
+                        <span class="badge">{{test_unit_result.score}}/{{test_unit_result.max_score}} points</span>
+                    {% elif test_unit|is_multiple_choice_question_with_image %}
+                        <b>Answered:</b> {{ test_unit_result.answer }}
+                        <span class="badge">{{test_unit_result.score}}/{{test_unit_result.max_score}} points</span>
+                    {% elif test_unit|is_multiple_choice_question_with_video %}
+                        <b>Answered:</b> {{ test_unit_result.answer }}
+                        <span class="badge">{{test_unit_result.score}}/{{test_unit_result.max_score}} points</span>
+                    {% endif %}
+                </div>
+                <hr/>
+            {% endif %}
+        {% endfor %}
+        {% endif %}
+    </div>
+</div>
+
+
+{% endfor %}
+{% endblock %}
+{% block end %}
+<script src="{% static "js/bootstrap-switch.min.js" %}"></script>
+<script src="{% static "js/spin.min.js" %}"></script>
+<script>
+    $(".user-answer-checkbox").bootstrapSwitch({
+        offColor : "danger",
+        onColor : "success",
+        onText : "Show",
+        offText : "Hide",
+        onSwitchChange : function(event, state) {
+            var img = $(this).parent().parent().parent().parent().parent().find('img.top:first');
+            if(state){ // SHOW
+                img.show();
+            } else{
+                img.hide();
+            }
+        }
+    });
+    $(".correct-answer-checkbox").bootstrapSwitch({
+        offColor : "danger",
+        onColor : "success",
+        onText : "Show",
+        offText : "Hide",
+        onSwitchChange : function(event, state) {
+            var img = $(this).parent().parent().parent().parent().parent().find('img.middle:first');
+            if(state){ // SHOW
+                img.show();
+            } else{
+                img.hide();
+            }
+        }
+    });
+    // Landmark 
+    $(".landmark-answer-checkbox").bootstrapSwitch({
+        offColor : "danger",
+        onColor : "success",
+        onText : "On",
+        offText : "Off",
+        onSwitchChange : function(event, state) {
+            var img = $(this).parent().parent().parent().parent().parent().find('img.top:first');
+            if(state){ // SHOW
+                img.show();
+            } else{
+                img.hide();
+            }
+        }
+    });
+
+    function getSelectedUserIds(testUnitId)
+            {
+                return $("."+testUnitId).map(function() {
+                    if (this.style.display != "none"){
+                        return this.alt;
+                    }
+                    else{return null}
+                }).get();
+            }
+
+
+    var opts = {
+        lines: 13,
+        length: 28,
+        width: 8,
+        radius: 20,
+        scale: 1,
+        color: '#fff', // #rgb or #rrggbb or array of colors
+        top: '40%',
+        left: '50%',
+        position: 'absolute'
+    };
+
+    var spinner = new Spinner(opts);
+
+    function requestCalculateAverage(testUnitId) {
+        var selectedUserIds = getSelectedUserIds(testUnitId);
+
+        if (selectedUserIds.length != 0){
+             $("#calculate_avg").attr("disabled", true);
+             var target = document.getElementById("spinner_container");
+             spinner.spin(target);
+                $.ajax({
+                    type: "POST",
+                    url: '/test/admin/result/view/average_solution/',  //write your server url here...
+                    dataType: 'json',  //The data type expected of the server response.
+                    data: {
+                        csrfmiddlewaretoken: '{{ csrf_token }}',
+                        test_id: {{ test.id }},
+                        question_id: testUnitId,
+                        test_unit_result_ids: selectedUserIds
+                    },
+
+                    success: function(data) {
+                        myServerData = data;  //server response
+                        //console.log(data);
+
+                        inputField = document.getElementById("hidden-image-data");
+
+                        var img = document.getElementById("average_img_"+data.question_id);
+                        img.src = 'data:image/png;base64,' + data.encodend_img;
+                        inputField.value = 'data:image/png;base64,' + data.encodend_img;
+
+                    },
+                    complete: function () {
+                        $("#calculate_avg").attr("disabled", false);
+                        spinner.stop();
+
+                    }
+                });
+        }
+    }
+
+    $( "#calculate_avg" ).click(function() {
+        var testUnitId = $('li.active').find('input').val();
+        requestCalculateAverage(testUnitId);
+
+    });
+
+    //Outline solution question
+    $(".user-solution-checkbox").bootstrapSwitch({
+        offColor : "danger",
+        onColor : "success",
+        onText : "Show",
+        offText : "Hide",
+        onSwitchChange : function(event, state) {
+            var img = $(this).parent().parent().parent().parent().parent().find('img.top#'+this.id);
+            if(state){ // SHOW
+                img.show();
+            } else{
+                img.hide();
+            }
+        }
+    });
+</script>
+<script>
+    function disableAndEnableNavigationButtons(){
+        // Default
+        $("a.navigation").parent().removeClass('disabled');
+        $("a.navigation").parent().removeClass('active');
+        
+        var currentlyVisible = $('div.test-result:visible');
+        if(currentlyVisible.next('div.test-result').length <= 0){
+            $("a#next").parent().addClass('disabled');
+        } 
+        if(currentlyVisible.prev('div.test-result').length <= 0){
+            $("a#previous").parent().addClass('disabled');
+        }
+        $("a#"+currentlyVisible.attr('id')+".navigation").parent().addClass('active');
+    }
+    
+    $('div.test-result').hide().first().show();
+    $('a.navigation').on('click', function(e) {
+        e.preventDefault();
+        if($(this).parent().hasClass("disabled")){
+            return;
+        }
+        var currentlyVisible = $('div.test-result:visible');
+        var t = $(this).attr('id');
+
+        $('div.test-result').hide();
+        if (t === 'next' && currentlyVisible.next('div.test-result').length > 0) {
+            currentlyVisible.next('div.test-result').show();
+        } else if (t === 'previous' && currentlyVisible.prev('div.test-result').length > 0) {
+            currentlyVisible.prev('div.test-result').show();
+        } else if (!isNaN(t)){
+            $("div#" + t + ".test-result").show();
+        }
+        disableAndEnableNavigationButtons();
+    });
+    disableAndEnableNavigationButtons();
+</script>
+{% endblock %}

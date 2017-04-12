@@ -1,0 +1,39 @@
+{% extends "base/admin/index.html" %}
+
+{% block admincontent %}
+<style>
+    li:hover
+    {
+         background-color: #fbfbfb;
+         cursor: pointer; 
+    }
+</style>
+<h1>
+    Add user to {{ course }}:
+</h1>
+<ul class="list-group">
+    {% for user in users %}
+        <li class="list-group-item">
+            <a class="list-item" href="{% url 'admin_register_existing_user_to_course' user.id course.id %}">{{ user }}</a>
+        </li>
+    {% empty %}
+        <li class="list-group-item">
+            No users are created yet, or all users are attending this course. <br/>
+            <a class="list-item" href="{% url 'admin_new_user' %}">Create a new user now!</a>
+        </li>
+    {% endfor %}
+    <a href="{% url 'admin_view_course' course.id %}" class="btn btn-danger">Cancel</a>
+</ul>
+<script>
+    $('a').click(function(ev){
+        ev.stopPropagation();
+    }).parent().click(function(ev){
+        ev.preventDefault();
+        $(this).addClass('active').siblings().removeClass('active');
+        var href = $(this).children('a.list-item').attr('href');
+        if(href){
+            window.location.href = href;
+        }
+    });
+</script>
+{% endblock %}

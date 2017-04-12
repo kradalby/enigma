@@ -1,0 +1,19 @@
+{% extends "base/admin/index.html" %}
+
+{% block admincontent %}
+<h1>
+    Edit course
+</h1>
+<h4>
+    Previous name: {{ course.name }}
+</h4>
+<form action="" method="post">
+    {% csrf_token %}
+    <table class="table">
+        {{ form.as_table }}
+    </table>
+    <br/>
+    <input type="submit" class="btn btn-success" value="Edit" />
+    <a href="{% url 'admin_view_course' course.id %}" class="btn btn-danger">Cancel</a>
+</form>
+{% endblock %}

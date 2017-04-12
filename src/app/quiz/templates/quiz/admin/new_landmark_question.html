@@ -1,0 +1,26 @@
+{% extends "base/admin/index.html" %}
+
+{% block admincontent %}
+<h1>
+    {% if test %}
+        Add landmark question to test
+    {% else %}
+        Create landmark question
+    {% endif %}
+</h1>
+{% if test %}
+    <h4>
+        <small>Test</small> {{ test.name }}
+    </h4>
+{% endif %}
+<form action="" method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    <table class="table">
+        {{ form.as_table }}
+    </table>
+    <input type="submit" class="btn btn-success" value="Continue" />
+    {% if test %}
+        <a href="{% url 'admin_add_questions_to_test' test.id %}" class="btn btn-danger">Cancel</a>
+    {% endif %}
+</form>
+{% endblock %}

@@ -1,0 +1,37 @@
+{% extends "base/admin/index.html" %}
+
+{% block admincontent %}
+<div class="container">
+    <div class="panel panel-info">
+        <div class="panel-heading">
+            <h3 class="panel-title">Global settings</h3>
+        </div>
+        <div class="panel-body">
+            <p>
+                Here you can adjust how many points specific question types yield. Already answered tests will not have their scores altered.
+            </p>
+            <hr/>
+            <h4>
+                Outline scoring
+            </h4>
+            <p>
+                If a person answers closer than <strong>Outline minimum threshold</strong>, that person will score <strong>Maximum points for outline questions</strong>.
+            </p>
+            <p>
+                If a person answers further away than <strong>Outline maximum threshold</strong>, that person will score 0 points.
+            </p>
+            <p>
+                If a person answers between <strong>Outline maximum threshold</strong> and <strong>Outline minimum threshold</strong>, that person will get a score between 0 and <strong>Maximum points for outline questions</strong>. The closer, the better score.
+            </p>
+        </div>
+    </div>
+    
+    <form action="" method="post">
+        {% csrf_token %}
+        <table class="table">
+            {{ form.as_table }}
+        </table>
+        <input type="submit" class="btn btn-success" value="Update" />
+    </form>    
+</div>
+{% endblock %}

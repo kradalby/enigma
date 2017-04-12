@@ -1,0 +1,97 @@
+{% extends "base.html" %}
+{% load test_answers %}
+{% block content %}
+<style>
+    .test-box {
+        vertical-align:top;
+        display: inline-block;
+        height: 100%;
+        width: 100%;
+        padding: 1em;
+        border: 1px solid rgb(221, 221, 221);
+    }
+    
+    .badge-success {
+        background-color: green;
+    }
+    
+    .badge-failure {
+        background-color: red;        
+    }
+</style>
+
+<div class="container">
+    <div style="height:20px;"></div>
+    {% if messages %}
+        {% for message in messages %}
+            {% if message.tags == "danger" or message.tags == "info" or message.tags == "success" or message.tags == "warning" %}
+                <div class="alert alert-{{message.tags}}">
+                    <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                    <strong>{{ message.tags|upper }}</strong> {{ message|escape }}
+                </div>
+            {% elif message.tags == "error" %}
+                <div class="alert alert-danger">
+                    <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                    <strong>ERROR</strong> {{ message|escape }}
+                </div>
+            {% endif %}
+        {% endfor %}
+    {% endif %}
+    {% for course in courses %}
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h3 class="panel-title">{{ course.name }}</h3>
+            </div>
+            <div class="panel-body">
+                <div class="row">
+                    {% for test in tests %}
+                        {% if test.course == course %}
+                            <div class="col-sm-6 col-md-4">
+                                <div class="test-box">
+                                    <h3>{{ test }}</h3>
+                                    {% has_been_answered test as test_answered_by_current_user %}
+                                    {% if test_answered_by_current_user %}
+                                        <p>You have already answered this test.</p>
+                                        <p>You scored 
+                                            <span class="badge badge-success">
+                                                {{ test_answered_by_current_user.score_fraction }}
+                                            </span>.
+                                        </p>
+                                        {% if test.user_can_see_test_result %}
+                                            <p>
+                                                <a href="{% url 'view_test_result' test_answered_by_current_user.id %}">
+                                                    Compare your results with the answers.
+                                                </a>
+                                            </p>
+                                        {% endif %}
+                                        {% if test.user_can_delete_test_result %}
+                                            <p>
+                                                <a onclick="return confirm('Are you sure?');" href="{% url 'delete_test_result' test_answered_by_current_user.id %}">
+                                                    Delete old test result in order to try again.
+                                                </a>
+                                            </p>
+                                        {% endif %}
+                                        <p>
+                                            <a href="https://docs.google.com/forms/d/17xcVtNFXVbwc2vcFL4zumVU6xXVA_-ejHp-yJpZH7TI/viewform?c=0&w=1" target="blank">
+                                                Remember to take the survey.
+                                            </a>
+                                        </p>
+                                    {% else %}
+                                        <p>This test contains {{ test.test_unit_count }} question{{ test.test_unit_count|pluralize }}.</p>
+                                        <br/>
+                                        <p>
+                                            <a class="btn btn-primary" href="{% url 'single_test' test.id %}">
+                                                Take this test now!
+                                            </a>
+                                        </p>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        {% endif %}
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    {% endfor %}
+</div>
+{% endblock %}

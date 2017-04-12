@@ -1,0 +1,117 @@
+{% extends "base/admin/index.html" %}
+
+{% load courses %}
+
+{% block admincontent %}
+<style>
+    .red {
+        color:red;
+    }
+</style>
+<h1>
+    User: {{ userprofile}}
+</h1>
+<div class="row">
+    <a href="{% url 'admin_list_groups_user_is_not_member_of' userprofile.id %}" class="btn btn-primary btn-lg">Add to group</a>
+    <a href="{% url 'admin_list_courses_user_is_not_attending' userprofile.id %}" class="btn btn-primary btn-lg">Add to course</a>
+    <a href="{% url 'admin_edit_user' userprofile.id %}" class="btn btn-primary btn-lg">Edit user</a>
+    <a href="{% url 'admin_reset_password_for_user' userprofile.id userprofile.id %}" class="btn btn-primary btn-lg">Reset password</a>
+</div>
+
+<br/>
+<h2>
+    Courses attending:
+</h2>
+<table class="table">
+    {% if userprofile|courses_attending %}
+        <tr>
+            <th>Course name</th>
+            <th>Unregister from course</th>
+        </tr>
+    {% endif %}
+    {% for course in userprofile|courses_attending %}
+        <tr>
+            <td>
+                <a href="{% url 'admin_view_course' course.id %}">
+                    {{ course }}
+                </a>
+            </td>
+            <td>
+                <a href="#">
+                    <span class="glyphicon glyphicon-remove red" aria-hidden="true"> Unregister</span>
+                </a>
+            </td>
+        </tr>
+    {% empty %}
+        <tr>
+            <td>
+                This userprofile is not attending any courses.
+            </td>
+        </tr>
+    {% endfor %}
+</table>
+
+<h2>
+    Group memberships:
+</h2>
+<table class="table">
+    {% if groups %}
+        <tr>
+            <th>Group name</th>
+            <th>Unregister from group</th>
+        </tr>
+    {% endif %}
+    {% for group in groups %}
+        <tr>
+            <td>
+                <a href="{% url 'admin_view_group' group.id %}">
+                    {{ group }}
+                </a>
+            </td>
+            <td>
+                <a href="{% url 'admin_unregister_user_from_group' group.id userprofile.id %}">
+                    <span class="glyphicon glyphicon-remove red" aria-hidden="true"> Unregister</span>
+                </a>
+            </td>
+        </tr>
+    {% empty %}
+        <tr>
+            <td>
+                This user is not member of any groups.
+            </td>
+        </tr>
+    {% endfor %}
+</table>
+
+<h2>
+    Test results:
+</h2>
+<table class="table">
+    {% if test_results %}
+        <tr>
+            <th>Test result</th>
+            <th>Delete test result</th>
+        </tr>
+    {% endif %}
+    {% for result in test_results %}
+        <tr>
+            <td>
+                <a href="{% url 'admin_view_test_result_for_user' result.test.id userprofile.id %}">
+                    {{result.test }} <span class="badge">{{ result.score_fraction }}</span>
+                </a>
+            </td>
+            <td>
+                <a href="{% url 'admin_delete_test_result' result.id %}">
+                    <span class="glyphicon glyphicon-remove red" aria-hidden="true"> Delete</span>
+                </a>
+            </td>
+        </tr>
+    {% empty %}
+        <tr>
+            <td>
+                This user has not taken any tests yet.
+            </td>
+        </tr>
+    {% endfor %}
+</table>
+{% endblock %}

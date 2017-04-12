@@ -1,0 +1,15 @@
+{% extends "base/admin/index.html" %}
+
+{% block admincontent %}
+<h1>
+    New course
+</h1>
+<form action="" method="post">
+    {% csrf_token %}
+    <table class="table">
+        {{ form.as_table }}
+    </table>
+    <br/>
+    <input type="submit" class="btn btn-success" value="Create" />
+</form>
+{% endblock %}

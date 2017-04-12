@@ -1,0 +1,6293 @@
+[
+{
+    "model": "auth.permission",
+    "pk": 1,
+    "fields": {
+        "name": "Can add log entry",
+        "content_type": 1,
+        "codename": "add_logentry"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 2,
+    "fields": {
+        "name": "Can change log entry",
+        "content_type": 1,
+        "codename": "change_logentry"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 3,
+    "fields": {
+        "name": "Can delete log entry",
+        "content_type": 1,
+        "codename": "delete_logentry"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 4,
+    "fields": {
+        "name": "Can add permission",
+        "content_type": 2,
+        "codename": "add_permission"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 5,
+    "fields": {
+        "name": "Can change permission",
+        "content_type": 2,
+        "codename": "change_permission"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 6,
+    "fields": {
+        "name": "Can delete permission",
+        "content_type": 2,
+        "codename": "delete_permission"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 7,
+    "fields": {
+        "name": "Can add group",
+        "content_type": 3,
+        "codename": "add_group"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 8,
+    "fields": {
+        "name": "Can change group",
+        "content_type": 3,
+        "codename": "change_group"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 9,
+    "fields": {
+        "name": "Can delete group",
+        "content_type": 3,
+        "codename": "delete_group"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 10,
+    "fields": {
+        "name": "Can add user",
+        "content_type": 4,
+        "codename": "add_user"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 11,
+    "fields": {
+        "name": "Can change user",
+        "content_type": 4,
+        "codename": "change_user"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 12,
+    "fields": {
+        "name": "Can delete user",
+        "content_type": 4,
+        "codename": "delete_user"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 13,
+    "fields": {
+        "name": "Can add content type",
+        "content_type": 5,
+        "codename": "add_contenttype"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 14,
+    "fields": {
+        "name": "Can change content type",
+        "content_type": 5,
+        "codename": "change_contenttype"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 15,
+    "fields": {
+        "name": "Can delete content type",
+        "content_type": 5,
+        "codename": "delete_contenttype"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 16,
+    "fields": {
+        "name": "Can add session",
+        "content_type": 6,
+        "codename": "add_session"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 17,
+    "fields": {
+        "name": "Can change session",
+        "content_type": 6,
+        "codename": "change_session"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 18,
+    "fields": {
+        "name": "Can delete session",
+        "content_type": 6,
+        "codename": "delete_session"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 19,
+    "fields": {
+        "name": "Can add course",
+        "content_type": 7,
+        "codename": "add_course"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 20,
+    "fields": {
+        "name": "Can change course",
+        "content_type": 7,
+        "codename": "change_course"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 21,
+    "fields": {
+        "name": "Can delete course",
+        "content_type": 7,
+        "codename": "delete_course"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 22,
+    "fields": {
+        "name": "Can add user group",
+        "content_type": 8,
+        "codename": "add_usergroup"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 23,
+    "fields": {
+        "name": "Can change user group",
+        "content_type": 8,
+        "codename": "change_usergroup"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 24,
+    "fields": {
+        "name": "Can delete user group",
+        "content_type": 8,
+        "codename": "delete_usergroup"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 25,
+    "fields": {
+        "name": "Can add user profile",
+        "content_type": 9,
+        "codename": "add_userprofile"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 26,
+    "fields": {
+        "name": "Can change user profile",
+        "content_type": 9,
+        "codename": "change_userprofile"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 27,
+    "fields": {
+        "name": "Can delete user profile",
+        "content_type": 9,
+        "codename": "delete_userprofile"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 28,
+    "fields": {
+        "name": "Can add test",
+        "content_type": 10,
+        "codename": "add_test"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 29,
+    "fields": {
+        "name": "Can change test",
+        "content_type": 10,
+        "codename": "change_test"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 30,
+    "fields": {
+        "name": "Can delete test",
+        "content_type": 10,
+        "codename": "delete_test"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 31,
+    "fields": {
+        "name": "Can add test result",
+        "content_type": 11,
+        "codename": "add_testresult"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 32,
+    "fields": {
+        "name": "Can change test result",
+        "content_type": 11,
+        "codename": "change_testresult"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 33,
+    "fields": {
+        "name": "Can delete test result",
+        "content_type": 11,
+        "codename": "delete_testresult"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 34,
+    "fields": {
+        "name": "Can add test unit",
+        "content_type": 12,
+        "codename": "add_testunit"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 35,
+    "fields": {
+        "name": "Can change test unit",
+        "content_type": 12,
+        "codename": "change_testunit"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 36,
+    "fields": {
+        "name": "Can delete test unit",
+        "content_type": 12,
+        "codename": "delete_testunit"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 37,
+    "fields": {
+        "name": "Can add multiple choice question",
+        "content_type": 13,
+        "codename": "add_multiplechoicequestion"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 38,
+    "fields": {
+        "name": "Can change multiple choice question",
+        "content_type": 13,
+        "codename": "change_multiplechoicequestion"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 39,
+    "fields": {
+        "name": "Can delete multiple choice question",
+        "content_type": 13,
+        "codename": "delete_multiplechoicequestion"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 40,
+    "fields": {
+        "name": "Can add multiple choice question with image",
+        "content_type": 14,
+        "codename": "add_multiplechoicequestionwithimage"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 41,
+    "fields": {
+        "name": "Can change multiple choice question with image",
+        "content_type": 14,
+        "codename": "change_multiplechoicequestionwithimage"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 42,
+    "fields": {
+        "name": "Can delete multiple choice question with image",
+        "content_type": 14,
+        "codename": "delete_multiplechoicequestionwithimage"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 43,
+    "fields": {
+        "name": "Can add multiple choice question with video",
+        "content_type": 15,
+        "codename": "add_multiplechoicequestionwithvideo"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 44,
+    "fields": {
+        "name": "Can change multiple choice question with video",
+        "content_type": 15,
+        "codename": "change_multiplechoicequestionwithvideo"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 45,
+    "fields": {
+        "name": "Can delete multiple choice question with video",
+        "content_type": 15,
+        "codename": "delete_multiplechoicequestionwithvideo"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 46,
+    "fields": {
+        "name": "Can add landmark question",
+        "content_type": 16,
+        "codename": "add_landmarkquestion"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 47,
+    "fields": {
+        "name": "Can change landmark question",
+        "content_type": 16,
+        "codename": "change_landmarkquestion"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 48,
+    "fields": {
+        "name": "Can delete landmark question",
+        "content_type": 16,
+        "codename": "delete_landmarkquestion"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 49,
+    "fields": {
+        "name": "Can add outline question",
+        "content_type": 17,
+        "codename": "add_outlinequestion"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 50,
+    "fields": {
+        "name": "Can change outline question",
+        "content_type": 17,
+        "codename": "change_outlinequestion"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 51,
+    "fields": {
+        "name": "Can delete outline question",
+        "content_type": 17,
+        "codename": "delete_outlinequestion"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 52,
+    "fields": {
+        "name": "Can add landmark region",
+        "content_type": 18,
+        "codename": "add_landmarkregion"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 53,
+    "fields": {
+        "name": "Can change landmark region",
+        "content_type": 18,
+        "codename": "change_landmarkregion"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 54,
+    "fields": {
+        "name": "Can delete landmark region",
+        "content_type": 18,
+        "codename": "delete_landmarkregion"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 55,
+    "fields": {
+        "name": "Can add outline region",
+        "content_type": 19,
+        "codename": "add_outlineregion"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 56,
+    "fields": {
+        "name": "Can change outline region",
+        "content_type": 19,
+        "codename": "change_outlineregion"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 57,
+    "fields": {
+        "name": "Can delete outline region",
+        "content_type": 19,
+        "codename": "delete_outlineregion"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 58,
+    "fields": {
+        "name": "Can add test unit result",
+        "content_type": 20,
+        "codename": "add_testunitresult"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 59,
+    "fields": {
+        "name": "Can change test unit result",
+        "content_type": 20,
+        "codename": "change_testunitresult"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 60,
+    "fields": {
+        "name": "Can delete test unit result",
+        "content_type": 20,
+        "codename": "delete_testunitresult"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 61,
+    "fields": {
+        "name": "Can add global settings",
+        "content_type": 21,
+        "codename": "add_globalsettings"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 62,
+    "fields": {
+        "name": "Can change global settings",
+        "content_type": 21,
+        "codename": "change_globalsettings"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 63,
+    "fields": {
+        "name": "Can delete global settings",
+        "content_type": 21,
+        "codename": "delete_globalsettings"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 64,
+    "fields": {
+        "name": "Can add outline solution question",
+        "content_type": 22,
+        "codename": "add_outlinesolutionquestion"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 65,
+    "fields": {
+        "name": "Can change outline solution question",
+        "content_type": 22,
+        "codename": "change_outlinesolutionquestion"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 66,
+    "fields": {
+        "name": "Can delete outline solution question",
+        "content_type": 22,
+        "codename": "delete_outlinesolutionquestion"
+    }
+},
+{
+    "model": "auth.user",
+    "pk": 1,
+    "fields": {
+        "password": "pbkdf2_sha256$24000$nfGTFhBfJTMw$iz5vq+NmqV+s3ExlieYRWGjosFH0kdBBnKlPmDcvu8k=",
+        "last_login": "2016-09-20T09:23:43.124Z",
+        "is_superuser": true,
+        "username": "admin",
+        "first_name": "",
+        "last_name": "",
+        "email": "admin@admin.com",
+        "is_staff": true,
+        "is_active": true,
+        "date_joined": "2016-06-09T20:35:56.530Z",
+        "groups": [],
+        "user_permissions": []
+    }
+},
+{
+    "model": "auth.user",
+    "pk": 37,
+    "fields": {
+        "password": "pbkdf2_sha256$24000$dG4Mb5x9mX84$tr6U+ZAvwS7DIKyNKrMVGc7xnRlwcvvz9reTpH/pzOc=",
+        "last_login": "2016-06-13T21:26:04.941Z",
+        "is_superuser": false,
+        "username": "tormod",
+        "first_name": "",
+        "last_name": "",
+        "email": "",
+        "is_staff": false,
+        "is_active": true,
+        "date_joined": "2016-06-12T09:41:23.637Z",
+        "groups": [],
+        "user_permissions": []
+    }
+},
+{
+    "model": "auth.user",
+    "pk": 38,
+    "fields": {
+        "password": "pbkdf2_sha256$24000$SKAXBF8ciHwW$G2bBgWRkFWuFLkT9S6NMjGHn/MS/n4Z+9Gva56QsIbA=",
+        "last_login": "2016-06-13T21:15:30.328Z",
+        "is_superuser": false,
+        "username": "frank",
+        "first_name": "",
+        "last_name": "",
+        "email": "",
+        "is_staff": false,
+        "is_active": true,
+        "date_joined": "2016-06-12T09:41:40.011Z",
+        "groups": [],
+        "user_permissions": []
+    }
+},
+{
+    "model": "auth.user",
+    "pk": 39,
+    "fields": {
+        "password": "pbkdf2_sha256$24000$aBwkOjJ24HVR$IHAVNO9p0EtagBt1MSZf/foVFpvdgSDbsn2syinn+wM=",
+        "last_login": "2016-06-13T21:23:25.758Z",
+        "is_superuser": false,
+        "username": "ingerid",
+        "first_name": "",
+        "last_name": "",
+        "email": "",
+        "is_staff": false,
+        "is_active": true,
+        "date_joined": "2016-06-12T09:42:01.798Z",
+        "groups": [],
+        "user_permissions": []
+    }
+},
+{
+    "model": "auth.user",
+    "pk": 40,
+    "fields": {
+        "password": "pbkdf2_sha256$24000$vUMIbKXxVxal$9NRmNi67620N3oLc9vivZ5xJ7/JXUXWtkODxUgy9+E4=",
+        "last_login": "2016-06-17T05:51:18.904Z",
+        "is_superuser": false,
+        "username": "daniel",
+        "first_name": "",
+        "last_name": "",
+        "email": "",
+        "is_staff": false,
+        "is_active": true,
+        "date_joined": "2016-06-12T09:42:34.467Z",
+        "groups": [],
+        "user_permissions": []
+    }
+},
+{
+    "model": "auth.user",
+    "pk": 41,
+    "fields": {
+        "password": "pbkdf2_sha256$24000$u7CQDYMTkCx8$zD3/TzfkK0k1yJ36yp3dZdqWj6N96d/fuRIO0xfRdyw=",
+        "last_login": "2016-06-13T21:25:16.706Z",
+        "is_superuser": false,
+        "username": "torgrim",
+        "first_name": "",
+        "last_name": "",
+        "email": "",
+        "is_staff": false,
+        "is_active": true,
+        "date_joined": "2016-06-12T09:42:58.364Z",
+        "groups": [],
+        "user_permissions": []
+    }
+},
+{
+    "model": "auth.user",
+    "pk": 42,
+    "fields": {
+        "password": "pbkdf2_sha256$24000$8UuqnQb6QeIo$K/Gr4G0LqVj0xh9xNn63wz77IjRMjsq1kR88p01A64U=",
+        "last_login": "2016-06-17T18:57:51.329Z",
+        "is_superuser": false,
+        "username": "geirmund",
+        "first_name": "",
+        "last_name": "",
+        "email": "",
+        "is_staff": false,
+        "is_active": true,
+        "date_joined": "2016-06-12T09:43:58.070Z",
+        "groups": [],
+        "user_permissions": []
+    }
+},
+{
+    "model": "auth.user",
+    "pk": 43,
+    "fields": {
+        "password": "pbkdf2_sha256$24000$neChO7KgMxVC$ZkVBd6ugz5QsQGmOYnMKwAKt5lfnzt/i0h70BeD7ZGM=",
+        "last_login": "2016-06-13T21:24:32.604Z",
+        "is_superuser": false,
+        "username": "ole",
+        "first_name": "",
+        "last_name": "",
+        "email": "",
+        "is_staff": false,
+        "is_active": true,
+        "date_joined": "2016-06-12T09:44:41.487Z",
+        "groups": [],
+        "user_permissions": []
+    }
+},
+{
+    "model": "auth.user",
+    "pk": 44,
+    "fields": {
+        "password": "pbkdf2_sha256$24000$ldf6g8hvFAxG$vd4/zEKITTVPe1mRJssYDy2EXRLCnO34TtpjTzFcEgk=",
+        "last_login": "2016-06-13T21:24:01.085Z",
+        "is_superuser": false,
+        "username": "oddrun",
+        "first_name": "",
+        "last_name": "",
+        "email": "",
+        "is_staff": false,
+        "is_active": true,
+        "date_joined": "2016-06-12T09:45:33.627Z",
+        "groups": [],
+        "user_permissions": []
+    }
+},
+{
+    "model": "auth.user",
+    "pk": 95,
+    "fields": {
+        "password": "pbkdf2_sha256$24000$RoWoP8mdpDwr$HYDSHjX/QN9Fa4Xiq7oojMOgsWJu3EHWwM41dsimY/A=",
+        "last_login": "2016-06-13T17:57:50.813Z",
+        "is_superuser": false,
+        "username": "test-01",
+        "first_name": "",
+        "last_name": "",
+        "email": "",
+        "is_staff": false,
+        "is_active": true,
+        "date_joined": "2016-06-13T17:51:59.919Z",
+        "groups": [],
+        "user_permissions": []
+    }
+},
+{
+    "model": "auth.user",
+    "pk": 96,
+    "fields": {
+        "password": "pbkdf2_sha256$24000$gJkrwiJh8bMy$ecvTVH4JP8Ug0+Aq9vcIA8d2gL0LZKwwkSISsqt4jgY=",
+        "last_login": null,
+        "is_superuser": false,
+        "username": "test-02",
+        "first_name": "",
+        "last_name": "",
+        "email": "",
+        "is_staff": false,
+        "is_active": true,
+        "date_joined": "2016-06-13T17:51:59.991Z",
+        "groups": [],
+        "user_permissions": []
+    }
+},
+{
+    "model": "auth.user",
+    "pk": 97,
+    "fields": {
+        "password": "pbkdf2_sha256$24000$XDaxKGoWAIZR$VF0ncN5oGfwENDRcTRNAYRAySdYxZFeTo9h6gkiWNag=",
+        "last_login": null,
+        "is_superuser": false,
+        "username": "test-03",
+        "first_name": "",
+        "last_name": "",
+        "email": "",
+        "is_staff": false,
+        "is_active": true,
+        "date_joined": "2016-06-13T17:56:01.392Z",
+        "groups": [],
+        "user_permissions": []
+    }
+},
+{
+    "model": "auth.user",
+    "pk": 98,
+    "fields": {
+        "password": "pbkdf2_sha256$24000$ioHX9h0J0xSa$uxiUAwRP6Eb2Jm6RbOe2ExGz5wgYe6rJ04d/pQAZb1E=",
+        "last_login": null,
+        "is_superuser": false,
+        "username": "test-04",
+        "first_name": "",
+        "last_name": "",
+        "email": "",
+        "is_staff": false,
+        "is_active": true,
+        "date_joined": "2016-06-13T17:56:02.709Z",
+        "groups": [],
+        "user_permissions": []
+    }
+},
+{
+    "model": "auth.user",
+    "pk": 99,
+    "fields": {
+        "password": "pbkdf2_sha256$24000$12tf6qJM4K4b$OSGhU0jFYgJC3fb18MvW/qL7KHo17498/fypepRyrjk=",
+        "last_login": null,
+        "is_superuser": false,
+        "username": "test2-01",
+        "first_name": "",
+        "last_name": "",
+        "email": "",
+        "is_staff": false,
+        "is_active": true,
+        "date_joined": "2016-06-13T17:56:28.955Z",
+        "groups": [],
+        "user_permissions": []
+    }
+},
+{
+    "model": "auth.user",
+    "pk": 109,
+    "fields": {
+        "password": "pbkdf2_sha256$24000$GDN7Q01vgc3i$6GbSjCfwHQb+xAB3y2KReIQ8cbT28RhNiA5F0botyyM=",
+        "last_login": null,
+        "is_superuser": false,
+        "username": "ncu-01",
+        "first_name": "",
+        "last_name": "",
+        "email": "",
+        "is_staff": false,
+        "is_active": true,
+        "date_joined": "2016-06-13T21:03:19.723Z",
+        "groups": [],
+        "user_permissions": []
+    }
+},
+{
+    "model": "auth.user",
+    "pk": 110,
+    "fields": {
+        "password": "pbkdf2_sha256$24000$7usmSKU8seQ4$3PB1ezUIxPQj+XchLNqnlKAv+mDLMOhSY2Q+ye0PxV0=",
+        "last_login": null,
+        "is_superuser": false,
+        "username": "ncu-02",
+        "first_name": "",
+        "last_name": "",
+        "email": "",
+        "is_staff": false,
+        "is_active": true,
+        "date_joined": "2016-06-13T21:03:19.793Z",
+        "groups": [],
+        "user_permissions": []
+    }
+},
+{
+    "model": "auth.user",
+    "pk": 111,
+    "fields": {
+        "password": "pbkdf2_sha256$24000$1i22hKMxH6yj$BSNH0ksAivLMRt4+21DItX9kASyVcONmw2IzYkNnXsA=",
+        "last_login": "2016-06-23T08:33:47.276Z",
+        "is_superuser": false,
+        "username": "ncu-03",
+        "first_name": "",
+        "last_name": "",
+        "email": "",
+        "is_staff": false,
+        "is_active": true,
+        "date_joined": "2016-06-13T21:03:19.862Z",
+        "groups": [],
+        "user_permissions": []
+    }
+},
+{
+    "model": "auth.user",
+    "pk": 112,
+    "fields": {
+        "password": "pbkdf2_sha256$24000$hBFoGpenruWm$zX6HSCpjgICGkgjDirOsYz6xyeNmFLMA8ANXp+QM7xQ=",
+        "last_login": null,
+        "is_superuser": false,
+        "username": "ncu-04",
+        "first_name": "",
+        "last_name": "",
+        "email": "",
+        "is_staff": false,
+        "is_active": true,
+        "date_joined": "2016-06-13T21:03:19.929Z",
+        "groups": [],
+        "user_permissions": []
+    }
+},
+{
+    "model": "auth.user",
+    "pk": 113,
+    "fields": {
+        "password": "pbkdf2_sha256$24000$5Cocj2aJ8J79$4saWTizuZ7oqs1LY5bv367ptITHMXxBaQoy10Ba1Jbg=",
+        "last_login": "2016-06-20T14:25:07.126Z",
+        "is_superuser": false,
+        "username": "ncu-05",
+        "first_name": "",
+        "last_name": "",
+        "email": "",
+        "is_staff": false,
+        "is_active": true,
+        "date_joined": "2016-06-13T21:03:19.996Z",
+        "groups": [],
+        "user_permissions": []
+    }
+},
+{
+    "model": "auth.user",
+    "pk": 114,
+    "fields": {
+        "password": "pbkdf2_sha256$24000$ww3Cbc3s5WC5$Xg5pwIH7J3HMeqjQGzONQjAQPig6LqW4YM/yucnZFwA=",
+        "last_login": null,
+        "is_superuser": false,
+        "username": "ncu-06",
+        "first_name": "",
+        "last_name": "",
+        "email": "",
+        "is_staff": false,
+        "is_active": true,
+        "date_joined": "2016-06-13T21:03:20.064Z",
+        "groups": [],
+        "user_permissions": []
+    }
+},
+{
+    "model": "auth.user",
+    "pk": 115,
+    "fields": {
+        "password": "pbkdf2_sha256$24000$c5ovditJdBcl$nHuJkbB3UmR8zHEbDt6aDWuiPiPv2HDSlXFSjhQMePU=",
+        "last_login": null,
+        "is_superuser": false,
+        "username": "ncu-07",
+        "first_name": "",
+        "last_name": "",
+        "email": "",
+        "is_staff": false,
+        "is_active": true,
+        "date_joined": "2016-06-13T21:03:20.133Z",
+        "groups": [],
+        "user_permissions": []
+    }
+},
+{
+    "model": "auth.user",
+    "pk": 116,
+    "fields": {
+        "password": "pbkdf2_sha256$24000$fMEG7JjDuR5H$lLLApN+d8rPSfTNZ5bY4FIyH/nFSYPF5AYodDoSPdiU=",
+        "last_login": null,
+        "is_superuser": false,
+        "username": "ncu-08",
+        "first_name": "",
+        "last_name": "",
+        "email": "",
+        "is_staff": false,
+        "is_active": true,
+        "date_joined": "2016-06-13T21:03:20.201Z",
+        "groups": [],
+        "user_permissions": []
+    }
+},
+{
+    "model": "auth.user",
+    "pk": 117,
+    "fields": {
+        "password": "pbkdf2_sha256$24000$EZoSONyuh7Fz$Su1EW2hVftDRpsaHYlTlijhZmnZKXzUe234Uwn4Q4JE=",
+        "last_login": null,
+        "is_superuser": false,
+        "username": "ncu-09",
+        "first_name": "",
+        "last_name": "",
+        "email": "",
+        "is_staff": false,
+        "is_active": true,
+        "date_joined": "2016-06-13T21:03:20.270Z",
+        "groups": [],
+        "user_permissions": []
+    }
+},
+{
+    "model": "auth.user",
+    "pk": 118,
+    "fields": {
+        "password": "pbkdf2_sha256$24000$WnM4WReESGU5$Bq/NdV8XQWTo5wQShcYxLH0HAAUhTDuSJWXCthQ9xK4=",
+        "last_login": null,
+        "is_superuser": false,
+        "username": "ncu-10",
+        "first_name": "",
+        "last_name": "",
+        "email": "",
+        "is_staff": false,
+        "is_active": true,
+        "date_joined": "2016-06-13T21:03:20.337Z",
+        "groups": [],
+        "user_permissions": []
+    }
+},
+{
+    "model": "auth.user",
+    "pk": 119,
+    "fields": {
+        "password": "pbkdf2_sha256$24000$YgsrsDIh8h6E$AlYGBiyK5wNjWwFrEHjzMmHA/OIV2Tbhwi4+ynNxDXA=",
+        "last_login": null,
+        "is_superuser": false,
+        "username": "ncu-11",
+        "first_name": "",
+        "last_name": "",
+        "email": "",
+        "is_staff": false,
+        "is_active": true,
+        "date_joined": "2016-06-13T21:03:20.400Z",
+        "groups": [],
+        "user_permissions": []
+    }
+},
+{
+    "model": "auth.user",
+    "pk": 120,
+    "fields": {
+        "password": "pbkdf2_sha256$24000$0HjT7kvWUeOo$xIGMXwE8Kxos9dE8qxam07UuEQVQmQ/+TNBX6bdiNY8=",
+        "last_login": null,
+        "is_superuser": false,
+        "username": "ncu-12",
+        "first_name": "",
+        "last_name": "",
+        "email": "",
+        "is_staff": false,
+        "is_active": true,
+        "date_joined": "2016-06-13T21:03:20.454Z",
+        "groups": [],
+        "user_permissions": []
+    }
+},
+{
+    "model": "auth.user",
+    "pk": 121,
+    "fields": {
+        "password": "pbkdf2_sha256$24000$Be4NyU7YqWjm$B1/bcxIQ6JTMbYfzMy5QixLZbfy1CyEcAKb04QOOKCE=",
+        "last_login": null,
+        "is_superuser": false,
+        "username": "ncu-13",
+        "first_name": "",
+        "last_name": "",
+        "email": "",
+        "is_staff": false,
+        "is_active": true,
+        "date_joined": "2016-06-13T21:03:20.517Z",
+        "groups": [],
+        "user_permissions": []
+    }
+},
+{
+    "model": "auth.user",
+    "pk": 122,
+    "fields": {
+        "password": "pbkdf2_sha256$24000$V7GITFZ5Og4K$ti610LZVSRNx8+4EdVD030IJBaj3dItuOShDvVZ//eE=",
+        "last_login": null,
+        "is_superuser": false,
+        "username": "ncu-14",
+        "first_name": "",
+        "last_name": "",
+        "email": "",
+        "is_staff": false,
+        "is_active": true,
+        "date_joined": "2016-06-13T21:03:20.584Z",
+        "groups": [],
+        "user_permissions": []
+    }
+},
+{
+    "model": "auth.user",
+    "pk": 123,
+    "fields": {
+        "password": "pbkdf2_sha256$24000$YKABsdQoL4Ic$W4WOvcQvMpm7UFyqj7o0K42O+LIMq3tR9Z7NUZX06Uo=",
+        "last_login": null,
+        "is_superuser": false,
+        "username": "ncu-15",
+        "first_name": "",
+        "last_name": "",
+        "email": "",
+        "is_staff": false,
+        "is_active": true,
+        "date_joined": "2016-06-13T21:03:20.653Z",
+        "groups": [],
+        "user_permissions": []
+    }
+},
+{
+    "model": "auth.user",
+    "pk": 124,
+    "fields": {
+        "password": "pbkdf2_sha256$24000$PTEJfUu6KuCr$q+uObP49oKHEqduYXXdRusFdt9ULNwpcfZKNzMCXdJ0=",
+        "last_login": null,
+        "is_superuser": false,
+        "username": "ncu-16",
+        "first_name": "",
+        "last_name": "",
+        "email": "",
+        "is_staff": false,
+        "is_active": true,
+        "date_joined": "2016-06-13T21:03:20.727Z",
+        "groups": [],
+        "user_permissions": []
+    }
+},
+{
+    "model": "auth.user",
+    "pk": 125,
+    "fields": {
+        "password": "pbkdf2_sha256$24000$mORrOsu3hHjY$XcxHwK1tFVGVlMm+Y37BuSsRvj/o+h6iFTNMe2nWYVE=",
+        "last_login": null,
+        "is_superuser": false,
+        "username": "ncu-17",
+        "first_name": "",
+        "last_name": "",
+        "email": "",
+        "is_staff": false,
+        "is_active": true,
+        "date_joined": "2016-06-13T21:03:20.795Z",
+        "groups": [],
+        "user_permissions": []
+    }
+},
+{
+    "model": "auth.user",
+    "pk": 126,
+    "fields": {
+        "password": "pbkdf2_sha256$24000$XvbDfQ4NxmF9$HEu2XO44iKTY70UmZmYbhmOyueevWtwzobxNcJC25NU=",
+        "last_login": null,
+        "is_superuser": false,
+        "username": "ncu-18",
+        "first_name": "",
+        "last_name": "",
+        "email": "",
+        "is_staff": false,
+        "is_active": true,
+        "date_joined": "2016-06-13T21:03:20.863Z",
+        "groups": [],
+        "user_permissions": []
+    }
+},
+{
+    "model": "auth.user",
+    "pk": 127,
+    "fields": {
+        "password": "pbkdf2_sha256$24000$nq4y4tiLLuug$HPMHApIbUzzuTyy5nKVWSAoLEs3aCATOEnMtNIvfNzU=",
+        "last_login": null,
+        "is_superuser": false,
+        "username": "ncu-19",
+        "first_name": "",
+        "last_name": "",
+        "email": "",
+        "is_staff": false,
+        "is_active": true,
+        "date_joined": "2016-06-13T21:03:20.931Z",
+        "groups": [],
+        "user_permissions": []
+    }
+},
+{
+    "model": "auth.user",
+    "pk": 128,
+    "fields": {
+        "password": "pbkdf2_sha256$24000$noPHXP3V0Aie$kSQKBjHOsuk5AdS8oe/CKrWAUtpkWKBrFsja5y91uTk=",
+        "last_login": null,
+        "is_superuser": false,
+        "username": "ncu-20",
+        "first_name": "",
+        "last_name": "",
+        "email": "",
+        "is_staff": false,
+        "is_active": true,
+        "date_joined": "2016-06-13T21:03:21.000Z",
+        "groups": [],
+        "user_permissions": []
+    }
+},
+{
+    "model": "auth.user",
+    "pk": 129,
+    "fields": {
+        "password": "pbkdf2_sha256$24000$DDptmQIE9g3f$r8lqvoteEcDsIE5s/y0mtPC2p6oQe8o4GvhLWem7B4k=",
+        "last_login": null,
+        "is_superuser": false,
+        "username": "ncu-21",
+        "first_name": "",
+        "last_name": "",
+        "email": "",
+        "is_staff": false,
+        "is_active": true,
+        "date_joined": "2016-06-13T21:03:21.068Z",
+        "groups": [],
+        "user_permissions": []
+    }
+},
+{
+    "model": "auth.user",
+    "pk": 130,
+    "fields": {
+        "password": "pbkdf2_sha256$24000$YayL9VPJ1fx2$6hT/i5hx0yy2FzmqAV2GJDOkrAtXauaO3scQs9om17s=",
+        "last_login": null,
+        "is_superuser": false,
+        "username": "ncu-22",
+        "first_name": "",
+        "last_name": "",
+        "email": "",
+        "is_staff": false,
+        "is_active": true,
+        "date_joined": "2016-06-13T21:03:21.135Z",
+        "groups": [],
+        "user_permissions": []
+    }
+},
+{
+    "model": "auth.user",
+    "pk": 131,
+    "fields": {
+        "password": "pbkdf2_sha256$24000$ERWigpArcuLc$N1VlBRrGcUWzCDIokX4tKUMpDHSaXw7Ig7Zv26pn0tQ=",
+        "last_login": null,
+        "is_superuser": false,
+        "username": "ncu-23",
+        "first_name": "",
+        "last_name": "",
+        "email": "",
+        "is_staff": false,
+        "is_active": true,
+        "date_joined": "2016-06-13T21:03:21.203Z",
+        "groups": [],
+        "user_permissions": []
+    }
+},
+{
+    "model": "auth.user",
+    "pk": 132,
+    "fields": {
+        "password": "pbkdf2_sha256$24000$Su314w5SnzB5$3CBw8I8uYuTimxqBPjgnKeYAdy6xdGGoxAieeJAgaiE=",
+        "last_login": null,
+        "is_superuser": false,
+        "username": "ncu-24",
+        "first_name": "",
+        "last_name": "",
+        "email": "",
+        "is_staff": false,
+        "is_active": true,
+        "date_joined": "2016-06-13T21:03:21.270Z",
+        "groups": [],
+        "user_permissions": []
+    }
+},
+{
+    "model": "auth.user",
+    "pk": 133,
+    "fields": {
+        "password": "pbkdf2_sha256$24000$w36w56kaOhjD$d4oiRsKa35IE/38ABv+Wuftei9wPdx67Fs4kUD6/oqY=",
+        "last_login": "2016-08-04T06:11:51.437Z",
+        "is_superuser": false,
+        "username": "ncu-25",
+        "first_name": "",
+        "last_name": "",
+        "email": "",
+        "is_staff": false,
+        "is_active": true,
+        "date_joined": "2016-06-13T21:03:21.338Z",
+        "groups": [],
+        "user_permissions": []
+    }
+},
+{
+    "model": "auth.user",
+    "pk": 134,
+    "fields": {
+        "password": "pbkdf2_sha256$24000$PMwlRELZ2WtI$90bQMS4rlFymtC2aF10Xqf0hf2lvVvTLnBicaugekUo=",
+        "last_login": null,
+        "is_superuser": false,
+        "username": "ncu-26",
+        "first_name": "",
+        "last_name": "",
+        "email": "",
+        "is_staff": false,
+        "is_active": true,
+        "date_joined": "2016-06-13T21:03:21.401Z",
+        "groups": [],
+        "user_permissions": []
+    }
+},
+{
+    "model": "auth.user",
+    "pk": 135,
+    "fields": {
+        "password": "pbkdf2_sha256$24000$pft9JJ6bmEBY$m4M1LYmhQ7YHCyI6DzHlJv69lBk2Syh9C2BvEd5VD+4=",
+        "last_login": null,
+        "is_superuser": false,
+        "username": "ncu-27",
+        "first_name": "",
+        "last_name": "",
+        "email": "",
+        "is_staff": false,
+        "is_active": true,
+        "date_joined": "2016-06-13T21:03:21.456Z",
+        "groups": [],
+        "user_permissions": []
+    }
+},
+{
+    "model": "auth.user",
+    "pk": 136,
+    "fields": {
+        "password": "pbkdf2_sha256$24000$3Pub5pA3OovF$U/cOwh///IyDlseq2fg/puJMFjAMZezZ9H41ARrl2Dg=",
+        "last_login": null,
+        "is_superuser": false,
+        "username": "ncu-28",
+        "first_name": "",
+        "last_name": "",
+        "email": "",
+        "is_staff": false,
+        "is_active": true,
+        "date_joined": "2016-06-13T21:03:21.510Z",
+        "groups": [],
+        "user_permissions": []
+    }
+},
+{
+    "model": "auth.user",
+    "pk": 137,
+    "fields": {
+        "password": "pbkdf2_sha256$24000$CCeVxWY6W7JR$xEAaPeeUY19QQQCEJZxhbGYljrur3LexvUl9HZwFoBA=",
+        "last_login": null,
+        "is_superuser": false,
+        "username": "ncu-29",
+        "first_name": "",
+        "last_name": "",
+        "email": "",
+        "is_staff": false,
+        "is_active": true,
+        "date_joined": "2016-06-13T21:03:21.565Z",
+        "groups": [],
+        "user_permissions": []
+    }
+},
+{
+    "model": "auth.user",
+    "pk": 138,
+    "fields": {
+        "password": "pbkdf2_sha256$24000$3IpBHfFCnIcJ$R00/I5PMeMe1vyPdezrO96vHfUTcFpX6AwKWTF8Xwhw=",
+        "last_login": null,
+        "is_superuser": false,
+        "username": "ncu-30",
+        "first_name": "",
+        "last_name": "",
+        "email": "",
+        "is_staff": false,
+        "is_active": true,
+        "date_joined": "2016-06-13T21:03:21.620Z",
+        "groups": [],
+        "user_permissions": []
+    }
+},
+{
+    "model": "auth.user",
+    "pk": 139,
+    "fields": {
+        "password": "pbkdf2_sha256$24000$fSFvngfwnS9e$goCCBxAVUc8awafLuUMyKhpoUInhxDCL/hbJX0t9juM=",
+        "last_login": null,
+        "is_superuser": false,
+        "username": "ncu-31",
+        "first_name": "",
+        "last_name": "",
+        "email": "",
+        "is_staff": false,
+        "is_active": true,
+        "date_joined": "2016-06-13T21:03:21.674Z",
+        "groups": [],
+        "user_permissions": []
+    }
+},
+{
+    "model": "auth.user",
+    "pk": 140,
+    "fields": {
+        "password": "pbkdf2_sha256$24000$ApIqDwHxuqRJ$f2vl860+75Lw2GxbkWCm21epY4JTEmPsHw9nUWrNjhQ=",
+        "last_login": null,
+        "is_superuser": false,
+        "username": "ncu-32",
+        "first_name": "",
+        "last_name": "",
+        "email": "",
+        "is_staff": false,
+        "is_active": true,
+        "date_joined": "2016-06-13T21:03:21.729Z",
+        "groups": [],
+        "user_permissions": []
+    }
+},
+{
+    "model": "auth.user",
+    "pk": 141,
+    "fields": {
+        "password": "pbkdf2_sha256$24000$KWMLiwA244pF$Mk5m6ftqHUjo+qaUunfbbionHRScVAPfFwAvFCbttZo=",
+        "last_login": null,
+        "is_superuser": false,
+        "username": "ncu-33",
+        "first_name": "",
+        "last_name": "",
+        "email": "",
+        "is_staff": false,
+        "is_active": true,
+        "date_joined": "2016-06-13T21:03:21.784Z",
+        "groups": [],
+        "user_permissions": []
+    }
+},
+{
+    "model": "auth.user",
+    "pk": 142,
+    "fields": {
+        "password": "pbkdf2_sha256$24000$CBVj1xvwWmb9$D3Rw321A0669wMAKnMYwkKWgAuD62JWMDfIaxta6IUU=",
+        "last_login": null,
+        "is_superuser": false,
+        "username": "ncu-34",
+        "first_name": "",
+        "last_name": "",
+        "email": "",
+        "is_staff": false,
+        "is_active": true,
+        "date_joined": "2016-06-13T21:03:21.838Z",
+        "groups": [],
+        "user_permissions": []
+    }
+},
+{
+    "model": "auth.user",
+    "pk": 143,
+    "fields": {
+        "password": "pbkdf2_sha256$24000$NLbjfCDDdSjU$5nu8oUO8EVqJo50wiyaRxMse7y51UsQgswXVnFg1h/A=",
+        "last_login": "2016-06-13T21:17:20.285Z",
+        "is_superuser": false,
+        "username": "ncu-35",
+        "first_name": "",
+        "last_name": "",
+        "email": "",
+        "is_staff": false,
+        "is_active": true,
+        "date_joined": "2016-06-13T21:03:21.891Z",
+        "groups": [],
+        "user_permissions": []
+    }
+},
+{
+    "model": "auth.user",
+    "pk": 144,
+    "fields": {
+        "password": "pbkdf2_sha256$24000$3vF8UlrXdmaX$tbEfx1YuQsggg+Ay7QJ7XpZQXx28CNeEyIFQ5ipLuio=",
+        "last_login": "2016-06-24T08:25:23.314Z",
+        "is_superuser": false,
+        "username": "npu-01",
+        "first_name": "",
+        "last_name": "",
+        "email": "",
+        "is_staff": false,
+        "is_active": true,
+        "date_joined": "2016-06-13T21:07:17.594Z",
+        "groups": [],
+        "user_permissions": []
+    }
+},
+{
+    "model": "auth.user",
+    "pk": 145,
+    "fields": {
+        "password": "pbkdf2_sha256$24000$9Mm9PWGRQQUw$0Z71/C47qPG7UBzJ6bNq7OLfPObUdtj6ZWp222g4vXk=",
+        "last_login": "2016-06-23T08:27:47.321Z",
+        "is_superuser": false,
+        "username": "npu-02",
+        "first_name": "",
+        "last_name": "",
+        "email": "",
+        "is_staff": false,
+        "is_active": true,
+        "date_joined": "2016-06-13T21:07:17.662Z",
+        "groups": [],
+        "user_permissions": []
+    }
+},
+{
+    "model": "auth.user",
+    "pk": 146,
+    "fields": {
+        "password": "pbkdf2_sha256$24000$lN0qS68c3LPY$gSAGOiaZ5zLLL53zpUu8QFNzUrjsjpDrA/Ke5mPzrNk=",
+        "last_login": "2016-06-23T08:34:11.260Z",
+        "is_superuser": false,
+        "username": "npu-03",
+        "first_name": "",
+        "last_name": "",
+        "email": "",
+        "is_staff": false,
+        "is_active": true,
+        "date_joined": "2016-06-13T21:07:17.729Z",
+        "groups": [],
+        "user_permissions": []
+    }
+},
+{
+    "model": "auth.user",
+    "pk": 148,
+    "fields": {
+        "password": "pbkdf2_sha256$24000$iFeTxXVH94qb$xjflHEMb1FJ/ZqtXNPrvbv/1xRpAMgp6gj4pCCrDDyg=",
+        "last_login": "2016-06-16T16:27:43.364Z",
+        "is_superuser": false,
+        "username": "t1",
+        "first_name": "",
+        "last_name": "",
+        "email": "",
+        "is_staff": false,
+        "is_active": true,
+        "date_joined": "2016-06-14T04:35:58.258Z",
+        "groups": [],
+        "user_permissions": []
+    }
+},
+{
+    "model": "auth.user",
+    "pk": 149,
+    "fields": {
+        "password": "pbkdf2_sha256$24000$69MA3bJL3gv2$BHCYB/hXJT9FoUm9SQHM39jLRbEbLVTMphPIHRSIJf8=",
+        "last_login": "2016-06-16T16:35:20.666Z",
+        "is_superuser": false,
+        "username": "t2",
+        "first_name": "",
+        "last_name": "",
+        "email": "",
+        "is_staff": false,
+        "is_active": true,
+        "date_joined": "2016-06-14T04:36:12.113Z",
+        "groups": [],
+        "user_permissions": []
+    }
+},
+{
+    "model": "auth.user",
+    "pk": 150,
+    "fields": {
+        "password": "pbkdf2_sha256$24000$IB7bEtl4E8R4$oC7xCWOJmB3dI6Hqem3ljxhynFXsPB70jTHWywPSbx0=",
+        "last_login": "2016-06-18T12:08:07.858Z",
+        "is_superuser": false,
+        "username": "t3",
+        "first_name": "",
+        "last_name": "",
+        "email": "",
+        "is_staff": false,
+        "is_active": true,
+        "date_joined": "2016-06-14T04:36:26.224Z",
+        "groups": [],
+        "user_permissions": []
+    }
+},
+{
+    "model": "auth.user",
+    "pk": 151,
+    "fields": {
+        "password": "pbkdf2_sha256$24000$F01GtTcfspgG$Wsz4ZolVr8BQo8WnJ5k13cam3BI0kCk+SgnODsKJ/is=",
+        "last_login": "2016-06-14T14:03:20.945Z",
+        "is_superuser": false,
+        "username": "t4",
+        "first_name": "",
+        "last_name": "",
+        "email": "",
+        "is_staff": false,
+        "is_active": true,
+        "date_joined": "2016-06-14T04:36:35.268Z",
+        "groups": [],
+        "user_permissions": []
+    }
+},
+{
+    "model": "auth.user",
+    "pk": 152,
+    "fields": {
+        "password": "pbkdf2_sha256$24000$xoS5m9E15IGt$w+vTF6L1Lr5v9RRFNMWK97P8I0LcN3xWSmsnmX2RYrA=",
+        "last_login": "2016-06-25T17:38:34.538Z",
+        "is_superuser": false,
+        "username": "t5",
+        "first_name": "",
+        "last_name": "",
+        "email": "",
+        "is_staff": false,
+        "is_active": true,
+        "date_joined": "2016-06-14T04:36:42.398Z",
+        "groups": [],
+        "user_permissions": []
+    }
+},
+{
+    "model": "auth.user",
+    "pk": 153,
+    "fields": {
+        "password": "pbkdf2_sha256$24000$YsC9Zd3g610I$8jUx6fWKhEfj9i6JnSUq+/eWUSVpA5u1fmeBFwqlZEg=",
+        "last_login": "2016-06-15T07:13:57.732Z",
+        "is_superuser": false,
+        "username": "tt",
+        "first_name": "",
+        "last_name": "",
+        "email": "",
+        "is_staff": false,
+        "is_active": true,
+        "date_joined": "2016-06-15T07:12:02.774Z",
+        "groups": [],
+        "user_permissions": []
+    }
+},
+{
+    "model": "auth.user",
+    "pk": 154,
+    "fields": {
+        "password": "pbkdf2_sha256$24000$gLetnUy0z4YZ$V+1ULvJ4V1cw9JEDt2oTi+SIsIBhNwro1hom2iDxGzk=",
+        "last_login": "2016-06-16T16:25:54.002Z",
+        "is_superuser": false,
+        "username": "erik",
+        "first_name": "",
+        "last_name": "",
+        "email": "",
+        "is_staff": false,
+        "is_active": true,
+        "date_joined": "2016-06-16T13:40:18.599Z",
+        "groups": [],
+        "user_permissions": []
+    }
+},
+{
+    "model": "auth.user",
+    "pk": 155,
+    "fields": {
+        "password": "pbkdf2_sha256$24000$KM1RF20kYw0p$dsG7sD9eGB9OGbxafBiimiF4WVOuBgEJro91y+NaCr0=",
+        "last_login": "2016-06-20T08:11:41.456Z",
+        "is_superuser": false,
+        "username": "marte",
+        "first_name": "",
+        "last_name": "",
+        "email": "",
+        "is_staff": false,
+        "is_active": true,
+        "date_joined": "2016-06-18T12:03:12.479Z",
+        "groups": [],
+        "user_permissions": []
+    }
+},
+{
+    "model": "auth.user",
+    "pk": 158,
+    "fields": {
+        "password": "pbkdf2_sha256$24000$P4zPYYAhSovC$nnBrqKAmWUzJTAYhWGGi/Zg/ZNNBz8cU4HYMP+GVfpY=",
+        "last_login": "2016-06-20T08:12:37.000Z",
+        "is_superuser": false,
+        "username": "martetest",
+        "first_name": "",
+        "last_name": "",
+        "email": "",
+        "is_staff": false,
+        "is_active": true,
+        "date_joined": "2016-06-18T12:12:32.886Z",
+        "groups": [],
+        "user_permissions": []
+    }
+},
+{
+    "model": "auth.user",
+    "pk": 159,
+    "fields": {
+        "password": "pbkdf2_sha256$24000$pDsuoSU9ij3c$zrLhgBSrd+o5H5AFBuiKp7NaH8kcFqBLUL6YkDcM6Vg=",
+        "last_login": "2016-06-25T14:07:35.374Z",
+        "is_superuser": false,
+        "username": "testuser",
+        "first_name": "",
+        "last_name": "",
+        "email": "",
+        "is_staff": false,
+        "is_active": true,
+        "date_joined": "2016-06-25T09:19:45.742Z",
+        "groups": [],
+        "user_permissions": []
+    }
+},
+{
+    "model": "auth.user",
+    "pk": 160,
+    "fields": {
+        "password": "pbkdf2_sha256$24000$XIJc0EaYTWAE$UJhZy5Nh0sy9W0Y+nGlLmrow265uZxNis47wMx2SfGw=",
+        "last_login": null,
+        "is_superuser": false,
+        "username": "testUser",
+        "first_name": "",
+        "last_name": "",
+        "email": "",
+        "is_staff": false,
+        "is_active": true,
+        "date_joined": "2016-06-27T19:42:52.692Z",
+        "groups": [],
+        "user_permissions": []
+    }
+},
+{
+    "model": "auth.user",
+    "pk": 161,
+    "fields": {
+        "password": "pbkdf2_sha256$24000$EYu1nSnh89PF$BsdORCqeGZFe4OGPXS56GbWU3tAULuCYuTUS5I3d6GQ=",
+        "last_login": "2016-06-27T20:57:24.845Z",
+        "is_superuser": false,
+        "username": "user",
+        "first_name": "",
+        "last_name": "",
+        "email": "",
+        "is_staff": false,
+        "is_active": true,
+        "date_joined": "2016-06-27T20:57:09.706Z",
+        "groups": [],
+        "user_permissions": []
+    }
+},
+{
+    "model": "auth.user",
+    "pk": 162,
+    "fields": {
+        "password": "pbkdf2_sha256$24000$UrbFyE1iRGrq$U0vfberqxBaacSmB6Q5HiG6gubm1Q5eLDhjJph48vxg=",
+        "last_login": "2016-08-15T08:29:03.333Z",
+        "is_superuser": false,
+        "username": "thomas",
+        "first_name": "",
+        "last_name": "",
+        "email": "",
+        "is_staff": false,
+        "is_active": true,
+        "date_joined": "2016-07-01T14:55:35.662Z",
+        "groups": [],
+        "user_permissions": []
+    }
+},
+{
+    "model": "sessions.session",
+    "pk": "0hgre2bzqd2ehjgs6auqieb8jdcfba2k",
+    "fields": {
+        "session_data": "YTRkM2VlMDg5N2FmZjU5ZDQyZWFiOTRmN2YwMzBhN2RiNjRkYTdiNzp7Il9hdXRoX3VzZXJfaWQiOiIxIiwiX2F1dGhfdXNlcl9iYWNrZW5kIjoiZGphbmdvLmNvbnRyaWIuYXV0aC5iYWNrZW5kcy5Nb2RlbEJhY2tlbmQiLCJfYXV0aF91c2VyX2hhc2giOiIwZTkyYmE3YzkxYjlhNzZlMTFjNDM5YWM2YjJmOGZjOTExOTQ4NzAwIn0=",
+        "expire_date": "2016-06-30T13:47:23.127Z"
+    }
+},
+{
+    "model": "sessions.session",
+    "pk": "1e1fq73cmqdmw20o88mhs6be258j3o7r",
+    "fields": {
+        "session_data": "NjQ0ZWYxZDUzNTgwZmJhMWY2NmI0ZDg2OTMzZmE0MTc2ZTUwYzZhNTp7Il9hdXRoX3VzZXJfYmFja2VuZCI6ImRqYW5nby5jb250cmliLmF1dGguYmFja2VuZHMuTW9kZWxCYWNrZW5kIiwiX2F1dGhfdXNlcl9oYXNoIjoiNDIyNzU1NjJkNDIxZjA1YmYyNDIxODU5YTU2NjliMTUzYTJkOTdiYiIsIl9hdXRoX3VzZXJfaWQiOiIxNTcifQ==",
+        "expire_date": "2016-07-02T12:09:37.739Z"
+    }
+},
+{
+    "model": "sessions.session",
+    "pk": "371s812n3gu04bv6gwcefis4ugsgcvjd",
+    "fields": {
+        "session_data": "ZjRiMmNlOGY3ZjcyZjFhY2MzM2U4YmJmNjBhZDQzZGI2ZTRkNzQxMDp7Il9hdXRoX3VzZXJfaWQiOiIxNjIiLCJfYXV0aF91c2VyX2JhY2tlbmQiOiJkamFuZ28uY29udHJpYi5hdXRoLmJhY2tlbmRzLk1vZGVsQmFja2VuZCIsIl9hdXRoX3VzZXJfaGFzaCI6IjZmNWIzZjhiZjgzYTU2OWJkN2EzYWY4NmNlOTdkMzhhMzZlMTJhNzAifQ==",
+        "expire_date": "2016-07-17T07:55:30.103Z"
+    }
+},
+{
+    "model": "sessions.session",
+    "pk": "5mh1dya4la8r3lw3vxr9xp9rnu5rtbzf",
+    "fields": {
+        "session_data": "MWM4NTU5ZmQ3ZTY5YWIxNWMyNTY0MzFiYzg5NWFkYjMyZGU2ODAyMTp7Il9hdXRoX3VzZXJfYmFja2VuZCI6ImRqYW5nby5jb250cmliLmF1dGguYmFja2VuZHMuTW9kZWxCYWNrZW5kIiwiX2F1dGhfdXNlcl9oYXNoIjoiMGU5MmJhN2M5MWI5YTc2ZTExYzQzOWFjNmIyZjhmYzkxMTk0ODcwMCIsIl9hdXRoX3VzZXJfaWQiOiIxIn0=",
+        "expire_date": "2016-06-26T20:39:51.237Z"
+    }
+},
+{
+    "model": "sessions.session",
+    "pk": "6fooibniit3gjhc14nfzvkwzswtuh9lu",
+    "fields": {
+        "session_data": "YTRkM2VlMDg5N2FmZjU5ZDQyZWFiOTRmN2YwMzBhN2RiNjRkYTdiNzp7Il9hdXRoX3VzZXJfaWQiOiIxIiwiX2F1dGhfdXNlcl9iYWNrZW5kIjoiZGphbmdvLmNvbnRyaWIuYXV0aC5iYWNrZW5kcy5Nb2RlbEJhY2tlbmQiLCJfYXV0aF91c2VyX2hhc2giOiIwZTkyYmE3YzkxYjlhNzZlMTFjNDM5YWM2YjJmOGZjOTExOTQ4NzAwIn0=",
+        "expire_date": "2016-08-27T10:44:55.135Z"
+    }
+},
+{
+    "model": "sessions.session",
+    "pk": "7lelkx0h5ijvelkro02i2pax7nscuy37",
+    "fields": {
+        "session_data": "NzZmNzcyN2RmY2I5MjRiOGFkZGIyOTdiYzY4M2EzZjc5YWRkODI0NTp7Il9hdXRoX3VzZXJfaWQiOiIxNTAiLCJfYXV0aF91c2VyX2JhY2tlbmQiOiJkamFuZ28uY29udHJpYi5hdXRoLmJhY2tlbmRzLk1vZGVsQmFja2VuZCIsIl9hdXRoX3VzZXJfaGFzaCI6ImY0MGY5ODMyZWM4MjcxNGQ3YTRiYjI3NjY0MjMwYjI2MDhhMDNiZWQifQ==",
+        "expire_date": "2016-06-29T11:15:35.808Z"
+    }
+},
+{
+    "model": "sessions.session",
+    "pk": "8df12fcyhz5vz7t6ap2jer9org2i4aap",
+    "fields": {
+        "session_data": "NjI4OWQxYWNjMmQ2MDIwMjQ5NDZjODUwMDhkMjNkZGRhZjFmMjYyNjp7Il9hdXRoX3VzZXJfYmFja2VuZCI6ImRqYW5nby5jb250cmliLmF1dGguYmFja2VuZHMuTW9kZWxCYWNrZW5kIiwiX2F1dGhfdXNlcl9pZCI6IjEzMyIsIl9hdXRoX3VzZXJfaGFzaCI6ImViM2Y4OTcxZDQ4MmIwMzY5MDU0NTdiZTk1MjVkMmFhMWUyNGEzM2UifQ==",
+        "expire_date": "2016-08-18T06:11:51.441Z"
+    }
+},
+{
+    "model": "sessions.session",
+    "pk": "97o4bxfzcnsvaqghkgde7ojl4ig51477",
+    "fields": {
+        "session_data": "NzZmNzcyN2RmY2I5MjRiOGFkZGIyOTdiYzY4M2EzZjc5YWRkODI0NTp7Il9hdXRoX3VzZXJfaWQiOiIxNTAiLCJfYXV0aF91c2VyX2JhY2tlbmQiOiJkamFuZ28uY29udHJpYi5hdXRoLmJhY2tlbmRzLk1vZGVsQmFja2VuZCIsIl9hdXRoX3VzZXJfaGFzaCI6ImY0MGY5ODMyZWM4MjcxNGQ3YTRiYjI3NjY0MjMwYjI2MDhhMDNiZWQifQ==",
+        "expire_date": "2016-06-29T11:15:04.978Z"
+    }
+},
+{
+    "model": "sessions.session",
+    "pk": "a627afxw0ao6bp2qy5cyegn5xe4eam6y",
+    "fields": {
+        "session_data": "NWM5YjM0M2U2Njg3ZGRiYjYwOGY1YzIwNzZhMzVhM2QxNzM5NjViMTp7Il9hdXRoX3VzZXJfaWQiOiIxNDkiLCJfYXV0aF91c2VyX2hhc2giOiI0ZGRkYWFhYzUxZWY2ZDg1M2MwMjBlZjBhMmExNGM1ZDk1MmEyOTg3IiwiX2F1dGhfdXNlcl9iYWNrZW5kIjoiZGphbmdvLmNvbnRyaWIuYXV0aC5iYWNrZW5kcy5Nb2RlbEJhY2tlbmQifQ==",
+        "expire_date": "2016-06-28T13:30:33.458Z"
+    }
+},
+{
+    "model": "sessions.session",
+    "pk": "ayax9cqcc0yfjhsbqdy809cau0qw81jj",
+    "fields": {
+        "session_data": "ODZiMTEzMGMzOWEzMjkxZDFmMjA3ODlmZjVhYTZmOTc0YzA5NGViZjp7Il9hdXRoX3VzZXJfaWQiOiIxIiwiX2F1dGhfdXNlcl9oYXNoIjoiMGU5MmJhN2M5MWI5YTc2ZTExYzQzOWFjNmIyZjhmYzkxMTk0ODcwMCIsIl9hdXRoX3VzZXJfYmFja2VuZCI6ImRqYW5nby5jb250cmliLmF1dGguYmFja2VuZHMuTW9kZWxCYWNrZW5kIn0=",
+        "expire_date": "2016-07-11T12:21:08.528Z"
+    }
+},
+{
+    "model": "sessions.session",
+    "pk": "c3qkywev361yokvw1z0h0hs50ql4lb8z",
+    "fields": {
+        "session_data": "MWM4NTU5ZmQ3ZTY5YWIxNWMyNTY0MzFiYzg5NWFkYjMyZGU2ODAyMTp7Il9hdXRoX3VzZXJfYmFja2VuZCI6ImRqYW5nby5jb250cmliLmF1dGguYmFja2VuZHMuTW9kZWxCYWNrZW5kIiwiX2F1dGhfdXNlcl9oYXNoIjoiMGU5MmJhN2M5MWI5YTc2ZTExYzQzOWFjNmIyZjhmYzkxMTk0ODcwMCIsIl9hdXRoX3VzZXJfaWQiOiIxIn0=",
+        "expire_date": "2016-07-02T12:11:53.658Z"
+    }
+},
+{
+    "model": "sessions.session",
+    "pk": "celzczc8dcc2lzgk0mnjddhdpva82ayo",
+    "fields": {
+        "session_data": "YmU4Zjc3ZGM1ODA1YjQ1MGFiMWJkNWRmMWI0NWI2NTU4ZjYyYmU1Zjp7Il9hdXRoX3VzZXJfaWQiOiIxMTEiLCJfYXV0aF91c2VyX2hhc2giOiI1YzQyMzUxZmMzMzM1ZmQzZmJjNmM2Mzk3OTBiN2NkOGM3ZWQ2M2M2IiwiX2F1dGhfdXNlcl9iYWNrZW5kIjoiZGphbmdvLmNvbnRyaWIuYXV0aC5iYWNrZW5kcy5Nb2RlbEJhY2tlbmQifQ==",
+        "expire_date": "2016-07-07T08:33:03.186Z"
+    }
+},
+{
+    "model": "sessions.session",
+    "pk": "crpib3q44y4hc0wlyf83rhx67illvb4e",
+    "fields": {
+        "session_data": "MTBiNWMyODQwZTM1YzY2NWI4MDkwOTg4ZTBhYmQ1ZTgyODU2ZTg2Njp7Il9hdXRoX3VzZXJfaWQiOiIxMTMiLCJfYXV0aF91c2VyX2hhc2giOiI3ZDc3MmYzY2I3NzlhMjIxODFmMDI4YTYwNWQ0MmYzYTgwYWMzZTFkIiwiX2F1dGhfdXNlcl9iYWNrZW5kIjoiZGphbmdvLmNvbnRyaWIuYXV0aC5iYWNrZW5kcy5Nb2RlbEJhY2tlbmQifQ==",
+        "expire_date": "2016-07-04T14:25:07.129Z"
+    }
+},
+{
+    "model": "sessions.session",
+    "pk": "e9vt8ko604tw3ccuqpjauag45mi9by47",
+    "fields": {
+        "session_data": "ODZiMTEzMGMzOWEzMjkxZDFmMjA3ODlmZjVhYTZmOTc0YzA5NGViZjp7Il9hdXRoX3VzZXJfaWQiOiIxIiwiX2F1dGhfdXNlcl9oYXNoIjoiMGU5MmJhN2M5MWI5YTc2ZTExYzQzOWFjNmIyZjhmYzkxMTk0ODcwMCIsIl9hdXRoX3VzZXJfYmFja2VuZCI6ImRqYW5nby5jb250cmliLmF1dGguYmFja2VuZHMuTW9kZWxCYWNrZW5kIn0=",
+        "expire_date": "2016-07-11T21:02:29.718Z"
+    }
+},
+{
+    "model": "sessions.session",
+    "pk": "fmxo94ulw4uxj4vi3skmatxto111xmcp",
+    "fields": {
+        "session_data": "MDkxODExMjc5YThmZmNiYzAxYWQwMzkxMzYxNjkyYTJkN2QwOTg4Nzp7Il9hdXRoX3VzZXJfYmFja2VuZCI6ImRqYW5nby5jb250cmliLmF1dGguYmFja2VuZHMuTW9kZWxCYWNrZW5kIiwiX2F1dGhfdXNlcl9pZCI6IjEiLCJfYXV0aF91c2VyX2hhc2giOiIwZTkyYmE3YzkxYjlhNzZlMTFjNDM5YWM2YjJmOGZjOTExOTQ4NzAwIn0=",
+        "expire_date": "2016-09-16T08:50:29.314Z"
+    }
+},
+{
+    "model": "sessions.session",
+    "pk": "fzqk5lghy6k7tbfgiqlrv3zealxr621b",
+    "fields": {
+        "session_data": "MWM4NTU5ZmQ3ZTY5YWIxNWMyNTY0MzFiYzg5NWFkYjMyZGU2ODAyMTp7Il9hdXRoX3VzZXJfYmFja2VuZCI6ImRqYW5nby5jb250cmliLmF1dGguYmFja2VuZHMuTW9kZWxCYWNrZW5kIiwiX2F1dGhfdXNlcl9oYXNoIjoiMGU5MmJhN2M5MWI5YTc2ZTExYzQzOWFjNmIyZjhmYzkxMTk0ODcwMCIsIl9hdXRoX3VzZXJfaWQiOiIxIn0=",
+        "expire_date": "2016-07-02T12:06:58.310Z"
+    }
+},
+{
+    "model": "sessions.session",
+    "pk": "ghube8d3oya8r1yp8tjb4yg7tj4p4w91",
+    "fields": {
+        "session_data": "ODZiMTEzMGMzOWEzMjkxZDFmMjA3ODlmZjVhYTZmOTc0YzA5NGViZjp7Il9hdXRoX3VzZXJfaWQiOiIxIiwiX2F1dGhfdXNlcl9oYXNoIjoiMGU5MmJhN2M5MWI5YTc2ZTExYzQzOWFjNmIyZjhmYzkxMTk0ODcwMCIsIl9hdXRoX3VzZXJfYmFja2VuZCI6ImRqYW5nby5jb250cmliLmF1dGguYmFja2VuZHMuTW9kZWxCYWNrZW5kIn0=",
+        "expire_date": "2016-07-08T08:25:36.011Z"
+    }
+},
+{
+    "model": "sessions.session",
+    "pk": "h2p1i20dy6gnf4f5thmnj27brphq5xaa",
+    "fields": {
+        "session_data": "YTRkM2VlMDg5N2FmZjU5ZDQyZWFiOTRmN2YwMzBhN2RiNjRkYTdiNzp7Il9hdXRoX3VzZXJfaWQiOiIxIiwiX2F1dGhfdXNlcl9iYWNrZW5kIjoiZGphbmdvLmNvbnRyaWIuYXV0aC5iYWNrZW5kcy5Nb2RlbEJhY2tlbmQiLCJfYXV0aF91c2VyX2hhc2giOiIwZTkyYmE3YzkxYjlhNzZlMTFjNDM5YWM2YjJmOGZjOTExOTQ4NzAwIn0=",
+        "expire_date": "2016-06-29T12:25:20.794Z"
+    }
+},
+{
+    "model": "sessions.session",
+    "pk": "ic6e0cmt11k43x6rge8s8xaxilfhbsga",
+    "fields": {
+        "session_data": "MzlhZTNhNDcyZWIzZGJkNzQ3M2RiOWQxZDNjZGQzZWNiOTIzMjBmNDp7Il9hdXRoX3VzZXJfaGFzaCI6IjE0NzZmMWE0YTYzYTIxOTEzMjAxOTY4ZjI2NzAwMzkxMWYwYWIzZGIiLCJfYXV0aF91c2VyX2JhY2tlbmQiOiJkamFuZ28uY29udHJpYi5hdXRoLmJhY2tlbmRzLk1vZGVsQmFja2VuZCIsIl9hdXRoX3VzZXJfaWQiOiIxNTUifQ==",
+        "expire_date": "2016-07-02T12:18:10.891Z"
+    }
+},
+{
+    "model": "sessions.session",
+    "pk": "mkuz8sav6omdehrxb8xak389f7qv8xne",
+    "fields": {
+        "session_data": "OWExNTFlNDBmYWU5MTJjZmM1Y2RlZjJiODUzNTBiNGNlMDcxMmZlODp7Il9hdXRoX3VzZXJfYmFja2VuZCI6ImRqYW5nby5jb250cmliLmF1dGguYmFja2VuZHMuTW9kZWxCYWNrZW5kIiwiX2F1dGhfdXNlcl9oYXNoIjoiYmVhNmYzN2YxMDFjNmJhMzk4YmE0MmIyM2Y1NjhiNjkwZTNkOWEyYiIsIl9hdXRoX3VzZXJfaWQiOiIxNTgifQ==",
+        "expire_date": "2016-07-02T12:13:33.267Z"
+    }
+},
+{
+    "model": "sessions.session",
+    "pk": "nu4hpl33n6kuwq8dnfbq3vmvlbpeb3ck",
+    "fields": {
+        "session_data": "NDcxOTEyNDhlNDUxZTRmM2U2M2Y0ZTJiMDczNDQ2NjI3MTViMTNkNzp7Il9hdXRoX3VzZXJfYmFja2VuZCI6ImRqYW5nby5jb250cmliLmF1dGguYmFja2VuZHMuTW9kZWxCYWNrZW5kIiwiX2F1dGhfdXNlcl9oYXNoIjoiNmQ1MWQ1MmUyMDNmY2RjZDhjYjAwOWVkMjI4MDAzMzMxZDgxMmI3ZSIsIl9hdXRoX3VzZXJfaWQiOiIxNTYifQ==",
+        "expire_date": "2016-07-02T12:08:18.828Z"
+    }
+},
+{
+    "model": "sessions.session",
+    "pk": "nuhisvk0yh1ip86yrr93i9tx34u85ibe",
+    "fields": {
+        "session_data": "ZGNhMGM0ZDQ4YjljOTU4ZTRiZmEzYWRmYTdlZjFkYWZjY2YxNzliZDp7Il9hdXRoX3VzZXJfaWQiOiI0MCIsIl9hdXRoX3VzZXJfYmFja2VuZCI6ImRqYW5nby5jb250cmliLmF1dGguYmFja2VuZHMuTW9kZWxCYWNrZW5kIiwiX2F1dGhfdXNlcl9oYXNoIjoiYTZjOTMzYTMyYTZiODlkZmVkZDlkMzBjNGRjNTNmNzlkYjBhZmJkYSJ9",
+        "expire_date": "2016-07-01T05:51:18.907Z"
+    }
+},
+{
+    "model": "sessions.session",
+    "pk": "op8eygrlg4lmp0st4jdleydihsmn4rk8",
+    "fields": {
+        "session_data": "MDkxODExMjc5YThmZmNiYzAxYWQwMzkxMzYxNjkyYTJkN2QwOTg4Nzp7Il9hdXRoX3VzZXJfYmFja2VuZCI6ImRqYW5nby5jb250cmliLmF1dGguYmFja2VuZHMuTW9kZWxCYWNrZW5kIiwiX2F1dGhfdXNlcl9pZCI6IjEiLCJfYXV0aF91c2VyX2hhc2giOiIwZTkyYmE3YzkxYjlhNzZlMTFjNDM5YWM2YjJmOGZjOTExOTQ4NzAwIn0=",
+        "expire_date": "2016-09-20T06:34:35.951Z"
+    }
+},
+{
+    "model": "sessions.session",
+    "pk": "p2cwra6j8t3wwh9ewipajtw0vlzmwcww",
+    "fields": {
+        "session_data": "MWM4NTU5ZmQ3ZTY5YWIxNWMyNTY0MzFiYzg5NWFkYjMyZGU2ODAyMTp7Il9hdXRoX3VzZXJfYmFja2VuZCI6ImRqYW5nby5jb250cmliLmF1dGguYmFja2VuZHMuTW9kZWxCYWNrZW5kIiwiX2F1dGhfdXNlcl9oYXNoIjoiMGU5MmJhN2M5MWI5YTc2ZTExYzQzOWFjNmIyZjhmYzkxMTk0ODcwMCIsIl9hdXRoX3VzZXJfaWQiOiIxIn0=",
+        "expire_date": "2016-07-02T12:08:50.096Z"
+    }
+},
+{
+    "model": "sessions.session",
+    "pk": "pb11zqwmuy0bq59fs256c3ta9q2rnj6j",
+    "fields": {
+        "session_data": "ODZiMTEzMGMzOWEzMjkxZDFmMjA3ODlmZjVhYTZmOTc0YzA5NGViZjp7Il9hdXRoX3VzZXJfaWQiOiIxIiwiX2F1dGhfdXNlcl9oYXNoIjoiMGU5MmJhN2M5MWI5YTc2ZTExYzQzOWFjNmIyZjhmYzkxMTk0ODcwMCIsIl9hdXRoX3VzZXJfYmFja2VuZCI6ImRqYW5nby5jb250cmliLmF1dGguYmFja2VuZHMuTW9kZWxCYWNrZW5kIn0=",
+        "expire_date": "2016-07-11T21:40:09.797Z"
+    }
+},
+{
+    "model": "sessions.session",
+    "pk": "peb6untrmvj4ghbxvypba4ok9n5th34u",
+    "fields": {
+        "session_data": "MWM4NTU5ZmQ3ZTY5YWIxNWMyNTY0MzFiYzg5NWFkYjMyZGU2ODAyMTp7Il9hdXRoX3VzZXJfYmFja2VuZCI6ImRqYW5nby5jb250cmliLmF1dGguYmFja2VuZHMuTW9kZWxCYWNrZW5kIiwiX2F1dGhfdXNlcl9oYXNoIjoiMGU5MmJhN2M5MWI5YTc2ZTExYzQzOWFjNmIyZjhmYzkxMTk0ODcwMCIsIl9hdXRoX3VzZXJfaWQiOiIxIn0=",
+        "expire_date": "2016-06-27T05:48:16.400Z"
+    }
+},
+{
+    "model": "sessions.session",
+    "pk": "rkk9g7tiujl9inclsulnd273h4vmytli",
+    "fields": {
+        "session_data": "NDFkZTM4YTZjYjBiYzlkODcyZmJiNDViZmI1YWMxZmE1NTM3N2U1MTp7Il9hdXRoX3VzZXJfaWQiOiIxNTUiLCJfYXV0aF91c2VyX2JhY2tlbmQiOiJkamFuZ28uY29udHJpYi5hdXRoLmJhY2tlbmRzLk1vZGVsQmFja2VuZCIsIl9hdXRoX3VzZXJfaGFzaCI6IjE0NzZmMWE0YTYzYTIxOTEzMjAxOTY4ZjI2NzAwMzkxMWYwYWIzZGIifQ==",
+        "expire_date": "2016-07-02T12:04:05.382Z"
+    }
+},
+{
+    "model": "sessions.session",
+    "pk": "rktamdp2apnaxwg9k6cd5i05opinhyan",
+    "fields": {
+        "session_data": "ZWU2NjBlYjgxZjEwZGFiOWJlOTQ0NWZmNGUxY2Y4YTlhYzRmNjAwZTp7Il9hdXRoX3VzZXJfaWQiOiI4OSIsIl9hdXRoX3VzZXJfYmFja2VuZCI6ImRqYW5nby5jb250cmliLmF1dGguYmFja2VuZHMuTW9kZWxCYWNrZW5kIiwiX2F1dGhfdXNlcl9oYXNoIjoiNDIzYTc1NThkZWIwOGY3MDQxMGRlZTAyZGZkNWY4YzQwMjVhOTBkNCJ9",
+        "expire_date": "2016-07-02T12:02:32.578Z"
+    }
+},
+{
+    "model": "sessions.session",
+    "pk": "smgi5ruc8zy4mes097xkmmc1qe4s12jy",
+    "fields": {
+        "session_data": "NWMzNDYxYWM0MTIwZGI5YTBlNmM3ZDg3MjQ0MDM4MmNiNTY2OGQ1YTp7Il9hdXRoX3VzZXJfaWQiOiIxNDkiLCJfYXV0aF91c2VyX2JhY2tlbmQiOiJkamFuZ28uY29udHJpYi5hdXRoLmJhY2tlbmRzLk1vZGVsQmFja2VuZCIsIl9hdXRoX3VzZXJfaGFzaCI6IjRkZGRhYWFjNTFlZjZkODUzYzAyMGVmMGEyYTE0YzVkOTUyYTI5ODcifQ==",
+        "expire_date": "2016-06-29T06:53:38.222Z"
+    }
+},
+{
+    "model": "sessions.session",
+    "pk": "t02tbi0smjfb1o7zi29yqqxnmkn6u4yp",
+    "fields": {
+        "session_data": "NDJhYmYxYzIwNjNhZmZiMzBmOThhM2I4OGM5MTRiOWFmMmE1ZDQ4YTp7Il9hdXRoX3VzZXJfaWQiOiI0MiIsIl9hdXRoX3VzZXJfYmFja2VuZCI6ImRqYW5nby5jb250cmliLmF1dGguYmFja2VuZHMuTW9kZWxCYWNrZW5kIiwiX2F1dGhfdXNlcl9oYXNoIjoiODRlZDY2ZmQxMDNlMWY3ZDFjOGYyZGU5OTc1NmFkMjczZDRlMzgwZCJ9",
+        "expire_date": "2016-07-01T18:57:51.332Z"
+    }
+},
+{
+    "model": "sessions.session",
+    "pk": "uut5m16tk60cgt5ens9l346cilmz7bx1",
+    "fields": {
+        "session_data": "MDkxODExMjc5YThmZmNiYzAxYWQwMzkxMzYxNjkyYTJkN2QwOTg4Nzp7Il9hdXRoX3VzZXJfYmFja2VuZCI6ImRqYW5nby5jb250cmliLmF1dGguYmFja2VuZHMuTW9kZWxCYWNrZW5kIiwiX2F1dGhfdXNlcl9pZCI6IjEiLCJfYXV0aF91c2VyX2hhc2giOiIwZTkyYmE3YzkxYjlhNzZlMTFjNDM5YWM2YjJmOGZjOTExOTQ4NzAwIn0=",
+        "expire_date": "2016-10-04T09:23:43.127Z"
+    }
+},
+{
+    "model": "sessions.session",
+    "pk": "uwocxn7krzjcguvixaqrt9foh500l7yb",
+    "fields": {
+        "session_data": "NjQ0ZWYxZDUzNTgwZmJhMWY2NmI0ZDg2OTMzZmE0MTc2ZTUwYzZhNTp7Il9hdXRoX3VzZXJfYmFja2VuZCI6ImRqYW5nby5jb250cmliLmF1dGguYmFja2VuZHMuTW9kZWxCYWNrZW5kIiwiX2F1dGhfdXNlcl9oYXNoIjoiNDIyNzU1NjJkNDIxZjA1YmYyNDIxODU5YTU2NjliMTUzYTJkOTdiYiIsIl9hdXRoX3VzZXJfaWQiOiIxNTcifQ==",
+        "expire_date": "2016-07-02T12:10:52.850Z"
+    }
+},
+{
+    "model": "sessions.session",
+    "pk": "uzg148vvr4dni6msey2d997f48neptk1",
+    "fields": {
+        "session_data": "NDk4YTM3YzJjMTg2OTZlNjRkNGJhZTA2Njg3OGI0M2NlNGZkZWJiNDp7Il9hdXRoX3VzZXJfYmFja2VuZCI6ImRqYW5nby5jb250cmliLmF1dGguYmFja2VuZHMuTW9kZWxCYWNrZW5kIiwiX2F1dGhfdXNlcl9oYXNoIjoiMTQ3NmYxYTRhNjNhMjE5MTMyMDE5NjhmMjY3MDAzOTExZjBhYjNkYiIsIl9hdXRoX3VzZXJfaWQiOiIxNTUifQ==",
+        "expire_date": "2016-07-02T12:05:26.729Z"
+    }
+},
+{
+    "model": "sessions.session",
+    "pk": "vsqlqswp5xgqot84zypzdh34jzb3aqqu",
+    "fields": {
+        "session_data": "NTY3MmEwZDJhOWZmMDc4ZTNkYjk0ZDU1MDY0MTY1ZThkNTUxNDAwODp7Il9hdXRoX3VzZXJfaWQiOiIxNTQiLCJfYXV0aF91c2VyX2JhY2tlbmQiOiJkamFuZ28uY29udHJpYi5hdXRoLmJhY2tlbmRzLk1vZGVsQmFja2VuZCIsIl9hdXRoX3VzZXJfaGFzaCI6ImE4MzNjMTgwMzBiMjhjYzg2MDc5NTljMDNkN2QxMTk5ODA3YTVlMWYifQ==",
+        "expire_date": "2016-06-30T13:48:10.438Z"
+    }
+},
+{
+    "model": "sessions.session",
+    "pk": "vyw0pvalqvm4zqk2xtprjqwkq3n9a34a",
+    "fields": {
+        "session_data": "ODZiMTEzMGMzOWEzMjkxZDFmMjA3ODlmZjVhYTZmOTc0YzA5NGViZjp7Il9hdXRoX3VzZXJfaWQiOiIxIiwiX2F1dGhfdXNlcl9oYXNoIjoiMGU5MmJhN2M5MWI5YTc2ZTExYzQzOWFjNmIyZjhmYzkxMTk0ODcwMCIsIl9hdXRoX3VzZXJfYmFja2VuZCI6ImRqYW5nby5jb250cmliLmF1dGguYmFja2VuZHMuTW9kZWxCYWNrZW5kIn0=",
+        "expire_date": "2016-07-04T08:13:22.673Z"
+    }
+},
+{
+    "model": "sessions.session",
+    "pk": "xbmokq168eh23p1wqgjv9zbg6ak21tri",
+    "fields": {
+        "session_data": "ODZiMTEzMGMzOWEzMjkxZDFmMjA3ODlmZjVhYTZmOTc0YzA5NGViZjp7Il9hdXRoX3VzZXJfaWQiOiIxIiwiX2F1dGhfdXNlcl9oYXNoIjoiMGU5MmJhN2M5MWI5YTc2ZTExYzQzOWFjNmIyZjhmYzkxMTk0ODcwMCIsIl9hdXRoX3VzZXJfYmFja2VuZCI6ImRqYW5nby5jb250cmliLmF1dGguYmFja2VuZHMuTW9kZWxCYWNrZW5kIn0=",
+        "expire_date": "2016-06-28T13:58:26.769Z"
+    }
+},
+{
+    "model": "sessions.session",
+    "pk": "xt77tquhe3yty10gn8pkz8w0hasa6ifz",
+    "fields": {
+        "session_data": "MzA5ZGVmNTkwMzczOTIxODA1OTVhNGYyZjdlNmNmNzVmNDIyMjA0Njp7Il9hdXRoX3VzZXJfaWQiOiIxNTMiLCJfYXV0aF91c2VyX2JhY2tlbmQiOiJkamFuZ28uY29udHJpYi5hdXRoLmJhY2tlbmRzLk1vZGVsQmFja2VuZCIsIl9hdXRoX3VzZXJfaGFzaCI6ImU2ZTUzZGRiYWY4NDNkYTkzNzQ3N2MxZjBlOWQ5OTc2OGQ3MGE2ZmYifQ==",
+        "expire_date": "2016-06-29T07:13:06.490Z"
+    }
+},
+{
+    "model": "sessions.session",
+    "pk": "ziaahy7c1nbsc168jnnw09100haxpvb1",
+    "fields": {
+        "session_data": "NmU1NDllNTkwZTE3YWFkYjg2NTE2OTIwZmVlYmZlMWZlODVhMTIxMjp7Il9hdXRoX3VzZXJfaWQiOiIxNTIiLCJfYXV0aF91c2VyX2hhc2giOiI4Y2VlZGVhYjExNGI5YzBmYjg5Mjk3NzFlOTI0ZjUyNTM4YzZjNTY4IiwiX2F1dGhfdXNlcl9iYWNrZW5kIjoiZGphbmdvLmNvbnRyaWIuYXV0aC5iYWNrZW5kcy5Nb2RlbEJhY2tlbmQifQ==",
+        "expire_date": "2016-06-28T04:41:14.168Z"
+    }
+},
+{
+    "model": "base.globalsettings",
+    "pk": 12,
+    "fields": {
+        "mpc_points": 1,
+        "mpci_points": 1,
+        "mpcv_points": 1,
+        "landmark_points": 1,
+        "outline_points": 5,
+        "outline_solution_points": 1,
+        "outline_min_threshold": 10,
+        "outline_max_threshold": 30
+    }
+},
+{
+    "model": "course.course",
+    "pk": 1,
+    "fields": {
+        "name": "NeuroProject",
+        "groups": [
+            27,
+            34,
+            33,
+            21,
+            13
+        ]
+    }
+},
+{
+    "model": "course.course",
+    "pk": 2,
+    "fields": {
+        "name": "NeuroCourse",
+        "groups": [
+            17,
+            32,
+            31,
+            35,
+            12,
+            15
+        ]
+    }
+},
+{
+    "model": "userprofile.usergroup",
+    "pk": 12,
+    "fields": {
+        "name": "NeuroCourseGroup",
+        "is_hidden": false,
+        "prefix": "ncu"
+    }
+},
+{
+    "model": "userprofile.usergroup",
+    "pk": 13,
+    "fields": {
+        "name": "NeuroProjectGroup",
+        "is_hidden": false,
+        "prefix": "npu"
+    }
+},
+{
+    "model": "userprofile.usergroup",
+    "pk": 15,
+    "fields": {
+        "name": "TestGroup",
+        "is_hidden": false,
+        "prefix": "TestGroup"
+    }
+},
+{
+    "model": "userprofile.usergroup",
+    "pk": 17,
+    "fields": {
+        "name": "custom_group-NeuroCourse-180815",
+        "is_hidden": true,
+        "prefix": null
+    }
+},
+{
+    "model": "userprofile.usergroup",
+    "pk": 21,
+    "fields": {
+        "name": "custom_group-NeuroProject-232326",
+        "is_hidden": true,
+        "prefix": null
+    }
+},
+{
+    "model": "userprofile.usergroup",
+    "pk": 27,
+    "fields": {
+        "name": "custom_group-NeuroProject-14407",
+        "is_hidden": true,
+        "prefix": null
+    }
+},
+{
+    "model": "userprofile.usergroup",
+    "pk": 28,
+    "fields": {
+        "name": "custom_group-testest-544529",
+        "is_hidden": true,
+        "prefix": null
+    }
+},
+{
+    "model": "userprofile.usergroup",
+    "pk": 29,
+    "fields": {
+        "name": "custom_group-testest-394758",
+        "is_hidden": true,
+        "prefix": null
+    }
+},
+{
+    "model": "userprofile.usergroup",
+    "pk": 31,
+    "fields": {
+        "name": "custom_group-NeuroCourse-784623",
+        "is_hidden": true,
+        "prefix": null
+    }
+},
+{
+    "model": "userprofile.usergroup",
+    "pk": 32,
+    "fields": {
+        "name": "custom_group-NeuroCourse-20496",
+        "is_hidden": true,
+        "prefix": null
+    }
+},
+{
+    "model": "userprofile.usergroup",
+    "pk": 33,
+    "fields": {
+        "name": "custom_group-NeuroProject-230896",
+        "is_hidden": true,
+        "prefix": null
+    }
+},
+{
+    "model": "userprofile.usergroup",
+    "pk": 34,
+    "fields": {
+        "name": "custom_group-NeuroProject-195629",
+        "is_hidden": true,
+        "prefix": null
+    }
+},
+{
+    "model": "userprofile.usergroup",
+    "pk": 35,
+    "fields": {
+        "name": "custom_group-NeuroCourse-967315",
+        "is_hidden": true,
+        "prefix": null
+    }
+},
+{
+    "model": "userprofile.userprofile",
+    "pk": 36,
+    "fields": {
+        "user": 37,
+        "autogenerated": false,
+        "password": "1337",
+        "has_changed_password": true,
+        "groups": [
+            13
+        ]
+    }
+},
+{
+    "model": "userprofile.userprofile",
+    "pk": 37,
+    "fields": {
+        "user": 38,
+        "autogenerated": false,
+        "password": "1337",
+        "has_changed_password": true,
+        "groups": [
+            13
+        ]
+    }
+},
+{
+    "model": "userprofile.userprofile",
+    "pk": 38,
+    "fields": {
+        "user": 39,
+        "autogenerated": false,
+        "password": "1337",
+        "has_changed_password": true,
+        "groups": [
+            13
+        ]
+    }
+},
+{
+    "model": "userprofile.userprofile",
+    "pk": 39,
+    "fields": {
+        "user": 40,
+        "autogenerated": false,
+        "password": "1337",
+        "has_changed_password": true,
+        "groups": [
+            13
+        ]
+    }
+},
+{
+    "model": "userprofile.userprofile",
+    "pk": 40,
+    "fields": {
+        "user": 41,
+        "autogenerated": false,
+        "password": "1337",
+        "has_changed_password": true,
+        "groups": [
+            13
+        ]
+    }
+},
+{
+    "model": "userprofile.userprofile",
+    "pk": 41,
+    "fields": {
+        "user": 42,
+        "autogenerated": false,
+        "password": "1337",
+        "has_changed_password": true,
+        "groups": [
+            13
+        ]
+    }
+},
+{
+    "model": "userprofile.userprofile",
+    "pk": 42,
+    "fields": {
+        "user": 43,
+        "autogenerated": false,
+        "password": "1337",
+        "has_changed_password": true,
+        "groups": [
+            13
+        ]
+    }
+},
+{
+    "model": "userprofile.userprofile",
+    "pk": 43,
+    "fields": {
+        "user": 44,
+        "autogenerated": false,
+        "password": "1337",
+        "has_changed_password": true,
+        "groups": [
+            13
+        ]
+    }
+},
+{
+    "model": "userprofile.userprofile",
+    "pk": 94,
+    "fields": {
+        "user": 95,
+        "autogenerated": false,
+        "password": "test-01",
+        "has_changed_password": true,
+        "groups": []
+    }
+},
+{
+    "model": "userprofile.userprofile",
+    "pk": 95,
+    "fields": {
+        "user": 96,
+        "autogenerated": false,
+        "password": "test-02",
+        "has_changed_password": false,
+        "groups": []
+    }
+},
+{
+    "model": "userprofile.userprofile",
+    "pk": 96,
+    "fields": {
+        "user": 97,
+        "autogenerated": false,
+        "password": "test-03",
+        "has_changed_password": false,
+        "groups": []
+    }
+},
+{
+    "model": "userprofile.userprofile",
+    "pk": 97,
+    "fields": {
+        "user": 98,
+        "autogenerated": false,
+        "password": "test-04",
+        "has_changed_password": false,
+        "groups": []
+    }
+},
+{
+    "model": "userprofile.userprofile",
+    "pk": 98,
+    "fields": {
+        "user": 99,
+        "autogenerated": false,
+        "password": "test2-01",
+        "has_changed_password": false,
+        "groups": []
+    }
+},
+{
+    "model": "userprofile.userprofile",
+    "pk": 108,
+    "fields": {
+        "user": 109,
+        "autogenerated": false,
+        "password": "ncu-01",
+        "has_changed_password": false,
+        "groups": [
+            12
+        ]
+    }
+},
+{
+    "model": "userprofile.userprofile",
+    "pk": 109,
+    "fields": {
+        "user": 110,
+        "autogenerated": false,
+        "password": "ncu-02",
+        "has_changed_password": false,
+        "groups": [
+            12
+        ]
+    }
+},
+{
+    "model": "userprofile.userprofile",
+    "pk": 110,
+    "fields": {
+        "user": 111,
+        "autogenerated": false,
+        "password": "ncu-03",
+        "has_changed_password": false,
+        "groups": [
+            12
+        ]
+    }
+},
+{
+    "model": "userprofile.userprofile",
+    "pk": 111,
+    "fields": {
+        "user": 112,
+        "autogenerated": false,
+        "password": "ncu-04",
+        "has_changed_password": false,
+        "groups": [
+            12
+        ]
+    }
+},
+{
+    "model": "userprofile.userprofile",
+    "pk": 112,
+    "fields": {
+        "user": 113,
+        "autogenerated": false,
+        "password": "ncu-05",
+        "has_changed_password": false,
+        "groups": [
+            12
+        ]
+    }
+},
+{
+    "model": "userprofile.userprofile",
+    "pk": 113,
+    "fields": {
+        "user": 114,
+        "autogenerated": false,
+        "password": "ncu-06",
+        "has_changed_password": false,
+        "groups": [
+            12
+        ]
+    }
+},
+{
+    "model": "userprofile.userprofile",
+    "pk": 114,
+    "fields": {
+        "user": 115,
+        "autogenerated": false,
+        "password": "ncu-07",
+        "has_changed_password": false,
+        "groups": [
+            12
+        ]
+    }
+},
+{
+    "model": "userprofile.userprofile",
+    "pk": 115,
+    "fields": {
+        "user": 116,
+        "autogenerated": false,
+        "password": "ncu-08",
+        "has_changed_password": false,
+        "groups": [
+            12
+        ]
+    }
+},
+{
+    "model": "userprofile.userprofile",
+    "pk": 116,
+    "fields": {
+        "user": 117,
+        "autogenerated": false,
+        "password": "ncu-09",
+        "has_changed_password": false,
+        "groups": [
+            12
+        ]
+    }
+},
+{
+    "model": "userprofile.userprofile",
+    "pk": 117,
+    "fields": {
+        "user": 118,
+        "autogenerated": false,
+        "password": "ncu-10",
+        "has_changed_password": false,
+        "groups": [
+            12
+        ]
+    }
+},
+{
+    "model": "userprofile.userprofile",
+    "pk": 118,
+    "fields": {
+        "user": 119,
+        "autogenerated": false,
+        "password": "ncu-11",
+        "has_changed_password": false,
+        "groups": [
+            12
+        ]
+    }
+},
+{
+    "model": "userprofile.userprofile",
+    "pk": 119,
+    "fields": {
+        "user": 120,
+        "autogenerated": false,
+        "password": "ncu-12",
+        "has_changed_password": false,
+        "groups": [
+            12
+        ]
+    }
+},
+{
+    "model": "userprofile.userprofile",
+    "pk": 120,
+    "fields": {
+        "user": 121,
+        "autogenerated": false,
+        "password": "ncu-13",
+        "has_changed_password": false,
+        "groups": [
+            12
+        ]
+    }
+},
+{
+    "model": "userprofile.userprofile",
+    "pk": 121,
+    "fields": {
+        "user": 122,
+        "autogenerated": false,
+        "password": "ncu-14",
+        "has_changed_password": false,
+        "groups": [
+            12
+        ]
+    }
+},
+{
+    "model": "userprofile.userprofile",
+    "pk": 122,
+    "fields": {
+        "user": 123,
+        "autogenerated": false,
+        "password": "ncu-15",
+        "has_changed_password": false,
+        "groups": [
+            12
+        ]
+    }
+},
+{
+    "model": "userprofile.userprofile",
+    "pk": 123,
+    "fields": {
+        "user": 124,
+        "autogenerated": false,
+        "password": "ncu-16",
+        "has_changed_password": false,
+        "groups": [
+            12
+        ]
+    }
+},
+{
+    "model": "userprofile.userprofile",
+    "pk": 124,
+    "fields": {
+        "user": 125,
+        "autogenerated": false,
+        "password": "ncu-17",
+        "has_changed_password": false,
+        "groups": [
+            12
+        ]
+    }
+},
+{
+    "model": "userprofile.userprofile",
+    "pk": 125,
+    "fields": {
+        "user": 126,
+        "autogenerated": false,
+        "password": "ncu-18",
+        "has_changed_password": false,
+        "groups": [
+            12
+        ]
+    }
+},
+{
+    "model": "userprofile.userprofile",
+    "pk": 126,
+    "fields": {
+        "user": 127,
+        "autogenerated": false,
+        "password": "ncu-19",
+        "has_changed_password": false,
+        "groups": [
+            12
+        ]
+    }
+},
+{
+    "model": "userprofile.userprofile",
+    "pk": 127,
+    "fields": {
+        "user": 128,
+        "autogenerated": false,
+        "password": "ncu-20",
+        "has_changed_password": false,
+        "groups": [
+            12
+        ]
+    }
+},
+{
+    "model": "userprofile.userprofile",
+    "pk": 128,
+    "fields": {
+        "user": 129,
+        "autogenerated": false,
+        "password": "ncu-21",
+        "has_changed_password": false,
+        "groups": [
+            12
+        ]
+    }
+},
+{
+    "model": "userprofile.userprofile",
+    "pk": 129,
+    "fields": {
+        "user": 130,
+        "autogenerated": false,
+        "password": "ncu-22",
+        "has_changed_password": false,
+        "groups": [
+            12
+        ]
+    }
+},
+{
+    "model": "userprofile.userprofile",
+    "pk": 130,
+    "fields": {
+        "user": 131,
+        "autogenerated": false,
+        "password": "ncu-23",
+        "has_changed_password": false,
+        "groups": [
+            12
+        ]
+    }
+},
+{
+    "model": "userprofile.userprofile",
+    "pk": 131,
+    "fields": {
+        "user": 132,
+        "autogenerated": false,
+        "password": "ncu-24",
+        "has_changed_password": false,
+        "groups": [
+            12
+        ]
+    }
+},
+{
+    "model": "userprofile.userprofile",
+    "pk": 132,
+    "fields": {
+        "user": 133,
+        "autogenerated": false,
+        "password": "ncu-25",
+        "has_changed_password": false,
+        "groups": [
+            12
+        ]
+    }
+},
+{
+    "model": "userprofile.userprofile",
+    "pk": 133,
+    "fields": {
+        "user": 134,
+        "autogenerated": false,
+        "password": "ncu-26",
+        "has_changed_password": false,
+        "groups": [
+            12
+        ]
+    }
+},
+{
+    "model": "userprofile.userprofile",
+    "pk": 134,
+    "fields": {
+        "user": 135,
+        "autogenerated": false,
+        "password": "ncu-27",
+        "has_changed_password": false,
+        "groups": [
+            12
+        ]
+    }
+},
+{
+    "model": "userprofile.userprofile",
+    "pk": 135,
+    "fields": {
+        "user": 136,
+        "autogenerated": false,
+        "password": "ncu-28",
+        "has_changed_password": false,
+        "groups": [
+            12
+        ]
+    }
+},
+{
+    "model": "userprofile.userprofile",
+    "pk": 136,
+    "fields": {
+        "user": 137,
+        "autogenerated": false,
+        "password": "ncu-29",
+        "has_changed_password": false,
+        "groups": [
+            12
+        ]
+    }
+},
+{
+    "model": "userprofile.userprofile",
+    "pk": 137,
+    "fields": {
+        "user": 138,
+        "autogenerated": false,
+        "password": "ncu-30",
+        "has_changed_password": false,
+        "groups": [
+            12
+        ]
+    }
+},
+{
+    "model": "userprofile.userprofile",
+    "pk": 138,
+    "fields": {
+        "user": 139,
+        "autogenerated": false,
+        "password": "ncu-31",
+        "has_changed_password": false,
+        "groups": [
+            12
+        ]
+    }
+},
+{
+    "model": "userprofile.userprofile",
+    "pk": 139,
+    "fields": {
+        "user": 140,
+        "autogenerated": false,
+        "password": "ncu-32",
+        "has_changed_password": false,
+        "groups": [
+            12
+        ]
+    }
+},
+{
+    "model": "userprofile.userprofile",
+    "pk": 140,
+    "fields": {
+        "user": 141,
+        "autogenerated": false,
+        "password": "ncu-33",
+        "has_changed_password": false,
+        "groups": [
+            12
+        ]
+    }
+},
+{
+    "model": "userprofile.userprofile",
+    "pk": 141,
+    "fields": {
+        "user": 142,
+        "autogenerated": false,
+        "password": "ncu-34",
+        "has_changed_password": false,
+        "groups": [
+            12
+        ]
+    }
+},
+{
+    "model": "userprofile.userprofile",
+    "pk": 142,
+    "fields": {
+        "user": 143,
+        "autogenerated": false,
+        "password": "ncu-35",
+        "has_changed_password": true,
+        "groups": [
+            12
+        ]
+    }
+},
+{
+    "model": "userprofile.userprofile",
+    "pk": 143,
+    "fields": {
+        "user": 144,
+        "autogenerated": false,
+        "password": "npu-01",
+        "has_changed_password": true,
+        "groups": [
+            13
+        ]
+    }
+},
+{
+    "model": "userprofile.userprofile",
+    "pk": 144,
+    "fields": {
+        "user": 145,
+        "autogenerated": false,
+        "password": "npu-02",
+        "has_changed_password": false,
+        "groups": [
+            13
+        ]
+    }
+},
+{
+    "model": "userprofile.userprofile",
+    "pk": 145,
+    "fields": {
+        "user": 146,
+        "autogenerated": false,
+        "password": "npu-03",
+        "has_changed_password": false,
+        "groups": [
+            13
+        ]
+    }
+},
+{
+    "model": "userprofile.userprofile",
+    "pk": 147,
+    "fields": {
+        "user": 148,
+        "autogenerated": false,
+        "password": "",
+        "has_changed_password": true,
+        "groups": [
+            15
+        ]
+    }
+},
+{
+    "model": "userprofile.userprofile",
+    "pk": 148,
+    "fields": {
+        "user": 149,
+        "autogenerated": false,
+        "password": "",
+        "has_changed_password": true,
+        "groups": [
+            15
+        ]
+    }
+},
+{
+    "model": "userprofile.userprofile",
+    "pk": 149,
+    "fields": {
+        "user": 150,
+        "autogenerated": false,
+        "password": "",
+        "has_changed_password": true,
+        "groups": [
+            15
+        ]
+    }
+},
+{
+    "model": "userprofile.userprofile",
+    "pk": 150,
+    "fields": {
+        "user": 151,
+        "autogenerated": false,
+        "password": "",
+        "has_changed_password": true,
+        "groups": [
+            15
+        ]
+    }
+},
+{
+    "model": "userprofile.userprofile",
+    "pk": 151,
+    "fields": {
+        "user": 152,
+        "autogenerated": false,
+        "password": "",
+        "has_changed_password": true,
+        "groups": [
+            15
+        ]
+    }
+},
+{
+    "model": "userprofile.userprofile",
+    "pk": 152,
+    "fields": {
+        "user": 153,
+        "autogenerated": false,
+        "password": "",
+        "has_changed_password": false,
+        "groups": []
+    }
+},
+{
+    "model": "userprofile.userprofile",
+    "pk": 153,
+    "fields": {
+        "user": 154,
+        "autogenerated": false,
+        "password": "",
+        "has_changed_password": false,
+        "groups": [
+            17
+        ]
+    }
+},
+{
+    "model": "userprofile.userprofile",
+    "pk": 154,
+    "fields": {
+        "user": 155,
+        "autogenerated": false,
+        "password": "",
+        "has_changed_password": false,
+        "groups": [
+            21,
+            28
+        ]
+    }
+},
+{
+    "model": "userprofile.userprofile",
+    "pk": 157,
+    "fields": {
+        "user": 158,
+        "autogenerated": false,
+        "password": "",
+        "has_changed_password": false,
+        "groups": [
+            27,
+            29
+        ]
+    }
+},
+{
+    "model": "userprofile.userprofile",
+    "pk": 158,
+    "fields": {
+        "user": 159,
+        "autogenerated": false,
+        "password": "",
+        "has_changed_password": false,
+        "groups": []
+    }
+},
+{
+    "model": "userprofile.userprofile",
+    "pk": 159,
+    "fields": {
+        "user": 160,
+        "autogenerated": false,
+        "password": "",
+        "has_changed_password": false,
+        "groups": [
+            31
+        ]
+    }
+},
+{
+    "model": "userprofile.userprofile",
+    "pk": 160,
+    "fields": {
+        "user": 161,
+        "autogenerated": false,
+        "password": "",
+        "has_changed_password": false,
+        "groups": [
+            32,
+            33
+        ]
+    }
+},
+{
+    "model": "userprofile.userprofile",
+    "pk": 161,
+    "fields": {
+        "user": 162,
+        "autogenerated": false,
+        "password": "",
+        "has_changed_password": true,
+        "groups": [
+            35,
+            34
+        ]
+    }
+},
+{
+    "model": "quiz.test",
+    "pk": 1,
+    "fields": {
+        "name": "TumorDelTest",
+        "course": 1,
+        "user_can_see_test_result": true,
+        "user_can_delete_test_result": false
+    }
+},
+{
+    "model": "quiz.test",
+    "pk": 2,
+    "fields": {
+        "name": "NeuroCourseQuiz",
+        "course": 2,
+        "user_can_see_test_result": true,
+        "user_can_delete_test_result": false
+    }
+},
+{
+    "model": "quiz.test",
+    "pk": 12,
+    "fields": {
+        "name": "NeuroCourseOutline",
+        "course": 2,
+        "user_can_see_test_result": true,
+        "user_can_delete_test_result": false
+    }
+},
+{
+    "model": "quiz.test",
+    "pk": 16,
+    "fields": {
+        "name": "NPOST_20160614-NeuroCourse",
+        "course": 1,
+        "user_can_see_test_result": true,
+        "user_can_delete_test_result": true
+    }
+},
+{
+    "model": "quiz.test",
+    "pk": 17,
+    "fields": {
+        "name": "NeuroCourseLandmark",
+        "course": 2,
+        "user_can_see_test_result": true,
+        "user_can_delete_test_result": true
+    }
+},
+{
+    "model": "quiz.testresult",
+    "pk": 35,
+    "fields": {
+        "test": 12,
+        "user": 154,
+        "answered": "2016-06-16"
+    }
+},
+{
+    "model": "quiz.testresult",
+    "pk": 36,
+    "fields": {
+        "test": 12,
+        "user": 148,
+        "answered": "2016-06-16"
+    }
+},
+{
+    "model": "quiz.testresult",
+    "pk": 37,
+    "fields": {
+        "test": 12,
+        "user": 149,
+        "answered": "2016-06-16"
+    }
+},
+{
+    "model": "quiz.testresult",
+    "pk": 38,
+    "fields": {
+        "test": 12,
+        "user": 152,
+        "answered": "2016-06-16"
+    }
+},
+{
+    "model": "quiz.testresult",
+    "pk": 39,
+    "fields": {
+        "test": 12,
+        "user": 40,
+        "answered": "2016-06-17"
+    }
+},
+{
+    "model": "quiz.testresult",
+    "pk": 40,
+    "fields": {
+        "test": 2,
+        "user": 40,
+        "answered": "2016-06-17"
+    }
+},
+{
+    "model": "quiz.testresult",
+    "pk": 41,
+    "fields": {
+        "test": 1,
+        "user": 40,
+        "answered": "2016-06-17"
+    }
+},
+{
+    "model": "quiz.testresult",
+    "pk": 42,
+    "fields": {
+        "test": 2,
+        "user": 155,
+        "answered": "2016-06-18"
+    }
+},
+{
+    "model": "quiz.testresult",
+    "pk": 59,
+    "fields": {
+        "test": 16,
+        "user": 145,
+        "answered": "2016-06-23"
+    }
+},
+{
+    "model": "quiz.testresult",
+    "pk": 60,
+    "fields": {
+        "test": 16,
+        "user": 146,
+        "answered": "2016-06-23"
+    }
+},
+{
+    "model": "quiz.testresult",
+    "pk": 61,
+    "fields": {
+        "test": 17,
+        "user": 161,
+        "answered": "2016-06-27"
+    }
+},
+{
+    "model": "quiz.testresult",
+    "pk": 62,
+    "fields": {
+        "test": 12,
+        "user": 161,
+        "answered": "2016-06-27"
+    }
+},
+{
+    "model": "quiz.testresult",
+    "pk": 63,
+    "fields": {
+        "test": 12,
+        "user": 133,
+        "answered": "2016-08-04"
+    }
+},
+{
+    "model": "quiz.testresult",
+    "pk": 64,
+    "fields": {
+        "test": 2,
+        "user": 133,
+        "answered": "2016-08-04"
+    }
+},
+{
+    "model": "quiz.testresult",
+    "pk": 65,
+    "fields": {
+        "test": 17,
+        "user": 133,
+        "answered": "2016-08-04"
+    }
+},
+{
+    "model": "quiz.testresult",
+    "pk": 66,
+    "fields": {
+        "test": 12,
+        "user": 1,
+        "answered": "2016-08-23"
+    }
+},
+{
+    "model": "quiz.testunit",
+    "pk": 3,
+    "fields": {
+        "question": "MR-FLAIR_Axial",
+        "test": [
+            1,
+            12
+        ]
+    }
+},
+{
+    "model": "quiz.testunit",
+    "pk": 4,
+    "fields": {
+        "question": "MR-FLAIR_Coronar",
+        "test": [
+            1,
+            12
+        ]
+    }
+},
+{
+    "model": "quiz.testunit",
+    "pk": 5,
+    "fields": {
+        "question": "MR-FLAIR_Sagittal",
+        "test": [
+            1,
+            12
+        ]
+    }
+},
+{
+    "model": "quiz.testunit",
+    "pk": 6,
+    "fields": {
+        "question": "US-01_Axial",
+        "test": [
+            1,
+            12
+        ]
+    }
+},
+{
+    "model": "quiz.testunit",
+    "pk": 7,
+    "fields": {
+        "question": "US-01_Coronar",
+        "test": [
+            1,
+            12
+        ]
+    }
+},
+{
+    "model": "quiz.testunit",
+    "pk": 9,
+    "fields": {
+        "question": "US-01_Sagittal",
+        "test": [
+            1,
+            12
+        ]
+    }
+},
+{
+    "model": "quiz.testunit",
+    "pk": 10,
+    "fields": {
+        "question": "This tumor is probably a?",
+        "test": [
+            2
+        ]
+    }
+},
+{
+    "model": "quiz.testunit",
+    "pk": 11,
+    "fields": {
+        "question": "Increasing the ultrasound frequency will likely?",
+        "test": [
+            2
+        ]
+    }
+},
+{
+    "model": "quiz.testunit",
+    "pk": 12,
+    "fields": {
+        "question": "The hyperechoic events seen in the bottom of the cavity in the US images below is probably?",
+        "test": [
+            2
+        ]
+    }
+},
+{
+    "model": "quiz.testunit",
+    "pk": 13,
+    "fields": {
+        "question": "This tumor is probably a?",
+        "test": [
+            2
+        ]
+    }
+},
+{
+    "model": "quiz.testunit",
+    "pk": 14,
+    "fields": {
+        "question": "This is probably?",
+        "test": [
+            2
+        ]
+    }
+},
+{
+    "model": "quiz.testunit",
+    "pk": 15,
+    "fields": {
+        "question": "The speed of sound in biological tissue is approximately?",
+        "test": [
+            2
+        ]
+    }
+},
+{
+    "model": "quiz.testunit",
+    "pk": 16,
+    "fields": {
+        "question": "What is the slightly hyperechoic region?",
+        "test": [
+            2
+        ]
+    }
+},
+{
+    "model": "quiz.testunit",
+    "pk": 17,
+    "fields": {
+        "question": "What kind of lesion is this?",
+        "test": [
+            2
+        ]
+    }
+},
+{
+    "model": "quiz.testunit",
+    "pk": 18,
+    "fields": {
+        "question": "To facilitate easy acquisition of ultrasound volumes during surgery?",
+        "test": [
+            2
+        ]
+    }
+},
+{
+    "model": "quiz.testunit",
+    "pk": 19,
+    "fields": {
+        "question": "What is the anatomy?",
+        "test": [
+            2
+        ]
+    }
+},
+{
+    "model": "quiz.testunit",
+    "pk": 32,
+    "fields": {
+        "question": "02_MR-FLAIR_Axial",
+        "test": [
+            12
+        ]
+    }
+},
+{
+    "model": "quiz.testunit",
+    "pk": 33,
+    "fields": {
+        "question": "02_MR-FLAIR_Coronar",
+        "test": [
+            12
+        ]
+    }
+},
+{
+    "model": "quiz.testunit",
+    "pk": 34,
+    "fields": {
+        "question": "02_MR-FLAIR_Sagittal",
+        "test": [
+            12
+        ]
+    }
+},
+{
+    "model": "quiz.testunit",
+    "pk": 35,
+    "fields": {
+        "question": "02_US-01_Axial",
+        "test": [
+            12
+        ]
+    }
+},
+{
+    "model": "quiz.testunit",
+    "pk": 36,
+    "fields": {
+        "question": "02_US-01_Coronar",
+        "test": [
+            12
+        ]
+    }
+},
+{
+    "model": "quiz.testunit",
+    "pk": 37,
+    "fields": {
+        "question": "02_US-01_Sagittal",
+        "test": [
+            12
+        ]
+    }
+},
+{
+    "model": "quiz.testunit",
+    "pk": 48,
+    "fields": {
+        "question": "USiNSCourse2016_MR-FLAIR_A",
+        "test": [
+            16
+        ]
+    }
+},
+{
+    "model": "quiz.testunit",
+    "pk": 49,
+    "fields": {
+        "question": "USiNSCourse2016_MR-FLAIR_C",
+        "test": [
+            16
+        ]
+    }
+},
+{
+    "model": "quiz.testunit",
+    "pk": 50,
+    "fields": {
+        "question": "USiNSCourse2016_MR-FLAIR_S",
+        "test": [
+            16
+        ]
+    }
+},
+{
+    "model": "quiz.testunit",
+    "pk": 51,
+    "fields": {
+        "question": "USiNSCourse2016_US07_A",
+        "test": [
+            16
+        ]
+    }
+},
+{
+    "model": "quiz.testunit",
+    "pk": 52,
+    "fields": {
+        "question": "USiNSCourse2016_US07_C",
+        "test": [
+            16
+        ]
+    }
+},
+{
+    "model": "quiz.testunit",
+    "pk": 53,
+    "fields": {
+        "question": "USiNSCourse2016_US07_S",
+        "test": [
+            16
+        ]
+    }
+},
+{
+    "model": "quiz.testunit",
+    "pk": 54,
+    "fields": {
+        "question": "USiNSCourse2016_US10_A",
+        "test": [
+            16
+        ]
+    }
+},
+{
+    "model": "quiz.testunit",
+    "pk": 55,
+    "fields": {
+        "question": "USiNSCourse2016_US10_C",
+        "test": [
+            16
+        ]
+    }
+},
+{
+    "model": "quiz.testunit",
+    "pk": 56,
+    "fields": {
+        "question": "USiNSCourse2016_US10_S",
+        "test": [
+            16
+        ]
+    }
+},
+{
+    "model": "quiz.testunit",
+    "pk": 57,
+    "fields": {
+        "question": "USiNSCourse2016_MR-FLAIR_A",
+        "test": []
+    }
+},
+{
+    "model": "quiz.testunit",
+    "pk": 58,
+    "fields": {
+        "question": "02_US-01_Sagittal",
+        "test": [
+            17
+        ]
+    }
+},
+{
+    "model": "quiz.testunit",
+    "pk": 59,
+    "fields": {
+        "question": "02_MR-FLAIR_Axial",
+        "test": [
+            17
+        ]
+    }
+},
+{
+    "model": "quiz.testunit",
+    "pk": 60,
+    "fields": {
+        "question": "test",
+        "test": []
+    }
+},
+{
+    "model": "quiz.multiplechoicequestion",
+    "pk": 11,
+    "fields": {
+        "correct_answer": "Improve axial resolution but decrease penetration",
+        "wrong_answer_1": "Decrease penetration and worsen axial resolution",
+        "wrong_answer_2": "Increase penetration and worsen axial resolution",
+        "test": [
+            2
+        ]
+    }
+},
+{
+    "model": "quiz.multiplechoicequestion",
+    "pk": 15,
+    "fields": {
+        "correct_answer": "1540 m/s",
+        "wrong_answer_1": "1040 m/s",
+        "wrong_answer_2": "1450 m/s",
+        "test": [
+            2
+        ]
+    }
+},
+{
+    "model": "quiz.multiplechoicequestion",
+    "pk": 18,
+    "fields": {
+        "correct_answer": "Position pasient to have a horizontal craniotomy",
+        "wrong_answer_1": "The resection cavity should be filled with gel",
+        "wrong_answer_2": "Remove spatulas to obtain free access",
+        "test": [
+            2
+        ]
+    }
+},
+{
+    "model": "quiz.multiplechoicequestionwithimage",
+    "pk": 12,
+    "fields": {
+        "correct_answer": "Enhancement artefact caused by differences in attenuation",
+        "wrong_answer_1": "Residual tumour",
+        "wrong_answer_2": "Blood remains in the bottom of the cavity",
+        "image": "./Q3.png",
+        "test": [
+            2
+        ]
+    }
+},
+{
+    "model": "quiz.multiplechoicequestionwithimage",
+    "pk": 14,
+    "fields": {
+        "correct_answer": "Plexus",
+        "wrong_answer_1": "Tumour",
+        "wrong_answer_2": "Blood in the ventricles",
+        "image": "./Q5.png",
+        "test": [
+            2
+        ]
+    }
+},
+{
+    "model": "quiz.multiplechoicequestionwithimage",
+    "pk": 13,
+    "fields": {
+        "correct_answer": "Low-grade astrocytoma",
+        "wrong_answer_1": "Meningioma",
+        "wrong_answer_2": "Metastasis",
+        "image": "./Q4.png",
+        "test": [
+            2
+        ]
+    }
+},
+{
+    "model": "quiz.multiplechoicequestionwithimage",
+    "pk": 10,
+    "fields": {
+        "correct_answer": "Meningioma",
+        "wrong_answer_1": "Metastasis",
+        "wrong_answer_2": "Low-grade astrocytoma",
+        "image": "./Q1.png",
+        "test": [
+            2
+        ]
+    }
+},
+{
+    "model": "quiz.multiplechoicequestionwithimage",
+    "pk": 19,
+    "fields": {
+        "correct_answer": "Brain stem",
+        "wrong_answer_1": "Sulcus",
+        "wrong_answer_2": "Cerebellum",
+        "image": "./Q10.png",
+        "test": [
+            2
+        ]
+    }
+},
+{
+    "model": "quiz.multiplechoicequestionwithimage",
+    "pk": 16,
+    "fields": {
+        "correct_answer": "Edema",
+        "wrong_answer_1": "Low Grade Tumor",
+        "wrong_answer_2": "Artifacts",
+        "image": "./Q7.png",
+        "test": [
+            2
+        ]
+    }
+},
+{
+    "model": "quiz.multiplechoicequestionwithimage",
+    "pk": 17,
+    "fields": {
+        "correct_answer": "Glioblastoma",
+        "wrong_answer_1": "Low Grade Tumor",
+        "wrong_answer_2": "Abcess",
+        "image": "./Q8.png",
+        "test": [
+            2
+        ]
+    }
+},
+{
+    "model": "quiz.landmarkquestion",
+    "pk": 59,
+    "fields": {
+        "original_image": "./Skjermbilde_2016-06-25_kl._11.34.57.png",
+        "landmark_drawing": "./solution-Skjermbilde_2016-06-25_kl._11.34.57.png",
+        "test": [
+            17
+        ]
+    }
+},
+{
+    "model": "quiz.landmarkquestion",
+    "pk": 58,
+    "fields": {
+        "original_image": "./Skjermbilde_2016-06-25_kl._11.28.31.png",
+        "landmark_drawing": "./solution-Skjermbilde_2016-06-25_kl._11.28.31.png",
+        "test": [
+            17
+        ]
+    }
+},
+{
+    "model": "quiz.outlinequestion",
+    "pk": 32,
+    "fields": {
+        "original_image": "./2013-08-15_LGG_MRT2_A.jpeg",
+        "outline_drawing": "./solution-2013-08-15_LGG_MRT2_A.jpeg",
+        "test": [
+            12
+        ]
+    }
+},
+{
+    "model": "quiz.outlinequestion",
+    "pk": 33,
+    "fields": {
+        "original_image": "./2013-08-15_LGG_MRT2_C.jpeg",
+        "outline_drawing": "./solution-2013-08-15_LGG_MRT2_C.jpeg",
+        "test": [
+            12
+        ]
+    }
+},
+{
+    "model": "quiz.outlinequestion",
+    "pk": 34,
+    "fields": {
+        "original_image": "./2013-08-15_LGG_MRT2_S.jpeg",
+        "outline_drawing": "./solution-2013-08-15_LGG_MRT2_S_yPcEJZE.jpeg",
+        "test": [
+            12
+        ]
+    }
+},
+{
+    "model": "quiz.outlinequestion",
+    "pk": 35,
+    "fields": {
+        "original_image": "./2013-08-15_LGG_US01_A.jpeg",
+        "outline_drawing": "./solution-2013-08-15_LGG_US01_A.jpeg",
+        "test": [
+            12
+        ]
+    }
+},
+{
+    "model": "quiz.outlinequestion",
+    "pk": 36,
+    "fields": {
+        "original_image": "./2013-08-15_LGG_US01_C.jpeg",
+        "outline_drawing": "./solution-2013-08-15_LGG_US01_C.jpeg",
+        "test": [
+            12
+        ]
+    }
+},
+{
+    "model": "quiz.outlinequestion",
+    "pk": 37,
+    "fields": {
+        "original_image": "./2013-08-15_LGG_US01_S.jpeg",
+        "outline_drawing": "./solution-2013-08-15_LGG_US01_S.jpeg",
+        "test": [
+            12
+        ]
+    }
+},
+{
+    "model": "quiz.outlinequestion",
+    "pk": 3,
+    "fields": {
+        "original_image": "./2013-06-05_LGG_MRT2_A.jpeg",
+        "outline_drawing": "./solution-2013-06-05_LGG_MRT2_A.jpeg",
+        "test": [
+            1,
+            12
+        ]
+    }
+},
+{
+    "model": "quiz.outlinequestion",
+    "pk": 4,
+    "fields": {
+        "original_image": "./2013-06-05_LGG_MRT2_C.jpeg",
+        "outline_drawing": "./solution-2013-06-05_LGG_MRT2_C.jpeg",
+        "test": [
+            1,
+            12
+        ]
+    }
+},
+{
+    "model": "quiz.outlinequestion",
+    "pk": 5,
+    "fields": {
+        "original_image": "./2013-06-05_LGG_MRT2_S.jpeg",
+        "outline_drawing": "./solution-2013-06-05_LGG_MRT2_S.jpeg",
+        "test": [
+            1,
+            12
+        ]
+    }
+},
+{
+    "model": "quiz.outlinequestion",
+    "pk": 60,
+    "fields": {
+        "original_image": "./2013-08-15_LGG_MRT2_A_Zlcc4mX.jpeg",
+        "outline_drawing": "",
+        "test": []
+    }
+},
+{
+    "model": "quiz.outlinequestion",
+    "pk": 6,
+    "fields": {
+        "original_image": "./2013-06-05_LGG_US01_A.jpeg",
+        "outline_drawing": "./solution-2013-06-05_LGG_US01_A.jpeg",
+        "test": [
+            1,
+            12
+        ]
+    }
+},
+{
+    "model": "quiz.outlinequestion",
+    "pk": 7,
+    "fields": {
+        "original_image": "./2013-06-05_LGG_US01_C.jpeg",
+        "outline_drawing": "./solution-2013-06-05_LGG_US01_C.jpeg",
+        "test": [
+            1,
+            12
+        ]
+    }
+},
+{
+    "model": "quiz.outlinequestion",
+    "pk": 9,
+    "fields": {
+        "original_image": "./2013-06-05_LGG_US01_S.jpeg",
+        "outline_drawing": "./solution-2013-06-05_LGG_US01_S.jpeg",
+        "test": [
+            1,
+            12
+        ]
+    }
+},
+{
+    "model": "quiz.outlinequestion",
+    "pk": 57,
+    "fields": {
+        "original_image": "./USiNSCourse2016_MR-FLAIR_A_aqkgGfM.png",
+        "outline_drawing": "./solution-USiNSCourse2016_MR-FLAIR_A_aqkgGfM.png",
+        "test": []
+    }
+},
+{
+    "model": "quiz.outlinesolutionquestion",
+    "pk": 48,
+    "fields": {
+        "original_image": "./USiNSCourse2016_MR-FLAIR_A.png",
+        "outline_region": "Tumor",
+        "test": [
+            16
+        ]
+    }
+},
+{
+    "model": "quiz.outlinesolutionquestion",
+    "pk": 49,
+    "fields": {
+        "original_image": "./USiNSCourse2016_MR-FLAIR_C.png",
+        "outline_region": "Tumor",
+        "test": [
+            16
+        ]
+    }
+},
+{
+    "model": "quiz.outlinesolutionquestion",
+    "pk": 50,
+    "fields": {
+        "original_image": "./USiNSCourse2016_MR-FLAIR_S.png",
+        "outline_region": "Tumor",
+        "test": [
+            16
+        ]
+    }
+},
+{
+    "model": "quiz.outlinesolutionquestion",
+    "pk": 51,
+    "fields": {
+        "original_image": "./USiNSCourse2016_US07_A.png",
+        "outline_region": "Tumor",
+        "test": [
+            16
+        ]
+    }
+},
+{
+    "model": "quiz.outlinesolutionquestion",
+    "pk": 52,
+    "fields": {
+        "original_image": "./USiNSCourse2016_US07_C.png",
+        "outline_region": "Tumor",
+        "test": [
+            16
+        ]
+    }
+},
+{
+    "model": "quiz.outlinesolutionquestion",
+    "pk": 53,
+    "fields": {
+        "original_image": "./USiNSCourse2016_US07_S.png",
+        "outline_region": "Tumor",
+        "test": [
+            16
+        ]
+    }
+},
+{
+    "model": "quiz.outlinesolutionquestion",
+    "pk": 54,
+    "fields": {
+        "original_image": "./USiNSCourse2016_US10_A.png",
+        "outline_region": "Tumor",
+        "test": [
+            16
+        ]
+    }
+},
+{
+    "model": "quiz.outlinesolutionquestion",
+    "pk": 55,
+    "fields": {
+        "original_image": "./USiNSCourse2016_US10_C.png",
+        "outline_region": "Tumor",
+        "test": [
+            16
+        ]
+    }
+},
+{
+    "model": "quiz.outlinesolutionquestion",
+    "pk": 56,
+    "fields": {
+        "original_image": "./USiNSCourse2016_US10_S.png",
+        "outline_region": "Tumor",
+        "test": [
+            16
+        ]
+    }
+},
+{
+    "model": "quiz.landmarkregion",
+    "pk": 3,
+    "fields": {
+        "landmark_question": 58,
+        "color": "#c02f1d",
+        "name": "Tumor"
+    }
+},
+{
+    "model": "quiz.landmarkregion",
+    "pk": 4,
+    "fields": {
+        "landmark_question": 59,
+        "color": "#c02f1d",
+        "name": "Tumor"
+    }
+},
+{
+    "model": "quiz.outlineregion",
+    "pk": 1,
+    "fields": {
+        "outline_question": 3,
+        "color": "#c02f1d",
+        "name": "Tumor"
+    }
+},
+{
+    "model": "quiz.outlineregion",
+    "pk": 2,
+    "fields": {
+        "outline_question": 4,
+        "color": "#c02f1d",
+        "name": "Tumor"
+    }
+},
+{
+    "model": "quiz.outlineregion",
+    "pk": 3,
+    "fields": {
+        "outline_question": 5,
+        "color": "#c02f1d",
+        "name": "Tumor"
+    }
+},
+{
+    "model": "quiz.outlineregion",
+    "pk": 4,
+    "fields": {
+        "outline_question": 6,
+        "color": "#c02f1d",
+        "name": "Tumor"
+    }
+},
+{
+    "model": "quiz.outlineregion",
+    "pk": 5,
+    "fields": {
+        "outline_question": 7,
+        "color": "#c02f1d",
+        "name": "Tumor"
+    }
+},
+{
+    "model": "quiz.outlineregion",
+    "pk": 6,
+    "fields": {
+        "outline_question": 9,
+        "color": "#c02f1d",
+        "name": "Tumor"
+    }
+},
+{
+    "model": "quiz.outlineregion",
+    "pk": 25,
+    "fields": {
+        "outline_question": 32,
+        "color": "#c02f1d",
+        "name": "Tumor"
+    }
+},
+{
+    "model": "quiz.outlineregion",
+    "pk": 26,
+    "fields": {
+        "outline_question": 33,
+        "color": "#c02f1d",
+        "name": "Tumor"
+    }
+},
+{
+    "model": "quiz.outlineregion",
+    "pk": 28,
+    "fields": {
+        "outline_question": 34,
+        "color": "#c02f1d",
+        "name": "Tumor"
+    }
+},
+{
+    "model": "quiz.outlineregion",
+    "pk": 29,
+    "fields": {
+        "outline_question": 35,
+        "color": "#c02f1d",
+        "name": "Tumor"
+    }
+},
+{
+    "model": "quiz.outlineregion",
+    "pk": 30,
+    "fields": {
+        "outline_question": 36,
+        "color": "#c02f1d",
+        "name": "Tumor"
+    }
+},
+{
+    "model": "quiz.outlineregion",
+    "pk": 31,
+    "fields": {
+        "outline_question": 37,
+        "color": "#c02f1d",
+        "name": "Tumor"
+    }
+},
+{
+    "model": "quiz.outlineregion",
+    "pk": 37,
+    "fields": {
+        "outline_question": 57,
+        "color": "#c02f1d",
+        "name": "Tumor"
+    }
+},
+{
+    "model": "quiz.testunitresult",
+    "pk": 227,
+    "fields": {
+        "test_unit": 36,
+        "correct_answer": false,
+        "test_result": 35,
+        "answer": "15.231567466741701",
+        "answer_image": "./yztbmbcelwpilgr.png",
+        "target_color_region": "#c02f1d",
+        "score": 0,
+        "max_score": 1
+    }
+},
+{
+    "model": "quiz.testunitresult",
+    "pk": 228,
+    "fields": {
+        "test_unit": 32,
+        "correct_answer": false,
+        "test_result": 35,
+        "answer": "58.787621420032444",
+        "answer_image": "./euplwqfdplranps.png",
+        "target_color_region": "#c02f1d",
+        "score": 0,
+        "max_score": 1
+    }
+},
+{
+    "model": "quiz.testunitresult",
+    "pk": 229,
+    "fields": {
+        "test_unit": 34,
+        "correct_answer": false,
+        "test_result": 35,
+        "answer": "36.53719768439234",
+        "answer_image": "./ladpfgcpzytxdfy.png",
+        "target_color_region": "#c02f1d",
+        "score": 0,
+        "max_score": 1
+    }
+},
+{
+    "model": "quiz.testunitresult",
+    "pk": 230,
+    "fields": {
+        "test_unit": 5,
+        "correct_answer": true,
+        "test_result": 35,
+        "answer": "4.321478446938321",
+        "answer_image": "./fsayhuduarxjsgz.png",
+        "target_color_region": "#c02f1d",
+        "score": 1,
+        "max_score": 1
+    }
+},
+{
+    "model": "quiz.testunitresult",
+    "pk": 231,
+    "fields": {
+        "test_unit": 3,
+        "correct_answer": false,
+        "test_result": 35,
+        "answer": "9.305494623934434",
+        "answer_image": "./yeombjoqtaaogyo.png",
+        "target_color_region": "#c02f1d",
+        "score": 0,
+        "max_score": 1
+    }
+},
+{
+    "model": "quiz.testunitresult",
+    "pk": 232,
+    "fields": {
+        "test_unit": 37,
+        "correct_answer": false,
+        "test_result": 35,
+        "answer": "22.154974315889383",
+        "answer_image": "./awztgljokjxjytv.png",
+        "target_color_region": "#c02f1d",
+        "score": 0,
+        "max_score": 1
+    }
+},
+{
+    "model": "quiz.testunitresult",
+    "pk": 233,
+    "fields": {
+        "test_unit": 7,
+        "correct_answer": false,
+        "test_result": 35,
+        "answer": "63.92099519398973",
+        "answer_image": "./pjeqlucuvdnogwi.png",
+        "target_color_region": "#c02f1d",
+        "score": 0,
+        "max_score": 1
+    }
+},
+{
+    "model": "quiz.testunitresult",
+    "pk": 234,
+    "fields": {
+        "test_unit": 6,
+        "correct_answer": false,
+        "test_result": 35,
+        "answer": "47.17538563319901",
+        "answer_image": "./eufhzumfdbfgaos.png",
+        "target_color_region": "#c02f1d",
+        "score": 0,
+        "max_score": 1
+    }
+},
+{
+    "model": "quiz.testunitresult",
+    "pk": 235,
+    "fields": {
+        "test_unit": 9,
+        "correct_answer": false,
+        "test_result": 35,
+        "answer": "40.611163709511395",
+        "answer_image": "./lgnrbtdnlqyberf.png",
+        "target_color_region": "#c02f1d",
+        "score": 0,
+        "max_score": 1
+    }
+},
+{
+    "model": "quiz.testunitresult",
+    "pk": 236,
+    "fields": {
+        "test_unit": 35,
+        "correct_answer": false,
+        "test_result": 35,
+        "answer": "32.19219056472431",
+        "answer_image": "./odcitwnalioqcjl.png",
+        "target_color_region": "#c02f1d",
+        "score": 0,
+        "max_score": 1
+    }
+},
+{
+    "model": "quiz.testunitresult",
+    "pk": 237,
+    "fields": {
+        "test_unit": 4,
+        "correct_answer": false,
+        "test_result": 35,
+        "answer": "13.10906522202886",
+        "answer_image": "./beygybsbdpreeih.png",
+        "target_color_region": "#c02f1d",
+        "score": 0,
+        "max_score": 1
+    }
+},
+{
+    "model": "quiz.testunitresult",
+    "pk": 238,
+    "fields": {
+        "test_unit": 33,
+        "correct_answer": false,
+        "test_result": 35,
+        "answer": "31.923734452333445",
+        "answer_image": "./qdwoeslvimkxqnb.png",
+        "target_color_region": "#c02f1d",
+        "score": 0,
+        "max_score": 1
+    }
+},
+{
+    "model": "quiz.testunitresult",
+    "pk": 239,
+    "fields": {
+        "test_unit": 9,
+        "correct_answer": false,
+        "test_result": 36,
+        "answer": "5.702224332504605",
+        "answer_image": "./ikvamvqtvubiosf.png",
+        "target_color_region": "#c02f1d",
+        "score": 0,
+        "max_score": 1
+    }
+},
+{
+    "model": "quiz.testunitresult",
+    "pk": 240,
+    "fields": {
+        "test_unit": 5,
+        "correct_answer": true,
+        "test_result": 36,
+        "answer": "3.259798751546013",
+        "answer_image": "./jzhwdndqesjlmsn.png",
+        "target_color_region": "#c02f1d",
+        "score": 1,
+        "max_score": 1
+    }
+},
+{
+    "model": "quiz.testunitresult",
+    "pk": 241,
+    "fields": {
+        "test_unit": 32,
+        "correct_answer": false,
+        "test_result": 36,
+        "answer": "5.1871818629186235",
+        "answer_image": "./ahjmcbtoxpyxcrz.png",
+        "target_color_region": "#c02f1d",
+        "score": 0,
+        "max_score": 1
+    }
+},
+{
+    "model": "quiz.testunitresult",
+    "pk": 242,
+    "fields": {
+        "test_unit": 34,
+        "correct_answer": false,
+        "test_result": 36,
+        "answer": "5.261706628160584",
+        "answer_image": "./xzcjhdlkfeuxvee.png",
+        "target_color_region": "#c02f1d",
+        "score": 0,
+        "max_score": 1
+    }
+},
+{
+    "model": "quiz.testunitresult",
+    "pk": 243,
+    "fields": {
+        "test_unit": 3,
+        "correct_answer": true,
+        "test_result": 36,
+        "answer": "4.943008573386797",
+        "answer_image": "./fqbzvdhpyijswfk.png",
+        "target_color_region": "#c02f1d",
+        "score": 1,
+        "max_score": 1
+    }
+},
+{
+    "model": "quiz.testunitresult",
+    "pk": 244,
+    "fields": {
+        "test_unit": 37,
+        "correct_answer": true,
+        "test_result": 36,
+        "answer": "3.611067235968126",
+        "answer_image": "./cwvhsqcownydqby.png",
+        "target_color_region": "#c02f1d",
+        "score": 1,
+        "max_score": 1
+    }
+},
+{
+    "model": "quiz.testunitresult",
+    "pk": 245,
+    "fields": {
+        "test_unit": 7,
+        "correct_answer": false,
+        "test_result": 36,
+        "answer": "6.768577213763242",
+        "answer_image": "./vjiuimmmpkfjxca.png",
+        "target_color_region": "#c02f1d",
+        "score": 0,
+        "max_score": 1
+    }
+},
+{
+    "model": "quiz.testunitresult",
+    "pk": 246,
+    "fields": {
+        "test_unit": 6,
+        "correct_answer": false,
+        "test_result": 36,
+        "answer": "8.496243311486925",
+        "answer_image": "./rcwsfqotiozuzne.png",
+        "target_color_region": "#c02f1d",
+        "score": 0,
+        "max_score": 1
+    }
+},
+{
+    "model": "quiz.testunitresult",
+    "pk": 247,
+    "fields": {
+        "test_unit": 36,
+        "correct_answer": false,
+        "test_result": 36,
+        "answer": "5.800617166866331",
+        "answer_image": "./htoadhkwmlksccm.png",
+        "target_color_region": "#c02f1d",
+        "score": 0,
+        "max_score": 1
+    }
+},
+{
+    "model": "quiz.testunitresult",
+    "pk": 248,
+    "fields": {
+        "test_unit": 35,
+        "correct_answer": true,
+        "test_result": 36,
+        "answer": "4.560484466658341",
+        "answer_image": "./lskrmjwkioqtjyz.png",
+        "target_color_region": "#c02f1d",
+        "score": 1,
+        "max_score": 1
+    }
+},
+{
+    "model": "quiz.testunitresult",
+    "pk": 249,
+    "fields": {
+        "test_unit": 4,
+        "correct_answer": false,
+        "test_result": 36,
+        "answer": "5.595318460293972",
+        "answer_image": "./xwlwicfkpkoctnq.png",
+        "target_color_region": "#c02f1d",
+        "score": 0,
+        "max_score": 1
+    }
+},
+{
+    "model": "quiz.testunitresult",
+    "pk": 250,
+    "fields": {
+        "test_unit": 33,
+        "correct_answer": false,
+        "test_result": 36,
+        "answer": "5.062860391586781",
+        "answer_image": "./lvwibovltpzcaws.png",
+        "target_color_region": "#c02f1d",
+        "score": 0,
+        "max_score": 1
+    }
+},
+{
+    "model": "quiz.testunitresult",
+    "pk": 251,
+    "fields": {
+        "test_unit": 36,
+        "correct_answer": true,
+        "test_result": 37,
+        "answer": "2.9285079861218954",
+        "answer_image": "./lptjotizbsoxlbj.png",
+        "target_color_region": "#c02f1d",
+        "score": 1,
+        "max_score": 1
+    }
+},
+{
+    "model": "quiz.testunitresult",
+    "pk": 252,
+    "fields": {
+        "test_unit": 5,
+        "correct_answer": true,
+        "test_result": 37,
+        "answer": "2.956629716697933",
+        "answer_image": "./gibrqrgwfehfqee.png",
+        "target_color_region": "#c02f1d",
+        "score": 1,
+        "max_score": 1
+    }
+},
+{
+    "model": "quiz.testunitresult",
+    "pk": 253,
+    "fields": {
+        "test_unit": 32,
+        "correct_answer": true,
+        "test_result": 37,
+        "answer": "3.677466290830895",
+        "answer_image": "./qebqlnvniiygpfm.png",
+        "target_color_region": "#c02f1d",
+        "score": 1,
+        "max_score": 1
+    }
+},
+{
+    "model": "quiz.testunitresult",
+    "pk": 254,
+    "fields": {
+        "test_unit": 34,
+        "correct_answer": false,
+        "test_result": 37,
+        "answer": "34.842599273619236",
+        "answer_image": "./hzpamvjqvdohtia.png",
+        "target_color_region": "#c02f1d",
+        "score": 0,
+        "max_score": 1
+    }
+},
+{
+    "model": "quiz.testunitresult",
+    "pk": 255,
+    "fields": {
+        "test_unit": 3,
+        "correct_answer": true,
+        "test_result": 37,
+        "answer": "2.6089014377712374",
+        "answer_image": "./kjgexibmjqahxoh.png",
+        "target_color_region": "#c02f1d",
+        "score": 1,
+        "max_score": 1
+    }
+},
+{
+    "model": "quiz.testunitresult",
+    "pk": 256,
+    "fields": {
+        "test_unit": 37,
+        "correct_answer": false,
+        "test_result": 37,
+        "answer": "6.9088566643173115",
+        "answer_image": "./dxcazfzdcqenwvv.png",
+        "target_color_region": "#c02f1d",
+        "score": 0,
+        "max_score": 1
+    }
+},
+{
+    "model": "quiz.testunitresult",
+    "pk": 257,
+    "fields": {
+        "test_unit": 7,
+        "correct_answer": false,
+        "test_result": 37,
+        "answer": "9.469769703458123",
+        "answer_image": "./etnnemolluvghev.png",
+        "target_color_region": "#c02f1d",
+        "score": 0,
+        "max_score": 1
+    }
+},
+{
+    "model": "quiz.testunitresult",
+    "pk": 258,
+    "fields": {
+        "test_unit": 6,
+        "correct_answer": false,
+        "test_result": 37,
+        "answer": "12.750448784716502",
+        "answer_image": "./ldhbjiwkvzcaiax.png",
+        "target_color_region": "#c02f1d",
+        "score": 0,
+        "max_score": 1
+    }
+},
+{
+    "model": "quiz.testunitresult",
+    "pk": 259,
+    "fields": {
+        "test_unit": 9,
+        "correct_answer": true,
+        "test_result": 37,
+        "answer": "2.710660612486557",
+        "answer_image": "./vshluximhjvfldw.png",
+        "target_color_region": "#c02f1d",
+        "score": 1,
+        "max_score": 1
+    }
+},
+{
+    "model": "quiz.testunitresult",
+    "pk": 260,
+    "fields": {
+        "test_unit": 35,
+        "correct_answer": true,
+        "test_result": 37,
+        "answer": "4.041382677844166",
+        "answer_image": "./zqqtbdfczpafjot.png",
+        "target_color_region": "#c02f1d",
+        "score": 1,
+        "max_score": 1
+    }
+},
+{
+    "model": "quiz.testunitresult",
+    "pk": 261,
+    "fields": {
+        "test_unit": 4,
+        "correct_answer": true,
+        "test_result": 37,
+        "answer": "2.5871410615678276",
+        "answer_image": "./cayjpakffcfamsk.png",
+        "target_color_region": "#c02f1d",
+        "score": 1,
+        "max_score": 1
+    }
+},
+{
+    "model": "quiz.testunitresult",
+    "pk": 262,
+    "fields": {
+        "test_unit": 33,
+        "correct_answer": false,
+        "test_result": 37,
+        "answer": "5.67773445992234",
+        "answer_image": "./zujohlycqwddcta.png",
+        "target_color_region": "#c02f1d",
+        "score": 0,
+        "max_score": 1
+    }
+},
+{
+    "model": "quiz.testunitresult",
+    "pk": 263,
+    "fields": {
+        "test_unit": 9,
+        "correct_answer": false,
+        "test_result": 38,
+        "answer": "12.883046802515395",
+        "answer_image": "./xevtgshdwcyhent.png",
+        "target_color_region": "#c02f1d",
+        "score": 0,
+        "max_score": 1
+    }
+},
+{
+    "model": "quiz.testunitresult",
+    "pk": 264,
+    "fields": {
+        "test_unit": 32,
+        "correct_answer": true,
+        "test_result": 38,
+        "answer": "4.501680655942574",
+        "answer_image": "./dkjzjzjakqkufbq.png",
+        "target_color_region": "#c02f1d",
+        "score": 1,
+        "max_score": 1
+    }
+},
+{
+    "model": "quiz.testunitresult",
+    "pk": 265,
+    "fields": {
+        "test_unit": 34,
+        "correct_answer": false,
+        "test_result": 38,
+        "answer": "8.71201130550036",
+        "answer_image": "./nauijruvqrvnpgp.png",
+        "target_color_region": "#c02f1d",
+        "score": 0,
+        "max_score": 1
+    }
+},
+{
+    "model": "quiz.testunitresult",
+    "pk": 266,
+    "fields": {
+        "test_unit": 5,
+        "correct_answer": true,
+        "test_result": 38,
+        "answer": "3.6402627123021936",
+        "answer_image": "./rrbvvdwphgdbvtc.png",
+        "target_color_region": "#c02f1d",
+        "score": 1,
+        "max_score": 1
+    }
+},
+{
+    "model": "quiz.testunitresult",
+    "pk": 267,
+    "fields": {
+        "test_unit": 3,
+        "correct_answer": true,
+        "test_result": 38,
+        "answer": "3.2922717391242777",
+        "answer_image": "./guscngwjnuvdcbk.png",
+        "target_color_region": "#c02f1d",
+        "score": 1,
+        "max_score": 1
+    }
+},
+{
+    "model": "quiz.testunitresult",
+    "pk": 268,
+    "fields": {
+        "test_unit": 33,
+        "correct_answer": true,
+        "test_result": 38,
+        "answer": "3.7966598907257136",
+        "answer_image": "./isviiyvkdswcjls.png",
+        "target_color_region": "#c02f1d",
+        "score": 1,
+        "max_score": 1
+    }
+},
+{
+    "model": "quiz.testunitresult",
+    "pk": 269,
+    "fields": {
+        "test_unit": 37,
+        "correct_answer": false,
+        "test_result": 38,
+        "answer": "9.224377590295676",
+        "answer_image": "./cgroqdbcgdhprgj.png",
+        "target_color_region": "#c02f1d",
+        "score": 0,
+        "max_score": 1
+    }
+},
+{
+    "model": "quiz.testunitresult",
+    "pk": 270,
+    "fields": {
+        "test_unit": 7,
+        "correct_answer": false,
+        "test_result": 38,
+        "answer": "7.033339200619435",
+        "answer_image": "./edgjktnpmagbuta.png",
+        "target_color_region": "#c02f1d",
+        "score": 0,
+        "max_score": 1
+    }
+},
+{
+    "model": "quiz.testunitresult",
+    "pk": 271,
+    "fields": {
+        "test_unit": 6,
+        "correct_answer": false,
+        "test_result": 38,
+        "answer": "12.285797467513394",
+        "answer_image": "./srkybubpjsawoxk.png",
+        "target_color_region": "#c02f1d",
+        "score": 0,
+        "max_score": 1
+    }
+},
+{
+    "model": "quiz.testunitresult",
+    "pk": 272,
+    "fields": {
+        "test_unit": 36,
+        "correct_answer": false,
+        "test_result": 38,
+        "answer": "7.231067389054815",
+        "answer_image": "./oykubnvueqqnswz.png",
+        "target_color_region": "#c02f1d",
+        "score": 0,
+        "max_score": 1
+    }
+},
+{
+    "model": "quiz.testunitresult",
+    "pk": 273,
+    "fields": {
+        "test_unit": 35,
+        "correct_answer": false,
+        "test_result": 38,
+        "answer": "6.693994075356478",
+        "answer_image": "./twlwmoizxhccyqp.png",
+        "target_color_region": "#c02f1d",
+        "score": 0,
+        "max_score": 1
+    }
+},
+{
+    "model": "quiz.testunitresult",
+    "pk": 274,
+    "fields": {
+        "test_unit": 4,
+        "correct_answer": true,
+        "test_result": 38,
+        "answer": "2.6421452932232654",
+        "answer_image": "./jobowiofwtplxkk.png",
+        "target_color_region": "#c02f1d",
+        "score": 1,
+        "max_score": 1
+    }
+},
+{
+    "model": "quiz.testunitresult",
+    "pk": 275,
+    "fields": {
+        "test_unit": 5,
+        "correct_answer": false,
+        "test_result": 39,
+        "answer": "12.54407594545071",
+        "answer_image": "./fzdzqoretrdmyei.png",
+        "target_color_region": "#c02f1d",
+        "score": 0,
+        "max_score": 1
+    }
+},
+{
+    "model": "quiz.testunitresult",
+    "pk": 276,
+    "fields": {
+        "test_unit": 32,
+        "correct_answer": false,
+        "test_result": 39,
+        "answer": "44.86478680484333",
+        "answer_image": "./pjrbzdyxswkulzt.png",
+        "target_color_region": "#c02f1d",
+        "score": 0,
+        "max_score": 1
+    }
+},
+{
+    "model": "quiz.testunitresult",
+    "pk": 277,
+    "fields": {
+        "test_unit": 34,
+        "correct_answer": false,
+        "test_result": 39,
+        "answer": "66.19314769241326",
+        "answer_image": "./rljgkpdzfhjelqj.png",
+        "target_color_region": "#c02f1d",
+        "score": 0,
+        "max_score": 1
+    }
+},
+{
+    "model": "quiz.testunitresult",
+    "pk": 278,
+    "fields": {
+        "test_unit": 3,
+        "correct_answer": false,
+        "test_result": 39,
+        "answer": "10.496781273994166",
+        "answer_image": "./onpjlhlbihiqiep.png",
+        "target_color_region": "#c02f1d",
+        "score": 0,
+        "max_score": 1
+    }
+},
+{
+    "model": "quiz.testunitresult",
+    "pk": 279,
+    "fields": {
+        "test_unit": 36,
+        "correct_answer": false,
+        "test_result": 39,
+        "answer": "",
+        "answer_image": "./bepeeqxiviiitzi.png",
+        "target_color_region": "#c02f1d",
+        "score": 0,
+        "max_score": 1
+    }
+},
+{
+    "model": "quiz.testunitresult",
+    "pk": 280,
+    "fields": {
+        "test_unit": 37,
+        "correct_answer": false,
+        "test_result": 39,
+        "answer": "36.25017536110325",
+        "answer_image": "./dancwgqcjjqbdem.png",
+        "target_color_region": "#c02f1d",
+        "score": 0,
+        "max_score": 1
+    }
+},
+{
+    "model": "quiz.testunitresult",
+    "pk": 281,
+    "fields": {
+        "test_unit": 7,
+        "correct_answer": false,
+        "test_result": 39,
+        "answer": "80.89100123554257",
+        "answer_image": "./krtxsegdghyciub.png",
+        "target_color_region": "#c02f1d",
+        "score": 0,
+        "max_score": 1
+    }
+},
+{
+    "model": "quiz.testunitresult",
+    "pk": 282,
+    "fields": {
+        "test_unit": 6,
+        "correct_answer": false,
+        "test_result": 39,
+        "answer": "19.70960127775205",
+        "answer_image": "./nbmlkodqohxvvpf.png",
+        "target_color_region": "#c02f1d",
+        "score": 0,
+        "max_score": 1
+    }
+},
+{
+    "model": "quiz.testunitresult",
+    "pk": 283,
+    "fields": {
+        "test_unit": 9,
+        "correct_answer": false,
+        "test_result": 39,
+        "answer": "18.18099625000337",
+        "answer_image": "./ejcnkixusmfmzyi.png",
+        "target_color_region": "#c02f1d",
+        "score": 0,
+        "max_score": 1
+    }
+},
+{
+    "model": "quiz.testunitresult",
+    "pk": 284,
+    "fields": {
+        "test_unit": 35,
+        "correct_answer": false,
+        "test_result": 39,
+        "answer": "",
+        "answer_image": "./awfqsjcvjjdkzqc.png",
+        "target_color_region": "#c02f1d",
+        "score": 0,
+        "max_score": 1
+    }
+},
+{
+    "model": "quiz.testunitresult",
+    "pk": 285,
+    "fields": {
+        "test_unit": 4,
+        "correct_answer": false,
+        "test_result": 39,
+        "answer": "9.16659441774389",
+        "answer_image": "./hryyplztibmbbsb.png",
+        "target_color_region": "#c02f1d",
+        "score": 0,
+        "max_score": 1
+    }
+},
+{
+    "model": "quiz.testunitresult",
+    "pk": 286,
+    "fields": {
+        "test_unit": 33,
+        "correct_answer": false,
+        "test_result": 39,
+        "answer": "17.684584870939112",
+        "answer_image": "./vswmihvsbpobjmr.png",
+        "target_color_region": "#c02f1d",
+        "score": 0,
+        "max_score": 1
+    }
+},
+{
+    "model": "quiz.testunitresult",
+    "pk": 287,
+    "fields": {
+        "test_unit": 14,
+        "correct_answer": true,
+        "test_result": 40,
+        "answer": "Plexus",
+        "answer_image": "",
+        "target_color_region": "",
+        "score": 1,
+        "max_score": 1
+    }
+},
+{
+    "model": "quiz.testunitresult",
+    "pk": 288,
+    "fields": {
+        "test_unit": 15,
+        "correct_answer": true,
+        "test_result": 40,
+        "answer": "1540 m/s",
+        "answer_image": "",
+        "target_color_region": "",
+        "score": 1,
+        "max_score": 1
+    }
+},
+{
+    "model": "quiz.testunitresult",
+    "pk": 289,
+    "fields": {
+        "test_unit": 10,
+        "correct_answer": true,
+        "test_result": 40,
+        "answer": "Meningioma",
+        "answer_image": "",
+        "target_color_region": "",
+        "score": 1,
+        "max_score": 1
+    }
+},
+{
+    "model": "quiz.testunitresult",
+    "pk": 290,
+    "fields": {
+        "test_unit": 18,
+        "correct_answer": true,
+        "test_result": 40,
+        "answer": "Position pasient to have a horizontal craniotomy",
+        "answer_image": "",
+        "target_color_region": "",
+        "score": 1,
+        "max_score": 1
+    }
+},
+{
+    "model": "quiz.testunitresult",
+    "pk": 291,
+    "fields": {
+        "test_unit": 13,
+        "correct_answer": false,
+        "test_result": 40,
+        "answer": "Metastasis",
+        "answer_image": "",
+        "target_color_region": "",
+        "score": 0,
+        "max_score": 1
+    }
+},
+{
+    "model": "quiz.testunitresult",
+    "pk": 292,
+    "fields": {
+        "test_unit": 11,
+        "correct_answer": true,
+        "test_result": 40,
+        "answer": "Improve axial resolution but decrease penetration",
+        "answer_image": "",
+        "target_color_region": "",
+        "score": 1,
+        "max_score": 1
+    }
+},
+{
+    "model": "quiz.testunitresult",
+    "pk": 293,
+    "fields": {
+        "test_unit": 19,
+        "correct_answer": true,
+        "test_result": 40,
+        "answer": "Brain stem",
+        "answer_image": "",
+        "target_color_region": "",
+        "score": 1,
+        "max_score": 1
+    }
+},
+{
+    "model": "quiz.testunitresult",
+    "pk": 294,
+    "fields": {
+        "test_unit": 17,
+        "correct_answer": true,
+        "test_result": 40,
+        "answer": "Glioblastoma",
+        "answer_image": "",
+        "target_color_region": "",
+        "score": 1,
+        "max_score": 1
+    }
+},
+{
+    "model": "quiz.testunitresult",
+    "pk": 295,
+    "fields": {
+        "test_unit": 16,
+        "correct_answer": true,
+        "test_result": 40,
+        "answer": "Edema",
+        "answer_image": "",
+        "target_color_region": "",
+        "score": 1,
+        "max_score": 1
+    }
+},
+{
+    "model": "quiz.testunitresult",
+    "pk": 296,
+    "fields": {
+        "test_unit": 12,
+        "correct_answer": true,
+        "test_result": 40,
+        "answer": "Enhancement artefact caused by differences in attenuation",
+        "answer_image": "",
+        "target_color_region": "",
+        "score": 1,
+        "max_score": 1
+    }
+},
+{
+    "model": "quiz.testunitresult",
+    "pk": 297,
+    "fields": {
+        "test_unit": 9,
+        "correct_answer": false,
+        "test_result": 41,
+        "answer": "14.626230034742328",
+        "answer_image": "./xahtdkjmlisuaks.png",
+        "target_color_region": "#c02f1d",
+        "score": 0,
+        "max_score": 1
+    }
+},
+{
+    "model": "quiz.testunitresult",
+    "pk": 298,
+    "fields": {
+        "test_unit": 5,
+        "correct_answer": false,
+        "test_result": 41,
+        "answer": "7.125431409196701",
+        "answer_image": "./tlcresecwcuqzxm.png",
+        "target_color_region": "#c02f1d",
+        "score": 0,
+        "max_score": 1
+    }
+},
+{
+    "model": "quiz.testunitresult",
+    "pk": 299,
+    "fields": {
+        "test_unit": 3,
+        "correct_answer": false,
+        "test_result": 41,
+        "answer": "12.65753998307569",
+        "answer_image": "./gmvwaefcrdfcmeo.png",
+        "target_color_region": "#c02f1d",
+        "score": 0,
+        "max_score": 1
+    }
+},
+{
+    "model": "quiz.testunitresult",
+    "pk": 300,
+    "fields": {
+        "test_unit": 6,
+        "correct_answer": false,
+        "test_result": 41,
+        "answer": "19.450964211343525",
+        "answer_image": "./iqassvbmwnzuddt.png",
+        "target_color_region": "#c02f1d",
+        "score": 0,
+        "max_score": 1
+    }
+},
+{
+    "model": "quiz.testunitresult",
+    "pk": 301,
+    "fields": {
+        "test_unit": 7,
+        "correct_answer": false,
+        "test_result": 41,
+        "answer": "34.09173286033377",
+        "answer_image": "./aahvufavzitpjuh.png",
+        "target_color_region": "#c02f1d",
+        "score": 0,
+        "max_score": 1
+    }
+},
+{
+    "model": "quiz.testunitresult",
+    "pk": 302,
+    "fields": {
+        "test_unit": 4,
+        "correct_answer": false,
+        "test_result": 41,
+        "answer": "11.436038386442906",
+        "answer_image": "./xksqlpaxhiowmto.png",
+        "target_color_region": "#c02f1d",
+        "score": 0,
+        "max_score": 1
+    }
+},
+{
+    "model": "quiz.testunitresult",
+    "pk": 303,
+    "fields": {
+        "test_unit": 17,
+        "correct_answer": true,
+        "test_result": 42,
+        "answer": "Glioblastoma",
+        "answer_image": "",
+        "target_color_region": "",
+        "score": 1,
+        "max_score": 1
+    }
+},
+{
+    "model": "quiz.testunitresult",
+    "pk": 304,
+    "fields": {
+        "test_unit": 12,
+        "correct_answer": false,
+        "test_result": 42,
+        "answer": "Residual tumour",
+        "answer_image": "",
+        "target_color_region": "",
+        "score": 0,
+        "max_score": 1
+    }
+},
+{
+    "model": "quiz.testunitresult",
+    "pk": 305,
+    "fields": {
+        "test_unit": 19,
+        "correct_answer": true,
+        "test_result": 42,
+        "answer": "Brain stem",
+        "answer_image": "",
+        "target_color_region": "",
+        "score": 1,
+        "max_score": 1
+    }
+},
+{
+    "model": "quiz.testunitresult",
+    "pk": 306,
+    "fields": {
+        "test_unit": 16,
+        "correct_answer": true,
+        "test_result": 42,
+        "answer": "Edema",
+        "answer_image": "",
+        "target_color_region": "",
+        "score": 1,
+        "max_score": 1
+    }
+},
+{
+    "model": "quiz.testunitresult",
+    "pk": 307,
+    "fields": {
+        "test_unit": 11,
+        "correct_answer": false,
+        "test_result": 42,
+        "answer": "Increase penetration and worsen axial resolution",
+        "answer_image": "",
+        "target_color_region": "",
+        "score": 0,
+        "max_score": 1
+    }
+},
+{
+    "model": "quiz.testunitresult",
+    "pk": 308,
+    "fields": {
+        "test_unit": 13,
+        "correct_answer": false,
+        "test_result": 42,
+        "answer": "Meningioma",
+        "answer_image": "",
+        "target_color_region": "",
+        "score": 0,
+        "max_score": 1
+    }
+},
+{
+    "model": "quiz.testunitresult",
+    "pk": 309,
+    "fields": {
+        "test_unit": 14,
+        "correct_answer": false,
+        "test_result": 42,
+        "answer": "Tumour",
+        "answer_image": "",
+        "target_color_region": "",
+        "score": 0,
+        "max_score": 1
+    }
+},
+{
+    "model": "quiz.testunitresult",
+    "pk": 310,
+    "fields": {
+        "test_unit": 15,
+        "correct_answer": true,
+        "test_result": 42,
+        "answer": "1540 m/s",
+        "answer_image": "",
+        "target_color_region": "",
+        "score": 1,
+        "max_score": 1
+    }
+},
+{
+    "model": "quiz.testunitresult",
+    "pk": 311,
+    "fields": {
+        "test_unit": 18,
+        "correct_answer": true,
+        "test_result": 42,
+        "answer": "Position pasient to have a horizontal craniotomy",
+        "answer_image": "",
+        "target_color_region": "",
+        "score": 1,
+        "max_score": 1
+    }
+},
+{
+    "model": "quiz.testunitresult",
+    "pk": 312,
+    "fields": {
+        "test_unit": 10,
+        "correct_answer": true,
+        "test_result": 42,
+        "answer": "Meningioma",
+        "answer_image": "",
+        "target_color_region": "",
+        "score": 1,
+        "max_score": 1
+    }
+},
+{
+    "model": "quiz.testunitresult",
+    "pk": 349,
+    "fields": {
+        "test_unit": 55,
+        "correct_answer": true,
+        "test_result": 59,
+        "answer": "",
+        "answer_image": "./ybkxsjdrkbwkdzj.png",
+        "target_color_region": "",
+        "score": 1,
+        "max_score": 1
+    }
+},
+{
+    "model": "quiz.testunitresult",
+    "pk": 350,
+    "fields": {
+        "test_unit": 56,
+        "correct_answer": true,
+        "test_result": 59,
+        "answer": "",
+        "answer_image": "./mawixjkmyjnbfnn.png",
+        "target_color_region": "",
+        "score": 1,
+        "max_score": 1
+    }
+},
+{
+    "model": "quiz.testunitresult",
+    "pk": 351,
+    "fields": {
+        "test_unit": 52,
+        "correct_answer": true,
+        "test_result": 59,
+        "answer": "",
+        "answer_image": "./qbvwllytagiczvb.png",
+        "target_color_region": "",
+        "score": 1,
+        "max_score": 1
+    }
+},
+{
+    "model": "quiz.testunitresult",
+    "pk": 352,
+    "fields": {
+        "test_unit": 49,
+        "correct_answer": true,
+        "test_result": 59,
+        "answer": "",
+        "answer_image": "./incywzafpitoawb.png",
+        "target_color_region": "",
+        "score": 1,
+        "max_score": 1
+    }
+},
+{
+    "model": "quiz.testunitresult",
+    "pk": 353,
+    "fields": {
+        "test_unit": 48,
+        "correct_answer": true,
+        "test_result": 59,
+        "answer": "",
+        "answer_image": "./ujalmfaswojwbtt.png",
+        "target_color_region": "",
+        "score": 1,
+        "max_score": 1
+    }
+},
+{
+    "model": "quiz.testunitresult",
+    "pk": 354,
+    "fields": {
+        "test_unit": 53,
+        "correct_answer": true,
+        "test_result": 59,
+        "answer": "",
+        "answer_image": "./rdrwfnhwosxtude.png",
+        "target_color_region": "",
+        "score": 1,
+        "max_score": 1
+    }
+},
+{
+    "model": "quiz.testunitresult",
+    "pk": 355,
+    "fields": {
+        "test_unit": 51,
+        "correct_answer": true,
+        "test_result": 59,
+        "answer": "",
+        "answer_image": "./lvondgpwwuhabfl.png",
+        "target_color_region": "",
+        "score": 1,
+        "max_score": 1
+    }
+},
+{
+    "model": "quiz.testunitresult",
+    "pk": 356,
+    "fields": {
+        "test_unit": 54,
+        "correct_answer": true,
+        "test_result": 59,
+        "answer": "",
+        "answer_image": "./qpyukvesacjivcn.png",
+        "target_color_region": "",
+        "score": 1,
+        "max_score": 1
+    }
+},
+{
+    "model": "quiz.testunitresult",
+    "pk": 357,
+    "fields": {
+        "test_unit": 50,
+        "correct_answer": true,
+        "test_result": 59,
+        "answer": "",
+        "answer_image": "./fdsrwcpwfrlgrce.png",
+        "target_color_region": "",
+        "score": 1,
+        "max_score": 1
+    }
+},
+{
+    "model": "quiz.testunitresult",
+    "pk": 358,
+    "fields": {
+        "test_unit": 52,
+        "correct_answer": true,
+        "test_result": 60,
+        "answer": "",
+        "answer_image": "./uoqiftupoxcrdxt.png",
+        "target_color_region": "",
+        "score": 1,
+        "max_score": 1
+    }
+},
+{
+    "model": "quiz.testunitresult",
+    "pk": 359,
+    "fields": {
+        "test_unit": 55,
+        "correct_answer": true,
+        "test_result": 60,
+        "answer": "",
+        "answer_image": "./zbyqfthgfvtildi.png",
+        "target_color_region": "",
+        "score": 1,
+        "max_score": 1
+    }
+},
+{
+    "model": "quiz.testunitresult",
+    "pk": 360,
+    "fields": {
+        "test_unit": 56,
+        "correct_answer": true,
+        "test_result": 60,
+        "answer": "",
+        "answer_image": "./glhhaiifvbqjukz.png",
+        "target_color_region": "",
+        "score": 1,
+        "max_score": 1
+    }
+},
+{
+    "model": "quiz.testunitresult",
+    "pk": 361,
+    "fields": {
+        "test_unit": 50,
+        "correct_answer": true,
+        "test_result": 60,
+        "answer": "",
+        "answer_image": "./cyibxqvokokwyog.png",
+        "target_color_region": "",
+        "score": 1,
+        "max_score": 1
+    }
+},
+{
+    "model": "quiz.testunitresult",
+    "pk": 362,
+    "fields": {
+        "test_unit": 49,
+        "correct_answer": true,
+        "test_result": 60,
+        "answer": "",
+        "answer_image": "./mvgjmwtyqilhluh.png",
+        "target_color_region": "",
+        "score": 1,
+        "max_score": 1
+    }
+},
+{
+    "model": "quiz.testunitresult",
+    "pk": 363,
+    "fields": {
+        "test_unit": 48,
+        "correct_answer": true,
+        "test_result": 60,
+        "answer": "",
+        "answer_image": "./iowiakwbrnutcjo.png",
+        "target_color_region": "",
+        "score": 1,
+        "max_score": 1
+    }
+},
+{
+    "model": "quiz.testunitresult",
+    "pk": 364,
+    "fields": {
+        "test_unit": 53,
+        "correct_answer": true,
+        "test_result": 60,
+        "answer": "",
+        "answer_image": "./lnqzaktbgsuxbjy.png",
+        "target_color_region": "",
+        "score": 1,
+        "max_score": 1
+    }
+},
+{
+    "model": "quiz.testunitresult",
+    "pk": 365,
+    "fields": {
+        "test_unit": 51,
+        "correct_answer": true,
+        "test_result": 60,
+        "answer": "",
+        "answer_image": "./vcfqmrfibfodqqp.png",
+        "target_color_region": "",
+        "score": 1,
+        "max_score": 1
+    }
+},
+{
+    "model": "quiz.testunitresult",
+    "pk": 366,
+    "fields": {
+        "test_unit": 54,
+        "correct_answer": true,
+        "test_result": 60,
+        "answer": "",
+        "answer_image": "./qfbfdzflwupomhw.png",
+        "target_color_region": "",
+        "score": 1,
+        "max_score": 1
+    }
+},
+{
+    "model": "quiz.testunitresult",
+    "pk": 367,
+    "fields": {
+        "test_unit": 59,
+        "correct_answer": true,
+        "test_result": 61,
+        "answer": "#c02f1d",
+        "answer_image": "./pmxntquwjqemwwi.png",
+        "target_color_region": "#c02f1d",
+        "score": 1,
+        "max_score": 1
+    }
+},
+{
+    "model": "quiz.testunitresult",
+    "pk": 368,
+    "fields": {
+        "test_unit": 58,
+        "correct_answer": false,
+        "test_result": 61,
+        "answer": null,
+        "answer_image": "./digbddwpuugdzvl.png",
+        "target_color_region": "#c02f1d",
+        "score": 0,
+        "max_score": 1
+    }
+},
+{
+    "model": "quiz.testunitresult",
+    "pk": 369,
+    "fields": {
+        "test_unit": 3,
+        "correct_answer": true,
+        "test_result": 62,
+        "answer": "4.886595744202063",
+        "answer_image": "./abfzojpfmohclxe.png",
+        "target_color_region": "#c02f1d",
+        "score": 5,
+        "max_score": 5
+    }
+},
+{
+    "model": "quiz.testunitresult",
+    "pk": 370,
+    "fields": {
+        "test_unit": 4,
+        "correct_answer": true,
+        "test_result": 62,
+        "answer": "6.233476933862462",
+        "answer_image": "./chswwppiavfstcf.png",
+        "target_color_region": "#c02f1d",
+        "score": 5,
+        "max_score": 5
+    }
+},
+{
+    "model": "quiz.testunitresult",
+    "pk": 371,
+    "fields": {
+        "test_unit": 9,
+        "correct_answer": true,
+        "test_result": 62,
+        "answer": "22.190428273956393",
+        "answer_image": "./unldimdxenwdlkj.png",
+        "target_color_region": "#c02f1d",
+        "score": 1,
+        "max_score": 5
+    }
+},
+{
+    "model": "quiz.testunitresult",
+    "pk": 372,
+    "fields": {
+        "test_unit": 34,
+        "correct_answer": true,
+        "test_result": 62,
+        "answer": "14.605505419819734",
+        "answer_image": "./axevowraoxycvnm.png",
+        "target_color_region": "#c02f1d",
+        "score": 3,
+        "max_score": 5
+    }
+},
+{
+    "model": "quiz.testunitresult",
+    "pk": 373,
+    "fields": {
+        "test_unit": 6,
+        "correct_answer": false,
+        "test_result": 62,
+        "answer": "46.02229722359367",
+        "answer_image": "./qagmulemvjdygav.png",
+        "target_color_region": "#c02f1d",
+        "score": 0,
+        "max_score": 5
+    }
+},
+{
+    "model": "quiz.testunitresult",
+    "pk": 374,
+    "fields": {
+        "test_unit": 5,
+        "correct_answer": true,
+        "test_result": 62,
+        "answer": "3.876473995484272",
+        "answer_image": "./znjrnqjgwdkcbfn.png",
+        "target_color_region": "#c02f1d",
+        "score": 5,
+        "max_score": 5
+    }
+},
+{
+    "model": "quiz.testunitresult",
+    "pk": 375,
+    "fields": {
+        "test_unit": 33,
+        "correct_answer": false,
+        "test_result": 62,
+        "answer": "27.930056423394962",
+        "answer_image": "./uitiklxbxxvsyjv.png",
+        "target_color_region": "#c02f1d",
+        "score": 0,
+        "max_score": 5
+    }
+},
+{
+    "model": "quiz.testunitresult",
+    "pk": 376,
+    "fields": {
+        "test_unit": 32,
+        "correct_answer": false,
+        "test_result": 62,
+        "answer": "85.52494535660377",
+        "answer_image": "./linbipbtjghfmps.png",
+        "target_color_region": "#c02f1d",
+        "score": 0,
+        "max_score": 5
+    }
+},
+{
+    "model": "quiz.testunitresult",
+    "pk": 377,
+    "fields": {
+        "test_unit": 35,
+        "correct_answer": true,
+        "test_result": 62,
+        "answer": "9.36793108006603",
+        "answer_image": "./fqgyplsgalkdame.png",
+        "target_color_region": "#c02f1d",
+        "score": 5,
+        "max_score": 5
+    }
+},
+{
+    "model": "quiz.testunitresult",
+    "pk": 378,
+    "fields": {
+        "test_unit": 7,
+        "correct_answer": true,
+        "test_result": 62,
+        "answer": "22.223413810368392",
+        "answer_image": "./bcibvceybwiscsn.png",
+        "target_color_region": "#c02f1d",
+        "score": 1,
+        "max_score": 5
+    }
+},
+{
+    "model": "quiz.testunitresult",
+    "pk": 379,
+    "fields": {
+        "test_unit": 37,
+        "correct_answer": true,
+        "test_result": 62,
+        "answer": "13.687466950629133",
+        "answer_image": "./bifrpqfqxbvtnvp.png",
+        "target_color_region": "#c02f1d",
+        "score": 4,
+        "max_score": 5
+    }
+},
+{
+    "model": "quiz.testunitresult",
+    "pk": 380,
+    "fields": {
+        "test_unit": 36,
+        "correct_answer": true,
+        "test_result": 62,
+        "answer": "3.381700472286044",
+        "answer_image": "./hoyexcwxjawhert.png",
+        "target_color_region": "#c02f1d",
+        "score": 5,
+        "max_score": 5
+    }
+},
+{
+    "model": "quiz.testunitresult",
+    "pk": 381,
+    "fields": {
+        "test_unit": 34,
+        "correct_answer": false,
+        "test_result": 63,
+        "answer": "43.66871661069918",
+        "answer_image": "./drgmwhykxrighls.png",
+        "target_color_region": "#c02f1d",
+        "score": 0,
+        "max_score": 5
+    }
+},
+{
+    "model": "quiz.testunitresult",
+    "pk": 382,
+    "fields": {
+        "test_unit": 9,
+        "correct_answer": true,
+        "test_result": 63,
+        "answer": "6.8896561932573",
+        "answer_image": "./cjxtsaxrhrfquwm.png",
+        "target_color_region": "#c02f1d",
+        "score": 5,
+        "max_score": 5
+    }
+},
+{
+    "model": "quiz.testunitresult",
+    "pk": 383,
+    "fields": {
+        "test_unit": 33,
+        "correct_answer": true,
+        "test_result": 63,
+        "answer": "15.021922478783437",
+        "answer_image": "./cokkmakbeqfcmzy.png",
+        "target_color_region": "#c02f1d",
+        "score": 3,
+        "max_score": 5
+    }
+},
+{
+    "model": "quiz.testunitresult",
+    "pk": 384,
+    "fields": {
+        "test_unit": 36,
+        "correct_answer": true,
+        "test_result": 63,
+        "answer": "5.58252780569025",
+        "answer_image": "./yqigxeetcuiphuv.png",
+        "target_color_region": "#c02f1d",
+        "score": 5,
+        "max_score": 5
+    }
+},
+{
+    "model": "quiz.testunitresult",
+    "pk": 385,
+    "fields": {
+        "test_unit": 5,
+        "correct_answer": true,
+        "test_result": 63,
+        "answer": "9.116226022528684",
+        "answer_image": "./gbofsmbcprpddku.png",
+        "target_color_region": "#c02f1d",
+        "score": 5,
+        "max_score": 5
+    }
+},
+{
+    "model": "quiz.testunitresult",
+    "pk": 386,
+    "fields": {
+        "test_unit": 3,
+        "correct_answer": true,
+        "test_result": 63,
+        "answer": "6.366050614499512",
+        "answer_image": "./jfkdnjgbzwtkxox.png",
+        "target_color_region": "#c02f1d",
+        "score": 5,
+        "max_score": 5
+    }
+},
+{
+    "model": "quiz.testunitresult",
+    "pk": 387,
+    "fields": {
+        "test_unit": 35,
+        "correct_answer": true,
+        "test_result": 63,
+        "answer": "7.326689936893999",
+        "answer_image": "./lwmimlygtxnatod.png",
+        "target_color_region": "#c02f1d",
+        "score": 5,
+        "max_score": 5
+    }
+},
+{
+    "model": "quiz.testunitresult",
+    "pk": 388,
+    "fields": {
+        "test_unit": 32,
+        "correct_answer": false,
+        "test_result": 63,
+        "answer": "128.99013965335092",
+        "answer_image": "./xmhaxiqjvgioedv.png",
+        "target_color_region": "#c02f1d",
+        "score": 0,
+        "max_score": 5
+    }
+},
+{
+    "model": "quiz.testunitresult",
+    "pk": 389,
+    "fields": {
+        "test_unit": 7,
+        "correct_answer": false,
+        "test_result": 63,
+        "answer": "64.08356645124414",
+        "answer_image": "./mlqjyezluvnxbkn.png",
+        "target_color_region": "#c02f1d",
+        "score": 0,
+        "max_score": 5
+    }
+},
+{
+    "model": "quiz.testunitresult",
+    "pk": 390,
+    "fields": {
+        "test_unit": 37,
+        "correct_answer": true,
+        "test_result": 63,
+        "answer": "24.142852586995264",
+        "answer_image": "./zoisfjiigrnukgp.png",
+        "target_color_region": "#c02f1d",
+        "score": 1,
+        "max_score": 5
+    }
+},
+{
+    "model": "quiz.testunitresult",
+    "pk": 391,
+    "fields": {
+        "test_unit": 6,
+        "correct_answer": true,
+        "test_result": 63,
+        "answer": "18.092007241520985",
+        "answer_image": "./byavdkrlygnkult.png",
+        "target_color_region": "#c02f1d",
+        "score": 2,
+        "max_score": 5
+    }
+},
+{
+    "model": "quiz.testunitresult",
+    "pk": 392,
+    "fields": {
+        "test_unit": 4,
+        "correct_answer": true,
+        "test_result": 63,
+        "answer": "5.535704829723879",
+        "answer_image": "./ggfocihfzijdoeu.png",
+        "target_color_region": "#c02f1d",
+        "score": 5,
+        "max_score": 5
+    }
+},
+{
+    "model": "quiz.testunitresult",
+    "pk": 393,
+    "fields": {
+        "test_unit": 14,
+        "correct_answer": true,
+        "test_result": 64,
+        "answer": "Plexus",
+        "answer_image": "",
+        "target_color_region": "",
+        "score": 1,
+        "max_score": 1
+    }
+},
+{
+    "model": "quiz.testunitresult",
+    "pk": 394,
+    "fields": {
+        "test_unit": 10,
+        "correct_answer": false,
+        "test_result": 64,
+        "answer": "Low-grade astrocytoma",
+        "answer_image": "",
+        "target_color_region": "",
+        "score": 0,
+        "max_score": 1
+    }
+},
+{
+    "model": "quiz.testunitresult",
+    "pk": 395,
+    "fields": {
+        "test_unit": 15,
+        "correct_answer": true,
+        "test_result": 64,
+        "answer": "1540 m/s",
+        "answer_image": "",
+        "target_color_region": "",
+        "score": 1,
+        "max_score": 1
+    }
+},
+{
+    "model": "quiz.testunitresult",
+    "pk": 396,
+    "fields": {
+        "test_unit": 18,
+        "correct_answer": true,
+        "test_result": 64,
+        "answer": "Position pasient to have a horizontal craniotomy",
+        "answer_image": "",
+        "target_color_region": "",
+        "score": 1,
+        "max_score": 1
+    }
+},
+{
+    "model": "quiz.testunitresult",
+    "pk": 397,
+    "fields": {
+        "test_unit": 13,
+        "correct_answer": false,
+        "test_result": 64,
+        "answer": "Metastasis",
+        "answer_image": "",
+        "target_color_region": "",
+        "score": 0,
+        "max_score": 1
+    }
+},
+{
+    "model": "quiz.testunitresult",
+    "pk": 398,
+    "fields": {
+        "test_unit": 19,
+        "correct_answer": true,
+        "test_result": 64,
+        "answer": "Brain stem",
+        "answer_image": "",
+        "target_color_region": "",
+        "score": 1,
+        "max_score": 1
+    }
+},
+{
+    "model": "quiz.testunitresult",
+    "pk": 399,
+    "fields": {
+        "test_unit": 16,
+        "correct_answer": true,
+        "test_result": 64,
+        "answer": "Edema",
+        "answer_image": "",
+        "target_color_region": "",
+        "score": 1,
+        "max_score": 1
+    }
+},
+{
+    "model": "quiz.testunitresult",
+    "pk": 400,
+    "fields": {
+        "test_unit": 11,
+        "correct_answer": true,
+        "test_result": 64,
+        "answer": "Improve axial resolution but decrease penetration",
+        "answer_image": "",
+        "target_color_region": "",
+        "score": 1,
+        "max_score": 1
+    }
+},
+{
+    "model": "quiz.testunitresult",
+    "pk": 401,
+    "fields": {
+        "test_unit": 17,
+        "correct_answer": false,
+        "test_result": 64,
+        "answer": "Abcess",
+        "answer_image": "",
+        "target_color_region": "",
+        "score": 0,
+        "max_score": 1
+    }
+},
+{
+    "model": "quiz.testunitresult",
+    "pk": 402,
+    "fields": {
+        "test_unit": 12,
+        "correct_answer": true,
+        "test_result": 64,
+        "answer": "Enhancement artefact caused by differences in attenuation",
+        "answer_image": "",
+        "target_color_region": "",
+        "score": 1,
+        "max_score": 1
+    }
+},
+{
+    "model": "quiz.testunitresult",
+    "pk": 403,
+    "fields": {
+        "test_unit": 58,
+        "correct_answer": false,
+        "test_result": 65,
+        "answer": null,
+        "answer_image": "./bgushlxgqqcqbzi.png",
+        "target_color_region": "#c02f1d",
+        "score": 0,
+        "max_score": 1
+    }
+},
+{
+    "model": "quiz.testunitresult",
+    "pk": 404,
+    "fields": {
+        "test_unit": 59,
+        "correct_answer": false,
+        "test_result": 65,
+        "answer": null,
+        "answer_image": "./iwjvrdovtfyhhvu.png",
+        "target_color_region": "#c02f1d",
+        "score": 0,
+        "max_score": 1
+    }
+},
+{
+    "model": "quiz.testunitresult",
+    "pk": 405,
+    "fields": {
+        "test_unit": 9,
+        "correct_answer": true,
+        "test_result": 66,
+        "answer": "7.671520540284083",
+        "answer_image": "./uzvzkearvgktcdb.png",
+        "target_color_region": "#c02f1d",
+        "score": 5,
+        "max_score": 5
+    }
+},
+{
+    "model": "quiz.testunitresult",
+    "pk": 406,
+    "fields": {
+        "test_unit": 6,
+        "correct_answer": true,
+        "test_result": 66,
+        "answer": "9.17248951133333",
+        "answer_image": "./aakeztlvzqbmyqf.png",
+        "target_color_region": "#c02f1d",
+        "score": 5,
+        "max_score": 5
+    }
+},
+{
+    "model": "quiz.testunitresult",
+    "pk": 407,
+    "fields": {
+        "test_unit": 36,
+        "correct_answer": true,
+        "test_result": 66,
+        "answer": "5.779675397311934",
+        "answer_image": "./exdzaimertqjciy.png",
+        "target_color_region": "#c02f1d",
+        "score": 5,
+        "max_score": 5
+    }
+},
+{
+    "model": "quiz.testunitresult",
+    "pk": 408,
+    "fields": {
+        "test_unit": 34,
+        "correct_answer": false,
+        "test_result": 66,
+        "answer": "33.17036140370509",
+        "answer_image": "./oizoqjteadrolvr.png",
+        "target_color_region": "#c02f1d",
+        "score": 0,
+        "max_score": 5
+    }
+},
+{
+    "model": "quiz.testunitresult",
+    "pk": 409,
+    "fields": {
+        "test_unit": 5,
+        "correct_answer": true,
+        "test_result": 66,
+        "answer": "3.5819294234005334",
+        "answer_image": "./ownorbjpfnnizvk.png",
+        "target_color_region": "#c02f1d",
+        "score": 5,
+        "max_score": 5
+    }
+},
+{
+    "model": "quiz.testunitresult",
+    "pk": 410,
+    "fields": {
+        "test_unit": 3,
+        "correct_answer": true,
+        "test_result": 66,
+        "answer": "12.612639490429906",
+        "answer_image": "./htwtnzgxhswytyp.png",
+        "target_color_region": "#c02f1d",
+        "score": 4,
+        "max_score": 5
+    }
+},
+{
+    "model": "quiz.testunitresult",
+    "pk": 411,
+    "fields": {
+        "test_unit": 35,
+        "correct_answer": true,
+        "test_result": 66,
+        "answer": "10.990087360240262",
+        "answer_image": "./yupftrnvxgutmlb.png",
+        "target_color_region": "#c02f1d",
+        "score": 4,
+        "max_score": 5
+    }
+},
+{
+    "model": "quiz.testunitresult",
+    "pk": 412,
+    "fields": {
+        "test_unit": 32,
+        "correct_answer": true,
+        "test_result": 66,
+        "answer": "9.867317512396367",
+        "answer_image": "./qigfcqaghyvznrg.png",
+        "target_color_region": "#c02f1d",
+        "score": 5,
+        "max_score": 5
+    }
+},
+{
+    "model": "quiz.testunitresult",
+    "pk": 413,
+    "fields": {
+        "test_unit": 7,
+        "correct_answer": true,
+        "test_result": 66,
+        "answer": "7.209108603153581",
+        "answer_image": "./chtqnuinfeldjum.png",
+        "target_color_region": "#c02f1d",
+        "score": 5,
+        "max_score": 5
+    }
+},
+{
+    "model": "quiz.testunitresult",
+    "pk": 414,
+    "fields": {
+        "test_unit": 37,
+        "correct_answer": true,
+        "test_result": 66,
+        "answer": "17.579109819205733",
+        "answer_image": "./jwbowhdwbeyijgs.png",
+        "target_color_region": "#c02f1d",
+        "score": 3,
+        "max_score": 5
+    }
+},
+{
+    "model": "quiz.testunitresult",
+    "pk": 415,
+    "fields": {
+        "test_unit": 33,
+        "correct_answer": true,
+        "test_result": 66,
+        "answer": "6.219571671046272",
+        "answer_image": "./zcuxpwidkedwwrx.png",
+        "target_color_region": "#c02f1d",
+        "score": 5,
+        "max_score": 5
+    }
+},
+{
+    "model": "quiz.testunitresult",
+    "pk": 416,
+    "fields": {
+        "test_unit": 4,
+        "correct_answer": true,
+        "test_result": 66,
+        "answer": "4.920051063885339",
+        "answer_image": "./jxrsqubnbxjmuzq.png",
+        "target_color_region": "#c02f1d",
+        "score": 5,
+        "max_score": 5
+    }
+}
+]

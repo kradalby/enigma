@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container">
+    <div style="height:20px;"></div>
+    <div class="page-header">
+        <h1>Survey</h1>
+    </div>
+    <p>
+        This system is part of a master thesis. If you could answer a few questions regarding the system, I would be very grateful.
+    </p>
+    <p>
+        <a href="https://docs.google.com/forms/d/17xcVtNFXVbwc2vcFL4zumVU6xXVA_-ejHp-yJpZH7TI/viewform?c=0&w=1" target="blank">Click here for survey</a>
+    </p>  
+    <hr/>
+    <div>  
+        <p>
+            <a href="{% url 'index' %}">Return home</a>
+        </p>
+    </div>    
+</div>
+{% endblock %}

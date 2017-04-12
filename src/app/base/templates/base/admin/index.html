@@ -1,0 +1,151 @@
+{% extends "base.html" %}
+{% load staticfiles %}
+
+{% block extrahead %}
+    <link rel="stylesheet" href="{% static "css/simple-sidebar.css" %}" type="text/css"> 
+{% endblock %}
+
+{% block navbarbuttons %}
+<li id="toggle-menu">
+    <a href="#">
+        Toggle menu
+    </a>
+</li>
+<script>
+    $("#toggle-menu").click(function(e) {
+        e.preventDefault();
+        $("#wrapper").toggleClass("toggled");
+    });
+</script>
+{% endblock %}
+
+{% block content %}
+<div id="wrapper">
+    <!-- Sidebar -->
+    <div id="sidebar-wrapper">
+        <ul class="sidebar-nav">
+            <li>
+                <b>USERS AND GROUPS</b>
+            </li>
+            <li>
+                <a href="{% url 'admin_new_user' %}">New user</a>
+            </li>
+            <li>
+                <a href="{% url 'admin_new_group' %}">New group</a>
+            </li>
+            <li>
+                <a href="{% url 'admin_list_users' %}">List existing users</a>
+            </li>
+            <li>
+                <a href="{% url 'admin_list_groups' %}">List existing groups</a>
+            </li>
+            <hr/>
+            <li>
+                <b>COURSES</b>
+            </li>
+            <li>
+                <a href="{% url 'admin_new_course' %}">New course</a>
+            </li>
+            <li>
+                <a href="{% url 'admin_list_courses' %}">List existing courses</a>
+            </li>
+            <hr/>
+            <li>
+                <b>TESTS</b>
+            </li>
+            <li>
+                <a href="{% url 'admin_new_test' %}">New test</a>
+            </li>
+            <li>
+                <a href="{% url 'admin_list_tests' %}">List existing test</a>
+            </li>
+            <hr/>
+            <li>
+                <b>Questions</b>
+            </li>
+            <li>
+                <a href="{% url 'admin_new_multiple_choice_question' %}">New multiple choice question</a>
+            </li>
+            <li>
+                <a href="{% url 'admin_new_multiple_choice_question_with_image' %}">New multiple choice question with image</a>
+            </li>
+            <li>
+                <a href="{% url 'admin_new_multiple_choice_question_with_video' %}">New multiple choice question with video</a>
+            </li>
+            <!--<li>
+                <a href="{% url 'admin_new_landmark_question' %}">New landmark question</a>
+            </li>
+            <li>
+                <a href="{% url 'admin_new_outline_question' %}">New outline question</a>
+            </li>
+            <li>
+                <a href="{% url 'admin_new_outline_solution_question' %}">New outline solution question</a>
+            </li>-->
+            <li>
+                <a href="{% url 'admin_list_questions' %}">List existing questions</a>
+            </li>
+            <hr>
+            <li><b>Images</b></li>
+            <li><a href="{% url 'admin_image_overview' %}">Overview</a></li>
+            <li><a href="{% url 'admin_new_generic_image' %}">New image</a></li>
+            <hr>
+            <li>
+                <b>TEST RESULTS</b>
+            </li>
+            <li>
+                <a href="{% url 'admin_delete_test_results' %}">Delete all existing test results</a>
+            </li>
+            <hr>
+            <li>
+                <b>OTHER</b>
+            </li>
+            <li>
+                <a href="https://docs.google.com/forms/d/17xcVtNFXVbwc2vcFL4zumVU6xXVA_-ejHp-yJpZH7TI/viewform?c=0&w=1" target="blank">Survey</a>
+            </li>
+            <li>
+                <a href="{% url 'admin_settings' %}">Settings</a>
+            </li>
+            <p>
+                <br/>
+                <br/>
+                <br/>
+            </p>
+        </ul>
+    </div>
+    <div id="page-content-wrapper">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-lg-12">
+                    {% if messages %}
+                        {% for message in messages %}
+                            {% if message.tags == "danger" or message.tags == "info" or message.tags == "success" or message.tags == "warning" %}
+                                <div class="alert alert-{{message.tags}}">
+                                    <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                                    <strong>{{ message.tags|upper }}</strong> {{ message|escape }}
+                                </div>
+                            {% elif message.tags == "error" %}
+                                <div class="alert alert-danger">
+                                    <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                                    <strong>ERROR</strong> {{ message|escape }}
+                                </div>
+                            {% endif %}
+                        {% endfor %}
+                    {% endif %}
+      
+                    {% block admincontent %}
+                        <style>
+                            .placeholder {
+                                padding-left: 20px;
+                            }
+                        </style>
+                        <h1 class="page-header">Dashboard</h1>
+                        <div class="row placeholder">
+                            Select something in the sidebar.
+                        </div>
+                    {% endblock %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

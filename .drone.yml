@@ -1,6 +1,6 @@
 pipeline:
-  build:
-    image: node:7.6.0
+  frontend:
+    image: node:7.9.0
     pull: true
     commands:
       - npm prune
@@ -10,22 +10,36 @@ pipeline:
       - mkdir -p src/assets
       - npm run build
 
+  backend:
+    image: python:3.6.1
+    environment:
+      - DJANGO_SETTINGS_MODULE=settings.production
+    commands:
+      - pip install tox
+      - tox
 
-  deploy:
-    image: drillster/drone-rsync
-    user: www
-    hosts: [ "seel.terra.fap.no" ]
-    key: ${SSH_KEY}
-    port: 22
-    source: dist/
-    target: /usr/local/www/ldu.no/app/
-    delete: true
-    recursive: true
-    exclude:
+  docker:
+    image: plugins/docker
+    repo: registry.fap.no/turbo/turbo
+    insecure: true
+    tags:
+        - latest
     when:
         branch: master
+
+  ssh:
+    image: appleboy/drone-ssh
+    host:
+     - primeape.terra.fap.no
+    user: root
+    port: 22
     script:
-      - echo "Done"
+      - docker pull registry.fap.no/turbo/turbo:latest
+      - docker-compose -f /srv/docker/turbo/docker-compose.yml stop
+      - docker-compose -f /srv/docker/turbo/docker-compose.yml up -d
+    when:
+        status: success
+        branch: master
 
   notify:
     image: drillster/drone-email

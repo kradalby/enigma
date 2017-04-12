@@ -1,0 +1,211 @@
+{% extends "base.html" %}
+{% load question_tags %}
+{% load staticfiles %}
+
+{% block content %}
+<link rel="stylesheet" href="{% static "css/bootstrap-switch.min.css" %}" type="text/css"> 
+<div class="container">
+    <style>
+        .img-container { 
+            position: relative; 
+            max-height: 500px;
+            max-width: 500px;
+        }
+
+        .img-container .top{
+            position: absolute;
+            top: 0;
+            left: 0;
+            z-index: 2;
+        }
+        .img-container .middle {
+            position: absolute;
+            top: 0;
+            left: 0;
+            z-index: 1;
+        }
+        
+        .img-container img {
+            width: 100%;
+        }
+    </style>
+
+    <h1>Results for {{user}}</h1>
+    <h4>Test: {{test}}</h4>
+    {% for test_unit in test_units %}
+    <div class="test-result" id="{{ forloop.counter }}">
+        <div class="panel panel-info">
+            <div class="panel-heading">
+                <h3 class="panel-title">Question {{ forloop.counter }}</h3>
+            </div>
+            <table class="table">
+                <tr>
+                    <th>Question</th>
+                    <td>{{ test_unit }}</td>
+                </tr>
+                <tr>
+                    <th>Correct answer</th>
+                    <td>
+                        {% if test_unit|is_landmark %}
+                            <div class="img-container">
+                                <img class="top" src="{{ test_unit.landmarkquestion.landmark_drawing.url }}" />
+                                <img class="bottom" src="{{ test_unit.landmarkquestion.original_image.url }}" />
+                            </div>
+                        {% elif test_unit|is_outline %}
+                            <div class="img-container">
+                                <img class="top" src="{{ test_unit.outlinequestion.outline_drawing.url }}" />
+                                <img class="bottom" src="{{ test_unit.outlinequestion.original_image.url }}" />
+                            </div>
+                        {% elif test_unit|is_multiple_choice_question %}
+                            {{ test_unit.multiplechoicequestion.correct_answer }}
+                        {% elif test_unit|is_multiple_choice_question_with_image %}
+                            {{ test_unit.multiplechoicequestionwithimage.correct_answer }}
+                        {% elif test_unit|is_multiple_choice_question_with_video %}
+                            {{ test_unit.multiplechoicequestionwithvideo.correct_answer }}
+                        {% endif %}
+                    </td>
+                </tr>
+                {% for test_unit_result in test_unit_results %}
+                    {% if test_unit_result.test_unit == test_unit %}
+                        {% if test_unit|is_landmark %}
+                            <tr>
+                                <td>Target region </td>
+                                <td style="color:{{test_unit_result.target_color_region}};">
+                                    {{ test_unit_result.target_landmark_region }}
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>Answered region</td>
+                                <td style="color:{{test_unit_result.answer}};">
+                                    {{ test_unit_result.answered_landmark_region }}
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <div class="img-container">
+                                        {% if test_unit_result.answer_image %}
+                                            <img class="top" src="{{ test_unit_result.answer_image.url }}" />
+                                        {% endif %}
+                                        <img class="middle" src="{{ test_unit.landmarkquestion.landmark_drawing.url }}" />
+                                        <img class="bottom" src="{{ test_unit.landmarkquestion.original_image.url }}" />
+                                    </div>
+                                </td>
+                                <td>
+                                    {% if test_unit_result.answer_image %}
+                                        Toggle regions: <input type="checkbox" class="landmark-answer-checkbox" checked>
+                                    {% endif %}
+                                </td>
+                            </tr>
+                        {% elif test_unit|is_outline %}
+                            <tr>
+                                <td>Target region </td>
+                                <td style="color:{{test_unit_result.target_color_region}};">
+                                    {{ test_unit_result.target_outline_region }}
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <div class="img-container">
+                                        <img class="top" src="{{ test_unit_result.answer_image.url }}" />
+                                        <img class="middle" src="{{ test_unit.outlinequestion.outline_drawing.url }}" />
+                                        <img class="bottom" src="{{ test_unit.outlinequestion.original_image.url }}" />
+                                    </div>
+                                </td>
+                                <td>
+                                    User answer: <input type="checkbox" class="user-answer-checkbox" checked>
+                                    <br/>
+                                    Correct answer: <input type="checkbox" class="correct-answer-checkbox" checked>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    Answer average distance:
+                                </td>
+                                <td>
+                                    {{test_unit_result.answer|floatformat:3}}
+                                </td>
+                            </tr>
+                        {% elif test_unit|is_multiple_choice_question %}
+                            <tr>
+                                <td><b>Answer</b></td>
+                                <td>{{ test_unit_result.answer }}</td>
+                            </tr>
+                        {% elif test_unit|is_multiple_choice_question_with_image %}
+                            <tr>
+                                <td><b>Answer</b></td>
+                                <td>{{ test_unit_result.answer }}</td>
+                            </tr>
+                        {% elif test_unit|is_multiple_choice_question_with_video %}
+                            <tr>
+                                <td><b>Answer</b></td>
+                                <td>{{ test_unit_result.answer }}</td>
+                            </tr>
+                        {% endif %}
+                        <tr>
+                            <th>
+                                {{ test_unit_result.test_result.user }}'s answer:
+                            </th>
+                            <td>
+                                {% if test_unit_result.correct_answer %}
+                                was correct.
+                                {% else %}
+                                was incorrect.
+                                {% endif %}
+                                <span class="badge">{{test_unit_result.score}}/{{test_unit_result.max_score}} points</span>
+                            </td>
+                        </tr>
+                    {% endif %}
+                {% endfor %}
+            </table>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+
+<script src="{% static "js/bootstrap-switch.min.js" %}"></script>
+<script>
+    $(".user-answer-checkbox").bootstrapSwitch({
+        offColor : "danger",
+        onColor : "success",
+        onText : "Show",
+        offText : "Hide",
+        onSwitchChange : function(event, state) {
+            var img = $(this).parent().parent().parent().parent().find('img.top:first');
+            if(state){ // SHOW
+                img.show();
+            } else{
+                img.hide();
+            }
+        }
+    });
+    $(".correct-answer-checkbox").bootstrapSwitch({
+        offColor : "danger",
+        onColor : "success",
+        onText : "Show",
+        offText : "Hide",
+        onSwitchChange : function(event, state) {
+            var img = $(this).parent().parent().parent().parent().find('img.middle:first');
+            if(state){ // SHOW
+                img.show();
+            } else{
+                img.hide();
+            }
+        }
+    });
+    // Landmark 
+    $(".landmark-answer-checkbox").bootstrapSwitch({
+        offColor : "danger",
+        onColor : "success",
+        onText : "On",
+        offText : "Off",
+        onSwitchChange : function(event, state) {
+            var img = $(this).parent().parent().parent().parent().find('img.top:first');
+            if(state){ // SHOW
+                img.show();
+            } else{
+                img.hide();
+            }
+        }
+    });
+</script>
+{% endblock %}

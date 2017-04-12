@@ -1,0 +1,47 @@
+{% extends "base/admin/index.html" %}
+
+{% block admincontent %}
+<style>
+   .red{
+        color: red;
+    }
+</style>
+<h1 class="page-header">
+    Users
+</h1>
+
+<table class="table">
+    <tr>
+        <th>User name</th>
+        <th>Edit user</th>
+        <th>Reset password</th>
+        <th>Delete user</th>
+    </tr>
+    {% for user in users %}
+        <tr>
+            <td>
+                {{ user }}
+            </td>
+            <td>
+                <a href="{% url 'admin_view_user' user.id %}">
+                    <span class="glyphicon glyphicon-pencil" aria-hidden="true"> Edit</span>
+                </a>
+            </td>
+            <td>
+                <a href="{% url 'admin_reset_password' user.id %}">
+                    <span class="glyphicon glyphicon-repeat" aria-hidden="true"> Reset password</span>
+                </a>
+            </td>
+            <td>
+                <a href="{% url 'admin_delete_user' user.id %}">
+                    <span class="glyphicon glyphicon-remove red" aria-hidden="true"> Delete</span>
+                </a>
+            </td>
+        </tr>
+    {% empty %}
+        <tr>
+            <td colspan="3">No users created.</td>
+        </tr>
+    {% endfor %}
+</table>
+{% endblock %}

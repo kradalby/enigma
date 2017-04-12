@@ -1,0 +1,14 @@
+{% extends "base/admin/index.html" %}
+
+{% block admincontent %}
+<h1 class="page-header">
+    New test
+</h1>
+<form action="" method="post">
+    {% csrf_token %}
+    <table class="table">
+        {{ form.as_table }}
+    </table>
+    <input type="submit" class="btn btn-success" value="Continue" />
+</form>
+{% endblock %}

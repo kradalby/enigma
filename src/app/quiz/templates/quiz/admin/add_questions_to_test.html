@@ -1,0 +1,180 @@
+{% extends "base/admin/index.html" %}
+
+{% block admincontent %}
+<style>
+    .red{
+        color: red;
+    }
+</style>
+<div class="page-header">
+    <h1>
+        <small>Test: </small> {{ test.name }}
+    </h1>
+    <a href="{% url 'admin_view_test_results_for_single_test' test.id %}" class="btn btn-primary">View results</a>
+    <a href="{% url 'admin_edit_test' test.id %}" class="btn btn-primary">Edit test</a>
+    <a href="{% url 'admin_send_email_to_participants_of_test' test.id %}" class="btn btn-primary">Send email to users</a>
+</div>
+
+<div>
+    <h2>Multiple choice questions</h2>
+    <ul class="list-group">
+        {% for question in test.multiple_choice_questions %}
+            <li class="list-group-item">
+                <a href="{% url 'admin_delete_multiple_choice_question_from_test' test.id question.id %}">
+                    <span class="glyphicon glyphicon-remove red" aria-hidden="true"></span>
+                </a>
+                <a href="{% url 'admin_edit_multiple_choice_question_for_test' test.id question.id %}">
+                    {{ question }}
+                </a>
+            </li class="list-group-item">
+        {% empty %}
+            <li class="list-group-item">
+                No multiple choice questions added.
+            </li class="list-group-item">
+        {% endfor %}
+    </ul class="list-group">
+    <a href="{% url 'admin_new_multiple_choice_question_to_test' test.id %}" class="btn btn-default">Add new multiple choice question</a>
+    <a href="{% url 'admin_list_multiple_choice_questions_not_in_test' test.id %}" class="btn btn-default">Add existing multiple choice question</a>
+</div>
+
+<hr/>
+
+<div>
+    <h2>Multiple choice questions with image</h2>
+    <ul class="list-group">
+        {% for question in test.multiple_choice_questions_with_image %}
+            <li class="list-group-item">
+                <a href="{% url 'admin_delete_multiple_choice_question_with_image_from_test' test.id question.id %}">
+                    <span class="glyphicon glyphicon-remove red" aria-hidden="true"></span>
+                </a>
+                <a href="{% url 'admin_edit_multiple_choice_question_with_image' question.id %}">
+                    {{ question }}
+                </a>
+            </li class="list-group-item">
+        {% empty %}
+            <li class="list-group-item">
+                No multiple choice questions with image added.
+            </li class="list-group-item">
+        {% endfor %}
+    </ul class="list-group">
+    <a href="{% url 'admin_new_multiple_choice_question_with_image_to_test' test.id %}" class="btn btn-default">Add new multiple choice question with image</a>
+    <a href="{% url 'admin_list_multiple_choice_questions_with_image_not_in_test' test.id %}" class="btn btn-default">Add existing multiple choice question with image</a>
+</div>
+
+<hr/>
+
+<div>
+    <h2>Multiple choice questions with video</h2>
+    <ul class="list-group">
+        {% for question in test.multiple_choice_questions_with_video %}
+            <li class="list-group-item">
+                <a href="{% url 'admin_delete_multiple_choice_question_with_video_from_test' test.id question.id %}">
+                    <span class="glyphicon glyphicon-remove red" aria-hidden="true"></span>
+                </a>
+                <a href="{% url 'admin_edit_multiple_choice_question_with_video' question.id %}">
+                    {{ question }}
+                </a>
+            </li class="list-group-item">
+        {% empty %}
+            <li class="list-group-item">
+                No multiple choice questions with video added.
+            </li class="list-group-item">
+        {% endfor %}
+    </ul class="list-group">
+    <a href="{% url 'admin_new_multiple_choice_question_with_video_to_test' test.id %}" class="btn btn-default">Add new multiple choice question with video</a>
+    <a href="{% url 'admin_list_multiple_choice_questions_with_video_not_in_test' test.id %}" class="btn btn-default">Add existing multiple choice question with video</a>
+</div>
+
+<hr/>
+
+<div>
+    <h2>Landmark questions</h2>
+    <ul class="list-group">
+        {% for question in test.landmark_questions %}
+            <li class="list-group-item">
+                <a href="{% url 'admin_delete_landmark_question_from_test' test.id question.id %}">
+                    <span class="glyphicon glyphicon-remove red" aria-hidden="true"></span>
+                </a>
+                <a href="{% url 'admin_draw_landmark' test.id question.id %}">
+                    {{ question }}
+                </a>
+            </li class="list-group-item">
+        {% empty %}
+            <li class="list-group-item">
+                No landmark question added.
+            </li class="list-group-item">
+        {% endfor %}
+    </ul class="list-group">
+    <a href="{% url 'admin_add_landmark_question_to_test' test.id %}" class="btn btn-default">Add new landmark question</a>
+    <a href="{% url 'admin_list_landmark_questions_not_in_test' test.id %}" class="btn btn-default">Add existing landmark question</a>
+</div>
+
+<hr/>
+
+<div>
+    <h2>Outline questions</h2>
+    <ul class="list-group">
+        {% for question in test.outline_questions %}
+            <li class="list-group-item">
+                <a href="{% url 'admin_delete_outline_question_from_test' test.id question.id %}">
+                    <span class="glyphicon glyphicon-remove red" aria-hidden="true"></span>
+                </a>
+                <a href="{% url 'admin_draw_outline' question.id test.id %}">
+                    {{ question }}
+                </a>
+            </li class="list-group-item">
+        {% empty %}
+            <li class="list-group-item">
+                No outline question added.
+            </li class="list-group-item">
+        {% endfor %}
+    </ul class="list-group">
+    <a href="{% url 'admin_add_outline_question_to_test' test.id %}" class="btn btn-default">Add new outline question</a>
+    <a href="{% url 'admin_list_outline_questions_not_in_test' test.id %}" class="btn btn-default">Add existing outline question</a>
+</div>
+
+<hr/>
+
+<div>
+    <h2>Outline solution questions</h2>
+    <ul class="list-group">
+        {% for question in test.outline_solution_questions %}
+            <li class="list-group-item">
+                <a href="{% url 'admin_delete_outline_solution_question_from_test' test.id question.id %}">
+                    <span class="glyphicon glyphicon-remove red" aria-hidden="true"></span>
+                </a>
+                <a href="{% url 'admin_edit_outline_solution_question_for_test' test.id question.id %}">
+                    {{ question }}
+                </a>
+            </li class="list-group-item">
+        {% empty %}
+            <li class="list-group-item">
+                No outline solution question added.
+            </li class="list-group-item">
+        {% endfor %}
+    </ul class="list-group">
+    <a href="{% url 'admin_add_outline_solution_question_to_test' test.id %}" class="btn btn-default">Add new outline solution question</a>
+    <a href="{% url 'admin_list_outline_solution_questions_not_in_test' test.id %}" class="btn btn-default">Add existing outline solution question</a>
+</div>
+
+<div>
+    <h2>Image suggestion questions</h2>
+    <ul class="list-group">
+        {% for question in test.image_suggestion_question %}
+            <li class="list-group-item">
+                <a href="{% url 'admin_delete_image_suggestion_from_test' test.id question.id %}">
+                    <span class="glyphicon glyphicon-remove red" aria-hidden="true"></span>
+                </a>
+                {{ question }}
+
+            </li class="list-group-item">
+        {% empty %}
+            <li class="list-group-item">
+                No image added.
+            </li class="list-group-item">
+        {% endfor %}
+    </ul class="list-group">
+    <a href="{% url 'admin_add_image_suggestion_to_test' test.id %}" class="btn btn-default">Add new image</a>
+    <a href="{% url 'admin_list_image_suggestion_not_in_test' test.id %}" class="btn btn-default">Add existing image</a>
+</div>
+{% endblock %}

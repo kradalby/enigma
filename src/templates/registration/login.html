@@ -1,0 +1,45 @@
+{% load staticfiles %}
+{% load html_placeholder %}
+<!DOCTYPE HTML>
+<html>
+
+<head>
+    <title>{% block title %}Medical Imaging Quiz | Project by Marte Nordrik Hallan{% endblock %}</title>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="medical imaging quiz website">
+    <meta name="author" content="Marte Nordrik Hallan">
+    <!-- CSS -->
+    <link rel="stylesheet" href="{% static "css/login.css" %}" type="text/css">
+</head>
+<body>
+    {% if form.errors %}
+    <p>Your username and password didn't match. Please try again.</p>
+    {% endif %}
+
+    <div class="login">
+        <div class="login-screen">
+            <div class="app-title">
+                <h1>Login</h1>
+            </div>
+
+            <div class="login-form">
+                <form method="post" action="{% url 'login' %}">
+                {% csrf_token %}
+                    <div class="control-group">
+                        {{ form.username|html_placeholder:"Username" }}
+                        <label class="login-field-icon fui-user" for="id_username"></label>
+                    </div>
+                    <div class="control-group">
+                        {{ form.password|html_placeholder:"Password" }}
+                        <label class="login-field-icon fui-lock" for="id_password"></label>
+                    </div>
+
+                    <input type="submit" class="btn btn-primary btn-large btn-block" value="Log in" />
+                    <input type="hidden" name="next" value="{{ next }}" />
+                </form>
+            </div>
+        </div>
+    </div>
+</body>

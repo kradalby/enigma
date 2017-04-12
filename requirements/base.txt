@@ -1,0 +1,6 @@
+django==1.10.1
+djangorestframework==3.4.6
+pillow==3.1.1
+django-debug-toolbar==1.5
+dj-database-url==0.4.1
+django-extensions

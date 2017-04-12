@@ -1,0 +1,256 @@
+{% extends "base/admin/index.html" %}
+{% load staticfiles %}
+
+{% block admincontent %}
+<style>
+    .btn {
+        display:inline-block;
+        padding:5px 10px;
+    }
+    
+    div.buttons {
+        padding: 5px 0px;
+    }
+    
+    div.erase {
+       cursor: url(/static/img/eraser.png), auto;
+    }
+    
+    canvas {
+        border: 2px solid black;
+        max-width: 100%;
+        position: absolute;
+        left: -3px;
+    }
+    
+    div > label {
+        padding-left: 10px;
+    }
+    
+    div.panel-heading > button {
+        margin: 5px;
+    }
+</style>
+<div>
+    {% if not test and question.times_used > 0 or question.times_used > 1 %}
+    <div class="alert alert-warning" role="alert">
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+        <strong>Warning!</strong> This question is in active use. Changes will be applied to all tests containing this question.
+    </div>
+    {% endif %}
+    <h1>Draw landmark regions for {{ question }}</h1>
+</div>
+<div id="left-column" class="col-md-8">
+    <div id="canvasDiv"></div>
+</div>
+<div id="right-column" class="col-md-4">
+    <div class="alert alert-danger fade in" id="max-colors-error" style="display:none;">
+        <button type="button" class="close">×</button>
+        You can't add any more regions.
+    </div>
+    
+    <form action="" method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        <div id="form-div">
+            
+        </div>
+        <hr/>
+        <input type="hidden" name="hidden-image-data" id="hidden-image-data" />
+        <input type="submit" class="btn btn-success" style="min-width: 200px;" value="Create landmark question" />
+        {% if test %}
+            <a href="{% url 'admin_add_questions_to_test' test.id %}" class="btn btn-danger">Cancel</a>
+        {% else %}
+            <a href="{% url 'admin_list_questions' %}" class="btn btn-danger">Cancel</a>
+        {% endif %}
+    </form>
+    
+    <hr/>
+    
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <button type="button" class="pull-left btn btn-info" onclick="addColor()">New region</button>
+            <button data-toggle="collapse" data-target="#collapsable" class="pull-left btn btn-info">Hide/Show information</button>
+            <div class="clearfix"></div>
+        </div>
+        <div class="panel-body">
+            <div id="collapsable" class="collapse">
+                <p>
+                    Draw regions which the user will have to select. 
+                </p>
+                <p>
+                    While taking the test, the user will not see the different regions.
+                </p>
+                <p>
+                    The user scores at this question if s/he correctly selects a pixel from the region in question.
+                </p>
+                <table class="table text-left">
+                    <tr>
+                        <th>Symbol</th>
+                        <th>Description</th>
+                    </tr>
+                    <tr>
+                        <td><span class='glyphicon glyphicon-ok-circle'></span></td>
+                        <td>Select color</td>
+                    </tr>
+                    <tr>
+                        <td><span class='glyphicon glyphicon-remove-circle'></span></td>
+                        <td>Clear color</td>
+                    </tr>
+                    <tr>
+                        <td><span class='glyphicon glyphicon-trash'></span></td>
+                        <td>Delete region</td>
+                    </tr>
+                    <tr>
+                        <td>Landmark</td>
+                        <td>Appears in the test as "Mark &lt;Landmark&gt;"</td>
+                    </tr>
+                </table>
+                <hr/>
+            </div>
+            <div class="text-left">
+                <p class="pull-left">
+                    Selected region color: 
+                    <span id="selected-color" style='background-color:#abcdef'>
+                        &nbsp;&nbsp;&nbsp;&nbsp;
+                    </span>
+                </p>
+                <div class="pull-right">
+                    <p>{% comment %}Eraser / {% endcomment %}Brush size:</p>
+                    <div class="btn-group">
+                        <button style="width: 3.5em; height: 3em;" type='button' class='btn btn-default pull-right' onclick='drawRegions.setLineWidth(15)'>
+                            <span style="font-size: 1.75em;" class='glyphicon glyphicon-pencil'></span>
+                        </button>
+                        <button style="width: 3.5em; height: 3em;" type='button' class='btn btn-default pull-right' onclick='drawRegions.setLineWidth(10)'>
+                            <span style="font-size: 1.0em;" class='glyphicon glyphicon-pencil'></span>
+                        </button>
+                        <button style="width: 3.5em; height: 3em;" type='button' class='btn btn-default pull-right' onclick='drawRegions.setLineWidth(2)'>
+                            <span style="font-size: 0.75em;" class='glyphicon glyphicon-pencil'></span>
+                        </button>
+                        {% comment %}
+                        <button style="width: 3.5em; height: 3em;" type='button' class='btn btn-default pull-right' onclick='drawRegions.eraseColor(true);$("#selected-color").css("background-color", "white");'>
+                            <span style="font-size: 1.5em;" class='glyphicon glyphicon-erase'></span>
+                        </button>
+                        {% endcomment %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block end %} 
+<script type="text/javascript" src="{% static "js/draw-regions.js" %}"></script>
+<script type="text/javascript">
+    // Hide warning when close is clicked
+    $('.alert .close').on('click', function(e) {
+        $(this).parent().hide();
+    });
+    // String format
+    if (!String.format) {
+        String.format = function(format) {
+            var args = Array.prototype.slice.call(arguments, 1);
+            return format.replace(/{(\d+)}/g, function(match, number) { 
+            return typeof args[number] != 'undefined'
+                ? args[number] 
+                : match
+            ;
+            });
+        };
+    }
+    // Add colors
+    var currentColors = 0,
+        colors = [
+            "#659b41", // green
+            "#107896", // blue
+            "#ffcf33", // yellow
+            "#cb3594", // purple
+            "#c02f1d", // red
+            "#986928", // brown
+        ],
+        colorsInUse = [false, false, false, false, false, false],
+        maxColors = colors.length,
+        html =
+        "    <div id='color-input-{0}'>" +
+        "        <span style='background-color:{1}'>&nbsp;&nbsp;&nbsp;&nbsp;</span>" +
+        "        <label for='region{0}'>" +
+        "            Landmark:" +
+        "            <input type='text' name='{1}' id='region{0}' value='{2}'/>" +
+        "        </label>" +
+        "        <button type='button' class='btn btn-default' onclick='setColor(\"{1}\")'>" +
+        "            <span class='glyphicon glyphicon-ok-circle'></span>" +
+        "        </button>" +
+        "        <button type='button' class='btn btn-default' onclick='drawRegions.clearColor(\"{1}\")'>" +
+        "            <span class='glyphicon glyphicon-remove-circle'></span>" +
+        "        </button>" +
+        "        <button type='button' class='btn btn-default' onclick='deleteColorRegion({0})'>" +
+        "            <span class='glyphicon glyphicon-trash'></span>" +
+        "        </button>" +
+        "    </div>"
+        ;
+        
+    function indexOfColor(color){
+        for(var i = 0; i < colors.length; i++){
+            if(colors[i] == color){
+                return i;
+            }
+        }
+    }
+    
+    function getUnusedColor(){
+        for(var i = 0; i < colorsInUse.length; i++){
+            if(!colorsInUse[i]){
+                return {
+                    color: colors[i],
+                    index: i
+                };
+            }
+        }
+    }
+    
+    function deleteColorRegion(colorIndex){
+        colorsInUse[colorIndex] = false;
+        drawRegions.deleteColor(colors[colorIndex]);
+        $("div#color-input-"+colorIndex).remove();
+        currentColors--;
+    }
+    
+    function addColor(regionName){
+        regionName = typeof regionName !== 'undefined' ? regionName : "";
+        if(currentColors >= maxColors){
+            $('#max-colors-error').show();
+            return;
+        }
+        var colorDict = getUnusedColor();
+        var color = colorDict.color;
+        var index = colorDict.index;
+        colorsInUse[index] = true;
+        var formatedHtml = String.format(html, index, color, regionName);
+        $("#form-div").append(formatedHtml);
+        drawRegions.addColor(color);
+        currentColors++;
+    }
+    
+    function setColor(color){
+        drawRegions.setColor(color);
+        $("#selected-color").css("background-color", color);
+    }
+    
+    // Init application
+    {% with image=question.original_image %}
+    {% if question.landmark_drawing %}
+        drawRegions.init("canvasDiv", "{{image.url}}", {{image.height}}, {{image.width}}, "{{question.landmark_drawing.url}}");
+    {% else %}
+        drawRegions.init("canvasDiv", "{{image.url}}", {{image.height}}, {{image.width}});
+    {% endif %}
+    {% endwith %}
+    {% for region in question.regions %}
+        addColor("{{region.name}}");
+    {% empty %}
+        addColor();
+    {% endfor %}
+    setColor(colors[0]);
+</script>
+{% endblock %}

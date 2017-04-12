@@ -1,0 +1,62 @@
+{% extends "base.html" %}
+
+{% block extrahead %}
+<style>
+    input[type=radio] {
+        visibility:hidden;
+    }
+    
+    img {
+        max-width: 100%;
+    }
+    
+    canvas {
+        max-width: 100%;
+        position: absolute;
+        left: 0;
+        top: 0;
+    }
+    
+    img.hide {
+        opacity: 0;
+    }
+    
+    li:hover
+    {
+         background-color: #fbfbfb;
+         cursor: pointer; 
+    }
+    video {  
+        width:100%; 
+        max-height:500px; 
+        width: auto; 
+    }
+    
+    div.landmark-container, div.outline-container{
+        position: relative;
+    }
+    
+    div.landmark-container::after, div.outline-container::after {
+        clear: both;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="container">
+    {% for answer in answers.test_unit_results %}
+    <div class="center-block">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h3 class="panel-title">
+                    {{ answer.test_unit }}
+                </h3>
+            </div>
+            <div class="panel-body">
+                    {{ answer.correct_answer }}
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+{% endblock %}

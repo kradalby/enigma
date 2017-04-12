@@ -1,0 +1,40 @@
+{% extends "base/admin/index.html" %}
+
+{% block admincontent %}
+<style>
+    .red{
+        color: red;
+    }
+</style>
+<h1 class="page-header">
+    Courses
+</h1>
+<table class="table">
+    <tr>
+        <th>Course name</th>
+        <th>View course</th>
+        <th>Delete course</th>
+    </tr>
+    {% for course in courses %}
+        <tr>
+            <td>
+                {{ course.name }}
+            </td>
+            <td>
+                <a href="{% url 'admin_view_course' course.id %}">
+                    <span class="glyphicon glyphicon-eye-open" aria-hidden="true"> View</span>
+                </a>
+            </td>
+            <td>
+                <a href="{% url 'admin_delete_course' course.id %}">
+                    <span class="glyphicon glyphicon-remove red" aria-hidden="true"> Delete</span>
+                </a>
+            </td>
+        </tr>
+        {% empty %}
+            <tr>
+                <td colspan="3">No courses created.</td>
+            </tr>
+        {% endfor %}
+</table>
+{% endblock %}

@@ -1,0 +1,41 @@
+{% extends "base/admin/index.html" %}
+
+{% block admincontent %}
+<style>
+    .red{
+        color: red;
+    }
+</style>
+<h1 class="page-header">
+    Groups
+</h1>
+
+<table class="table">
+    <tr>
+        <th>Group name</th>
+        <th>Edit group</th>
+        <th>Delete group</th>
+    </tr>
+    {% for group in groups %}
+        <tr>
+            <td>
+                {{ group }}
+            </td>
+            <td>
+                <a href="{% url 'admin_view_group' group.id %}">
+                    <span class="glyphicon glyphicon-pencil" aria-hidden="true"> Edit</span>
+                </a>
+            </td>
+            <td>
+                <a href="{% url 'admin_delete_group' group.id %}">
+                    <span class="glyphicon glyphicon-remove red" aria-hidden="true"> Delete</span>
+                </a>
+            </td>
+        </tr>
+    {% empty %}
+        <tr>
+            <td colspan="3">No groups created.</td>
+        </tr>
+    {% endfor %}
+</table>
+{% endblock %}

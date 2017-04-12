@@ -1,0 +1,23 @@
+{% extends "base/admin/index.html" %}
+
+{% block admincontent %}
+<h1>
+    {% if test %}
+        Add question to test
+    {% else %}
+        Create question
+    {% endif %}
+</h1>
+{% if test %}
+    <h4>
+        <small>Test</small> {{ test.name }}
+    </h4>
+{% endif %}
+<form action="" method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    <table class="table">
+        {{ form.as_table }}
+    </table>
+    <input type="submit" class="btn btn-success" value="Add question" />
+</form>
+{% endblock %}
