@@ -39,7 +39,6 @@ init initialSeed width height =
             , clickData = initClickData
             , windowWidth = width
             , windowHeight = height
-            , submitted = False
             }
     in
         model ! [ getLandmarkQuestions ]
@@ -83,10 +82,10 @@ update msg model =
             in
                 case nextModel.currentQuestion of
                     Nothing ->
-                        ( { nextModel | showAnswer = False, submitted = False, mode = Result }, Cmd.none )
+                        ( { nextModel | showAnswer = False, mode = Result }, Cmd.none )
 
                     _ ->
-                        ( { nextModel | showAnswer = False, submitted = False }, Cmd.batch (getListOfLoadImageMessages nextModel.currentQuestion) )
+                        ( { nextModel | showAnswer = False }, Cmd.batch (getListOfLoadImageMessages nextModel.currentQuestion) )
 
         Correct ->
             ( case model.currentQuestion of
@@ -97,7 +96,6 @@ update msg model =
                     { model
                         | correctQuestions = question :: model.correctQuestions
                         , showAnswer = True
-                        , submitted = True
                     }
             , (delay (Time.second * 3) <| NextQuestion)
             )
@@ -111,7 +109,6 @@ update msg model =
                     { model
                         | wrongQuestions = question :: model.wrongQuestions
                         , showAnswer = True
-                        , submitted = True
                     }
             , (delay (Time.second * 3) <| NextQuestion)
             )

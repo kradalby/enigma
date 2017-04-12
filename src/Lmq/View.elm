@@ -87,8 +87,8 @@ viewLandmarkQuestion : Model -> LandmarkQuestion -> Html Msg
 viewLandmarkQuestion model lmq =
     div [ class "col s12" ]
         [ h3 [] [ text lmq.question ]
-        , viewCanvas model
-        , (case model.submitted of
+        , div [ class "row" ] [ viewCanvas model ]
+        , (case model.showAnswer of
             False ->
                 button [ class "btn", onClick model.clickData.answerMsg ] [ text "Submit" ]
 
@@ -149,7 +149,7 @@ viewCanvas model =
                             ((createDrawImage canvas canvasSize)
                                 :: drawOps
                             )
-                        |> (case model.submitted of
+                        |> (case model.showAnswer of
                                 False ->
                                     Canvas.toHtml [ Events.onClick CanvasClick ]
 
@@ -181,13 +181,36 @@ viewResult model =
 percentageOfQuestionsLeft : Model -> Float
 percentageOfQuestionsLeft model =
     let
+        current =
+            case model.currentQuestion of
+                Nothing ->
+                    0
+
+                Just _ ->
+                    1
+
         unAnswered =
-            toFloat (List.length model.unAnsweredQuestions)
+            case model.showAnswer of
+                False ->
+                    toFloat (List.length model.unAnsweredQuestions)
+
+                True ->
+                    toFloat (List.length model.unAnsweredQuestions - 1)
 
         correct =
-            toFloat (List.length model.correctQuestions)
+            case model.showAnswer of
+                False ->
+                    toFloat (List.length model.correctQuestions)
+
+                True ->
+                    toFloat (List.length model.correctQuestions)
 
         wrong =
-            toFloat (List.length model.wrongQuestions)
+            case model.showAnswer of
+                False ->
+                    toFloat (List.length model.wrongQuestions)
+
+                True ->
+                    toFloat (List.length model.wrongQuestions)
     in
-        (100 * ((correct + wrong) / (unAnswered + correct + wrong + 1)))
+        (100 * ((correct + wrong) / (unAnswered + correct + wrong + current)))

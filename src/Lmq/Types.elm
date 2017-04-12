@@ -47,7 +47,6 @@ type alias Model =
     , clickData : ClickData
     , windowWidth : Int
     , windowHeight : Int
-    , submitted : Bool
     }
 
 
