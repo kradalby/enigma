@@ -4,7 +4,7 @@ ENIGMA=./enigma
 ENIGMA_SRC=$(ENIGMA)/src
 
 fix_module_canvas:
-	perl -pi -E 's/elm\_canvas\$$elm\_canvas/kradalby\$$elm\_enigma/g' $(ENIGMA)/canvas/src/Native/Canvas.js
+	perl -pi -E 's/elm\_canvas\$$elm\_canvas/kradalby\$$enigma/g' $(ENIGMA)/canvas/src/Native/Canvas.js
 
 fix_sass_bin_in_docker:
 	docker-compose  run --entrypoint="bash -c" enigma "/usr/local/bin/npm install --force node-sass elm"

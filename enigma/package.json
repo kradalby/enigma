@@ -12,15 +12,15 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/kradalby/elm-enigma.git"
+    "url": "git+https://github.com/kradalby/enigma.git"
   },
   "keywords": [],
   "author": "Kristoffer Dalby <kradalby@kradalby.no>",
   "license": "BSD3",
   "bugs": {
-    "url": "https://github.com/kradalby/elm-enigma/issues"
+    "url": "https://github.com/kradalby/enigma/issues"
   },
-  "homepage": "https://github.com/kradalby/elm-enigma",
+  "homepage": "https://github.com/kradalby/enigma",
   "devDependencies": {
     "copy-webpack-plugin": "^4.0.1",
     "cross-env": "^4.0.0",
