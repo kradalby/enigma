@@ -14,7 +14,7 @@ RUN pip install -r $APP_DIR/prod.txt
 
 COPY miic/src/. $APP_DIR
 RUN mkdir -p $APP_DIR/enigma_app
-COPY enigma/build/. $APP_DIR/enigma_app
+COPY enigma/dist/. $APP_DIR/enigma_app
 
 COPY docker-entrypoint.sh /docker-entrypoint.sh
 
