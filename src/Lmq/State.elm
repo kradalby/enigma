@@ -137,16 +137,12 @@ update msg model =
         ImageLoaded result ->
             case Result.toMaybe result of
                 Just canvas ->
-                    let
-                        derp =
-                            Debug.log "image" (Canvas.getSize canvas)
-                    in
-                        ( { model
-                            | image = GotCanvas canvas
-                            , imageSize = Just (Canvas.getSize canvas)
-                          }
-                        , Cmd.none
-                        )
+                    ( { model
+                        | image = GotCanvas canvas
+                        , imageSize = Just (Canvas.getSize canvas)
+                      }
+                    , Cmd.none
+                    )
 
                 Nothing ->
                     ( { model | image = Loading }
