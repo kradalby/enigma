@@ -4,6 +4,7 @@ import App.Types exposing (..)
 import Task
 import Mcq.State
 import Lmq.State
+import Olq.State
 import Date exposing (Date)
 
 
@@ -25,13 +26,17 @@ init flags =
         ( lmqModel, lmqCmd ) =
             Lmq.State.init flags.currentTime flags.width flags.height
 
+        ( olqModel, olqCmd ) =
+            Olq.State.init flags.currentTime flags.width flags.height
+
         model =
             { global = global
             , mcq = mcqModel
             , lmq = lmqModel
+            , olq = olqModel
             }
     in
-        model ! [ now, (Cmd.map McqMsg mcqCmd), (Cmd.map LmqMsg lmqCmd) ]
+        model ! [ now, (Cmd.map McqMsg mcqCmd), (Cmd.map LmqMsg lmqCmd), (Cmd.map OlqMsg olqCmd) ]
 
 
 update : Msg -> Model -> ( Model, Cmd Msg )
@@ -63,6 +68,15 @@ update msg model =
                 in
                     ( { model | lmq = lmqModel }
                     , Cmd.map LmqMsg lmqCmd
+                    )
+
+            OlqMsg olqMsg ->
+                let
+                    ( olqModel, olqCmd ) =
+                        Olq.State.update olqMsg model.olq
+                in
+                    ( { model | olq = olqModel }
+                    , Cmd.map OlqMsg olqCmd
                     )
 
             ChangeMode mode ->

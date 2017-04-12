@@ -29,20 +29,22 @@ initClickData =
 
 
 type alias Model =
-    { questions : List OutlineQuestion
-    , mode : Mode
-    , unAnsweredQuestions :
-        List OutlineQuestion
-    , wrongQuestions : List OutlineQuestion
+    { clickData : ClickData
     , correctQuestions : List OutlineQuestion
     , currentQuestion : Maybe OutlineQuestion
-    , showAnswer : Bool
-    , numberOfQuestionsInputField : String
     , error : Maybe String
-    , seed : Random.Seed
     , image : Image
+    , imageSize : Maybe Size
+    , mode : Mode
+    , numberOfQuestionsInputField : String
+    , questions : List OutlineQuestion
+    , seed : Random.Seed
+    , showAnswer : Bool
     , solution : Image
-    , clickData : ClickData
+    , unAnsweredQuestions : List OutlineQuestion
+    , windowHeight : Int
+    , windowWidth : Int
+    , wrongQuestions : List OutlineQuestion
     }
 
 

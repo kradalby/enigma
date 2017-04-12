@@ -13,29 +13,30 @@ import App.Rest exposing (base_url)
 import Canvas exposing (Size, Error, DrawOp(..), DrawImageParams(..), Canvas)
 import Canvas.Point exposing (Point)
 import Canvas.Point as Point
-import Canvas.Pixel as Pixel
 import Color.Convert
 import Color
 
 
-init : ( Model, Cmd Msg )
-init =
+init : Int -> Int -> Int -> ( Model, Cmd Msg )
+init initialSeed width height =
     let
         model =
-            { questions = []
-            , mode = Start
-            , unAnsweredQuestions =
-                []
-            , wrongQuestions = []
+            { clickData = initClickData
             , correctQuestions = []
             , currentQuestion = Nothing
-            , showAnswer = False
-            , numberOfQuestionsInputField = "0"
             , error = Nothing
-            , seed = Random.initialSeed 986579348465945786
             , image = Loading
+            , imageSize = Nothing
+            , mode = Start
+            , numberOfQuestionsInputField = ""
+            , questions = []
+            , seed = Random.initialSeed initialSeed
+            , showAnswer = False
             , solution = Loading
-            , clickData = initClickData
+            , unAnsweredQuestions = []
+            , windowHeight = height
+            , windowWidth = width
+            , wrongQuestions = []
             }
     in
         model ! [ getOutlineQuestions ]
@@ -134,7 +135,10 @@ update msg model =
         ImageLoaded result ->
             case Result.toMaybe result of
                 Just canvas ->
-                    ( { model | image = GotCanvas canvas }
+                    ( { model
+                        | image = GotCanvas canvas
+                        , imageSize = Just (Canvas.getSize canvas)
+                      }
                     , Cmd.none
                     )
 
@@ -172,9 +176,6 @@ update msg model =
                 color =
                     getColorFromRegion model
 
-                ( p0, p1, p2, p3 ) =
-                    getCoordinatesForCross position
-
                 answerMsg =
                     (checkAnswer
                         model
@@ -186,10 +187,6 @@ update msg model =
                     , LineWidth 5
                     , StrokeStyle color
                     , LineCap "round"
-                    , MoveTo p0
-                    , LineTo p1
-                    , MoveTo p2
-                    , LineTo p3
                     , Stroke
                     ]
 
@@ -255,30 +252,6 @@ loadSolution image_url =
         (Canvas.loadImage (base_url ++ image_url))
 
 
-getCoordinatesForCross : Point -> ( Point, Point, Point, Point )
-getCoordinatesForCross point =
-    let
-        size =
-            10
-
-        ( x, y ) =
-            Point.toInts point
-
-        p0 =
-            Point.fromInts ( x - size, y - size )
-
-        p1 =
-            Point.fromInts ( x + size, y + size )
-
-        p2 =
-            Point.fromInts ( x - size, y + size )
-
-        p3 =
-            Point.fromInts ( x + size, y - size )
-    in
-        ( p0, p1, p2, p3 )
-
-
 getColorFromRegion : Model -> Color.Color
 getColorFromRegion model =
     case model.currentQuestion of
@@ -303,19 +276,4 @@ getColorFromRegion model =
 
 checkAnswer : Model -> Point -> Msg
 checkAnswer model point =
-    let
-        pixelColor =
-            (case model.solution of
-                Loading ->
-                    wrongColor
-
-                GotCanvas canvas ->
-                    Canvas.initialize canvasSize
-                        |> Canvas.batch [ DrawImage canvas (Scaled (Point.fromInts ( 0, 0 )) canvasSize) ]
-                        |> Pixel.get point
-            )
-    in
-        if pixelColor == (wrongColor) then
-            Wrong
-        else
-            Correct
+    Wrong

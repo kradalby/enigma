@@ -7,6 +7,7 @@ import Html.Attributes exposing (type_, checked, name, class, src, id, href, att
 import Date exposing (Date)
 import Mcq.View
 import Lmq.View
+import Olq.View
 
 
 root : Model -> Html Msg
@@ -25,6 +26,9 @@ root model =
 
                         LandmarkQuestions ->
                             div [] [ Html.map LmqMsg (Lmq.View.root model.lmq) ]
+
+                        OutlineQuestions ->
+                            div [] [ Html.map OlqMsg (Olq.View.root model.olq) ]
                     ]
                 ]
             ]
@@ -38,6 +42,7 @@ viewModeMenu =
         [ h4 [] [ text "Choose game" ]
         , button [ class "btn waves-effect waves-light", onClick (ChangeMode MultipleChoiceQuestions) ] [ text "Multiple Choice Questions" ]
         , button [ class "btn waves-effect waves-light", onClick (ChangeMode LandmarkQuestions) ] [ text "Landmark Questions" ]
+        , button [ class "btn waves-effect waves-light", onClick (ChangeMode OutlineQuestions) ] [ text "Outline Questions" ]
         ]
 
 

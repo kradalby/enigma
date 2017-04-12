@@ -5,7 +5,7 @@ import Olq.Types exposing (..)
 import Html exposing (..)
 import Html.Events exposing (onInput, onClick)
 import Html.Attributes exposing (type_, checked, name, disabled, value, class, src, id, selected, for, href)
-import Util exposing (onEnter, viewErrorBox, viewSpinningLoader, viewProgressbar)
+import Util exposing (onEnter, viewErrorBox, viewSpinningLoader, viewProgressbar, percentageOfQuestionsLeft, calculateImageSize, createDrawImage)
 import Canvas exposing (Size, Error, DrawOp(..), DrawImageParams(..), Canvas)
 import Canvas.Point exposing (Point)
 import Canvas.Point as Point
@@ -27,7 +27,7 @@ root model =
 
                     Just currentQuestion ->
                         div []
-                            [ viewProgressbar (percentageOfQuestionsLeft model)
+                            [ viewProgressbar (percentageOfQuestionsLeft model.showAnswer model.currentQuestion model.unAnsweredQuestions model.correctQuestions model.wrongQuestions)
                             , viewOutlineQuestion model currentQuestion
                             ]
 
@@ -86,10 +86,21 @@ validateNumberOfQuestionsInputFieldAndCreateResponseMsg model =
 viewOutlineQuestion : Model -> OutlineQuestion -> Html Msg
 viewOutlineQuestion model olq =
     div [ class "col s12" ]
-        [ h3 [] [ text olq.question ]
-        , viewCanvas model
-        , button [ class "btn", onClick model.clickData.answerMsg ] [ text "Submit" ]
-        ]
+        ([ h3 [] [ text "" ]
+         , div [ class "row" ] [ viewCanvas model ]
+         ]
+            ++ (case model.showAnswer of
+                    False ->
+                        [ button [ class "btn", onClick model.clickData.answerMsg ] [ text "Submit" ]
+                        , button [ class "btn red" ] [ text "Clear" ]
+                        ]
+
+                    True ->
+                        [ button [ class "btn disabled" ] [ text "Submit" ]
+                        , button [ class "btn disabled" ] [ text "Clear" ]
+                        ]
+               )
+        )
 
 
 viewCanvas : Model -> Html Msg
@@ -102,28 +113,59 @@ viewCanvas model =
                         model.clickData.draw
 
                     GotCanvas canvas ->
-                        (createDrawImage canvas) :: model.clickData.draw
+                        let
+                            imageSize =
+                                case model.imageSize of
+                                    Nothing ->
+                                        Canvas.getSize canvas
+
+                                    Just size ->
+                                        size
+
+                            canvasSize =
+                                calculateImageSize imageSize.width imageSize.height model.windowWidth model.windowHeight
+
+                            derp =
+                                Debug.log "canvasSize solution" canvasSize
+                        in
+                            (createDrawImage canvas canvasSize) :: model.clickData.draw
             else
                 model.clickData.draw
     in
         case model.image of
             GotCanvas canvas ->
-                Canvas.initialize canvasSize
-                    |> Canvas.batch
-                        ((createDrawImage canvas)
-                            :: drawOps
-                        )
-                    |> Canvas.toHtml [ Events.onClick CanvasClick ]
-                    |> List.singleton
-                    |> div []
+                let
+                    imageSize =
+                        case model.imageSize of
+                            Nothing ->
+                                Canvas.getSize canvas
+
+                            Just size ->
+                                size
+
+                    canvasSize =
+                        calculateImageSize imageSize.width imageSize.height model.windowWidth model.windowHeight
+
+                    derp =
+                        Debug.log "canvasSize image" canvasSize
+                in
+                    Canvas.initialize canvasSize
+                        |> Canvas.batch
+                            ((createDrawImage canvas canvasSize)
+                                :: drawOps
+                            )
+                        |> (case model.showAnswer of
+                                False ->
+                                    Canvas.toHtml [ Events.onClick CanvasClick ]
+
+                                True ->
+                                    Canvas.toHtml []
+                           )
+                        |> List.singleton
+                        |> div []
 
             Loading ->
                 viewSpinningLoader
-
-
-createDrawImage : Canvas -> Canvas.DrawOp
-createDrawImage canvas =
-    DrawImage canvas (Scaled (Point.fromInts ( 0, 0 )) canvasSize)
 
 
 viewResult : Model -> Html Msg
@@ -134,18 +176,3 @@ viewResult model =
         , h5 [] [ text ("Wrong: " ++ (toString (List.length model.wrongQuestions))) ]
         , button [ class "btn", onClick (ChangeMode Start) ] [ text "Start new quiz" ]
         ]
-
-
-percentageOfQuestionsLeft : Model -> Float
-percentageOfQuestionsLeft model =
-    let
-        unAnswered =
-            toFloat (List.length model.unAnsweredQuestions)
-
-        correct =
-            toFloat (List.length model.correctQuestions)
-
-        wrong =
-            toFloat (List.length model.wrongQuestions)
-    in
-        (100 * ((correct + wrong) / (unAnswered + correct + wrong + 1)))
