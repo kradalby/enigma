@@ -148,3 +148,41 @@ calculateImageSize imageWidth imageHeight windowWidth windowHeight =
                     ( canvasHeight, canvasWidth )
     in
         Size (round canvasWidth) (round canvasHeight)
+
+
+percentageOfQuestionsLeft : Bool -> Maybe a -> List a -> List a -> List a -> Float
+percentageOfQuestionsLeft showAnswer currentQuestion unAnsweredQuestions correctQuestions wrongQuestions =
+    let
+        current =
+            case currentQuestion of
+                Nothing ->
+                    0
+
+                Just _ ->
+                    1
+
+        unAnswered =
+            case showAnswer of
+                False ->
+                    toFloat (List.length unAnsweredQuestions)
+
+                True ->
+                    toFloat (List.length unAnsweredQuestions - 1)
+
+        correct =
+            case showAnswer of
+                False ->
+                    toFloat (List.length correctQuestions)
+
+                True ->
+                    toFloat (List.length correctQuestions)
+
+        wrong =
+            case showAnswer of
+                False ->
+                    toFloat (List.length wrongQuestions)
+
+                True ->
+                    toFloat (List.length wrongQuestions)
+    in
+        (100 * ((correct + wrong) / (unAnswered + correct + wrong + current)))

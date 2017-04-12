@@ -5,7 +5,7 @@ import Lmq.Types exposing (..)
 import Html exposing (..)
 import Html.Events exposing (onInput, onClick)
 import Html.Attributes exposing (type_, checked, name, disabled, value, class, src, id, selected, for, href)
-import Util exposing (onEnter, viewErrorBox, viewSpinningLoader, viewProgressbar, calculateImageSize)
+import Util exposing (onEnter, viewErrorBox, viewSpinningLoader, viewProgressbar, calculateImageSize, percentageOfQuestionsLeft)
 import Canvas exposing (Size, Error, DrawOp(..), DrawImageParams(..), Canvas)
 import Canvas.Point exposing (Point)
 import Canvas.Point as Point
@@ -27,7 +27,7 @@ root model =
 
                     Just currentQuestion ->
                         div []
-                            [ viewProgressbar (percentageOfQuestionsLeft model)
+                            [ viewProgressbar (percentageOfQuestionsLeft model.showAnswer model.currentQuestion model.unAnsweredQuestions model.correctQuestions model.wrongQuestions)
                             , viewLandmarkQuestion model currentQuestion
                             ]
 
@@ -176,41 +176,3 @@ viewResult model =
         , h5 [] [ text ("Wrong: " ++ (toString (List.length model.wrongQuestions))) ]
         , button [ class "btn", onClick (ChangeMode Start) ] [ text "Start new quiz" ]
         ]
-
-
-percentageOfQuestionsLeft : Model -> Float
-percentageOfQuestionsLeft model =
-    let
-        current =
-            case model.currentQuestion of
-                Nothing ->
-                    0
-
-                Just _ ->
-                    1
-
-        unAnswered =
-            case model.showAnswer of
-                False ->
-                    toFloat (List.length model.unAnsweredQuestions)
-
-                True ->
-                    toFloat (List.length model.unAnsweredQuestions - 1)
-
-        correct =
-            case model.showAnswer of
-                False ->
-                    toFloat (List.length model.correctQuestions)
-
-                True ->
-                    toFloat (List.length model.correctQuestions)
-
-        wrong =
-            case model.showAnswer of
-                False ->
-                    toFloat (List.length model.wrongQuestions)
-
-                True ->
-                    toFloat (List.length model.wrongQuestions)
-    in
-        (100 * ((correct + wrong) / (unAnswered + correct + wrong + current)))

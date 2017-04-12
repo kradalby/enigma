@@ -5,7 +5,7 @@ import Html.Events exposing (..)
 import Html.Attributes exposing (type_, checked, name, value, class, src, id, href, style, alt)
 import Mcq.Types exposing (..)
 import App.Rest exposing (base_url)
-import Util exposing (onEnter, viewErrorBox, viewProgressbar)
+import Util exposing (onEnter, viewErrorBox, viewProgressbar, percentageOfQuestionsLeft)
 
 
 root : Mcq.Types.Model -> Html Msg
@@ -23,7 +23,7 @@ root model =
 
                     Just currentQuestion ->
                         div []
-                            [ viewProgressbar (percentageOfQuestionsLeft model)
+                            [ viewProgressbar (percentageOfQuestionsLeft model.showAnswer model.currentQuestion model.unAnsweredQuestions model.correctQuestions model.wrongQuestions)
                             , viewMultipleChoiceQuestion
                                 currentQuestion
                                 model.showAnswer
@@ -157,41 +157,3 @@ viewSessionInformation model =
         , h5 [] [ text ("Left: " ++ (toString (List.length model.unAnsweredQuestions))) ]
         , h5 [] [ text ("Total: " ++ (toString (List.length model.questions))) ]
         ]
-
-
-percentageOfQuestionsLeft : Model -> Float
-percentageOfQuestionsLeft model =
-    let
-        current =
-            case model.currentQuestion of
-                Nothing ->
-                    0
-
-                Just _ ->
-                    1
-
-        unAnswered =
-            case model.showAnswer of
-                False ->
-                    toFloat (List.length model.unAnsweredQuestions)
-
-                True ->
-                    toFloat (List.length model.unAnsweredQuestions - 1)
-
-        correct =
-            case model.showAnswer of
-                False ->
-                    toFloat (List.length model.correctQuestions)
-
-                True ->
-                    toFloat (List.length model.correctQuestions)
-
-        wrong =
-            case model.showAnswer of
-                False ->
-                    toFloat (List.length model.wrongQuestions)
-
-                True ->
-                    toFloat (List.length model.wrongQuestions)
-    in
-        (100 * ((correct + wrong) / (unAnswered + correct + wrong + current)))
