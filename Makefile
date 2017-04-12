@@ -1,9 +1,23 @@
-ENV=./env/bin
+
+# Enigma
+ENIGMA=./enigma
+ENIGMA_SRC=$(ENIGMA)/src
+
+fix_module_canvas:
+	perl -pi -E 's/elm\_community\$$canvas/kradalby\$$elm\_enigma/g' $(ENIGMA_SRC)/canvas/src/Native/Canvas.js
+
+fix_sass_bin_in_docker:
+	docker-compose  run --entrypoint="bash -c" elm "/usr/local/bin/npm install --force node-sass elm"
+
+
+# MIIC
+MIIC=./miic
+MIIC_SRC=$(MIIC)/src
+ENV=$(MIIC)/env/bin
 SHELL := /bin/bash
 PYTHON=$(ENV)/python
 PIP=$(ENV)/pip
 MANAGE=$(PYTHON) manage.py
-REPO=kradalby/turbo-enigma
 
 collect_static:
 	$(MANAGE) collectstatic --noinput --clear --link
@@ -12,22 +26,17 @@ flake8:
 	$(ENV)/flake8 ./src
 
 dev:
-	$(PIP) install -r requirements/dev.txt --upgrade
+	$(PIP) install -r $(MIIC)/requirements/dev.txt --upgrade
 
 prod:
-	$(PIP) install -r requirements/prod.txt --upgrade
+	$(PIP) install -r $(MIIC)requirements/prod.txt --upgrade
 
 init:
-	tar xJvf media.tar.xz --directory src/
-	tar xJvf postgres.tar.xz --directory src/
+	tar xJvf media.tar.xz --directory $(ENIGMA_SRC)
+	tar xJvf postgres.tar.xz --directory $(ENIGMA_SRC)
 
 env:
-	virtualenv -p `which python3` env
-
-clean:
-		pyclean .
-		find . -name "*.pyc" -exec rm -rf {} \;
-		rm -rf *.egg-info
+	virtualenv -p `which python3` $(ENV)
 
 test:
 	$(MANAGE) test
@@ -36,20 +45,24 @@ run:
 	$(MANAGE) runserver 0.0.0.0:8000
 
 freeze:
-	mkdir -p requirements
-	$(PIP) freeze > requirements/base.txt
+	mkdir -p $(MIIC)/requirements
+	$(PIP) freeze > $(MIIC)/requirements/base.txt
 
 createsuperuser:
-	docker-compose run --entrypoint="bash -c" turbo "./manage.py createsuperuser"
+	docker-compose run --entrypoint="bash -c" miic "./manage.py createsuperuser"
 
 loaddata:
-	docker-compose run --entrypoint="bash -c" turbo "./manage.py loaddata 200916.json"
+	docker-compose run --entrypoint="bash -c" miic "./manage.py loaddata 200916.json"
 
 migrate:
-	docker-compose run --entrypoint="bash -c" turbo "./manage.py migrate"
+	docker-compose run --entrypoint="bash -c" miic "./manage.py migrate"
 
 makemigrations:
-	docker-compose run --entrypoint="bash -c" turbo "./manage.py makemigrations ${ARGS}"
+	docker-compose run --entrypoint="bash -c" miic "./manage.py makemigrations ${ARGS}"
+
+
+# General
+REPO=kradalby/enigma
 
 sign:
 	drone sign $(REPO)
