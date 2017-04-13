@@ -222,6 +222,13 @@ update msg model =
                 , Cmd.none
                 )
 
+        TouchMove point ->
+            let
+                derp =
+                    Debug.log "TouchMove" "who"
+            in
+                ( model, Cmd.none )
+
         Clear ->
             ( { model | drawData = initDrawData }, Cmd.none )
 

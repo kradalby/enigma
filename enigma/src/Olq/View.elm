@@ -150,10 +150,14 @@ viewCanvas model =
                                 False ->
                                     case model.draw of
                                         False ->
-                                            Canvas.toHtml [ Events.onMouseDown MouseDown ]
+                                            Canvas.toHtml [ Events.onMouseDown MouseDown, Events.onTouchMove TouchMove ]
 
                                         True ->
-                                            Canvas.toHtml [ Events.onMouseMove MouseMove, Events.onMouseUp MouseUp ]
+                                            Canvas.toHtml
+                                                [ Events.onMouseMove MouseMove
+                                                , Events.onMouseUp MouseUp
+                                                , Events.onTouchMove TouchMove
+                                                ]
 
                                 True ->
                                     Canvas.toHtml []
