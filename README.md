@@ -4,14 +4,18 @@
 
 1. Install docker
 
-    brew install docker
+    brew cask install docker
 
-2. Copy static files
+Or
+
+    https://www.docker.com/community-edition#/download
+
+2. Install dependencies, copy media files, init database.
 
     make init
 
 3. Run development environment
 
-    docker-compose up
+    make start
 
 
