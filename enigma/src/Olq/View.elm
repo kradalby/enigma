@@ -85,7 +85,7 @@ viewOutlineQuestion : Model -> OutlineQuestion -> Html Msg
 viewOutlineQuestion model olq =
     div [ class "col s12" ]
         ([ h3 [] [ text "" ]
-         , div [ class "row" ] [ viewCanvas model ]
+         , viewCanvas model
          ]
             ++ (case model.showAnswer of
                     False ->
@@ -150,7 +150,12 @@ viewCanvas model =
                                 False ->
                                     case model.draw of
                                         False ->
-                                            Canvas.toHtml [ Events.onMouseDown MouseDown, Events.onTouchMove TouchMove ]
+                                            Canvas.toHtml
+                                                -- [ Events.onMouseDown MouseDown
+                                                [ Events.onTouchStart TouchMove
+                                                , Events.onTouchMove TouchMove
+                                                , Events.onTouchEnd TouchMove
+                                                ]
 
                                         True ->
                                             Canvas.toHtml
@@ -162,8 +167,6 @@ viewCanvas model =
                                 True ->
                                     Canvas.toHtml []
                            )
-                        |> List.singleton
-                        |> div []
 
             Loading ->
                 viewSpinningLoader
