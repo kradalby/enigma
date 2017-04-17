@@ -152,16 +152,16 @@ viewCanvas model =
                                         False ->
                                             Canvas.toHtml
                                                 [ Events.onMouseDown MouseDown
-                                                , Events.onTouchStart Olq.Types.Touch
-                                                , Events.onTouchMove Olq.Types.Touch
-                                                , Events.onTouchEnd Olq.Types.Touch
-                                                , Events.onTouchCancel Olq.Types.Touch
+                                                , Events.onTouchStart MouseDown
                                                 ]
 
                                         True ->
                                             Canvas.toHtml
                                                 [ Events.onMouseMove MouseMove
                                                 , Events.onMouseUp MouseUp
+                                                , Events.onTouchMove MouseMove
+                                                , Events.onTouchEnd MouseUp
+                                                , Events.onTouchCancel MouseUp
                                                 ]
 
                                 True ->
