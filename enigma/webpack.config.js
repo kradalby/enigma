@@ -47,10 +47,10 @@ module.exports = {
     noParse: /\.elm$/
   },
 
-  plugins: [
-    // new CopyWebpackPlugin([
-    //   { from: 'src/assets', to: 'assets' },
-    // ]),
+  plugins: process.env.NODE_ENV === 'development' ? [] : [
+    new CopyWebpackPlugin([
+        { from: 'src/assets/favicons', to: 'favicons' },
+    ]),
     new webpack.optimize.UglifyJsPlugin({
       compress: {
         warnings: false,
