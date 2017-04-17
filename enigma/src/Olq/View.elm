@@ -151,17 +151,17 @@ viewCanvas model =
                                     case model.draw of
                                         False ->
                                             Canvas.toHtml
-                                                -- [ Events.onMouseDown MouseDown
-                                                [ Events.onTouchStart TouchMove
-                                                , Events.onTouchMove TouchMove
-                                                , Events.onTouchEnd TouchMove
+                                                [ Events.onMouseDown MouseDown
+                                                , Events.onTouchStart Olq.Types.Touch
+                                                , Events.onTouchMove Olq.Types.Touch
+                                                , Events.onTouchEnd Olq.Types.Touch
+                                                , Events.onTouchCancel Olq.Types.Touch
                                                 ]
 
                                         True ->
                                             Canvas.toHtml
                                                 [ Events.onMouseMove MouseMove
                                                 , Events.onMouseUp MouseUp
-                                                , Events.onTouchMove TouchMove
                                                 ]
 
                                 True ->

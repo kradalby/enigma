@@ -70,7 +70,7 @@ type Msg
     | MouseDown Point
     | MouseUp Point
     | MouseMove Point
-    | TouchMove Point
+    | Touch Point
     | Clear
 
 

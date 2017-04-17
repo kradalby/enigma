@@ -222,12 +222,33 @@ update msg model =
                 , Cmd.none
                 )
 
-        TouchMove point ->
+        Touch point ->
             let
-                derp =
-                    Debug.log "TouchMove" "who"
+                color =
+                    getColorFromRegion model
+
+                newPoints =
+                    model.drawData.currentPoints ++ [ point ]
+
+                lineDrawOps =
+                    List.concat
+                        (List.map
+                            (\pointList -> pointListToLineOperations pointList)
+                            (newPoints :: model.drawData.points)
+                        )
+
+                newDrawOps =
+                    concatDrawOps color lineDrawOps
             in
-                ( model, Cmd.none )
+                ( { model
+                    | drawData =
+                        { currentPoints = newPoints
+                        , drawOps = newDrawOps
+                        , points = model.drawData.points
+                        }
+                  }
+                , Cmd.none
+                )
 
         Clear ->
             ( { model | drawData = initDrawData }, Cmd.none )
