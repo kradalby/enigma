@@ -211,9 +211,6 @@ update msg model =
 
                 newDrawOps =
                     concatDrawOps color lineDrawOps
-
-                derp =
-                    Debug.log "drawops" newDrawOps
             in
                 ( { model
                     | drawData =
@@ -242,9 +239,6 @@ update msg model =
 
                 newDrawOps =
                     concatDrawOps color lineDrawOps
-
-                derp =
-                    Debug.log "drawops" newDrawOps
             in
                 ( { model
                     | drawData =

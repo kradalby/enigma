@@ -11,9 +11,6 @@ import Date exposing (Date)
 init : Flags -> ( Model, Cmd Msg )
 init flags =
     let
-        derp =
-            Debug.log "Flags" flags
-
         global =
             { initialTime = flags.currentTime
             , date = Nothing
