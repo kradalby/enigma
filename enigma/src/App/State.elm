@@ -3,8 +3,11 @@ module App.State exposing (init, update, subscriptions)
 import App.Types exposing (..)
 import Task
 import Mcq.State
+import Mcq.Types
 import Lmq.State
+import Lmq.Types
 import Olq.State
+import Olq.Types
 import Date exposing (Date)
 
 
@@ -77,7 +80,39 @@ update msg model =
                     )
 
             ChangeMode mode ->
-                ( { model | global = { global | mode = mode } }, Cmd.none )
+                case mode of
+                    MultipleChoiceQuestions ->
+                        let
+                            m =
+                                model.mcq
+
+                            newModel =
+                                { m | mode = Mcq.Types.Start }
+                        in
+                            ( { model | global = { global | mode = mode }, mcq = newModel }, Cmd.none )
+
+                    LandmarkQuestions ->
+                        let
+                            m =
+                                model.lmq
+
+                            newModel =
+                                { m | mode = Lmq.Types.Start }
+                        in
+                            ( { model | global = { global | mode = mode }, lmq = newModel }, Cmd.none )
+
+                    OutlineQuestions ->
+                        let
+                            m =
+                                model.olq
+
+                            newModel =
+                                { m | mode = Olq.Types.Start }
+                        in
+                            ( { model | global = { global | mode = mode }, olq = newModel }, Cmd.none )
+
+                    Main ->
+                        ( { model | global = { global | mode = mode } }, Cmd.none )
 
 
 subscriptions : Model -> Sub Msg
