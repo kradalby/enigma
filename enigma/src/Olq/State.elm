@@ -39,6 +39,7 @@ init initialSeed width height =
             , windowWidth = width
             , wrongQuestions = []
             , draw = False
+            , zoomMode = True
             }
     in
         model ! [ getOutlineQuestions ]
@@ -252,6 +253,9 @@ update msg model =
 
         Clear ->
             ( { model | drawData = initDrawData }, Cmd.none )
+
+        ToggleZoomMode ->
+            ( { model | zoomMode = not model.zoomMode }, Cmd.none )
 
 
 subscriptions : Model -> Sub Msg

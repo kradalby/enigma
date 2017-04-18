@@ -50,6 +50,7 @@ type alias Model =
     , windowWidth : Int
     , wrongQuestions : List OutlineQuestion
     , draw : Bool
+    , zoomMode : Bool
     }
 
 
@@ -72,6 +73,7 @@ type Msg
     | MouseMove Point
     | Touch Point
     | Clear
+    | ToggleZoomMode
 
 
 type Mode

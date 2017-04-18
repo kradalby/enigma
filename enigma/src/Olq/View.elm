@@ -116,6 +116,19 @@ viewOutlineQuestion model olq =
     div [ class "col s12" ]
         ([ h3 [] [ text "" ]
          , viewCanvas model
+         , i
+            [ class "material-icons small"
+            , onClick ToggleZoomMode
+            ]
+            [ text
+                (case model.zoomMode of
+                    True ->
+                        "mode_edit"
+
+                    False ->
+                        "zoom_in"
+                )
+            ]
          ]
             ++ (case model.showAnswer of
                     False ->
@@ -183,21 +196,26 @@ viewCanvas model =
                             )
                         |> (case model.showAnswer of
                                 False ->
-                                    case model.draw of
+                                    case model.zoomMode of
                                         False ->
-                                            Canvas.toHtml
-                                                [ Events.onMouseDown MouseDown
-                                                , Events.onTouchStart touchOptions MouseDown
-                                                ]
+                                            case model.draw of
+                                                False ->
+                                                    Canvas.toHtml
+                                                        [ Events.onMouseDown MouseDown
+                                                        , Events.onTouchStart touchOptions MouseDown
+                                                        ]
+
+                                                True ->
+                                                    Canvas.toHtml
+                                                        [ Events.onMouseMove MouseMove
+                                                        , Events.onMouseUp MouseUp
+                                                        , Events.onTouchMove touchOptions MouseMove
+                                                        , Events.onTouchEnd touchOptions MouseUp
+                                                        , Events.onTouchCancel touchOptions MouseUp
+                                                        ]
 
                                         True ->
-                                            Canvas.toHtml
-                                                [ Events.onMouseMove MouseMove
-                                                , Events.onMouseUp MouseUp
-                                                , Events.onTouchMove touchOptions MouseMove
-                                                , Events.onTouchEnd touchOptions MouseUp
-                                                , Events.onTouchCancel touchOptions MouseUp
-                                                ]
+                                            Canvas.toHtml []
 
                                 True ->
                                     Canvas.toHtml []
