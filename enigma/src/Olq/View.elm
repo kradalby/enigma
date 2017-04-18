@@ -104,6 +104,11 @@ viewOutlineQuestion model olq =
 viewCanvas : Model -> Html Msg
 viewCanvas model =
     let
+        touchOptions =
+            { stopPropagation = True
+            , preventDefault = True
+            }
+
         drawOps =
             if model.showAnswer then
                 case model.solution of
@@ -152,16 +157,16 @@ viewCanvas model =
                                         False ->
                                             Canvas.toHtml
                                                 [ Events.onMouseDown MouseDown
-                                                , Events.onTouchStart MouseDown
+                                                , Events.onTouchStart touchOptions MouseDown
                                                 ]
 
                                         True ->
                                             Canvas.toHtml
                                                 [ Events.onMouseMove MouseMove
                                                 , Events.onMouseUp MouseUp
-                                                , Events.onTouchMove MouseMove
-                                                , Events.onTouchEnd MouseUp
-                                                , Events.onTouchCancel MouseUp
+                                                , Events.onTouchMove touchOptions MouseMove
+                                                , Events.onTouchEnd touchOptions MouseUp
+                                                , Events.onTouchCancel touchOptions MouseUp
                                                 ]
 
                                 True ->
