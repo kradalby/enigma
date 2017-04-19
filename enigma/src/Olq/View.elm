@@ -224,9 +224,10 @@ viewCanvas model =
                                             case model.draw of
                                                 False ->
                                                     Canvas.toHtml
-                                                        [ -- Events.onMouseDown MouseDown
-                                                          -- , Events.onSingleTouchStart touchOptions MouseDown
-                                                          Events.onMultiTouchStart touchOptions ToggleZoomMode
+                                                        [ Events.onMouseDown MouseDown
+
+                                                        -- , Events.onSingleTouchStart touchOptions MouseDown
+                                                        , Events.onMultiTouchStart touchOptions ToggleZoomMode
                                                         ]
 
                                                 True ->
