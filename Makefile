@@ -73,5 +73,5 @@ sign:
 init: npm_install init_db_media migrate
 
 start:
-	docker-compose stop
+	docker-compose down
 	docker-compose up
