@@ -27,11 +27,10 @@ import Util
         , percentageOfQuestionsLeft
         , calculateImageSize
         , createDrawImage
-        , onGestureStart
-        , onGestureEnd
         )
 import Canvas exposing (Size, Error, DrawOp(..), DrawImageParams(..), Canvas)
 import Canvas.Events as Events
+import Canvas.Point as Point
 
 
 root : Model -> Html Msg
@@ -142,7 +141,7 @@ viewOutlineQuestion model olq =
          , viewCanvas model
          , i
             [ class "material-icons small"
-            , onClick ToggleZoomMode
+            , onClick (ToggleZoomMode <| [ Point.fromFloats ( 0, 0 ) ])
             ]
             [ text
                 (case model.zoomMode of
@@ -225,17 +224,22 @@ viewCanvas model =
                                             case model.draw of
                                                 False ->
                                                     Canvas.toHtml
-                                                        [ Events.onMouseDown MouseDown
-                                                        , Events.onTouchStart touchOptions MouseDown
+                                                        [ -- Events.onMouseDown MouseDown
+                                                          -- , Events.onSingleTouchStart touchOptions MouseDown
+                                                          Events.onMultiTouchStart touchOptions ToggleZoomMode
                                                         ]
 
                                                 True ->
                                                     Canvas.toHtml
                                                         [ Events.onMouseMove MouseMove
                                                         , Events.onMouseUp MouseUp
-                                                        , Events.onTouchMove touchOptions MouseMove
-                                                        , Events.onTouchEnd touchOptions MouseUp
-                                                        , Events.onTouchCancel touchOptions MouseUp
+
+                                                        -- , Events.onSingleTouchMove touchOptions MouseMove
+                                                        -- , Events.onSingleTouchEnd touchOptions MouseUp
+                                                        -- , Events.onSingleTouchCancel touchOptions MouseUp
+                                                        , Events.onMultiTouchMove touchOptions ToggleZoomMode
+                                                        , Events.onMultiTouchEnd touchOptions ToggleZoomMode
+                                                        , Events.onMultiTouchCancel touchOptions ToggleZoomMode
                                                         ]
 
                                         True ->

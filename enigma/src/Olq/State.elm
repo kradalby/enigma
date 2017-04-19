@@ -254,8 +254,12 @@ update msg model =
         Clear ->
             ( { model | drawData = initDrawData }, Cmd.none )
 
-        ToggleZoomMode ->
-            ( { model | zoomMode = not model.zoomMode }, Cmd.none )
+        ToggleZoomMode points ->
+            let
+                derp =
+                    Debug.log "Zooooomo" points
+            in
+                ( { model | zoomMode = not model.zoomMode }, Cmd.none )
 
 
 subscriptions : Model -> Sub Msg

@@ -73,7 +73,7 @@ type Msg
     | MouseMove Point
     | Touch Point
     | Clear
-    | ToggleZoomMode
+    | ToggleZoomMode (List Point)
 
 
 type Mode
