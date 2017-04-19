@@ -38,7 +38,7 @@ pipeline:
     command_timeout: 1000
     script:
       - docker pull registry.fap.no/enigma/enigma:latest
-      - docker-compose -f /srv/docker/turbo/docker-compose.yml stop
+      - docker-compose -f /srv/docker/turbo/docker-compose.yml down
       - docker-compose -f /srv/docker/turbo/docker-compose.yml up -d
     when:
         status: success
