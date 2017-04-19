@@ -10,6 +10,7 @@ import Task
 import Canvas exposing (Size, Error, DrawOp(..), DrawImageParams(..), Canvas)
 import Canvas.Point exposing (Point)
 import Canvas.Point as Point
+import Json.Decode as Json
 
 
 -- Listen for enter
@@ -25,6 +26,36 @@ onEnter msg =
                 Json.Decode.fail "not ENTER"
     in
         on "keydown" (Json.Decode.andThen isEnter keyCode)
+
+
+gestureOptions : Options
+gestureOptions =
+    { stopPropagation = False
+    , preventDefault = False
+    }
+
+
+gestureDecoder : Json.Decoder ( Float, Float )
+gestureDecoder =
+    Json.map2 (,) (Json.field "clientX" Json.float) (Json.field "clientY" Json.float)
+
+
+onGestureStart : (Point -> msg) -> Attribute msg
+onGestureStart msg =
+    onWithOptions "gesturestart" gestureOptions <|
+        Json.map (Point.fromFloats >> msg) gestureDecoder
+
+
+onGestureChange : (Point -> msg) -> Attribute msg
+onGestureChange msg =
+    onWithOptions "gesturechange" gestureOptions <|
+        Json.map (Point.fromFloats >> msg) gestureDecoder
+
+
+onGestureEnd : (Point -> msg) -> Attribute msg
+onGestureEnd msg =
+    onWithOptions "gestureend" gestureOptions <|
+        Json.map (Point.fromFloats >> msg) gestureDecoder
 
 
 radio : String -> String -> Bool -> msg -> Html msg
