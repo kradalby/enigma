@@ -26,3 +26,35 @@
     {% endif %}
 </form>
 {% endblock %}
+{% block end %}
+<script>
+    document.getElementById('id_image').addEventListener('change', function (event) {
+        var filename = $('#id_image').prop("files")[0]['name'];
+        
+        var setModality = function (str) {
+            var machine = document.getElementById('id_machine');
+            machine.value = str;
+        }
+
+        var setName = function (str) {
+            document.getElementById('id_name').value = str.replace(/\.[^/.]+$/, "");
+        }
+
+        setName(filename);
+
+        if (filename.indexOf("CT") != -1) {
+            setModality("CT");
+        } else if (filename.indexOf("MR") != -1) {
+            setModality("MR");
+        } else if (filename.indexOf("US") != -1) {
+            setModality("US");
+        }
+
+    })
+    
+    
+
+
+    
+</script>
+{% endblock %}

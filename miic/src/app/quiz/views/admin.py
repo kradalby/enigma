@@ -1155,7 +1155,7 @@ def list_image_suggestion_not_in_test(request, test_id):
 @staff_member_required
 def delete_image_suggestion(request, question_id):
     _generic_delete_question(request, GenericImage, question_id)
-    return redirect(list_questions)
+    return redirect(image_overview)
 
 
 @staff_member_required

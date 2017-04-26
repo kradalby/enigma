@@ -99,13 +99,13 @@ class OutlineSolutionQuestionForm(ModelForm):
 class GenericImageForm(ModelForm):
     class Meta:
         model = GenericImage
-        fields = ['name', 'machine', 'image']
+        fields = ['image', 'name', 'machine']
 
     def __init__(self, *args, **kwargs):
         super(GenericImageForm, self).__init__(*args, **kwargs)
+        self.fields['image'].label = 'Image'
         self.fields['name'].label = 'Name'
         self.fields['machine'].label = 'Modalitet'
-        self.fields['image'].label = 'Image'
 
 
 class RatingForm(ModelForm):

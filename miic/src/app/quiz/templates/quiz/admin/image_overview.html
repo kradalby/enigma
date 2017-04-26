@@ -1,6 +1,11 @@
 {% extends "base/admin/index.html" %}
 
 {% block admincontent %}
+<style>
+    .red{
+        color: red;
+    }
+</style>
 <h1>
     Images
 </h1>
@@ -11,6 +16,9 @@
     <img src="{{image.image.url}}">
       <div class="caption">
         <h3>{{image.name}}</h3>
+        <a class="pull-right" href="{% url 'admin_delete_image_suggestion' image.id %}">
+          <span class="glyphicon glyphicon-remove red" aria-hidden="true">Delete</span>
+        </a>
         <h4>{{image.rating}}</h4>
         <a class="btn" href="{% url 'admin_draw_landmark_from_image' image.id %}">Create landmark</a>
         <a class="btn" href="{% url 'admin_draw_outline_from_image' image.id %}">Create outline</a>
