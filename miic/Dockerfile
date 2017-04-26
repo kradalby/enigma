@@ -6,6 +6,10 @@ ENV APP_DIR=/srv/app
 RUN mkdir -p $APP_DIR
 WORKDIR $APP_DIR
 
+RUN apt-get update && apt-get install -y \
+    libtiff5 \
+    && rm -rf /var/lib/apt/lists/*
+
 COPY requirements/base.txt $APP_DIR/base.txt
 COPY requirements/dev.txt $APP_DIR/dev.txt
 
