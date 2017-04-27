@@ -61,6 +61,7 @@ module.exports = {
   devServer: {
     inline: true,
     stats: { colors: true },
+    disableHostCheck: true,
     publicPath: "/enigma"
   }
 };
