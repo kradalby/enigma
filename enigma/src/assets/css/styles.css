@@ -50,3 +50,23 @@ textarea {
   -o-transform: translate(-50%, -50%);
   transform: translate(-50%, -50%);
 }
+
+.pup-parent {
+  position: relative;
+}
+
+.pup-zoom {
+  background-image: url("data:image/svg+xml;utf8, <svg xmlns='http://www.w3.org/2000/svg' version='1.1' height='25px' width='60px'><text x='0' y='15' fill='white' font-size='10'>Zoom</text></svg>");
+  z-index: 11;
+  position: absolute;
+  top: 5;
+  left: 5;
+}
+
+.pup-draw {
+  background-image: url("data:image/svg+xml;utf8, <svg xmlns='http://www.w3.org/2000/svg' version='1.1' height='25px' width='60px'><text x='0' y='15' fill='white' font-size='10'>Draw</text></svg>");
+  z-index: 11;
+  position: absolute;
+  top: 5;
+  left: 5;
+}
