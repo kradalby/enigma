@@ -17,6 +17,7 @@ import Html.Attributes
         , selected
         , for
         , href
+        , attribute
         )
 import Util
     exposing
@@ -30,7 +31,6 @@ import Util
         )
 import Canvas exposing (Size, Error, DrawOp(..), DrawImageParams(..), Canvas)
 import Canvas.Events as Events
-import Canvas.Point as Point
 
 
 root : Model -> Html Msg
@@ -48,7 +48,7 @@ root model =
 
                     Just currentQuestion ->
                         div []
-                            [ viewProgressbar (percentageOfQuestionsLeft model.showAnswer model.currentQuestion model.unAnsweredQuestions model.correctQuestions model.wrongQuestions)
+                            [ viewProgressbar (percentageOfQuestionsLeft model.showAnswer model.currentQuestion model.unAnsweredQuestions model.answeredQuestions [])
                             , viewOutlineQuestion model currentQuestion
                             ]
 
@@ -139,28 +139,51 @@ viewOutlineQuestion model olq =
     div [ class "col s12" ]
         ([ h3 [] [ text "" ]
          , viewCanvas model
-         , i
-            [ class "material-icons small"
-            , onClick (ToggleZoomMode <| [ Point.fromFloats ( 0, 0 ) ])
-            ]
-            [ text
-                (case model.zoomMode of
-                    True ->
-                        "mode_edit"
-
-                    False ->
-                        "zoom_in"
-                )
-            ]
          ]
             ++ (case model.showAnswer of
                     False ->
-                        [ button [ class "btn", onClick Wrong ] [ text "Submit" ]
-                        , button [ class "btn red", onClick Clear ] [ text "Clear" ]
+                        [ button [ class "btn pink", onClick ToggleZoomMode ]
+                            (case model.zoomMode of
+                                False ->
+                                    [ i [ attribute "aria-hidden" "true", class "fa fa-pencil" ]
+                                        []
+                                    , text " Draw"
+                                    ]
+
+                                True ->
+                                    [ i [ attribute "aria-hidden" "true", class "fa fa-search" ]
+                                        []
+                                    , text " Zoom"
+                                    ]
+                            )
+                        , button [ class "btn", onClick CalculateScore ] [ i [ attribute "aria-hidden" "true", class "fa fa-paper-plane-o" ] [], text " Submit" ]
+                        , button [ class "btn blue", onClick Undo ] [ i [ attribute "aria-hidden" "true", class "fa fa-undo" ] [], text " Undo" ]
+                        , button [ class "btn red", onClick Clear ] [ i [ attribute "aria-hidden" "true", class "fa fa-eraser" ] [], text " Clear" ]
+                        , case model.zoomInfoModal of
+                            True ->
+                                div [ class "popup-content-box" ]
+                                    (case model.zoomMode of
+                                        False ->
+                                            [ i [ attribute "aria-hidden" "true", class "fa fa-pencil" ]
+                                                []
+                                            , text " Draw"
+                                            ]
+
+                                        True ->
+                                            [ i [ attribute "aria-hidden" "true", class "fa fa-search" ]
+                                                []
+                                            , text " Zoom"
+                                            ]
+                                    )
+
+                            False ->
+                                text ""
                         ]
 
                     True ->
-                        [ button [ class "btn disabled" ] [ text "Submit" ]
+                        [ button [ class "btn disabled" ] [ text "  Zoom" ]
+                        , button [ class "btn disabled" ] [ text "Submit" ]
+                        , button [ class "btn disabled" ] [ text "Undo" ]
                         , button [ class "btn disabled" ] [ text "Clear" ]
                         ]
                )
@@ -211,6 +234,13 @@ viewCanvas model =
 
                     canvasSize =
                         calculateImageSize imageSize.width imageSize.height model.windowWidth model.windowHeight
+
+                    doubleClickEventListener =
+                        Events.onMultiTouchStart
+                            { stopPropagation = model.oneDoubleFingerTap
+                            , preventDefault = model.oneDoubleFingerTap
+                            }
+                            TouchTwoFingerDoubleTap
                 in
                     Canvas.initialize canvasSize
                         |> Canvas.batch
@@ -224,27 +254,25 @@ viewCanvas model =
                                             case model.draw of
                                                 False ->
                                                     Canvas.toHtml
-                                                        [ Events.onMouseDown MouseDown
-
-                                                        -- , Events.onSingleTouchStart touchOptions MouseDown
-                                                        , Events.onMultiTouchStart touchOptions ToggleZoomMode
+                                                        [ doubleClickEventListener
+                                                        , Events.onMouseDown MouseDown
+                                                        , Events.onMultiTouchStart touchOptions TouchDown
                                                         ]
 
                                                 True ->
                                                     Canvas.toHtml
-                                                        [ Events.onMouseMove MouseMove
+                                                        [ doubleClickEventListener
+                                                        , Events.onMouseMove MouseMove
                                                         , Events.onMouseUp MouseUp
-
-                                                        -- , Events.onSingleTouchMove touchOptions MouseMove
-                                                        -- , Events.onSingleTouchEnd touchOptions MouseUp
-                                                        -- , Events.onSingleTouchCancel touchOptions MouseUp
-                                                        , Events.onMultiTouchMove touchOptions ToggleZoomMode
-                                                        , Events.onMultiTouchEnd touchOptions ToggleZoomMode
-                                                        , Events.onMultiTouchCancel touchOptions ToggleZoomMode
+                                                        , Events.onMultiTouchMove touchOptions TouchMove
+                                                        , Events.onMultiTouchEnd touchOptions TouchUp
+                                                        , Events.onMultiTouchCancel touchOptions TouchUp
                                                         ]
 
                                         True ->
-                                            Canvas.toHtml []
+                                            Canvas.toHtml
+                                                [ doubleClickEventListener
+                                                ]
 
                                 True ->
                                     Canvas.toHtml []
@@ -258,7 +286,6 @@ viewResult : Model -> Html Msg
 viewResult model =
     div []
         [ h3 [] [ text "Results" ]
-        , h5 [] [ text ("Correct: " ++ (toString (List.length model.correctQuestions))) ]
-        , h5 [] [ text ("Wrong: " ++ (toString (List.length model.wrongQuestions))) ]
+        , h5 [] [ text ("Wrong: " ++ (toString model.scores)) ]
         , button [ class "btn", onClick (ChangeMode Start) ] [ text "Start new quiz" ]
         ]

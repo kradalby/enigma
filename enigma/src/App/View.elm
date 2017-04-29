@@ -51,7 +51,9 @@ viewHeader model =
     header []
         [ nav [ class "light-blue lighten-1" ]
             [ div [ class "nav-wrapper container" ]
-                [ a [ id "logo-container", onClick (ChangeMode Main), class "brand-logo" ] [ text "Enigma" ]
+                [ i [ attribute "aria-hidden" "true", class "fa fa-chevron-left", onClick (ChangeMode Main) ]
+                    []
+                , a [ id "logo-container", onClick (ChangeMode Main), class "brand-logo center" ] [ text "Enigma" ]
 
                 -- , ul [ class "right hide-on-med-and-down" ] [ li [] [ a [] [ text "derp" ] ] ]
                 -- , ul [ class "nav-mobile" ] [ li [] [ a [] [ text "derp" ] ] ]

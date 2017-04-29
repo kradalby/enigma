@@ -32,7 +32,7 @@ initDrawData =
 
 
 type alias Model =
-    { correctQuestions : List OutlineQuestion
+    { answeredQuestions : List OutlineQuestion
     , color : Color
     , currentQuestion : Maybe OutlineQuestion
     , drawData : DrawData
@@ -48,9 +48,11 @@ type alias Model =
     , unAnsweredQuestions : List OutlineQuestion
     , windowHeight : Int
     , windowWidth : Int
-    , wrongQuestions : List OutlineQuestion
     , draw : Bool
     , zoomMode : Bool
+    , scores : List Float
+    , oneDoubleFingerTap : Bool
+    , zoomInfoModal : Bool
     }
 
 
@@ -58,8 +60,6 @@ type Msg
     = ToggleShowAnswer
     | StartQuiz Int
     | NextQuestion
-    | Correct
-    | Wrong
     | GetOutlineQuestions
     | SetOutlineQuestions (Result Http.Error (List OutlineQuestion))
     | NumberOfQuestionsInput String
@@ -71,9 +71,17 @@ type Msg
     | MouseDown Point
     | MouseUp Point
     | MouseMove Point
-    | Touch Point
+    | TouchDown (List Point)
+    | TouchUp (List Point)
+    | TouchMove (List Point)
+    | TouchInit (List Point)
+    | TouchTwoFingerDoubleTap (List Point)
+    | SetOneDoubleFingerTap Bool
     | Clear
-    | ToggleZoomMode (List Point)
+    | ToggleZoomMode
+    | CalculateScore
+    | Undo
+    | ToggleZoomInfoModal
 
 
 type Mode
