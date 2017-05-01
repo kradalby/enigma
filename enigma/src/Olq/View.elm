@@ -139,56 +139,59 @@ viewOutlineQuestion : Model -> OutlineQuestion -> Html Msg
 viewOutlineQuestion model olq =
     div [ class "col s12" ]
         ([ h3 [] [ text "" ]
-         , div [ class "pup-parent" ]
-            [ case model.zoomInfoModal of
-                True ->
-                    case model.imageSize of
-                        Nothing ->
-                            text ""
+         , viewCanvas model
 
-                        Just s ->
-                            let
-                                canvasSize =
-                                    calculateImageSize s.width s.height model.windowWidth model.windowHeight
-                            in
-                                case model.zoomMode of
-                                    False ->
-                                        div [ class "pup-draw", style [ ( "height", (toString canvasSize.height) ++ "px" ), ( "width", (toString canvasSize.width) ++ "px" ) ] ] []
-
-                                    True ->
-                                        div [ class "pup-zoom", style [ ( "height", (toString canvasSize.height) ++ "px" ), ( "width", (toString canvasSize.width) ++ "px" ) ] ] []
-
-                False ->
-                    text ""
-            , viewCanvas model
-            ]
+         --  , div [ class "pup-parent" ]
+         --     [
+         --     , case model.zoomInfoModal of
+         --         True ->
+         --             case model.imageSize of
+         --                 Nothing ->
+         --                     text ""
+         --                 Just s ->
+         --                     let
+         --                         canvasSize =
+         --                             calculateImageSize s.width s.height model.windowWidth model.windowHeight
+         --                     in
+         --                         case model.zoomMode of
+         --                             False ->
+         --                                 div [ class "pup-draw", style [ ( "height", (toString canvasSize.height) ++ "px" ), ( "width", (toString canvasSize.width) ++ "px" ) ] ] []
+         --                             True ->
+         --                                 div [ class "pup-zoom", style [ ( "height", (toString canvasSize.height) ++ "px" ), ( "width", (toString canvasSize.width) ++ "px" ) ] ] []
+         --         False ->
+         --             text ""
+         --     ]
          ]
             ++ (case model.showAnswer of
                     False ->
-                        [ button [ class "btn pink", onClick ToggleZoomMode ]
-                            (case model.zoomMode of
-                                False ->
-                                    [ i [ attribute "aria-hidden" "true", class "fa fa-pencil" ]
-                                        []
-                                    , text " Draw"
-                                    ]
+                        [ div []
+                            [ button [ class "btn pink", onClick ToggleZoomMode ]
+                                (case model.zoomMode of
+                                    False ->
+                                        [ i [ attribute "aria-hidden" "true", class "fa fa-pencil" ]
+                                            []
+                                        , text " Draw"
+                                        ]
 
-                                True ->
-                                    [ i [ attribute "aria-hidden" "true", class "fa fa-search" ]
-                                        []
-                                    , text " Zoom"
-                                    ]
-                            )
-                        , button [ class "btn", onClick CalculateScore ] [ i [ attribute "aria-hidden" "true", class "fa fa-paper-plane-o" ] [], text " Submit" ]
-                        , button [ class "btn blue", onClick Undo ] [ i [ attribute "aria-hidden" "true", class "fa fa-undo" ] [], text " Undo" ]
-                        , button [ class "btn red", onClick Clear ] [ i [ attribute "aria-hidden" "true", class "fa fa-eraser" ] [], text " Clear" ]
+                                    True ->
+                                        [ i [ attribute "aria-hidden" "true", class "fa fa-search" ]
+                                            []
+                                        , text " Zoom"
+                                        ]
+                                )
+                            , button [ class "btn", onClick CalculateScore ] [ i [ attribute "aria-hidden" "true", class "fa fa-paper-plane-o" ] [], text " Submit" ]
+                            , button [ class "btn blue", onClick Undo ] [ i [ attribute "aria-hidden" "true", class "fa fa-undo" ] [], text " Undo" ]
+                            , button [ class "btn red", onClick Clear ] [ i [ attribute "aria-hidden" "true", class "fa fa-eraser" ] [], text " Clear" ]
+                            ]
                         ]
 
                     True ->
-                        [ button [ class "btn disabled" ] [ text "Zoom" ]
-                        , button [ class "btn disabled" ] [ text "Submit" ]
-                        , button [ class "btn disabled" ] [ text "Undo" ]
-                        , button [ class "btn disabled" ] [ text "Clear" ]
+                        [ div []
+                            [ button [ class "btn disabled" ] [ text "Zoom" ]
+                            , button [ class "btn disabled" ] [ text "Submit" ]
+                            , button [ class "btn disabled" ] [ text "Undo" ]
+                            , button [ class "btn disabled" ] [ text "Clear" ]
+                            ]
                         ]
                )
         )
