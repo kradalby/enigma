@@ -173,17 +173,8 @@ viewResult : Model -> Html Msg
 viewResult model =
     div []
         [ h3 [] [ text "Results" ]
-        , h5 [] [ text ("Correct: " ++ (toString (List.length model.correctQuestions))) ]
-        , h5 [] [ text ("Wrong: " ++ (toString (List.length model.wrongQuestions))) ]
+        , h5 [] [ text ("Answers: " ++ (toString (List.length model.correctQuestions) ++ "/" ++ (toString (List.length model.wrongQuestions)))) ]
+        , h5 [] [ text ("points: " ++ (toString ((List.length model.correctQuestions) * 100))) ]
+        , h5 [] [ text ("best: " ++ (toString model.score.best)) ]
         , button [ class "btn", onClick (ChangeMode Start) ] [ text "Start new quiz" ]
-        ]
-
-
-viewSessionInformation : Model -> Html Msg
-viewSessionInformation model =
-    div [ id "stats" ]
-        [ h5 [] [ text ("Correct: " ++ (toString (List.length model.correctQuestions))) ]
-        , h5 [] [ text ("Wrong: " ++ (toString (List.length model.wrongQuestions))) ]
-        , h5 [] [ text ("Left: " ++ (toString (List.length model.unAnsweredQuestions))) ]
-        , h5 [] [ text ("Total: " ++ (toString (List.length model.questions))) ]
         ]
