@@ -6,7 +6,7 @@ import Olq.Rest exposing (getOutlineQuestions)
 import Random
 import Random.List exposing (shuffle)
 import Time
-import Util exposing (delay, calculateImageSize)
+import Util exposing (delay, calculateImageSize, createDrawImage)
 import Task
 import Canvas
 import App.Rest exposing (base_url)
@@ -73,6 +73,7 @@ update msg model =
                     , currentQuestion =
                         h
                     , answeredQuestions = []
+                    , scores = []
                     , seed = seed
                     , mode = Running
                   }
@@ -86,7 +87,38 @@ update msg model =
             in
                 case nextModel.currentQuestion of
                     Nothing ->
-                        ( { nextModel | showAnswer = False, mode = Result }, Cmd.none )
+                        let
+                            s =
+                                model.score
+
+                            ( best, newBestCmd ) =
+                                if s.best < ((List.sum model.scores)) then
+                                    ( List.sum model.scores, Cmd.none )
+                                else
+                                    ( s.best, Cmd.none )
+
+                            score =
+                                { s
+                                    | correct =
+                                        model.score.correct
+                                            + (List.length
+                                                (List.filter
+                                                    (\n -> n > Types.olqCorrectThreshold)
+                                                    model.scores
+                                                )
+                                              )
+                                    , wrong =
+                                        model.score.wrong
+                                            + (List.length
+                                                (List.filter
+                                                    (\n -> n < Types.olqCorrectThreshold)
+                                                    model.scores
+                                                )
+                                              )
+                                    , best = best
+                                }
+                        in
+                            ( { nextModel | showAnswer = False, mode = Result, score = score }, Cmd.batch [ newBestCmd, (saveToStorage score) ] )
 
                     _ ->
                         ( { nextModel | showAnswer = False }, Cmd.batch (getListOfLoadImageMessages nextModel.currentQuestion) )
@@ -99,7 +131,7 @@ update msg model =
                 Just question ->
                     { model
                         | answeredQuestions = question :: model.answeredQuestions
-                        , scores = (checkAnswer model) :: model.scores
+                        , scores = model.scores ++ [ (checkAnswer model) ]
                         , showAnswer = True
                     }
             , (delay (Time.second * showAnswerDelay) <| NextQuestion)
@@ -517,7 +549,7 @@ concatDrawOps color drawOps =
         ++ [ Stroke ]
 
 
-checkAnswer : Model -> Float
+checkAnswer : Model -> Int
 checkAnswer model =
     let
         distance : Point -> Point -> Float
@@ -550,7 +582,9 @@ checkAnswer model =
                         canvasSize =
                             calculateImageSize imageSize.width imageSize.height model.windowWidth model.windowHeight
                     in
-                        Canvas.getPopulatedPoints (Point.fromInts ( 0, 0 )) imageSize canvas
+                        Canvas.initialize canvasSize
+                            |> Canvas.batch [ (createDrawImage canvas canvasSize) ]
+                            |> Canvas.getPopulatedPoints (Point.fromInts ( 0, 0 )) canvasSize
             )
 
         submittedPoints =
@@ -560,9 +594,9 @@ checkAnswer model =
                 model.drawData.points
             )
 
-        score =
-            Debug.log "Score" <|
-                (List.foldl
+        eucleadianScore =
+            Debug.log "Euc score" <|
+                ((List.foldl
                     (\point1 acc ->
                         (List.foldl
                             (\point2 current ->
@@ -582,10 +616,21 @@ checkAnswer model =
                     )
                     0.0
                     submittedPoints
-                )
+                 )
                     / toFloat (List.length submittedPoints)
+                )
+
+        score =
+            Debug.log "score" <|
+                if eucleadianScore < 0 || eucleadianScore > 100 then
+                    0
+                else if eucleadianScore == 4200 then
+                    0
+                else
+                    toFloat Types.pointBase
+                        - eucleadianScore
     in
-        score
+        floor score
 
 
 getFromStorage : Cmd Msg

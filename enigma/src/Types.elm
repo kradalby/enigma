@@ -42,6 +42,11 @@ doubleTapDelay =
     700
 
 
+olqCorrectThreshold : Int
+olqCorrectThreshold =
+    85
+
+
 initQuestionScore : QuestionScore
 initQuestionScore =
     { correct = 0

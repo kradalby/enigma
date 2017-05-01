@@ -9,7 +9,6 @@ import Lmq.Types
 import Olq.State
 import Olq.Types
 import Date exposing (Date)
-import LocalStorage as LS
 
 
 init : Flags -> ( Model, Cmd Msg )

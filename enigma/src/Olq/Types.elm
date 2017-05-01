@@ -50,7 +50,7 @@ type alias Model =
     , windowWidth : Int
     , draw : Bool
     , zoomMode : Bool
-    , scores : List Float
+    , scores : List Int
     , oneDoubleFingerTap : Bool
     , zoomInfoModal : Bool
     , score : QuestionScore
