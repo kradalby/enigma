@@ -71,6 +71,8 @@ sign:
 	drone sign $(REPO)
 
 init: npm_install init_db_media migrate
+	git submodule init
+	git submodule update --recursive --remote
 
 start:
 	docker-compose down
