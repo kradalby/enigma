@@ -9,6 +9,7 @@ import Lmq.Types
 import Olq.State
 import Olq.Types
 import Date exposing (Date)
+import LocalStorage as LS
 
 
 init : Flags -> ( Model, Cmd Msg )
@@ -111,7 +112,7 @@ update msg model =
                         in
                             ( { model | global = { global | mode = mode }, olq = newModel }, Cmd.none )
 
-                    Main ->
+                    _ ->
                         ( { model | global = { global | mode = mode } }, Cmd.none )
 
 

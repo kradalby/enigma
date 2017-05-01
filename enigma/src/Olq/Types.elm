@@ -5,7 +5,7 @@ import Random
 import Canvas exposing (DrawOp, Canvas, Error, Size)
 import Canvas.Point exposing (Point)
 import Color exposing (Color)
-import Types exposing (Region, canvasSize, wrongColor, Image)
+import Types exposing (Region, canvasSize, wrongColor, Image, QuestionScore)
 
 
 type alias OutlineQuestion =
@@ -53,6 +53,7 @@ type alias Model =
     , scores : List Float
     , oneDoubleFingerTap : Bool
     , zoomInfoModal : Bool
+    , score : QuestionScore
     }
 
 
@@ -82,6 +83,8 @@ type Msg
     | CalculateScore
     | Undo
     | ToggleZoomInfoModal
+    | Noop
+    | Load String
 
 
 type Mode

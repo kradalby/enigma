@@ -29,6 +29,9 @@ root model =
 
                         OutlineQuestions ->
                             div [] [ Html.map OlqMsg (Olq.View.root model.olq) ]
+
+                        Score ->
+                            viewScore model
                     ]
                 ]
             ]
@@ -46,6 +49,132 @@ viewModeMenu =
         ]
 
 
+viewScore : Model -> Html Msg
+viewScore model =
+    div []
+        [ div []
+            [ table []
+                [ tr []
+                    [ th []
+                        [ text "Game mode" ]
+                    , th []
+                        [ text "Personal best" ]
+                    ]
+                , tr []
+                    [ td []
+                        [ text "Multiple Choice" ]
+                    , td []
+                        [ text (toString model.mcq.score.best) ]
+                    ]
+                , tr []
+                    [ td []
+                        [ text "Landmark" ]
+                    , td []
+                        [ text (toString model.lmq.score.best) ]
+                    ]
+                , tr []
+                    [ td []
+                        [ text "Outline" ]
+                    , td []
+                        [ text (toString model.olq.score.best) ]
+                    ]
+                , tr []
+                    [ td []
+                        [ text "Total" ]
+                    , td []
+                        [ text
+                            (toString
+                                (model.mcq.score.best
+                                    + model.lmq.score.best
+                                    + model.olq.score.best
+                                )
+                            )
+                        ]
+                    ]
+                ]
+            ]
+        , div
+            []
+            [ table []
+                [ tr []
+                    [ th []
+                        [ text "Game mode" ]
+                    , th []
+                        [ text "Correct" ]
+                    , th []
+                        [ text "Wrong" ]
+                    , th []
+                        [ text "Total" ]
+                    ]
+                , tr []
+                    [ td []
+                        [ text "Multiple Choice" ]
+                    , td []
+                        [ text (toString model.mcq.score.correct) ]
+                    , td []
+                        [ text (toString model.mcq.score.wrong) ]
+                    , td []
+                        [ text (toString (model.mcq.score.correct + model.mcq.score.wrong)) ]
+                    ]
+                , tr []
+                    [ td []
+                        [ text "Landmark" ]
+                    , td []
+                        [ text (toString model.lmq.score.correct) ]
+                    , td []
+                        [ text (toString model.lmq.score.wrong) ]
+                    , td []
+                        [ text (toString (model.lmq.score.correct + model.lmq.score.wrong)) ]
+                    ]
+                , tr []
+                    [ td []
+                        [ text "Outline" ]
+                    , td []
+                        [ text (toString model.olq.score.correct) ]
+                    , td []
+                        [ text (toString model.olq.score.wrong) ]
+                    , td []
+                        [ text (toString (model.olq.score.correct + model.olq.score.wrong)) ]
+                    ]
+                , tr []
+                    [ td []
+                        [ text "Total" ]
+                    , td []
+                        [ text
+                            (toString
+                                (model.mcq.score.correct
+                                    + model.lmq.score.correct
+                                    + model.olq.score.correct
+                                )
+                            )
+                        ]
+                    , td []
+                        [ text
+                            (toString
+                                (model.mcq.score.wrong
+                                    + model.lmq.score.wrong
+                                    + model.olq.score.wrong
+                                )
+                            )
+                        ]
+                    , td []
+                        [ text
+                            (toString
+                                (model.mcq.score.correct
+                                    + model.mcq.score.wrong
+                                    + model.lmq.score.correct
+                                    + model.lmq.score.wrong
+                                    + model.olq.score.correct
+                                    + model.olq.score.wrong
+                                )
+                            )
+                        ]
+                    ]
+                ]
+            ]
+        ]
+
+
 viewHeader : Model -> Html Msg
 viewHeader model =
     header []
@@ -54,6 +183,7 @@ viewHeader model =
                 [ i [ attribute "aria-hidden" "true", class "fa fa-chevron-left", onClick (ChangeMode Main) ]
                     []
                 , a [ id "logo-container", onClick (ChangeMode Main), class "brand-logo center" ] [ text "Enigma" ]
+                , a [ onClick (ChangeMode Score), class " right" ] [ text "Score" ]
 
                 -- , ul [ class "right hide-on-med-and-down" ] [ li [] [ a [] [ text "derp" ] ] ]
                 -- , ul [ class "nav-mobile" ] [ li [] [ a [] [ text "derp" ] ] ]

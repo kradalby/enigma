@@ -5,7 +5,7 @@ import Random
 import Canvas exposing (DrawOp, Canvas, Error, Size)
 import Canvas.Point exposing (Point)
 import Color
-import Types exposing (Region, canvasSize, wrongColor, Image)
+import Types exposing (Region, canvasSize, wrongColor, Image, QuestionScore)
 
 
 type alias LandmarkQuestion =
@@ -47,6 +47,7 @@ type alias Model =
     , clickData : ClickData
     , windowWidth : Int
     , windowHeight : Int
+    , score : Types.QuestionScore
     }
 
 
@@ -65,6 +66,8 @@ type Msg
     | ImageLoaded (Result Error Canvas)
     | SolutionLoaded (Result Error Canvas)
     | CanvasClick Point
+    | Noop
+    | Load String
 
 
 type Mode

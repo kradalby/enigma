@@ -6,6 +6,9 @@ import Util exposing (delay)
 import Time
 import Random.List exposing (shuffle)
 import Random
+import Types exposing (showAnswerDelay, errorMessageDelay)
+import LocalStorage
+import Task
 
 
 init : Int -> ( Model, Cmd Msg )
@@ -22,9 +25,10 @@ init initialSeed =
             , numberOfQuestionsInputField = ""
             , error = Nothing
             , seed = Random.initialSeed initialSeed
+            , score = Types.initQuestionScore
             }
     in
-        model ! [ getMultipleChoiceQuestions ]
+        model ! [ getMultipleChoiceQuestions, getFromStorage ]
 
 
 update : Msg -> Model -> ( Model, Cmd Msg )
@@ -66,7 +70,24 @@ update msg model =
             in
                 case nextModel.currentQuestion of
                     Nothing ->
-                        ( { nextModel | showAnswer = False, mode = Result }, Cmd.none )
+                        let
+                            s =
+                                model.score
+
+                            ( best, newBestCmd ) =
+                                if s.best < ((List.length model.correctQuestions) * Types.pointBase) then
+                                    ( ((List.length model.correctQuestions) * Types.pointBase), Cmd.none )
+                                else
+                                    ( s.best, Cmd.none )
+
+                            score =
+                                { s
+                                    | correct = model.score.correct + (List.length model.correctQuestions)
+                                    , wrong = model.score.wrong + (List.length model.wrongQuestions)
+                                    , best = best
+                                }
+                        in
+                            ( { nextModel | showAnswer = False, mode = Result, score = score }, Cmd.batch [ newBestCmd, (saveToStorage score) ] )
 
                     _ ->
                         ( { nextModel | showAnswer = False }, Cmd.none )
@@ -81,7 +102,7 @@ update msg model =
                         | correctQuestions = question :: model.correctQuestions
                         , showAnswer = True
                     }
-            , (delay (Time.second * 3) <| NextQuestion)
+            , (delay (Time.second * showAnswerDelay) <| NextQuestion)
             )
 
         Wrong ->
@@ -94,7 +115,7 @@ update msg model =
                         | wrongQuestions = question :: model.wrongQuestions
                         , showAnswer = True
                     }
-            , (delay (Time.second * 3) <| NextQuestion)
+            , (delay (Time.second * showAnswerDelay) <| NextQuestion)
             )
 
         GetMultipleChoiceQuestions ->
@@ -110,13 +131,23 @@ update msg model =
             ( { model | numberOfQuestionsInputField = number }, Cmd.none )
 
         SetError error ->
-            ( { model | error = Just error }, (delay (Time.second * 5) <| ClearError) )
+            ( { model | error = Just error }, (delay (Time.second * errorMessageDelay) <| ClearError) )
 
         ClearError ->
             ( { model | error = Nothing }, Cmd.none )
 
         ChangeMode mode ->
             ( { model | mode = mode }, Cmd.none )
+
+        Noop ->
+            ( model, Cmd.none )
+
+        Load string ->
+            let
+                qs =
+                    Types.decodeQuestionScore string
+            in
+                ( { model | score = qs }, Cmd.none )
 
 
 subscriptions : Model -> Sub Msg
@@ -136,3 +167,23 @@ nextQuestion model =
                 Just tail ->
                     tail
     }
+
+
+getFromStorage : Cmd Msg
+getFromStorage =
+    LocalStorage.get "enigma-mcq"
+        |> Task.attempt
+            (\result ->
+                case result of
+                    Ok v ->
+                        Load (Maybe.withDefault "" v)
+
+                    Err _ ->
+                        Load ""
+            )
+
+
+saveToStorage : Types.QuestionScore -> Cmd Msg
+saveToStorage qs =
+    LocalStorage.set "enigma-mcq" (Types.encodeQuestionScore qs)
+        |> Task.attempt (always Noop)

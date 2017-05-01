@@ -15,6 +15,7 @@ import Canvas.Point exposing (Point)
 import Canvas.Point as Point
 import Color.Convert
 import Color
+import LocalStorage
 
 
 init : Int -> Int -> Int -> ( Model, Cmd Msg )
@@ -42,6 +43,7 @@ init initialSeed width height =
             , scores = []
             , oneDoubleFingerTap = False
             , zoomInfoModal = False
+            , score = initQuestionScore
             }
     in
         model ! [ getOutlineQuestions ]
@@ -100,7 +102,7 @@ update msg model =
                         , scores = (checkAnswer model) :: model.scores
                         , showAnswer = True
                     }
-            , (delay (Time.second * 3) <| NextQuestion)
+            , (delay (Time.second * showAnswerDelay) <| NextQuestion)
             )
 
         GetOutlineQuestions ->
@@ -116,7 +118,7 @@ update msg model =
             ( { model | numberOfQuestionsInputField = number }, Cmd.none )
 
         SetError error ->
-            ( { model | error = Just error }, (delay (Time.second * 5) <| ClearError) )
+            ( { model | error = Just error }, (delay (Time.second * errorMessageDelay) <| ClearError) )
 
         ClearError ->
             ( { model | error = Nothing }, Cmd.none )
@@ -233,7 +235,7 @@ update msg model =
 
                         False ->
                             ( { model | oneDoubleFingerTap = True }
-                            , (delay (Time.millisecond * 700) <| SetOneDoubleFingerTap False)
+                            , (delay (Time.millisecond * doubleTapDelay) <| SetOneDoubleFingerTap False)
                             )
 
         TouchUp points ->
@@ -272,7 +274,7 @@ update msg model =
 
                         False ->
                             ( { model | oneDoubleFingerTap = True }
-                            , (delay (Time.millisecond * 700) <| SetOneDoubleFingerTap False)
+                            , (delay (Time.millisecond * doubleTapDelay) <| SetOneDoubleFingerTap False)
                             )
 
         TouchMove points ->
@@ -324,7 +326,7 @@ update msg model =
 
                         False ->
                             ( { model | oneDoubleFingerTap = True }
-                            , (delay (Time.millisecond * 700) <| SetOneDoubleFingerTap False)
+                            , (delay (Time.millisecond * doubleTapDelay) <| SetOneDoubleFingerTap False)
                             )
 
         TouchInit points ->
@@ -358,7 +360,7 @@ update msg model =
 
                         False ->
                             ( { model | oneDoubleFingerTap = True }
-                            , (delay (Time.millisecond * 700) <| SetOneDoubleFingerTap False)
+                            , (delay (Time.millisecond * doubleTapDelay) <| SetOneDoubleFingerTap False)
                             )
 
         SetOneDoubleFingerTap val ->
@@ -406,7 +408,17 @@ update msg model =
                     ( { model | zoomInfoModal = False }, Cmd.none )
 
                 False ->
-                    ( { model | zoomInfoModal = True }, (delay (Time.millisecond * 700) <| ToggleZoomInfoModal) )
+                    ( { model | zoomInfoModal = True }, (delay (Time.millisecond * doubleTapDelay) <| ToggleZoomInfoModal) )
+
+        Noop ->
+            ( model, Cmd.none )
+
+        Load string ->
+            let
+                qs =
+                    Types.decodeQuestionScore string
+            in
+                ( { model | score = qs }, Cmd.none )
 
 
 subscriptions : Model -> Sub Msg
@@ -574,3 +586,23 @@ checkAnswer model =
                     / toFloat (List.length submittedPoints)
     in
         score
+
+
+getFromStorage : Cmd Msg
+getFromStorage =
+    LocalStorage.get "enigma-olq"
+        |> Task.attempt
+            (\result ->
+                case result of
+                    Ok v ->
+                        Load (Maybe.withDefault "" v)
+
+                    Err _ ->
+                        Load ""
+            )
+
+
+saveToStorage : Types.QuestionScore -> Cmd Msg
+saveToStorage qs =
+    LocalStorage.set "enigma-olq" (Types.encodeQuestionScore qs)
+        |> Task.attempt (always Noop)

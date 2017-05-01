@@ -2,6 +2,7 @@ module Mcq.Types exposing (..)
 
 import Http
 import Random
+import Types
 
 
 type alias MultipleQuestion =
@@ -26,6 +27,7 @@ type alias Model =
     , numberOfQuestionsInputField : String
     , error : Maybe String
     , seed : Random.Seed
+    , score : Types.QuestionScore
     }
 
 
@@ -41,6 +43,8 @@ type Msg
     | SetError String
     | ClearError
     | ChangeMode Mode
+    | Noop
+    | Load String
 
 
 type Mode

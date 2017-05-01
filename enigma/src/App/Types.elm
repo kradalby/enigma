@@ -42,3 +42,4 @@ type Mode
     | MultipleChoiceQuestions
     | LandmarkQuestions
     | OutlineQuestions
+    | Score
