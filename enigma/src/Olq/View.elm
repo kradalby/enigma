@@ -72,7 +72,7 @@ viewError model =
 
 viewStartQuiz : Model -> Html Msg
 viewStartQuiz model =
-    div []
+    div [ class "center-align" ]
         [ h3
             []
             [ text "How many questions?" ]
@@ -86,7 +86,7 @@ viewStartQuiz model =
             []
         , viewNumberOfQuestionButtons model
         , button
-            [ class "btn"
+            [ class "btn-large"
             , onClick (validateNumberOfQuestionsInputFieldAndCreateResponseMsg model)
             ]
             [ text "Start" ]
@@ -118,7 +118,7 @@ viewNumberOfQuestionButtons model =
     in
         div [ class "row" ] <|
             List.map
-                (\n -> button [ class "btn", onClick <| StartQuiz n ] [ text <| toString n ])
+                (\n -> button [ class "btn-large", onClick <| StartQuiz n ] [ text <| toString n ])
                 buttonNumbers
 
 
@@ -137,35 +137,34 @@ validateNumberOfQuestionsInputFieldAndCreateResponseMsg model =
 
 viewOutlineQuestion : Model -> OutlineQuestion -> Html Msg
 viewOutlineQuestion model olq =
-    div [ class "col s12" ]
+    div [ class "col s12 center-align" ]
         ([ h3 [] [ text "" ]
          , viewCanvas model
-
-         --  , div [ class "pup-parent" ]
-         --     [
-         --     , case model.zoomInfoModal of
-         --         True ->
-         --             case model.imageSize of
-         --                 Nothing ->
-         --                     text ""
-         --                 Just s ->
-         --                     let
-         --                         canvasSize =
-         --                             calculateImageSize s.width s.height model.windowWidth model.windowHeight
-         --                     in
-         --                         case model.zoomMode of
-         --                             False ->
-         --                                 div [ class "pup-draw", style [ ( "height", (toString canvasSize.height) ++ "px" ), ( "width", (toString canvasSize.width) ++ "px" ) ] ] []
-         --                             True ->
-         --                                 div [ class "pup-zoom", style [ ( "height", (toString canvasSize.height) ++ "px" ), ( "width", (toString canvasSize.width) ++ "px" ) ] ] []
-         --         False ->
-         --             text ""
-         --     ]
+           --  , div [ class "pup-parent" ]
+           --     [
+           --     , case model.zoomInfoModal of
+           --         True ->
+           --             case model.imageSize of
+           --                 Nothing ->
+           --                     text ""
+           --                 Just s ->
+           --                     let
+           --                         canvasSize =
+           --                             calculateImageSize s.width s.height model.windowWidth model.windowHeight
+           --                     in
+           --                         case model.zoomMode of
+           --                             False ->
+           --                                 div [ class "pup-draw", style [ ( "height", (toString canvasSize.height) ++ "px" ), ( "width", (toString canvasSize.width) ++ "px" ) ] ] []
+           --                             True ->
+           --                                 div [ class "pup-zoom", style [ ( "height", (toString canvasSize.height) ++ "px" ), ( "width", (toString canvasSize.width) ++ "px" ) ] ] []
+           --         False ->
+           --             text ""
+           --     ]
          ]
             ++ (case model.showAnswer of
                     False ->
-                        [ div []
-                            [ button [ class "btn pink", onClick ToggleZoomMode ]
+                        [ div [ class "center-align" ]
+                            [ button [ class "btn-large pink", onClick ToggleZoomMode ]
                                 (case model.zoomMode of
                                     False ->
                                         [ i [ attribute "aria-hidden" "true", class "fa fa-pencil" ]
@@ -179,18 +178,18 @@ viewOutlineQuestion model olq =
                                         , text " Zoom"
                                         ]
                                 )
-                            , button [ class "btn", onClick CalculateScore ] [ i [ attribute "aria-hidden" "true", class "fa fa-paper-plane-o" ] [], text " Submit" ]
-                            , button [ class "btn blue", onClick Undo ] [ i [ attribute "aria-hidden" "true", class "fa fa-undo" ] [], text " Undo" ]
-                            , button [ class "btn red", onClick Clear ] [ i [ attribute "aria-hidden" "true", class "fa fa-eraser" ] [], text " Clear" ]
+                            , button [ class "btn-large", onClick CalculateScore ] [ i [ attribute "aria-hidden" "true", class "fa fa-paper-plane-o" ] [], text " Submit" ]
+                            , button [ class "btn-large blue", onClick Undo ] [ i [ attribute "aria-hidden" "true", class "fa fa-undo" ] [], text " Undo" ]
+                            , button [ class "btn-large red", onClick Clear ] [ i [ attribute "aria-hidden" "true", class "fa fa-eraser" ] [], text " Clear" ]
                             ]
                         ]
 
                     True ->
                         [ div []
-                            [ button [ class "btn disabled" ] [ text "Zoom" ]
-                            , button [ class "btn disabled" ] [ text "Submit" ]
-                            , button [ class "btn disabled" ] [ text "Undo" ]
-                            , button [ class "btn disabled" ] [ text "Clear" ]
+                            [ button [ class "btn-large disabled" ] [ text "Zoom" ]
+                            , button [ class "btn-large disabled" ] [ text "Submit" ]
+                            , button [ class "btn-large disabled" ] [ text "Undo" ]
+                            , button [ class "btn-large disabled" ] [ text "Clear" ]
                             ]
                         ]
                )
@@ -291,8 +290,12 @@ viewCanvas model =
 
 viewResult : Model -> Html Msg
 viewResult model =
-    div []
+    div [ class "center-align" ]
         [ h3 [] [ text "Results" ]
         , h5 [] [ text ("Wrong: " ++ (toString model.scores)) ]
-        , button [ class "btn", onClick (ChangeMode Start) ] [ text "Start new quiz" ]
+        , div [ class "row" ] []
+        , div [ class "row" ] []
+        , div [ class "row" ] []
+        , div [ class "row" ] []
+        , button [ class "btn btn-large s12", onClick (ChangeMode Start) ] [ text "Start new quiz" ]
         ]
