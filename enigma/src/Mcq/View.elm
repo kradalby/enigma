@@ -48,7 +48,7 @@ viewError model =
 
 viewStartQuiz : Model -> Html Msg
 viewStartQuiz model =
-    div []
+    div [ class "center-align" ]
         [ h3 [] [ text "How many questions?" ]
         , input
             [ id "wordInput"
@@ -60,7 +60,7 @@ viewStartQuiz model =
             []
         , viewNumberOfQuestionButtons model
         , button
-            [ class "btn"
+            [ class "btn-large"
             , onClick (validateNumberOfQuestionsInputFieldAndCreateResponseMsg model)
             ]
             [ text "Start" ]
@@ -92,7 +92,7 @@ viewNumberOfQuestionButtons model =
     in
         div [ class "row" ] <|
             List.map
-                (\n -> button [ class "btn", onClick <| StartQuiz n ] [ text <| toString n ])
+                (\n -> button [ class "btn-large", onClick <| StartQuiz n ] [ text <| toString n ])
                 buttonNumbers
 
 
@@ -111,8 +111,11 @@ validateNumberOfQuestionsInputFieldAndCreateResponseMsg model =
 
 viewMultipleChoiceQuestion : MultipleQuestion -> Bool -> Html Msg
 viewMultipleChoiceQuestion mcq showAnswer =
-    div []
-        [ h3 [] [ text mcq.question ]
+    div [ class "center-align" ]
+        [ h5 [] [ text mcq.question ]
+        , div [ class "row" ] []
+        , div [ class "row" ] []
+        , div [ class "row" ] []
         , div [ class "row" ]
             [ case mcq.image of
                 Just image ->
@@ -127,7 +130,7 @@ viewMultipleChoiceQuestion mcq showAnswer =
                 Nothing ->
                     text ""
             ]
-        , div [ class "row" ] (viewMultipleChoiceQuestionAlternaltives mcq.answers mcq.correct showAnswer)
+        , div [ class "row center-align" ] (viewMultipleChoiceQuestionAlternaltives mcq.answers mcq.correct showAnswer)
         ]
 
 
@@ -135,18 +138,18 @@ viewMultipleChoiceQuestionAlternaltives : List String -> Int -> Bool -> List (Ht
 viewMultipleChoiceQuestionAlternaltives alternaltives correctAnswer showAnswer =
     List.indexedMap
         (\i alternaltive ->
-            div [ class "col s12 m6 l3" ]
-                [ button
+            div [ class "col s12" ]
+                [ div
                     [ class
                         (case showAnswer of
                             False ->
-                                "btn indigo lighten-5 black-text"
+                                "card hoverable teal lighten-2"
 
                             True ->
                                 (if i == correctAnswer then
-                                    "btn green"
+                                    "card green"
                                  else
-                                    "btn red"
+                                    "card red"
                                 )
                         )
                     , style [ ( "width", "100%" ) ]
@@ -163,18 +166,57 @@ viewMultipleChoiceQuestionAlternaltives alternaltives correctAnswer showAnswer =
                             alt ""
                       )
                     ]
-                    [ text alternaltive ]
+                    -- [ class "card teal lighten-2" ]
+                    [ div [ class "card-content white-text" ]
+                        [ span [ class "card-title" ]
+                            [ p [] [ text alternaltive ]
+                            ]
+                        ]
+                    ]
                 ]
+         {- [ button
+                [ class
+                    (case showAnswer of
+                        False ->
+                            "btn indigo lighten-5 black-text"
+
+                        True ->
+                            (if i == correctAnswer then
+                                "btn green"
+                             else
+                                "btn red"
+                            )
+                    )
+                , style [ ( "width", "100%" ) ]
+                , (case showAnswer of
+                    False ->
+                        onClick
+                            (if i == correctAnswer then
+                                Correct
+                             else
+                                Wrong
+                            )
+
+                    True ->
+                        alt ""
+                  )
+                ]
+                [ text alternaltive ]
+            ]
+         -}
         )
         alternaltives
 
 
 viewResult : Model -> Html Msg
 viewResult model =
-    div []
+    div [ class "center-align" ]
         [ h3 [] [ text "Results" ]
-        , h5 [] [ text ("Answers: " ++ (toString (List.length model.correctQuestions) ++ "/" ++ (toString (List.length model.wrongQuestions)))) ]
-        , h5 [] [ text ("points: " ++ (toString ((List.length model.correctQuestions) * 100))) ]
-        , h5 [] [ text ("best: " ++ (toString model.score.best)) ]
-        , button [ class "btn", onClick (ChangeMode Start) ] [ text "Start new quiz" ]
+        , h5 [] [ text ("Correct: " ++ (toString (List.length model.correctQuestions))) ]
+        , h5 [] [ text ("Wrong: " ++ (toString (List.length model.wrongQuestions))) ]
+        , div [ class "row" ] []
+        , div [ class "row" ] []
+        , div [ class "row" ] []
+        , div [ class "row" ] []
+        , button [ class "btn-large", onClick (ChangeMode Start) ] [ text "Start new quiz" ]
         ]
