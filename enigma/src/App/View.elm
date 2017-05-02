@@ -35,17 +35,23 @@ root model =
                     ]
                 ]
             ]
-        , viewFooter model
+          -- , viewFooter model
         ]
 
 
 viewModeMenu : Html Msg
 viewModeMenu =
     div []
-        [ h4 [] [ text "Choose game" ]
-        , button [ class "btn waves-effect waves-light", onClick (ChangeMode MultipleChoiceQuestions) ] [ text "Multiple Choice Questions" ]
-        , button [ class "btn waves-effect waves-light", onClick (ChangeMode LandmarkQuestions) ] [ text "Landmark Questions" ]
-        , button [ class "btn waves-effect waves-light", onClick (ChangeMode OutlineQuestions) ] [ text "Outline Questions" ]
+        [ h4 [ class "center-align" ] [ text "Choose game mode" ]
+        , div [ class "row" ]
+            [ button [ class "waves-effect waves-light col s12 btn-large", onClick (ChangeMode MultipleChoiceQuestions) ] [ text "Multiple Choice Questions" ]
+            ]
+        , div [ class "row" ]
+            [ button [ class "waves-effect waves-light col s12 btn-large", onClick (ChangeMode LandmarkQuestions) ] [ text "Landmark Questions" ]
+            ]
+        , div [ class "row" ]
+            [ button [ class "waves-effect waves-light col s12 btn-large", onClick (ChangeMode OutlineQuestions) ] [ text "Outline Questions" ]
+            ]
         ]
 
 
@@ -53,124 +59,136 @@ viewScore : Model -> Html Msg
 viewScore model =
     div []
         [ div []
-            [ table []
-                [ tr []
-                    [ th []
-                        [ text "Game mode" ]
-                    , th []
-                        [ text "Personal best" ]
+            [ table [ class "striped" ]
+                [ thead []
+                    [ tr []
+                        [ th []
+                            [ text "Game mode" ]
+                        , th [ class "table-align-right" ]
+                            [ text "Personal best" ]
+                        ]
                     ]
-                , tr []
-                    [ td []
-                        [ text "Multiple Choice" ]
-                    , td []
-                        [ text (toString model.mcq.score.best) ]
-                    ]
-                , tr []
-                    [ td []
-                        [ text "Landmark" ]
-                    , td []
-                        [ text (toString model.lmq.score.best) ]
-                    ]
-                , tr []
-                    [ td []
-                        [ text "Outline" ]
-                    , td []
-                        [ text (toString model.olq.score.best) ]
-                    ]
-                , tr []
-                    [ td []
-                        [ text "Total" ]
-                    , td []
-                        [ text
-                            (toString
-                                (model.mcq.score.best
-                                    + model.lmq.score.best
-                                    + model.olq.score.best
+                , tbody
+                    []
+                    [ tr []
+                        [ td []
+                            [ text "Multiple Choice" ]
+                        , td [ class "table-align-right" ]
+                            [ text (toString model.mcq.score.best) ]
+                        ]
+                    , tr []
+                        [ td []
+                            [ text "Landmark" ]
+                        , td [ class "table-align-right" ]
+                            [ text (toString model.lmq.score.best) ]
+                        ]
+                    , tr []
+                        [ td []
+                            [ text "Outline" ]
+                        , td [ class "table-align-right" ]
+                            [ text (toString model.olq.score.best) ]
+                        ]
+                    , tr []
+                        [ th []
+                            [ text "Total" ]
+                        , th [ class "table-align-right" ]
+                            [ text
+                                (toString
+                                    (model.mcq.score.best
+                                        + model.lmq.score.best
+                                        + model.olq.score.best
+                                    )
                                 )
-                            )
+                            ]
                         ]
                     ]
                 ]
             ]
+        , hr [] []
+        , div [] []
         , div
             []
-            [ table []
-                [ tr []
-                    [ th []
-                        [ text "Game mode" ]
-                    , th []
-                        [ text "Correct" ]
-                    , th []
-                        [ text "Wrong" ]
-                    , th []
-                        [ text "Total" ]
-                    ]
-                , tr []
-                    [ td []
-                        [ text "Multiple Choice" ]
-                    , td []
-                        [ text (toString model.mcq.score.correct) ]
-                    , td []
-                        [ text (toString model.mcq.score.wrong) ]
-                    , td []
-                        [ text (toString (model.mcq.score.correct + model.mcq.score.wrong)) ]
-                    ]
-                , tr []
-                    [ td []
-                        [ text "Landmark" ]
-                    , td []
-                        [ text (toString model.lmq.score.correct) ]
-                    , td []
-                        [ text (toString model.lmq.score.wrong) ]
-                    , td []
-                        [ text (toString (model.lmq.score.correct + model.lmq.score.wrong)) ]
-                    ]
-                , tr []
-                    [ td []
-                        [ text "Outline" ]
-                    , td []
-                        [ text (toString model.olq.score.correct) ]
-                    , td []
-                        [ text (toString model.olq.score.wrong) ]
-                    , td []
-                        [ text (toString (model.olq.score.correct + model.olq.score.wrong)) ]
-                    ]
-                , tr []
-                    [ td []
-                        [ text "Total" ]
-                    , td []
-                        [ text
-                            (toString
-                                (model.mcq.score.correct
-                                    + model.lmq.score.correct
-                                    + model.olq.score.correct
-                                )
-                            )
+            [ table [ class "striped" ]
+                [ thead []
+                    [ tr []
+                        [ th []
+                            [ text "Game mode" ]
+                        , th [ class "table-align-right" ]
+                            [ text "Correct" ]
+                        , th [ class "table-align-right" ]
+                            [ text "Wrong" ]
+                        , th [ class "table-align-right" ]
+                            [ text "Total" ]
                         ]
-                    , td []
-                        [ text
-                            (toString
-                                (model.mcq.score.wrong
-                                    + model.lmq.score.wrong
-                                    + model.olq.score.wrong
-                                )
-                            )
+                    ]
+                , tbody []
+                    [ tr []
+                        [ td []
+                            [ text "Multiple Choice" ]
+                        , td [ class "table-align-right" ]
+                            [ text (toString model.mcq.score.correct) ]
+                        , td [ class "table-align-right" ]
+                            [ text (toString model.mcq.score.wrong) ]
+                        , td [ class "table-align-right" ]
+                            [ text (toString (model.mcq.score.correct + model.mcq.score.wrong)) ]
                         ]
-                    , td []
-                        [ text
-                            (toString
-                                (model.mcq.score.correct
-                                    + model.mcq.score.wrong
-                                    + model.lmq.score.correct
-                                    + model.lmq.score.wrong
-                                    + model.olq.score.correct
-                                    + model.olq.score.wrong
+                    , tr []
+                        [ td []
+                            [ text "Landmark" ]
+                        , td [ class "table-align-right" ]
+                            [ text (toString model.lmq.score.correct) ]
+                        , td [ class "table-align-right" ]
+                            [ text (toString model.lmq.score.wrong) ]
+                        , td [ class "table-align-right" ]
+                            [ text (toString (model.lmq.score.correct + model.lmq.score.wrong)) ]
+                        ]
+                    , tr []
+                        [ td []
+                            [ text "Outline" ]
+                        , td [ class "table-align-right" ]
+                            [ text (toString model.olq.score.correct) ]
+                        , td [ class "table-align-right" ]
+                            [ text (toString model.olq.score.wrong) ]
+                        , td [ class "table-align-right" ]
+                            [ text (toString (model.olq.score.correct + model.olq.score.wrong)) ]
+                        ]
+                    , tr []
+                        [ th []
+                            [ text "Total" ]
+                        , th [ class "table-align-right" ]
+                            [ text
+                                (toString
+                                    (model.mcq.score.correct
+                                        + model.lmq.score.correct
+                                        + model.olq.score.correct
+                                    )
                                 )
-                            )
+                            ]
+                        , th [ class "table-align-right" ]
+                            [ text
+                                (toString
+                                    (model.mcq.score.wrong
+                                        + model.lmq.score.wrong
+                                        + model.olq.score.wrong
+                                    )
+                                )
+                            ]
+                        , th [ class "table-align-right" ]
+                            [ text
+                                (toString
+                                    (model.mcq.score.correct
+                                        + model.mcq.score.wrong
+                                        + model.lmq.score.correct
+                                        + model.lmq.score.wrong
+                                        + model.olq.score.correct
+                                        + model.olq.score.wrong
+                                    )
+                                )
+                            ]
                         ]
                     ]
                 ]
+            , hr [] []
             ]
         ]
 
@@ -178,51 +196,58 @@ viewScore model =
 viewHeader : Model -> Html Msg
 viewHeader model =
     header []
-        [ nav [ class "light-blue lighten-1" ]
+        [ nav [ class "blue" ]
             [ div [ class "nav-wrapper container" ]
-                [ i [ attribute "aria-hidden" "true", class "fa fa-chevron-left", onClick (ChangeMode Main) ]
-                    []
-                , a [ id "logo-container", onClick (ChangeMode Main), class "brand-logo center" ] [ text "Enigma" ]
-                , a [ onClick (ChangeMode Score), class " right" ] [ text "Score" ]
+                [ (case model.global.mode of
+                    Main ->
+                        text ""
 
-                -- , ul [ class "right hide-on-med-and-down" ] [ li [] [ a [] [ text "derp" ] ] ]
-                -- , ul [ class "nav-mobile" ] [ li [] [ a [] [ text "derp" ] ] ]
-                -- , a [ href "#", dataactivates "nav-mobile", class "button-collapse" ] [ i [ class "material-icons" ] [ text "menu" ] ]
+                    _ ->
+                        i [ attribute "aria-hidden" "true", class "fa fa-chevron-left add-pointer", onClick (ChangeMode Main) ]
+                            []
+                  )
+                , a [ id "logo-container", onClick (ChangeMode Main), class "brand-logo center add-pointer" ] [ text "Enigma" ]
+                , a [ onClick (ChangeMode Score), class " right add-pointer" ] [ text "Score" ]
+                  -- , ul [ class "right hide-on-med-and-down" ] [ li [] [ a [] [ text "derp" ] ] ]
+                  -- , ul [ class "nav-mobile" ] [ li [] [ a [] [ text "derp" ] ] ]
+                  -- , a [ href "#", dataactivates "nav-mobile", class "button-collapse" ] [ i [ class "material-icons" ] [ text "menu" ] ]
                 ]
             ]
         ]
 
 
-viewFooter : Model -> Html Msg
-viewFooter model =
-    footer [ class "page-footer orange" ]
-        [ div [ class "container" ] [ div [ class "row" ] [] ]
-        , div [ class "footer-copyright" ]
-            [ div [ class "container" ]
-                [ p []
-                    [ text "Made with ", a [ class "orange-text text-lighten-3", href "http://elm-lang.org" ] [ text "Elm" ] ]
-                , p
-                    []
-                    [ text
-                        ("Copyright "
-                            ++ (toString
-                                    (case model.global.date of
-                                        Nothing ->
-                                            1337
 
-                                        Just date ->
-                                            Date.year date
-                                    )
-                               )
-                            ++ " "
-                        )
-                    , a [ href "https://github.com/freboto", class "orange-text text-lighten-3" ] [ text "Fredrik Borgen Tørnvall" ]
-                    , text " and "
-                    , a [ href "https://kradalby.no", class "orange-text text-lighten-3" ] [ text "Kristoffer Dalby" ]
-                    ]
-                ]
-            ]
-        ]
+{- viewFooter : Model -> Html Msg
+   viewFooter model =
+       footer [ class "page-footer blue lighten-1" ]
+           [ div [ class "container" ] [ div [ class "row" ] [] ]
+           , div [ class "footer-copyright" ]
+               [ div [ class "container" ]
+                   [ p []
+                       [ text "Made with ", a [ class "orange-text text-lighten-1", href "http://elm-lang.org" ] [ text "Elm" ] ]
+                   , p
+                       []
+                       [ text
+                           ("Copyright "
+                               ++ (toString
+                                       (case model.global.date of
+                                           Nothing ->
+                                               1337
+
+                                           Just date ->
+                                               Date.year date
+                                       )
+                                  )
+                               ++ " "
+                           )
+                       , a [ href "https://github.com/freboto", class "orange-text text-lighten-1" ] [ text "Fredrik Borgen Tørnvall" ]
+                       , text " and "
+                       , a [ href "https://kradalby.no", class "orange-text text-lighten-1" ] [ text "Kristoffer Dalby" ]
+                       ]
+                   ]
+               ]
+           ]
+-}
 
 
 dataactivates : String -> Html.Attribute Msg
