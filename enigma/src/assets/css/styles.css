@@ -74,3 +74,14 @@ textarea {
   margin: 15px;
 
 }
+.btn-large-no-margin{
+  margin: 0px;
+}
+
+.table-align-right{
+  text-align: right;
+}
+
+.add-pointer{
+  cursor: pointer;
+}
