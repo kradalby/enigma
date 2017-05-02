@@ -4,7 +4,7 @@ import Types exposing (..)
 import Lmq.Types exposing (..)
 import Html exposing (..)
 import Html.Events exposing (onInput, onClick)
-import Html.Attributes exposing (type_, checked, name, disabled, value, class, src, id, selected, for, href)
+import Html.Attributes exposing (type_, checked, name, disabled, value, class, src, id, selected, for, href, placeholder)
 import Util exposing (onEnter, viewErrorBox, viewSpinningLoader, viewProgressbar, calculateImageSize, percentageOfQuestionsLeft, createDrawImage)
 import Canvas exposing (Size, Error, DrawOp(..), DrawImageParams(..), Canvas)
 import Canvas.Events as Events
@@ -49,11 +49,12 @@ viewError model =
 viewStartQuiz : Model -> Html Msg
 viewStartQuiz model =
     div [ class "center-align" ]
-        [ h3
+        [ h4
             []
             [ text "How many questions?" ]
         , input
             [ id "wordInput"
+            , placeholder "Enter a number"
             , type_ "number"
             , onInput NumberOfQuestionsInput
             , value model.numberOfQuestionsInputField
