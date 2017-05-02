@@ -19,6 +19,7 @@ import Html.Attributes
         , href
         , attribute
         , style
+        , placeholder
         )
 import Util
     exposing
@@ -73,11 +74,12 @@ viewError model =
 viewStartQuiz : Model -> Html Msg
 viewStartQuiz model =
     div [ class "center-align" ]
-        [ h3
+        [ h4
             []
             [ text "How many questions?" ]
         , input
             [ id "wordInput"
+            , placeholder "Enter a number"
             , type_ "number"
             , onInput NumberOfQuestionsInput
             , value model.numberOfQuestionsInputField
@@ -138,7 +140,7 @@ validateNumberOfQuestionsInputFieldAndCreateResponseMsg model =
 viewOutlineQuestion : Model -> OutlineQuestion -> Html Msg
 viewOutlineQuestion model olq =
     div [ class "col s12 center-align" ]
-        ([ h3 [] [ text "" ]
+        ([ h5 [] [ text "Outline: Tumor " ]
          , viewCanvas model
            --  , div [ class "pup-parent" ]
            --     [
@@ -163,33 +165,33 @@ viewOutlineQuestion model olq =
          ]
             ++ (case model.showAnswer of
                     False ->
-                        [ div [ class "center-align" ]
-                            [ button [ class "btn-large pink", onClick ToggleZoomMode ]
+                        [ div [ class "center-align container" ]
+                            [ button [ class "btn-large pink col s6 btn-large-no-margin", onClick ToggleZoomMode ]
                                 (case model.zoomMode of
                                     False ->
-                                        [ i [ attribute "aria-hidden" "true", class "fa fa-pencil" ]
+                                        [ i [ attribute "aria-hidden" "true", class "fa fa-search" ]
                                             []
-                                        , text " Draw"
+                                        , text " Zoom off"
                                         ]
 
                                     True ->
                                         [ i [ attribute "aria-hidden" "true", class "fa fa-search" ]
                                             []
-                                        , text " Zoom"
+                                        , text " Zoom on"
                                         ]
                                 )
-                            , button [ class "btn-large", onClick CalculateScore ] [ i [ attribute "aria-hidden" "true", class "fa fa-paper-plane-o" ] [], text " Submit" ]
-                            , button [ class "btn-large blue", onClick Undo ] [ i [ attribute "aria-hidden" "true", class "fa fa-undo" ] [], text " Undo" ]
-                            , button [ class "btn-large red", onClick Clear ] [ i [ attribute "aria-hidden" "true", class "fa fa-eraser" ] [], text " Clear" ]
+                            , button [ class "btn-large col s6 btn-large-no-margin", onClick CalculateScore ] [ i [ attribute "aria-hidden" "true", class "fa fa-paper-plane-o" ] [], text " Submit" ]
+                            , button [ class "btn-large blue col s6 btn-large-no-margin", onClick Undo ] [ i [ attribute "aria-hidden" "true", class "fa fa-undo" ] [], text " Undo" ]
+                            , button [ class "btn-large red col s6 btn-large-no-margin", onClick Clear ] [ i [ attribute "aria-hidden" "true", class "fa fa-eraser" ] [], text " Clear" ]
                             ]
                         ]
 
                     True ->
                         [ div []
-                            [ button [ class "btn-large disabled" ] [ text "Zoom" ]
-                            , button [ class "btn-large disabled" ] [ text "Submit" ]
-                            , button [ class "btn-large disabled" ] [ text "Undo" ]
-                            , button [ class "btn-large disabled" ] [ text "Clear" ]
+                            [ button [ class "btn-large disabled col s6 btn-large-no-margin" ] [ text "Zoom" ]
+                            , button [ class "btn-large disabled col s6 btn-large-no-margin" ] [ text "Submit" ]
+                            , button [ class "btn-large disabled col s6 btn-large-no-margin" ] [ text "Undo" ]
+                            , button [ class "btn-large disabled col s6 btn-large-no-margin" ] [ text "Clear" ]
                             ]
                         ]
                )
