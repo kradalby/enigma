@@ -2,7 +2,7 @@ module Mcq.View exposing (root)
 
 import Html exposing (..)
 import Html.Events exposing (..)
-import Html.Attributes exposing (type_, checked, name, value, class, src, id, href, style, alt)
+import Html.Attributes exposing (type_, checked, name, value, class, src, id, href, style, alt, placeholder)
 import Mcq.Types exposing (..)
 import App.Rest exposing (base_url)
 import Util exposing (onEnter, viewErrorBox, viewProgressbar, percentageOfQuestionsLeft)
@@ -49,9 +49,10 @@ viewError model =
 viewStartQuiz : Model -> Html Msg
 viewStartQuiz model =
     div [ class "center-align" ]
-        [ h3 [] [ text "How many questions?" ]
+        [ h4 [] [ text "How many questions?" ]
         , input
             [ id "wordInput"
+            , placeholder "Enter a number"
             , type_ "number"
             , onInput NumberOfQuestionsInput
             , value model.numberOfQuestionsInputField
