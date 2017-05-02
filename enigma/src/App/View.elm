@@ -59,124 +59,136 @@ viewScore : Model -> Html Msg
 viewScore model =
     div []
         [ div []
-            [ table []
-                [ tr []
-                    [ th []
-                        [ text "Game mode" ]
-                    , th []
-                        [ text "Personal best" ]
+            [ table [ class "striped" ]
+                [ thead []
+                    [ tr []
+                        [ th []
+                            [ text "Game mode" ]
+                        , th [ class "table-align-right" ]
+                            [ text "Personal best" ]
+                        ]
                     ]
-                , tr []
-                    [ td []
-                        [ text "Multiple Choice" ]
-                    , td []
-                        [ text (toString model.mcq.score.best) ]
-                    ]
-                , tr []
-                    [ td []
-                        [ text "Landmark" ]
-                    , td []
-                        [ text (toString model.lmq.score.best) ]
-                    ]
-                , tr []
-                    [ td []
-                        [ text "Outline" ]
-                    , td []
-                        [ text (toString model.olq.score.best) ]
-                    ]
-                , tr []
-                    [ td []
-                        [ text "Total" ]
-                    , td []
-                        [ text
-                            (toString
-                                (model.mcq.score.best
-                                    + model.lmq.score.best
-                                    + model.olq.score.best
+                , tbody
+                    []
+                    [ tr []
+                        [ td []
+                            [ text "Multiple Choice" ]
+                        , td [ class "table-align-right" ]
+                            [ text (toString model.mcq.score.best) ]
+                        ]
+                    , tr []
+                        [ td []
+                            [ text "Landmark" ]
+                        , td [ class "table-align-right" ]
+                            [ text (toString model.lmq.score.best) ]
+                        ]
+                    , tr []
+                        [ td []
+                            [ text "Outline" ]
+                        , td [ class "table-align-right" ]
+                            [ text (toString model.olq.score.best) ]
+                        ]
+                    , tr []
+                        [ th []
+                            [ text "Total" ]
+                        , th [ class "table-align-right" ]
+                            [ text
+                                (toString
+                                    (model.mcq.score.best
+                                        + model.lmq.score.best
+                                        + model.olq.score.best
+                                    )
                                 )
-                            )
+                            ]
                         ]
                     ]
                 ]
             ]
+        , hr [] []
+        , div [] []
         , div
             []
-            [ table []
-                [ tr []
-                    [ th []
-                        [ text "Game mode" ]
-                    , th []
-                        [ text "Correct" ]
-                    , th []
-                        [ text "Wrong" ]
-                    , th []
-                        [ text "Total" ]
-                    ]
-                , tr []
-                    [ td []
-                        [ text "Multiple Choice" ]
-                    , td []
-                        [ text (toString model.mcq.score.correct) ]
-                    , td []
-                        [ text (toString model.mcq.score.wrong) ]
-                    , td []
-                        [ text (toString (model.mcq.score.correct + model.mcq.score.wrong)) ]
-                    ]
-                , tr []
-                    [ td []
-                        [ text "Landmark" ]
-                    , td []
-                        [ text (toString model.lmq.score.correct) ]
-                    , td []
-                        [ text (toString model.lmq.score.wrong) ]
-                    , td []
-                        [ text (toString (model.lmq.score.correct + model.lmq.score.wrong)) ]
-                    ]
-                , tr []
-                    [ td []
-                        [ text "Outline" ]
-                    , td []
-                        [ text (toString model.olq.score.correct) ]
-                    , td []
-                        [ text (toString model.olq.score.wrong) ]
-                    , td []
-                        [ text (toString (model.olq.score.correct + model.olq.score.wrong)) ]
-                    ]
-                , tr []
-                    [ td []
-                        [ text "Total" ]
-                    , td []
-                        [ text
-                            (toString
-                                (model.mcq.score.correct
-                                    + model.lmq.score.correct
-                                    + model.olq.score.correct
-                                )
-                            )
+            [ table [ class "striped" ]
+                [ thead []
+                    [ tr []
+                        [ th []
+                            [ text "Game mode" ]
+                        , th [ class "table-align-right" ]
+                            [ text "Correct" ]
+                        , th [ class "table-align-right" ]
+                            [ text "Wrong" ]
+                        , th [ class "table-align-right" ]
+                            [ text "Total" ]
                         ]
-                    , td []
-                        [ text
-                            (toString
-                                (model.mcq.score.wrong
-                                    + model.lmq.score.wrong
-                                    + model.olq.score.wrong
-                                )
-                            )
+                    ]
+                , tbody []
+                    [ tr []
+                        [ td []
+                            [ text "Multiple Choice" ]
+                        , td [ class "table-align-right" ]
+                            [ text (toString model.mcq.score.correct) ]
+                        , td [ class "table-align-right" ]
+                            [ text (toString model.mcq.score.wrong) ]
+                        , td [ class "table-align-right" ]
+                            [ text (toString (model.mcq.score.correct + model.mcq.score.wrong)) ]
                         ]
-                    , td []
-                        [ text
-                            (toString
-                                (model.mcq.score.correct
-                                    + model.mcq.score.wrong
-                                    + model.lmq.score.correct
-                                    + model.lmq.score.wrong
-                                    + model.olq.score.correct
-                                    + model.olq.score.wrong
+                    , tr []
+                        [ td []
+                            [ text "Landmark" ]
+                        , td [ class "table-align-right" ]
+                            [ text (toString model.lmq.score.correct) ]
+                        , td [ class "table-align-right" ]
+                            [ text (toString model.lmq.score.wrong) ]
+                        , td [ class "table-align-right" ]
+                            [ text (toString (model.lmq.score.correct + model.lmq.score.wrong)) ]
+                        ]
+                    , tr []
+                        [ td []
+                            [ text "Outline" ]
+                        , td [ class "table-align-right" ]
+                            [ text (toString model.olq.score.correct) ]
+                        , td [ class "table-align-right" ]
+                            [ text (toString model.olq.score.wrong) ]
+                        , td [ class "table-align-right" ]
+                            [ text (toString (model.olq.score.correct + model.olq.score.wrong)) ]
+                        ]
+                    , tr []
+                        [ th []
+                            [ text "Total" ]
+                        , th [ class "table-align-right" ]
+                            [ text
+                                (toString
+                                    (model.mcq.score.correct
+                                        + model.lmq.score.correct
+                                        + model.olq.score.correct
+                                    )
                                 )
-                            )
+                            ]
+                        , th [ class "table-align-right" ]
+                            [ text
+                                (toString
+                                    (model.mcq.score.wrong
+                                        + model.lmq.score.wrong
+                                        + model.olq.score.wrong
+                                    )
+                                )
+                            ]
+                        , th [ class "table-align-right" ]
+                            [ text
+                                (toString
+                                    (model.mcq.score.correct
+                                        + model.mcq.score.wrong
+                                        + model.lmq.score.correct
+                                        + model.lmq.score.wrong
+                                        + model.olq.score.correct
+                                        + model.olq.score.wrong
+                                    )
+                                )
+                            ]
                         ]
                     ]
                 ]
+            , hr [] []
             ]
         ]
 
@@ -191,11 +203,11 @@ viewHeader model =
                         text ""
 
                     _ ->
-                        i [ attribute "aria-hidden" "true", class "fa fa-chevron-left", onClick (ChangeMode Main) ]
+                        i [ attribute "aria-hidden" "true", class "fa fa-chevron-left add-pointer", onClick (ChangeMode Main) ]
                             []
                   )
-                , a [ id "logo-container", onClick (ChangeMode Main), class "brand-logo center" ] [ text "Enigma" ]
-                , a [ onClick (ChangeMode Score), class " right" ] [ text "Score" ]
+                , a [ id "logo-container", onClick (ChangeMode Main), class "brand-logo center add-pointer" ] [ text "Enigma" ]
+                , a [ onClick (ChangeMode Score), class " right add-pointer" ] [ text "Score" ]
                   -- , ul [ class "right hide-on-med-and-down" ] [ li [] [ a [] [ text "derp" ] ] ]
                   -- , ul [ class "nav-mobile" ] [ li [] [ a [] [ text "derp" ] ] ]
                   -- , a [ href "#", dataactivates "nav-mobile", class "button-collapse" ] [ i [ class "material-icons" ] [ text "menu" ] ]
