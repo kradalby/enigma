@@ -48,7 +48,7 @@ viewError model =
 
 viewStartQuiz : Model -> Html Msg
 viewStartQuiz model =
-    div []
+    div [ class "center-align" ]
         [ h3
             []
             [ text "How many questions?" ]
@@ -62,7 +62,7 @@ viewStartQuiz model =
             []
         , viewNumberOfQuestionButtons model
         , button
-            [ class "btn"
+            [ class "btn-large"
             , onClick (validateNumberOfQuestionsInputFieldAndCreateResponseMsg model)
             ]
             [ text "Start" ]
@@ -94,7 +94,7 @@ viewNumberOfQuestionButtons model =
     in
         div [ class "row" ] <|
             List.map
-                (\n -> button [ class "btn", onClick <| StartQuiz n ] [ text <| toString n ])
+                (\n -> button [ class "btn-large", onClick <| StartQuiz n ] [ text <| toString n ])
                 buttonNumbers
 
 
@@ -113,15 +113,15 @@ validateNumberOfQuestionsInputFieldAndCreateResponseMsg model =
 
 viewLandmarkQuestion : Model -> LandmarkQuestion -> Html Msg
 viewLandmarkQuestion model lmq =
-    div [ class "col s12" ]
+    div [ class "col s12 center-align" ]
         [ h3 [] [ text lmq.question ]
         , div [ class "row" ] [ viewCanvas model ]
         , (case model.showAnswer of
             False ->
-                button [ class "btn", onClick model.clickData.answerMsg ] [ text "Submit" ]
+                button [ class "btn-large", onClick model.clickData.answerMsg ] [ text "Submit" ]
 
             True ->
-                button [ class "btn disabled" ] [ text "Submit" ]
+                button [ class "btn-large disabled" ] [ text "Submit" ]
           )
         ]
 
@@ -187,9 +187,13 @@ viewCanvas model =
 
 viewResult : Model -> Html Msg
 viewResult model =
-    div []
+    div [ class "center-align" ]
         [ h3 [] [ text "Results" ]
         , h5 [] [ text ("Correct: " ++ (toString (List.length model.correctQuestions))) ]
         , h5 [] [ text ("Wrong: " ++ (toString (List.length model.wrongQuestions))) ]
-        , button [ class "btn", onClick (ChangeMode Start) ] [ text "Start new quiz" ]
+        , div [ class "row" ] []
+        , div [ class "row" ] []
+        , div [ class "row" ] []
+        , div [ class "row" ] []
+        , button [ class "btn btn-large s12", onClick (ChangeMode Start) ] [ text "Start new quiz" ]
         ]
