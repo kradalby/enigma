@@ -144,7 +144,7 @@ viewMultipleChoiceQuestionAlternaltives alternaltives correctAnswer showAnswer =
                     [ class
                         (case showAnswer of
                             False ->
-                                "card hoverable teal lighten-2"
+                                "card hoverable teal lighten-2 add-pointer"
 
                             True ->
                                 (if i == correctAnswer then
