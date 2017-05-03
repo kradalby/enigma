@@ -32,6 +32,8 @@ import Util
         )
 import Canvas exposing (Size, Error, DrawOp(..), DrawImageParams(..), Canvas)
 import Canvas.Events as Events
+import Canvas.Point as Point
+import Color
 
 
 root : Model -> Html Msg
@@ -205,28 +207,33 @@ viewCanvas model =
             , preventDefault = True
             }
 
+        zoomModeChangeDrawOps =
+            modeTextOnCanvas "test" { height = 100, width = 100 }
+
         drawOps =
-            if model.showAnswer then
-                case model.solution of
-                    Loading ->
+            zoomModeChangeDrawOps
+                ++ (if model.showAnswer then
+                        case model.solution of
+                            Loading ->
+                                model.drawData.drawOps
+
+                            GotCanvas canvas ->
+                                let
+                                    imageSize =
+                                        case model.imageSize of
+                                            Nothing ->
+                                                Canvas.getSize canvas
+
+                                            Just size ->
+                                                size
+
+                                    canvasSize =
+                                        calculateImageSize imageSize.width imageSize.height model.windowWidth model.windowHeight
+                                in
+                                    (createDrawImage canvas canvasSize) :: model.drawData.drawOps
+                    else
                         model.drawData.drawOps
-
-                    GotCanvas canvas ->
-                        let
-                            imageSize =
-                                case model.imageSize of
-                                    Nothing ->
-                                        Canvas.getSize canvas
-
-                                    Just size ->
-                                        size
-
-                            canvasSize =
-                                calculateImageSize imageSize.width imageSize.height model.windowWidth model.windowHeight
-                        in
-                            (createDrawImage canvas canvasSize) :: model.drawData.drawOps
-            else
-                model.drawData.drawOps
+                   )
     in
         case model.image of
             GotCanvas canvas ->
@@ -296,3 +303,33 @@ viewResult model =
         , h5 [] [ text ("Wrong: " ++ (toString model.scores)) ]
         , button [ class "btn", onClick (ChangeMode Start) ] [ text "Start new quiz" ]
         ]
+
+
+modeTextOnCanvas : String -> Size -> List DrawOp
+modeTextOnCanvas message size =
+    let
+        drawopSettings =
+            [ Font "30px Arial"
+            , FillStyle (Color.rgba 192 47 29 1)
+            ]
+
+        drawops =
+            Debug.log "drawops" <|
+                List.foldl
+                    (\y acc ->
+                        (List.foldl
+                            (\x acc2 ->
+                                if (x % 50 == 0) && (y % 50 == 0) then
+                                    FillText message (Point.fromInts ( x, y )) :: acc2
+                                else
+                                    acc2
+                            )
+                            []
+                            (List.range 0 size.width)
+                        )
+                            ++ acc
+                    )
+                    []
+                    (List.range 0 size.height)
+    in
+        drawopSettings ++ drawops
