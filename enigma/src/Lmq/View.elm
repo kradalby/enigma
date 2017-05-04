@@ -112,10 +112,25 @@ validateNumberOfQuestionsInputFieldAndCreateResponseMsg model =
                 SetError "We dont have that many questions..."
 
 
+getFirstLandmarkRegionNameFromCurrentQuestion : Model -> String
+getFirstLandmarkRegionNameFromCurrentQuestion model =
+    case model.currentQuestion of
+        Nothing ->
+            ""
+
+        Just question ->
+            case question.landmark_regions of
+                [] ->
+                    ""
+
+                hd :: tl ->
+                    hd.name
+
+
 viewLandmarkQuestion : Model -> LandmarkQuestion -> Html Msg
 viewLandmarkQuestion model lmq =
     div [ class "col s12 center-align" ]
-        [ h3 [] [ text lmq.question ]
+        [ h5 [] [ text <| "Mark the " ++ (getFirstLandmarkRegionNameFromCurrentQuestion model) ]
         , div [ class "row" ] [ viewCanvas model ]
         , (case model.showAnswer of
             False ->
