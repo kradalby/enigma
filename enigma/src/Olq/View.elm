@@ -137,10 +137,25 @@ validateNumberOfQuestionsInputFieldAndCreateResponseMsg model =
                 SetError "We dont have that many questions..."
 
 
+getFirstOutlineRegionNameFromCurrentQuestion : Model -> String
+getFirstOutlineRegionNameFromCurrentQuestion model =
+    case model.currentQuestion of
+        Nothing ->
+            ""
+
+        Just question ->
+            case question.outline_regions of
+                [] ->
+                    ""
+
+                hd :: tl ->
+                    hd.name
+
+
 viewOutlineQuestion : Model -> OutlineQuestion -> Html Msg
 viewOutlineQuestion model olq =
     div [ class "col s12 center-align" ]
-        ([ h5 [] [ text "Outline: Tumor " ]
+        ([ h5 [] [ text <| "Outline: " ++ (getFirstOutlineRegionNameFromCurrentQuestion model) ]
          , viewCanvas model
            --  , div [ class "pup-parent" ]
            --     [
