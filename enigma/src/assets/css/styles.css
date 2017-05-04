@@ -85,3 +85,25 @@ textarea {
 .add-pointer{
   cursor: pointer;
 }
+
+.overrideblue{
+  background-color: #2196f3;
+}
+.overrideblue:hover{
+  background-color: #42a5f5;
+}
+
+.overridepink{
+  background-color: #e91e63;
+}
+
+.overridepink:hover{
+  background-color: #ec407a;
+}
+
+.overridered{
+  background-color: #f44336;
+}
+.overridered:hover{
+  background-color: #ef5350;
+}

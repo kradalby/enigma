@@ -166,7 +166,7 @@ viewOutlineQuestion model olq =
             ++ (case model.showAnswer of
                     False ->
                         [ div [ class "center-align container" ]
-                            [ button [ class "btn-large pink col s6 btn-large-no-margin", onClick ToggleZoomMode ]
+                            [ button [ class "btn-large overridepink col s6 btn-large-no-margin", onClick ToggleZoomMode ]
                                 (case model.zoomMode of
                                     False ->
                                         [ i [ attribute "aria-hidden" "true", class "fa fa-search" ]
@@ -181,8 +181,8 @@ viewOutlineQuestion model olq =
                                         ]
                                 )
                             , button [ class "btn-large col s6 btn-large-no-margin", onClick CalculateScore ] [ i [ attribute "aria-hidden" "true", class "fa fa-paper-plane-o" ] [], text " Submit" ]
-                            , button [ class "btn-large blue col s6 btn-large-no-margin", onClick Undo ] [ i [ attribute "aria-hidden" "true", class "fa fa-undo" ] [], text " Undo" ]
-                            , button [ class "btn-large red col s6 btn-large-no-margin", onClick Clear ] [ i [ attribute "aria-hidden" "true", class "fa fa-eraser" ] [], text " Clear" ]
+                            , button [ class "btn-large overrideblue col s6 btn-large-no-margin", onClick Undo ] [ i [ attribute "aria-hidden" "true", class "fa fa-undo" ] [], text " Undo" ]
+                            , button [ class "btn-large overridered col s6 btn-large-no-margin", onClick Clear ] [ i [ attribute "aria-hidden" "true", class "fa fa-eraser" ] [], text " Clear" ]
                             ]
                         ]
 
