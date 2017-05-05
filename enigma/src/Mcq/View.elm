@@ -5,7 +5,7 @@ import Html.Events exposing (..)
 import Html.Attributes exposing (type_, checked, name, value, class, src, id, href, style, alt, placeholder)
 import Mcq.Types exposing (..)
 import App.Rest exposing (base_url)
-import Util exposing (onEnter, viewErrorBox, viewProgressbar, percentageOfQuestionsLeft)
+import Util exposing (onEnter, viewErrorBox, viewProgressbar, percentageOfQuestionsLeft, viewNewHighScore)
 
 
 root : Mcq.Types.Model -> Html Msg
@@ -169,7 +169,7 @@ viewMultipleChoiceQuestionAlternaltives alternaltives correctAnswer showAnswer =
                     ]
                     -- [ class "card teal lighten-2" ]
                     [ div [ class "card-content white-text" ]
-                        [ span [ class "card-title" ]
+                        [ div [ class "card-title" ]
                             [ p [] [ text alternaltive ]
                             ]
                         ]
@@ -213,8 +213,15 @@ viewResult : Model -> Html Msg
 viewResult model =
     div [ class "center-align" ]
         [ h3 [] [ text "Results" ]
+        , case model.showNewHighScore of
+            True ->
+                viewNewHighScore ((List.length model.correctQuestions) * 100) ToggleShowNewHighScore
+
+            False ->
+                text ""
         , h5 [] [ text ("Correct: " ++ (toString (List.length model.correctQuestions))) ]
         , h5 [] [ text ("Wrong: " ++ (toString (List.length model.wrongQuestions))) ]
+        , h5 [] [ text ("Score: " ++ (toString ((List.length model.correctQuestions) * 100))) ]
         , div [ class "row" ] []
         , div [ class "row" ] []
         , div [ class "row" ] []
