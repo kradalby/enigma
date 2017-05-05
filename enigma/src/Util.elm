@@ -224,3 +224,30 @@ percentageOfQuestionsLeft showAnswer currentQuestion unAnsweredQuestions correct
                     toFloat (List.length wrongQuestions)
     in
         (100 * ((correct + wrong) / (unAnswered + correct + wrong + current)))
+
+
+viewNewHighScore : Int -> msg -> Html msg
+viewNewHighScore newHighScore action =
+    div [ class "dimScreen" ]
+        [ div [ class "highScore" ]
+            [ h2 []
+                [ span [] [ text "N" ]
+                , span [] [ text "e" ]
+                , span [] [ text "w" ]
+                , a [] [ text " " ]
+                , span [] [ text "h" ]
+                , span [] [ text "i" ]
+                , span [] [ text "g" ]
+                , span [] [ text "h" ]
+                , a [] [ text " " ]
+                , span [] [ text "s" ]
+                , span [] [ text "c" ]
+                , span [] [ text "o" ]
+                , span [] [ text "r" ]
+                , span [] [ text "e" ]
+                , span [] [ text "!" ]
+                ]
+            , h2 [] (List.map (\n -> span [] [ text n ]) (String.split "" (toString newHighScore)))
+            , button [ class "btn btn-large s12", onClick action ] [ text "Close" ]
+            ]
+        ]

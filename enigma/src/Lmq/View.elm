@@ -5,7 +5,7 @@ import Lmq.Types exposing (..)
 import Html exposing (..)
 import Html.Events exposing (onInput, onClick)
 import Html.Attributes exposing (type_, checked, name, disabled, value, class, src, id, selected, for, href, placeholder)
-import Util exposing (onEnter, viewErrorBox, viewSpinningLoader, viewProgressbar, calculateImageSize, percentageOfQuestionsLeft, createDrawImage)
+import Util exposing (onEnter, viewErrorBox, viewSpinningLoader, viewProgressbar, calculateImageSize, percentageOfQuestionsLeft, createDrawImage, viewNewHighScore)
 import Canvas exposing (Size, Error, DrawOp(..), DrawImageParams(..), Canvas)
 import Canvas.Events as Events
 
@@ -112,10 +112,25 @@ validateNumberOfQuestionsInputFieldAndCreateResponseMsg model =
                 SetError "We dont have that many questions..."
 
 
+getFirstLandmarkRegionNameFromCurrentQuestion : Model -> String
+getFirstLandmarkRegionNameFromCurrentQuestion model =
+    case model.currentQuestion of
+        Nothing ->
+            ""
+
+        Just question ->
+            case question.landmark_regions of
+                [] ->
+                    ""
+
+                hd :: tl ->
+                    hd.name
+
+
 viewLandmarkQuestion : Model -> LandmarkQuestion -> Html Msg
 viewLandmarkQuestion model lmq =
     div [ class "col s12 center-align" ]
-        [ h3 [] [ text lmq.question ]
+        [ h5 [] [ text <| "Mark the " ++ (getFirstLandmarkRegionNameFromCurrentQuestion model) ]
         , div [ class "row" ] [ viewCanvas model ]
         , (case model.showAnswer of
             False ->
@@ -190,8 +205,15 @@ viewResult : Model -> Html Msg
 viewResult model =
     div [ class "center-align" ]
         [ h3 [] [ text "Results" ]
+        , case model.showNewHighScore of
+            True ->
+                viewNewHighScore ((List.length model.correctQuestions) * 100) ToggleShowNewHighScore
+
+            False ->
+                text ""
         , h5 [] [ text ("Correct: " ++ (toString (List.length model.correctQuestions))) ]
         , h5 [] [ text ("Wrong: " ++ (toString (List.length model.wrongQuestions))) ]
+        , h5 [] [ text ("Score: " ++ (toString ((List.length model.correctQuestions) * 100))) ]
         , div [ class "row" ] []
         , div [ class "row" ] []
         , div [ class "row" ] []

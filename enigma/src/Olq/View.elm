@@ -30,6 +30,7 @@ import Util
         , percentageOfQuestionsLeft
         , calculateImageSize
         , createDrawImage
+        , viewNewHighScore
         )
 import Canvas exposing (Size, Error, DrawOp(..), DrawImageParams(..), Canvas)
 import Canvas.Events as Events
@@ -139,16 +140,31 @@ validateNumberOfQuestionsInputFieldAndCreateResponseMsg model =
                 SetError "We dont have that many questions..."
 
 
+getFirstOutlineRegionNameFromCurrentQuestion : Model -> String
+getFirstOutlineRegionNameFromCurrentQuestion model =
+    case model.currentQuestion of
+        Nothing ->
+            ""
+
+        Just question ->
+            case question.outline_regions of
+                [] ->
+                    ""
+
+                hd :: tl ->
+                    hd.name
+
+
 viewOutlineQuestion : Model -> OutlineQuestion -> Html Msg
 viewOutlineQuestion model olq =
     div [ class "col s12 center-align" ]
-        ([ h5 [] [ text "Outline: Tumor " ]
+        ([ h5 [] [ text <| "Outline: " ++ (getFirstOutlineRegionNameFromCurrentQuestion model) ]
          , viewCanvas model
          ]
             ++ (case model.showAnswer of
                     False ->
                         [ div [ class "center-align container" ]
-                            [ button [ class "btn-large pink col s6 btn-large-no-margin", onClick ToggleZoomMode ]
+                            [ button [ class "btn-large overridepink col s6 btn-large-no-margin", onClick ToggleZoomMode ]
                                 (case model.zoomMode of
                                     False ->
                                         [ i [ attribute "aria-hidden" "true", class "fa fa-search" ]
@@ -163,17 +179,17 @@ viewOutlineQuestion model olq =
                                         ]
                                 )
                             , button [ class "btn-large col s6 btn-large-no-margin", onClick CalculateScore ] [ i [ attribute "aria-hidden" "true", class "fa fa-paper-plane-o" ] [], text " Submit" ]
-                            , button [ class "btn-large blue col s6 btn-large-no-margin", onClick Undo ] [ i [ attribute "aria-hidden" "true", class "fa fa-undo" ] [], text " Undo" ]
-                            , button [ class "btn-large red col s6 btn-large-no-margin", onClick Clear ] [ i [ attribute "aria-hidden" "true", class "fa fa-eraser" ] [], text " Clear" ]
+                            , button [ class "btn-large overrideblue col s6 btn-large-no-margin", onClick Undo ] [ i [ attribute "aria-hidden" "true", class "fa fa-undo" ] [], text " Undo" ]
+                            , button [ class "btn-large overridered col s6 btn-large-no-margin", onClick Clear ] [ i [ attribute "aria-hidden" "true", class "fa fa-eraser" ] [], text " Clear" ]
                             ]
                         ]
 
                     True ->
-                        [ div []
-                            [ button [ class "btn-large disabled col s6 btn-large-no-margin" ] [ text "Zoom" ]
-                            , button [ class "btn-large disabled col s6 btn-large-no-margin" ] [ text "Submit" ]
-                            , button [ class "btn-large disabled col s6 btn-large-no-margin" ] [ text "Undo" ]
-                            , button [ class "btn-large disabled col s6 btn-large-no-margin" ] [ text "Clear" ]
+                        [ div [ class "center-align container" ]
+                            [ button [ class "btn-large disabled col s6 btn-large-no-margin" ] [ i [ attribute "aria-hidden" "true", class "fa fa-search" ] [], text " Zoom on" ]
+                            , button [ class "btn-large disabled col s6 btn-large-no-margin" ] [ i [ attribute "aria-hidden" "true", class "fa fa-paper-plane-o" ] [], text " Submit" ]
+                            , button [ class "btn-large disabled col s6 btn-large-no-margin" ] [ i [ attribute "aria-hidden" "true", class "fa fa-undo" ] [], text " Undo" ]
+                            , button [ class "btn-large disabled col s6 btn-large-no-margin" ] [ i [ attribute "aria-hidden" "true", class "fa fa-eraser" ] [], text " Clear" ]
                             ]
                         ]
                )
@@ -291,7 +307,15 @@ viewResult : Model -> Html Msg
 viewResult model =
     div [ class "center-align" ]
         [ h3 [] [ text "Results" ]
-        , h5 [] [ text ("Wrong: " ++ (toString model.scores)) ]
+        , case model.showNewHighScore of
+            True ->
+                viewNewHighScore (List.sum model.scores) ToggleShowNewHighScore
+
+            False ->
+                text ""
+        , h5 [] [ text ("Correct: ") ]
+        , h5 [] [ text ("Wrong: ") ]
+        , h5 [] [ text ("Score: " ++ (toString (List.sum model.scores))) ]
         , div [ class "row" ] []
         , div [ class "row" ] []
         , div [ class "row" ] []

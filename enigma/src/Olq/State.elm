@@ -39,11 +39,12 @@ init initialSeed width height =
             , windowHeight = height
             , windowWidth = width
             , draw = False
-            , zoomMode = True
+            , zoomMode = False
             , scores = []
             , oneDoubleFingerTap = False
             , zoomInfoModal = False
             , score = initQuestionScore
+            , showNewHighScore = False
             }
     in
         model ! [ getOutlineQuestions ]
@@ -91,11 +92,11 @@ update msg model =
                             s =
                                 model.score
 
-                            ( best, newBestCmd ) =
+                            ( best, newHighScore ) =
                                 if s.best < ((List.sum model.scores)) then
-                                    ( List.sum model.scores, Cmd.none )
+                                    ( List.sum model.scores, True )
                                 else
-                                    ( s.best, Cmd.none )
+                                    ( s.best, False )
 
                             score =
                                 { s
@@ -118,7 +119,7 @@ update msg model =
                                     , best = best
                                 }
                         in
-                            ( { nextModel | showAnswer = False, mode = Result, score = score }, Cmd.batch [ newBestCmd, (saveToStorage score) ] )
+                            ( { nextModel | showAnswer = False, mode = Result, score = score, showNewHighScore = newHighScore }, (saveToStorage score) )
 
                     _ ->
                         ( { nextModel | showAnswer = False }, Cmd.batch (getListOfLoadImageMessages nextModel.currentQuestion) )
@@ -451,6 +452,9 @@ update msg model =
                     Types.decodeQuestionScore string
             in
                 ( { model | score = qs }, Cmd.none )
+
+        ToggleShowNewHighScore ->
+            ( { model | showNewHighScore = not model.showNewHighScore }, Cmd.none )
 
 
 subscriptions : Model -> Sub Msg

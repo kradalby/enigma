@@ -41,6 +41,7 @@ init initialSeed width height =
             , windowWidth = width
             , windowHeight = height
             , score = Types.initQuestionScore
+            , showNewHighScore = False
             }
     in
         model ! [ getLandmarkQuestions, getFromStorage ]
@@ -88,11 +89,11 @@ update msg model =
                             s =
                                 model.score
 
-                            ( best, newBestCmd ) =
+                            ( best, newHighScore ) =
                                 if s.best < ((List.length model.correctQuestions) * Types.pointBase) then
-                                    ( ((List.length model.correctQuestions) * Types.pointBase), Cmd.none )
+                                    ( ((List.length model.correctQuestions) * Types.pointBase), True )
                                 else
-                                    ( s.best, Cmd.none )
+                                    ( s.best, False )
 
                             score =
                                 { s
@@ -101,7 +102,7 @@ update msg model =
                                     , best = best
                                 }
                         in
-                            ( { nextModel | showAnswer = False, mode = Result, score = score }, Cmd.batch [ newBestCmd, (saveToStorage score) ] )
+                            ( { nextModel | showAnswer = False, mode = Result, score = score, showNewHighScore = newHighScore }, Cmd.batch [ (saveToStorage score) ] )
 
                     _ ->
                         ( { nextModel | showAnswer = False }, Cmd.batch (getListOfLoadImageMessages nextModel.currentQuestion) )
@@ -235,6 +236,9 @@ update msg model =
                     Types.decodeQuestionScore string
             in
                 ( { model | score = qs }, Cmd.none )
+
+        ToggleShowNewHighScore ->
+            ( { model | showNewHighScore = not model.showNewHighScore }, Cmd.none )
 
 
 subscriptions : Model -> Sub Msg

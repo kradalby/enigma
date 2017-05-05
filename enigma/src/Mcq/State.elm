@@ -26,6 +26,7 @@ init initialSeed =
             , error = Nothing
             , seed = Random.initialSeed initialSeed
             , score = Types.initQuestionScore
+            , showNewHighScore = False
             }
     in
         model ! [ getMultipleChoiceQuestions, getFromStorage ]
@@ -74,11 +75,11 @@ update msg model =
                             s =
                                 model.score
 
-                            ( best, newBestCmd ) =
+                            ( best, newHighScore ) =
                                 if s.best < ((List.length model.correctQuestions) * Types.pointBase) then
-                                    ( ((List.length model.correctQuestions) * Types.pointBase), Cmd.none )
+                                    ( ((List.length model.correctQuestions) * Types.pointBase), True )
                                 else
-                                    ( s.best, Cmd.none )
+                                    ( s.best, False )
 
                             score =
                                 { s
@@ -87,7 +88,7 @@ update msg model =
                                     , best = best
                                 }
                         in
-                            ( { nextModel | showAnswer = False, mode = Result, score = score }, Cmd.batch [ newBestCmd, (saveToStorage score) ] )
+                            ( { nextModel | showAnswer = False, mode = Result, score = score, showNewHighScore = newHighScore }, (saveToStorage score) )
 
                     _ ->
                         ( { nextModel | showAnswer = False }, Cmd.none )
@@ -148,6 +149,9 @@ update msg model =
                     Types.decodeQuestionScore string
             in
                 ( { model | score = qs }, Cmd.none )
+
+        ToggleShowNewHighScore ->
+            ( { model | showNewHighScore = not model.showNewHighScore }, Cmd.none )
 
 
 subscriptions : Model -> Sub Msg
