@@ -54,6 +54,7 @@ type alias Model =
     , oneDoubleFingerTap : Bool
     , zoomInfoModal : Bool
     , score : QuestionScore
+    , showNewHighScore : Bool
     }
 
 
@@ -85,6 +86,7 @@ type Msg
     | ToggleZoomInfoModal
     | Noop
     | Load String
+    | ToggleShowNewHighScore
 
 
 type Mode

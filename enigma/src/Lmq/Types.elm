@@ -48,6 +48,7 @@ type alias Model =
     , windowWidth : Int
     , windowHeight : Int
     , score : Types.QuestionScore
+    , showNewHighScore : Bool
     }
 
 
@@ -68,6 +69,7 @@ type Msg
     | CanvasClick Point
     | Noop
     | Load String
+    | ToggleShowNewHighScore
 
 
 type Mode

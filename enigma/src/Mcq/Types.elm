@@ -28,6 +28,7 @@ type alias Model =
     , error : Maybe String
     , seed : Random.Seed
     , score : Types.QuestionScore
+    , showNewHighScore : Bool
     }
 
 
@@ -45,6 +46,7 @@ type Msg
     | ChangeMode Mode
     | Noop
     | Load String
+    | ToggleShowNewHighScore
 
 
 type Mode
