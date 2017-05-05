@@ -552,6 +552,13 @@ concatDrawOps color drawOps =
 checkAnswer : Model -> Int
 checkAnswer model =
     let
+        penalty =
+            { upperCorrectPointAmount = 58
+            , lowerCorrectPointAmount = 53
+            , upperAbsolutePointAmount = 90
+            , lowerAbsolutePointAmount = 20
+            }
+
         distance : Point -> Point -> Float
         distance p1 p2 =
             let
@@ -588,47 +595,91 @@ checkAnswer model =
             )
 
         submittedPoints =
-            (List.foldr
-                (++)
-                []
-                model.drawData.points
+            (case model.solution of
+                Loading ->
+                    []
+
+                GotCanvas canvas ->
+                    let
+                        imageSize =
+                            case model.imageSize of
+                                Nothing ->
+                                    Canvas.getSize canvas
+
+                                Just size ->
+                                    size
+
+                        canvasSize =
+                            calculateImageSize imageSize.width imageSize.height model.windowWidth model.windowHeight
+                    in
+                        Canvas.initialize canvasSize
+                            |> Canvas.batch model.drawData.drawOps
+                            |> Canvas.getPopulatedPoints (Point.fromInts ( 0, 0 )) canvasSize
             )
+
+        amountOfCorrectPoints =
+            Debug.log "correctPoints length" <| List.length correctPoints
+
+        amountOfSubmittedPoints =
+            Debug.log "submittedPoints length" <| List.length submittedPoints
+
+        pointAmountFactor =
+            Debug.log "pointAmountFactor" <|
+                toFloat (List.length correctPoints)
+                    / toFloat (List.length submittedPoints)
+                    * 100
 
         eucleadianScore =
             Debug.log "Euc score" <|
-                ((List.foldl
-                    (\point1 acc ->
-                        (List.foldl
-                            (\point2 current ->
-                                let
-                                    dist =
-                                        distance point1 point2
-                                in
-                                    if current > dist then
-                                        dist
-                                    else
-                                        current
+                if pointAmountFactor > penalty.upperAbsolutePointAmount then
+                    100
+                else if pointAmountFactor < penalty.lowerAbsolutePointAmount then
+                    100
+                else
+                    ((List.foldl
+                        (\point1 acc ->
+                            (List.foldl
+                                (\point2 current ->
+                                    let
+                                        dist =
+                                            distance point1 point2
+                                    in
+                                        if current > dist then
+                                            dist
+                                        else
+                                            current
+                                )
+                                900
+                                correctPoints
                             )
-                            4200
-                            correctPoints
+                                + acc
                         )
-                            + acc
+                        0.0
+                        submittedPoints
+                     )
+                        / toFloat (List.length submittedPoints)
                     )
-                    0.0
-                    submittedPoints
-                 )
-                    / toFloat (List.length submittedPoints)
-                )
 
         score =
             Debug.log "score" <|
-                if eucleadianScore < 0 || eucleadianScore > 100 then
-                    0
-                else if eucleadianScore == 4200 then
-                    0
-                else
-                    toFloat Types.pointBase
-                        - eucleadianScore
+                let
+                    p =
+                        if (penalty.upperAbsolutePointAmount > pointAmountFactor) && (pointAmountFactor > penalty.upperCorrectPointAmount) then
+                            pointAmountFactor - penalty.upperCorrectPointAmount
+                        else if (penalty.lowerAbsolutePointAmount < pointAmountFactor) && (pointAmountFactor < penalty.lowerCorrectPointAmount) then
+                            penalty.lowerCorrectPointAmount
+                        else
+                            0
+
+                    tempScore =
+                        toFloat Types.pointBase
+                            - eucleadianScore
+                            - p
+                in
+                    if tempScore < 0 || tempScore > 100 then
+                        0
+                    else
+                        tempScore
     in
         floor score
 
