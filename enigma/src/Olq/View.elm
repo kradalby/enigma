@@ -313,8 +313,8 @@ viewResult model =
 
             False ->
                 text ""
-        , h5 [] [ text ("Correct: ") ]
-        , h5 [] [ text ("Wrong: ") ]
+        , h5 [] [ text ("Correct: " ++ (toString (List.length (List.filter (\s -> s > Types.olqCorrectThreshold) model.scores)))) ]
+        , h5 [] [ text ("Wrong: " ++ (toString (List.length (List.filter (\s -> s < Types.olqCorrectThreshold) model.scores)))) ]
         , h5 [] [ text ("Score: " ++ (toString (List.sum model.scores))) ]
         , div [ class "row" ] []
         , div [ class "row" ] []
