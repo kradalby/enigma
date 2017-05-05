@@ -30,6 +30,7 @@ import Util
         , percentageOfQuestionsLeft
         , calculateImageSize
         , createDrawImage
+        , viewNewHighScore
         )
 import Canvas exposing (Size, Error, DrawOp(..), DrawImageParams(..), Canvas)
 import Canvas.Events as Events
@@ -202,11 +203,11 @@ viewOutlineQuestion model olq =
                         ]
 
                     True ->
-                        [ div []
-                            [ button [ class "btn-large disabled col s6 btn-large-no-margin" ] [ text "Zoom" ]
-                            , button [ class "btn-large disabled col s6 btn-large-no-margin" ] [ text "Submit" ]
-                            , button [ class "btn-large disabled col s6 btn-large-no-margin" ] [ text "Undo" ]
-                            , button [ class "btn-large disabled col s6 btn-large-no-margin" ] [ text "Clear" ]
+                        [ div [ class "center-align container" ]
+                            [ button [ class "btn-large disabled col s6 btn-large-no-margin" ] [ i [ attribute "aria-hidden" "true", class "fa fa-search" ] [], text " Zoom on" ]
+                            , button [ class "btn-large disabled col s6 btn-large-no-margin" ] [ i [ attribute "aria-hidden" "true", class "fa fa-paper-plane-o" ] [], text " Submit" ]
+                            , button [ class "btn-large disabled col s6 btn-large-no-margin" ] [ i [ attribute "aria-hidden" "true", class "fa fa-undo" ] [], text " Undo" ]
+                            , button [ class "btn-large disabled col s6 btn-large-no-margin" ] [ i [ attribute "aria-hidden" "true", class "fa fa-eraser" ] [], text " Clear" ]
                             ]
                         ]
                )
@@ -309,7 +310,15 @@ viewResult : Model -> Html Msg
 viewResult model =
     div [ class "center-align" ]
         [ h3 [] [ text "Results" ]
-        , h5 [] [ text ("Wrong: " ++ (toString model.scores)) ]
+        , case model.showNewHighScore of
+            True ->
+                viewNewHighScore (List.sum model.scores) ToggleShowNewHighScore
+
+            False ->
+                text ""
+        , h5 [] [ text ("Correct: ") ]
+        , h5 [] [ text ("Wrong: ") ]
+        , h5 [] [ text ("Score: " ++ (toString (List.sum model.scores))) ]
         , div [ class "row" ] []
         , div [ class "row" ] []
         , div [ class "row" ] []
