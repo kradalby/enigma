@@ -1,12 +1,3 @@
-body {
-  display: flex;
-  min-height: 100vh;
-  flex-direction: column;
-}
-
-main {
-  flex: 1 0 auto;
-}
 
 input[type="color"],
 input[type="date"],
@@ -51,32 +42,17 @@ textarea {
   transform: translate(-50%, -50%);
 }
 
-.pup-parent {
-  position: relative;
-}
 
-.pup-zoom {
-  background-image: url("data:image/svg+xml;utf8, <svg xmlns='http://www.w3.org/2000/svg' version='1.1' height='25px' width='60px'><text x='0' y='15' fill='white' font-size='10'>Zoom</text></svg>");
-  z-index: 11;
-  position: absolute;
-  top: 5;
-  left: 5;
-}
-
-.pup-draw {
-  background-image: url("data:image/svg+xml;utf8, <svg xmlns='http://www.w3.org/2000/svg' version='1.1' height='25px' width='60px'><text x='0' y='15' fill='white' font-size='10'>Draw</text></svg>");
-  z-index: 11;
-  position: absolute;
-  top: 5;
-  left: 5;
-}
 .btn-large {
   margin: 15px;
-
+}
+.btn-large:focus {
+  background-color: #26a69a;
 }
 .btn-large-no-margin{
   margin: 0px;
 }
+
 
 .table-align-right{
   text-align: right;
@@ -90,33 +66,37 @@ textarea {
   background-color: #2196f3;
 }
 
+.overrideblue:focus{
+  background-color: #2196f3;
+}
+
 .overrideblue:hover{
   background-color: #42a5f5;
 }
 
 
-
 .overridepink{
   background-color: #e91e63;
 }
+
+.overridepink:focus{
+  background-color: #e91e63;
+}
+
 .overridepink:hover{
   background-color: #ec407a;
 }
 
 
-
 .overridered{
+  background-color: #f44336;
+}
+.overridered:focus{
   background-color: #f44336;
 }
 .overridered:hover{
   background-color: #ef5350;
 }
-
-
-
-
-
-
 
 h1, h2, h3, h4{
  font:bold 7.5vw/1.6 'Signika', sans-serif;
@@ -163,15 +143,12 @@ h2 span:nth-child(14){ animation-delay:.65s; }
     position:fixed;
     padding:0;
     margin:0;
-
     top:0;
     left:0;
-
     width: 100%;
     height: 100%;
     background:rgba(250,250,250,0.9);
 }
-
 
 .highScore {
     position: relative;
