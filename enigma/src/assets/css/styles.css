@@ -89,17 +89,21 @@ textarea {
 .overrideblue{
   background-color: #2196f3;
 }
+
 .overrideblue:hover{
   background-color: #42a5f5;
 }
 
+
+
 .overridepink{
   background-color: #e91e63;
 }
-
 .overridepink:hover{
   background-color: #ec407a;
 }
+
+
 
 .overridered{
   background-color: #f44336;
@@ -112,9 +116,13 @@ textarea {
 
 
 
-h4{
+
+
+h1, h2, h3, h4{
  font:bold 7.5vw/1.6 'Signika', sans-serif;
  user-select:none;
+ color: #373737;
+ text-shadow:2px 2px #dfdce3;
 }
 
 h2 span { display:inline-block; animation:float .2s ease-in-out infinite; }
@@ -124,10 +132,16 @@ h2 span { display:inline-block; animation:float .2s ease-in-out infinite; }
   66%{ transform:translateY(1px) rotate(2deg); }
 }
 
-span:nth-child(4n) { color:#f44336; text-shadow:1px 1px #e53935, 2px 2px #d32f2f, 3px 3px #c62828, 4px 4px #b71c1c; }
-span:nth-child(4n-1) { color:#2196f3; text-shadow:1px 1px #1e88e5, 2px 2px #1976d2, 3px 3px#1565c0, 4px 4px #0d47a1; }
-span:nth-child(4n-2) { color:#e91e63; text-shadow:1px 1px #d81b60, 2px 2px #c2185b, 3px 3px #ad1457, 4px 4px #880e4f; }
-span:nth-child(4n-3) { color:#009688; text-shadow:1px 1px #00897b, 2px 2px #00796b, 3px 3px #00695c, 4px 4px #004d40; }
+h4 span:nth-child(4n) { color:#373737; text-shadow:2px 2px #dfdce3; }
+h4 span:nth-child(4n-1) { color:#373737; text-shadow:2px 2px #dfdce3 }
+h4 span:nth-child(4n-2) { color:#373737; text-shadow:2px 2px #dfdce3 }
+h4 span:nth-child(4n-3) { color:#373737; text-shadow:2px 2px #dfdce3 }
+
+
+h2 span:nth-child(4n) { color:#f44336; text-shadow:1px 1px #e53935, 2px 2px #d32f2f, 3px 3px #c62828, 4px 4px #b71c1c; }
+h2 span:nth-child(4n-1) { color:#2196f3; text-shadow:1px 1px #1e88e5, 2px 2px #1976d2, 3px 3px#1565c0, 4px 4px #0d47a1; }
+h2 span:nth-child(4n-2) { color:#e91e63; text-shadow:1px 1px #d81b60, 2px 2px #c2185b, 3px 3px #ad1457, 4px 4px #880e4f; }
+h2 span:nth-child(4n-3) { color:#009688; text-shadow:1px 1px #00897b, 2px 2px #00796b, 3px 3px #00695c, 4px 4px #004d40; }
 
 h2 span:nth-child(2){ animation-delay:.05s; }
 h2 span:nth-child(3){ animation-delay:.1s; }
