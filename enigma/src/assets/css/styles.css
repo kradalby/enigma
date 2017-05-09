@@ -42,6 +42,9 @@ textarea {
   transform: translate(-50%, -50%);
 }
 
+canvas {
+    cursor: pointer;
+}
 
 .btn-large {
   margin: 15px;
