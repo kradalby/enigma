@@ -556,13 +556,6 @@ concatDrawOps color drawOps =
 checkAnswer : Model -> Int
 checkAnswer model =
     let
-        penalty =
-            { upperCorrectPointAmount = 58
-            , lowerCorrectPointAmount = 53
-            , upperAbsolutePointAmount = 90
-            , lowerAbsolutePointAmount = 20
-            }
-
         distance : Point -> Point -> Float
         distance p1 p2 =
             let
@@ -599,26 +592,10 @@ checkAnswer model =
             )
 
         submittedPoints =
-            (case model.solution of
-                Loading ->
-                    []
-
-                GotCanvas canvas ->
-                    let
-                        imageSize =
-                            case model.imageSize of
-                                Nothing ->
-                                    Canvas.getSize canvas
-
-                                Just size ->
-                                    size
-
-                        canvasSize =
-                            calculateImageSize imageSize.width imageSize.height model.windowWidth model.windowHeight
-                    in
-                        Canvas.initialize canvasSize
-                            |> Canvas.batch model.drawData.drawOps
-                            |> Canvas.getPopulatedPoints (Point.fromInts ( 0, 0 )) canvasSize
+            (List.foldr
+                (++)
+                []
+                model.drawData.points
             )
 
         amountOfCorrectPoints =
@@ -634,56 +611,67 @@ checkAnswer model =
                     * 100
 
         eucleadianScore =
-            Debug.log "Euc score" <|
-                if pointAmountFactor > penalty.upperAbsolutePointAmount then
-                    100
-                else if pointAmountFactor < penalty.lowerAbsolutePointAmount then
-                    100
-                else
-                    ((List.foldl
-                        (\point1 acc ->
-                            (List.foldl
-                                (\point2 current ->
-                                    let
-                                        dist =
-                                            distance point1 point2
-                                    in
-                                        if current > dist then
-                                            dist
+            let
+                ( temp_acc, temp_min, temp_max ) =
+                    Debug.log "acc + max" <|
+                        List.foldl
+                            (\point1 ( acc, minii, maxii ) ->
+                                let
+                                    m =
+                                        List.foldl
+                                            (\point2 mini ->
+                                                let
+                                                    dist =
+                                                        distance point1 point2
+
+                                                    new_mini =
+                                                        if mini > dist then
+                                                            dist
+                                                        else
+                                                            mini
+                                                in
+                                                    new_mini
+                                            )
+                                            4200
+                                            correctPoints
+
+                                    new_acc =
+                                        m + acc
+
+                                    new_minii =
+                                        if minii > m then
+                                            m
                                         else
-                                            current
-                                )
-                                900
-                                correctPoints
+                                            minii
+
+                                    new_maxii =
+                                        if maxii < m then
+                                            m
+                                        else
+                                            maxii
+                                in
+                                    ( new_acc, new_minii, new_maxii )
                             )
-                                + acc
-                        )
-                        0.0
-                        submittedPoints
-                     )
-                        / toFloat (List.length submittedPoints)
-                    )
+                            ( 0, 4200, 0 )
+                            submittedPoints
+
+                eucAvg =
+                    Debug.log "Euc average" <|
+                        temp_acc
+                            / toFloat (List.length submittedPoints)
+            in
+                eucAvg
 
         score =
             Debug.log "score" <|
                 let
-                    p =
-                        if (penalty.upperAbsolutePointAmount > pointAmountFactor) && (pointAmountFactor > penalty.upperCorrectPointAmount) then
-                            pointAmountFactor - penalty.upperCorrectPointAmount
-                        else if (penalty.lowerAbsolutePointAmount < pointAmountFactor) && (pointAmountFactor < penalty.lowerCorrectPointAmount) then
-                            penalty.lowerCorrectPointAmount
-                        else
-                            0
-
-                    tempScore =
-                        toFloat Types.pointBase
-                            - eucleadianScore
-                            - p
+                    y =
+                        -10 / 4 * ((-40) + eucleadianScore)
                 in
-                    if tempScore < 0 || tempScore > 100 then
+                    if y <= 0 then
                         0
                     else
-                        tempScore
+                        y
     in
         floor score
 
