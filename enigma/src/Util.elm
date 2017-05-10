@@ -145,8 +145,8 @@ viewSpinningLoader =
 
 viewProgressbar : Float -> Html msg
 viewProgressbar percentage =
-    div [ class "progress" ]
-        [ div [ class "determinate", attribute "style" ("width: " ++ (toString percentage) ++ "%") ]
+    div [ class "progress main-button-color" ]
+        [ div [ class "determinate blue darken-4", attribute "style" ("width: " ++ (toString percentage) ++ "%") ]
             []
         ]
 
@@ -229,7 +229,7 @@ percentageOfQuestionsLeft showAnswer currentQuestion unAnsweredQuestions correct
 viewNewHighScore : Int -> msg -> Html msg
 viewNewHighScore newHighScore action =
     div [ class "dimScreen" ]
-        [ div [ class "highScore" ]
+        [ div [ class "custom-center" ]
             [ h2 []
                 [ span [] [ text "N" ]
                 , span [] [ text "e" ]
@@ -248,6 +248,6 @@ viewNewHighScore newHighScore action =
                 , span [] [ text "!" ]
                 ]
             , h2 [] (List.map (\n -> span [] [ text n ]) (String.split "" (toString newHighScore)))
-            , button [ class "btn btn-large s12", onClick action ] [ text "Close" ]
+            , button [ class "btn-large s12 overrideblue", onClick action ] [ text "Close" ]
             ]
         ]
