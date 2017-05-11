@@ -2,7 +2,7 @@
 <html>
   <head>
     <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
     <link rel="apple-touch-icon" sizes="180x180" href="/enigma/favicons/apple-touch-icon.png">
     <link rel="icon" type="image/png" href="/enigma/favicons/favicon-32x32.png" sizes="32x32">
     <link rel="icon" type="image/png" href="/enigma/favicons/favicon-16x16.png" sizes="16x16">
@@ -16,11 +16,15 @@
     <script src="https://use.fontawesome.com/b82d9fe929.js"></script>
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css?family=Signika:300,400,600,700" rel="stylesheet">
-    
+
 
     <title>enigma</title>
   </head>
   <body id="root">
+    <script>document.addEventListener('gesturestart', function (e) {
+        e.preventDefault();
+        });
+    </script>
     <script src="./app.js"></script>
   </body>
 </html>
