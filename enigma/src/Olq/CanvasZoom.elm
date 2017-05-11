@@ -108,7 +108,7 @@ doZoom state =
                 newPosX =
                     let
                         temp =
-                            state.position.x + deltaWidth + coefX
+                            state.position.x + deltaWidth * coefX
                     in
                         if (temp > 0) then
                             if (newHeight < toFloat state.canvasSize.width) then
@@ -123,7 +123,7 @@ doZoom state =
                 newPosY =
                     let
                         temp =
-                            state.position.y + deltaHeight + coefY
+                            state.position.y + deltaHeight * coefY
                     in
                         if (temp > 0) then
                             if (newHeight < toFloat state.canvasSize.height) then
