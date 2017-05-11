@@ -320,10 +320,6 @@ update msg model =
                             ( { model | draw = False }, Cmd.none )
 
         TouchMove event ->
-            -- let
-            --     d =
-            --         Debug.log "event" event
-            -- in
             case model.zoomMode of
                 True ->
                     case event.targetTouches of
@@ -332,17 +328,10 @@ update msg model =
 
                         h :: [] ->
                             let
-                                -- canvas =
-                                --     Canvas.initialize model.canvasZoomState.canvasSize
-                                -- canvasBoundingClientRect =
-                                --     Debug.log "canvasBoundingClientRect" <|
-                                --         Canvas.getBoundingClientRect canvas
                                 relativeX =
-                                    -- h.page.x - canvasBoundingClientRect.left
                                     h.page.x
 
                                 relativeY =
-                                    -- h.page.y - canvasBoundingClientRect.top
                                     h.page.y
 
                                 newState =
@@ -364,10 +353,6 @@ update msg model =
                             ( model, Cmd.none )
 
                 False ->
-                    -- let
-                    --     d =
-                    --         Debug.log "event" event
-                    -- in
                     case event.points of
                         [] ->
                             ( model, Cmd.none )
