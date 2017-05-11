@@ -4,8 +4,10 @@ import Http
 import Random
 import Canvas exposing (DrawOp, Canvas, Error, Size)
 import Canvas.Point exposing (Point)
+import Canvas.Events exposing (Touch)
 import Color exposing (Color)
 import Types exposing (Region, canvasSize, wrongColor, Image, QuestionScore)
+import Olq.CanvasZoom as CanvasZoom
 
 
 type alias OutlineQuestion =
@@ -55,6 +57,7 @@ type alias Model =
     , zoomInfoModal : Bool
     , score : QuestionScore
     , showNewHighScore : Bool
+    , canvasZoomState : CanvasZoom.State
     }
 
 
@@ -73,11 +76,9 @@ type Msg
     | MouseDown Point
     | MouseUp Point
     | MouseMove Point
-    | TouchDown (List Point)
-    | TouchUp (List Point)
-    | TouchMove (List Point)
-    | TouchInit (List Point)
-    | TouchTwoFingerDoubleTap (List Point)
+    | TouchDown { targetTouches : List Touch, points : List Point }
+    | TouchUp { targetTouches : List Touch, points : List Point }
+    | TouchMove { targetTouches : List Touch, points : List Point }
     | SetOneDoubleFingerTap Bool
     | Clear
     | ToggleZoomMode

@@ -36,6 +36,7 @@ import Canvas exposing (Size, Error, DrawOp(..), DrawImageParams(..), Canvas)
 import Canvas.Events as Events
 import Canvas.Point as Point
 import Color
+import Olq.CanvasZoom as CanvasZoom
 
 
 root : Model -> Html Msg
@@ -242,13 +243,6 @@ viewCanvas model =
                     canvasSize =
                         calculateImageSize imageSize.width imageSize.height model.windowWidth model.windowHeight
 
-                    doubleClickEventListener =
-                        Events.onMultiTouchStart
-                            { stopPropagation = model.oneDoubleFingerTap
-                            , preventDefault = model.oneDoubleFingerTap
-                            }
-                            TouchTwoFingerDoubleTap
-
                     zoomModeChangeDrawOps =
                         case model.zoomInfoModal of
                             True ->
@@ -262,10 +256,9 @@ viewCanvas model =
                             False ->
                                 []
                 in
-                    Canvas.initialize canvasSize
+                    initializeCanvasFromZoomState model.canvasZoomState canvas
                         |> Canvas.batch
-                            ((createDrawImage canvas canvasSize)
-                                :: drawOps
+                            (drawOps
                                 ++ zoomModeChangeDrawOps
                             )
                         |> (case model.showAnswer of
@@ -275,15 +268,13 @@ viewCanvas model =
                                             case model.draw of
                                                 False ->
                                                     Canvas.toHtml
-                                                        [ doubleClickEventListener
-                                                        , Events.onMouseDown MouseDown
+                                                        [ Events.onMouseDown MouseDown
                                                         , Events.onMultiTouchStart touchOptions TouchDown
                                                         ]
 
                                                 True ->
                                                     Canvas.toHtml
-                                                        [ doubleClickEventListener
-                                                        , Events.onMouseMove MouseMove
+                                                        [ Events.onMouseMove MouseMove
                                                         , Events.onMouseUp MouseUp
                                                         , Events.onMultiTouchMove touchOptions TouchMove
                                                         , Events.onMultiTouchEnd touchOptions TouchUp
@@ -292,7 +283,10 @@ viewCanvas model =
 
                                         True ->
                                             Canvas.toHtml
-                                                [ doubleClickEventListener
+                                                [ Events.onMultiTouchStart touchOptions TouchDown
+                                                , Events.onMultiTouchMove touchOptions TouchMove
+                                                , Events.onMultiTouchEnd touchOptions TouchUp
+                                                , Events.onMultiTouchCancel touchOptions TouchUp
                                                 ]
 
                                 True ->
@@ -301,6 +295,21 @@ viewCanvas model =
 
             Loading ->
                 viewSpinningLoader
+
+
+initializeCanvasFromZoomState : CanvasZoom.State -> Canvas -> Canvas
+initializeCanvasFromZoomState state image =
+    let
+        s =
+            { width = Basics.round <| state.scale.x * toFloat state.imageSize.width
+            , height = Basics.round <| state.scale.y * toFloat state.imageSize.height
+            }
+
+        imageDrawOps =
+            DrawImage image (Scaled (Point.fromFloats ( state.position.x, state.position.y )) s)
+    in
+        Canvas.initialize state.canvasSize
+            |> Canvas.batch [ imageDrawOps ]
 
 
 viewResult : Model -> Html Msg

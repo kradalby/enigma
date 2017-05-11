@@ -251,3 +251,21 @@ viewNewHighScore newHighScore action =
             , button [ class "btn btn-large s12", onClick action ] [ text "Close" ]
             ]
         ]
+
+
+distance : ( Float, Float ) -> ( Float, Float ) -> Float
+distance ( x1, y1 ) ( x2, y2 ) =
+    sqrt
+        (((x2 - x1) ^ 2) + ((y2 - y1) ^ 2))
+
+
+distancePoint : Point -> Point -> Float
+distancePoint p1 p2 =
+    let
+        ( x1, y1 ) =
+            Point.toFloats p1
+
+        ( x2, y2 ) =
+            Point.toFloats p2
+    in
+        distance ( x1, y1 ) ( x2, y2 )

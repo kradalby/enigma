@@ -6,7 +6,7 @@ import Olq.Rest exposing (getOutlineQuestions)
 import Random
 import Random.List exposing (shuffle)
 import Time
-import Util exposing (delay, calculateImageSize, createDrawImage)
+import Util exposing (delay, calculateImageSize, createDrawImage, distancePoint)
 import Task
 import Canvas
 import App.Rest exposing (base_url)
@@ -16,6 +16,7 @@ import Canvas.Point as Point
 import Color.Convert
 import Color
 import LocalStorage
+import Olq.CanvasZoom as CanvasZoom
 
 
 init : Int -> Int -> Int -> ( Model, Cmd Msg )
@@ -45,6 +46,7 @@ init initialSeed width height =
             , zoomInfoModal = False
             , score = initQuestionScore
             , showNewHighScore = False
+            , canvasZoomState = CanvasZoom.initialState
             }
     in
         model ! [ getOutlineQuestions ]
@@ -162,15 +164,29 @@ update msg model =
         ImageLoaded result ->
             case Result.toMaybe result of
                 Just canvas ->
-                    ( { model
-                        | image = GotCanvas canvas
-                        , imageSize = Just (Canvas.getSize canvas)
-                      }
-                    , Cmd.none
-                    )
+                    let
+                        imageSize =
+                            Canvas.getSize canvas
+
+                        canvasSize =
+                            calculateImageSize imageSize.width imageSize.height model.windowWidth model.windowHeight
+
+                        canvasZoomState =
+                            model.canvasZoomState
+
+                        newCanvasZoomState =
+                            { canvasZoomState | imageSize = canvasSize, canvasSize = canvasSize }
+                    in
+                        ( { model
+                            | image = GotCanvas canvas
+                            , imageSize = Just (Canvas.getSize canvas)
+                            , canvasZoomState = newCanvasZoomState
+                          }
+                        , Cmd.none
+                        )
 
                 Nothing ->
-                    ( { model | image = Loading }
+                    ( { model | image = Loading, canvasZoomState = CanvasZoom.initialState }
                     , (case model.currentQuestion of
                         Nothing ->
                             Cmd.none
@@ -247,154 +263,149 @@ update msg model =
                 , Cmd.none
                 )
 
-        TouchDown points ->
-            case points of
-                [] ->
-                    ( model, Cmd.none )
-
-                point :: [] ->
-                    ( { model | draw = True }, Cmd.none )
-
-                point :: tl ->
-                    -- ( { model | draw = False, zoomMode = True }, Cmd.none )
-                    case model.oneDoubleFingerTap of
-                        True ->
-                            ( { model
-                                | zoomMode = not model.zoomMode
-                                , oneDoubleFingerTap = False
-                              }
-                            , (delay (Time.millisecond * 0) <| ToggleZoomInfoModal)
-                            )
-
-                        False ->
-                            ( { model | oneDoubleFingerTap = True }
-                            , (delay (Time.millisecond * doubleTapDelay) <| SetOneDoubleFingerTap False)
-                            )
-
-        TouchUp points ->
-            case points of
-                [] ->
-                    ( model, Cmd.none )
-
-                point :: [] ->
+        TouchDown event ->
+            case model.zoomMode of
+                True ->
                     let
-                        drawData =
-                            model.drawData
+                        canvasZoomState =
+                            model.canvasZoomState
 
-                        newDrawData =
-                            { drawData
-                                | points = model.drawData.currentPoints :: model.drawData.points
-                                , currentPoints = []
+                        newCanvasZoomState =
+                            { canvasZoomState
+                                | last = Nothing
+                                , lastZoomScale = Nothing
                             }
                     in
-                        ( { model
-                            | draw = False
-                            , drawData = newDrawData
-                          }
-                        , Cmd.none
-                        )
+                        ( { model | draw = False, canvasZoomState = newCanvasZoomState }, Cmd.none )
 
-                point :: tl ->
-                    -- ( { model | draw = False, zoomMode = True }, Cmd.none )
-                    case model.oneDoubleFingerTap of
-                        True ->
-                            ( { model
-                                | zoomMode = not model.zoomMode
-                                , oneDoubleFingerTap = False
-                              }
-                            , (delay (Time.millisecond * 0) <| ToggleZoomInfoModal)
-                            )
+                False ->
+                    case event.points of
+                        [] ->
+                            ( model, Cmd.none )
 
-                        False ->
-                            ( { model | oneDoubleFingerTap = True }
-                            , (delay (Time.millisecond * doubleTapDelay) <| SetOneDoubleFingerTap False)
-                            )
+                        -- point :: [] ->
+                        --     ( { model | draw = True }, Cmd.none )
+                        point :: tl ->
+                            ( { model | draw = True }, Cmd.none )
 
-        TouchMove points ->
-            case points of
-                [] ->
+        TouchUp event ->
+            case model.zoomMode of
+                True ->
                     ( model, Cmd.none )
 
-                point :: [] ->
-                    let
-                        -- debug =
-                        --     Debug.log "Points" points
-                        color =
-                            getColorFromRegion model
+                False ->
+                    case event.points of
+                        [] ->
+                            ( model, Cmd.none )
 
-                        newPoints =
-                            model.drawData.currentPoints
-                                ++ [ point ]
+                        point :: [] ->
+                            let
+                                drawData =
+                                    model.drawData
 
-                        lineDrawOps =
-                            List.concat
-                                (List.map
-                                    (\pointList -> pointListToLineOperations pointList)
-                                    (newPoints :: model.drawData.points)
+                                newDrawData =
+                                    { drawData
+                                        | points = model.drawData.currentPoints :: model.drawData.points
+                                        , currentPoints = []
+                                    }
+                            in
+                                ( { model
+                                    | draw = False
+                                    , drawData = newDrawData
+                                  }
+                                , Cmd.none
                                 )
 
-                        newDrawOps =
-                            concatDrawOps color lineDrawOps
-                    in
-                        ( { model
-                            | drawData =
-                                { currentPoints = newPoints
-                                , drawOps = newDrawOps
-                                , points = model.drawData.points
-                                }
-                          }
-                        , Cmd.none
-                        )
+                        point :: tl ->
+                            ( { model | draw = False }, Cmd.none )
 
-                point :: tl ->
-                    -- ( { model | draw = False, zoomMode = True }, Cmd.none )
-                    case model.oneDoubleFingerTap of
-                        True ->
-                            ( { model
-                                | zoomMode = not model.zoomMode
-                                , oneDoubleFingerTap = False
-                              }
-                            , (delay (Time.millisecond * 0) <| ToggleZoomInfoModal)
-                            )
+        TouchMove event ->
+            -- let
+            --     d =
+            --         Debug.log "event" event
+            -- in
+            case model.zoomMode of
+                True ->
+                    case event.targetTouches of
+                        [] ->
+                            ( model, Cmd.none )
 
-                        False ->
-                            ( { model | oneDoubleFingerTap = True }
-                            , (delay (Time.millisecond * doubleTapDelay) <| SetOneDoubleFingerTap False)
-                            )
+                        h :: [] ->
+                            let
+                                -- canvas =
+                                --     Canvas.initialize model.canvasZoomState.canvasSize
+                                -- canvasBoundingClientRect =
+                                --     Debug.log "canvasBoundingClientRect" <|
+                                --         Canvas.getBoundingClientRect canvas
+                                relativeX =
+                                    -- h.page.x - canvasBoundingClientRect.left
+                                    h.page.x
 
-        TouchInit points ->
-            case points of
-                [] ->
-                    ( model, Cmd.none )
+                                relativeY =
+                                    -- h.page.y - canvasBoundingClientRect.top
+                                    h.page.y
 
-                point :: [] ->
-                    ( { model | draw = True, zoomMode = False }, Cmd.none )
+                                newState =
+                                    Debug.log "doMove" <|
+                                        CanvasZoom.doMove model.canvasZoomState relativeX relativeY
+                            in
+                                ( { model | canvasZoomState = newState }, Cmd.none )
 
-                point :: tl ->
-                    ( { model | draw = False, zoomMode = True }, Cmd.none )
+                        h :: h2 :: [] ->
+                            let
+                                newState =
+                                    Debug.log "doZoom" <|
+                                        CanvasZoom.doZoom <|
+                                            CanvasZoom.gesturePinchZoom model.canvasZoomState event.targetTouches
+                            in
+                                ( { model | canvasZoomState = newState }, Cmd.none )
 
-        TouchTwoFingerDoubleTap points ->
-            case points of
-                [] ->
-                    ( model, Cmd.none )
+                        h :: h2 :: t ->
+                            ( model, Cmd.none )
 
-                point :: [] ->
-                    ( { model | oneDoubleFingerTap = False }, Cmd.none )
+                False ->
+                    -- let
+                    --     d =
+                    --         Debug.log "event" event
+                    -- in
+                    case event.points of
+                        [] ->
+                            ( model, Cmd.none )
 
-                point :: tl ->
-                    case model.oneDoubleFingerTap of
-                        True ->
-                            ( { model
-                                | zoomMode = not model.zoomMode
-                                , oneDoubleFingerTap = False
-                              }
-                            , (delay (Time.millisecond * 0) <| ToggleZoomInfoModal)
-                            )
+                        point :: [] ->
+                            let
+                                debug =
+                                    Debug.log "Points" event.points
 
-                        False ->
-                            ( { model | oneDoubleFingerTap = True }
-                            , (delay (Time.millisecond * doubleTapDelay) <| SetOneDoubleFingerTap False)
-                            )
+                                color =
+                                    getColorFromRegion model
+
+                                newPoints =
+                                    model.drawData.currentPoints
+                                        ++ [ point ]
+
+                                lineDrawOps =
+                                    List.concat
+                                        (List.map
+                                            (\pointList -> pointListToLineOperations pointList)
+                                            (newPoints :: model.drawData.points)
+                                        )
+
+                                newDrawOps =
+                                    concatDrawOps color lineDrawOps
+                            in
+                                ( { model
+                                    | drawData =
+                                        { currentPoints = newPoints
+                                        , drawOps = newDrawOps
+                                        , points = model.drawData.points
+                                        }
+                                  }
+                                , Cmd.none
+                                )
+
+                        point :: tl ->
+                            ( { model | draw = False }, Cmd.none )
 
         SetOneDoubleFingerTap val ->
             ( { model | oneDoubleFingerTap = val }, Cmd.none )
@@ -556,18 +567,6 @@ concatDrawOps color drawOps =
 checkAnswer : Model -> Int
 checkAnswer model =
     let
-        distance : Point -> Point -> Float
-        distance p1 p2 =
-            let
-                ( x1, y1 ) =
-                    Point.toFloats p1
-
-                ( x2, y2 ) =
-                    Point.toFloats p2
-            in
-                sqrt
-                    (((x2 - x1) ^ 2) + ((y2 - y1) ^ 2))
-
         correctPoints =
             (case model.solution of
                 Loading ->
@@ -622,7 +621,7 @@ checkAnswer model =
                                             (\point2 mini ->
                                                 let
                                                     dist =
-                                                        distance point1 point2
+                                                        distancePoint point1 point2
 
                                                     new_mini =
                                                         if mini > dist then
