@@ -222,10 +222,16 @@ update msg model =
                 drawData =
                     model.drawData
 
+                newCurrentPointData =
+                    { position = model.canvasZoomState.position
+                    , scale = model.canvasZoomState.scale
+                    , points = []
+                    }
+
                 newDrawData =
                     { drawData
-                        | points = model.drawData.currentPoints :: model.drawData.points
-                        , currentPoints = []
+                        | allPointData = model.drawData.currentPointData :: model.drawData.allPointData
+                        , currentPointData = newCurrentPointData
                     }
             in
                 ( { model
@@ -241,23 +247,34 @@ update msg model =
                     getColorFromRegion model
 
                 newPoints =
-                    model.drawData.currentPoints ++ [ point ]
+                    model.drawData.currentPointData.points ++ [ point ]
 
+                pointData =
+                    model.drawData.currentPointData
+
+                newPointData =
+                    { pointData | points = newPoints }
+
+                -- lineDrawOps =
+                --     List.concat
+                --         (List.map
+                --             (\pointData -> pointListToLineOperations (calculatePointsFromZoom pointData model.canvasZoomState))
+                --             (newPointData :: model.drawData.allPointData)
+                --         )
                 lineDrawOps =
                     List.concat
-                        (List.map
-                            (\pointList -> pointListToLineOperations pointList)
-                            (newPoints :: model.drawData.points)
+                        (List.map (\pointData -> calculateDrawOpsFromZoom pointData model.canvasZoomState)
+                            (pointData :: model.drawData.allPointData)
                         )
 
                 newDrawOps =
-                    concatDrawOps color lineDrawOps
+                    concatDrawOps model.color lineDrawOps
             in
                 ( { model
                     | drawData =
-                        { currentPoints = newPoints
+                        { currentPointData = newPointData
                         , drawOps = newDrawOps
-                        , points = model.drawData.points
+                        , allPointData = model.drawData.allPointData
                         }
                   }
                 , Cmd.none
@@ -283,8 +300,6 @@ update msg model =
                         [] ->
                             ( model, Cmd.none )
 
-                        -- point :: [] ->
-                        --     ( { model | draw = True }, Cmd.none )
                         point :: tl ->
                             ( { model | draw = True }, Cmd.none )
 
@@ -303,10 +318,17 @@ update msg model =
                                 drawData =
                                     model.drawData
 
+                                newCurrentPointData =
+                                    Debug.log "newCurrentPointData" <|
+                                        { position = model.canvasZoomState.position
+                                        , scale = model.canvasZoomState.scale
+                                        , points = []
+                                        }
+
                                 newDrawData =
                                     { drawData
-                                        | points = model.drawData.currentPoints :: model.drawData.points
-                                        , currentPoints = []
+                                        | allPointData = model.drawData.currentPointData :: model.drawData.allPointData
+                                        , currentPointData = newCurrentPointData
                                     }
                             in
                                 ( { model
@@ -337,8 +359,35 @@ update msg model =
                                 newState =
                                     Debug.log "doMove" <|
                                         CanvasZoom.doMove model.canvasZoomState relativeX relativeY
+
+                                pointData =
+                                    model.drawData.currentPointData
+
+                                -- lineDrawOps =
+                                --     List.concat
+                                --         (List.map
+                                --             (\pointData -> pointListToLineOperations (calculatePointsFromZoom pointData newState))
+                                --             (pointData :: model.drawData.allPointData)
+                                --         )
+                                lineDrawOps =
+                                    List.concat
+                                        (List.map (\pointData -> calculateDrawOpsFromZoom pointData newState)
+                                            (pointData :: model.drawData.allPointData)
+                                        )
+
+                                newDrawOps =
+                                    concatDrawOps model.color lineDrawOps
                             in
-                                ( { model | canvasZoomState = newState }, Cmd.none )
+                                ( { model
+                                    | canvasZoomState = newState
+                                    , drawData =
+                                        { currentPointData = model.drawData.currentPointData
+                                        , drawOps = newDrawOps
+                                        , allPointData = model.drawData.allPointData
+                                        }
+                                  }
+                                , Cmd.none
+                                )
 
                         h :: h2 :: [] ->
                             let
@@ -346,8 +395,35 @@ update msg model =
                                     Debug.log "doZoom" <|
                                         CanvasZoom.doZoom <|
                                             CanvasZoom.gesturePinchZoom model.canvasZoomState event.targetTouches
+
+                                pointData =
+                                    model.drawData.currentPointData
+
+                                -- lineDrawOps =
+                                --     List.concat
+                                --         (List.map
+                                --             (\pointData -> pointListToLineOperations (calculatePointsFromZoom pointData newState))
+                                --             (pointData :: model.drawData.allPointData)
+                                --         )
+                                lineDrawOps =
+                                    List.concat
+                                        (List.map (\pointData -> calculateDrawOpsFromZoom pointData model.canvasZoomState)
+                                            (pointData :: model.drawData.allPointData)
+                                        )
+
+                                newDrawOps =
+                                    concatDrawOps model.color lineDrawOps
                             in
-                                ( { model | canvasZoomState = newState }, Cmd.none )
+                                ( { model
+                                    | canvasZoomState = newState
+                                    , drawData =
+                                        { currentPointData = model.drawData.currentPointData
+                                        , drawOps = newDrawOps
+                                        , allPointData = model.drawData.allPointData
+                                        }
+                                  }
+                                , Cmd.none
+                                )
 
                         h :: h2 :: t ->
                             ( model, Cmd.none )
@@ -362,28 +438,35 @@ update msg model =
                                 debug =
                                     Debug.log "Points" event.points
 
-                                color =
-                                    getColorFromRegion model
-
                                 newPoints =
-                                    model.drawData.currentPoints
-                                        ++ [ point ]
+                                    model.drawData.currentPointData.points ++ [ point ]
 
+                                pointData =
+                                    model.drawData.currentPointData
+
+                                newPointData =
+                                    { pointData | points = newPoints }
+
+                                -- lineDrawOps =
+                                --     List.concat
+                                --         (List.map
+                                --             (\pointData -> pointListToLineOperations (calculatePointsFromZoom pointData model.canvasZoomState))
+                                --             (newPointData :: model.drawData.allPointData)
+                                --         )
                                 lineDrawOps =
                                     List.concat
-                                        (List.map
-                                            (\pointList -> pointListToLineOperations pointList)
-                                            (newPoints :: model.drawData.points)
+                                        (List.map (\pointData -> calculateDrawOpsFromZoom pointData model.canvasZoomState)
+                                            (pointData :: model.drawData.allPointData)
                                         )
 
                                 newDrawOps =
-                                    concatDrawOps color lineDrawOps
+                                    concatDrawOps model.color lineDrawOps
                             in
                                 ( { model
                                     | drawData =
-                                        { currentPoints = newPoints
+                                        { currentPointData = newPointData
                                         , drawOps = newDrawOps
-                                        , points = model.drawData.points
+                                        , allPointData = model.drawData.allPointData
                                         }
                                   }
                                 , Cmd.none
@@ -402,30 +485,38 @@ update msg model =
             ( { model | zoomMode = not model.zoomMode }, (delay (Time.millisecond * 0) <| ToggleZoomInfoModal) )
 
         Undo ->
-            case model.drawData.points of
+            case model.drawData.allPointData of
                 [] ->
                     ( model, Cmd.none )
 
                 hd :: tl ->
                     let
-                        color =
-                            getColorFromRegion model
-
+                        -- lineDrawOps =
+                        --     List.concat
+                        --         (List.map
+                        --             (\pointData -> pointListToLineOperations (calculatePointsFromZoom pointData model.canvasZoomState))
+                        --             (tl)
+                        --         )
                         lineDrawOps =
                             List.concat
-                                (List.map
-                                    (\pointList -> pointListToLineOperations pointList)
+                                (List.map (\pointData -> calculateDrawOpsFromZoom pointData model.canvasZoomState)
                                     (tl)
                                 )
 
                         newDrawOps =
-                            concatDrawOps color lineDrawOps
+                            concatDrawOps model.color lineDrawOps
+
+                        newCurrentPointData =
+                            { position = model.canvasZoomState.position
+                            , scale = model.canvasZoomState.scale
+                            , points = []
+                            }
                     in
                         ( { model
                             | drawData =
-                                { currentPoints = []
+                                { currentPointData = newCurrentPointData
                                 , drawOps = newDrawOps
-                                , points = tl
+                                , allPointData = tl
                                 }
                           }
                         , Cmd.none
@@ -451,6 +542,44 @@ update msg model =
 
         ToggleShowNewHighScore ->
             ( { model | showNewHighScore = not model.showNewHighScore }, Cmd.none )
+
+        Zoom2 ->
+            let
+                zoomState =
+                    model.canvasZoomState
+
+                newZoomState =
+                    { zoomState
+                        | scale =
+                            (if zoomState.scale == { x = 1.5, y = 1.5 } then
+                                { x = 1.0, y = 1.0 }
+                             else
+                                { x = 1.5, y = 1.5 }
+                            )
+                    }
+
+                pointData =
+                    model.drawData.currentPointData
+
+                lineDrawOps =
+                    List.concat
+                        (List.map (\pointData -> calculateDrawOpsFromZoom pointData newZoomState)
+                            (pointData :: model.drawData.allPointData)
+                        )
+
+                newDrawOps =
+                    concatDrawOps model.color lineDrawOps
+            in
+                ( { model
+                    | canvasZoomState = newZoomState
+                    , drawData =
+                        { currentPointData = model.drawData.currentPointData
+                        , drawOps = newDrawOps
+                        , allPointData = model.drawData.allPointData
+                        }
+                  }
+                , Cmd.none
+                )
 
 
 subscriptions : Model -> Sub Msg
@@ -528,6 +657,77 @@ getColorFromRegion model =
             )
 
 
+calculateDrawOpsFromZoom : PointData -> CanvasZoom.State -> List DrawOp
+calculateDrawOpsFromZoom pointData zoomState =
+    let
+        scaleFactorX =
+            Debug.log "scaleFactorX" <|
+                abs (pointData.scale.x - (pointData.scale.x - zoomState.scale.x))
+
+        scaleFactorY =
+            Debug.log "scaleFactorY" <|
+                abs (pointData.scale.y - (pointData.scale.y - zoomState.scale.y))
+
+        positionDeltaX =
+            Debug.log "positionDeltaX" <|
+                abs <|
+                    zoomState.position.x
+                        - pointData.position.x
+
+        positionDeltaY =
+            Debug.log "positionDeltaY" <|
+                abs <|
+                    zoomState.position.y
+                        - pointData.position.y
+
+        func point =
+            let
+                ( x, y ) =
+                    Point.toFloats point
+            in
+                Point.fromFloats ( (x - positionDeltaX) / scaleFactorX, (y - positionDeltaY) / scaleFactorX )
+
+        points =
+            List.map func pointData.points
+
+        lineDrawOps =
+            pointListToLineOperations points
+    in
+        [ Scale scaleFactorX scaleFactorY ] ++ lineDrawOps ++ [ SetTransform 1 0 0 1 0 0 ]
+
+
+calculatePointsFromZoom : PointData -> CanvasZoom.State -> List Point
+calculatePointsFromZoom pointData zoomState =
+    let
+        scaleXDelta =
+            Debug.log "scaleXDelta" <|
+                abs (pointData.scale.x - (pointData.scale.x - zoomState.scale.x))
+
+        positionXDelta =
+            Debug.log "positionDelta" <|
+                pointData.position.x
+                    - (zoomState.position.x)
+
+        scaleYDelta =
+            Debug.log "scaleYDelta" <|
+                abs (pointData.scale.y - (pointData.scale.y - zoomState.scale.y))
+
+        positionYDelta =
+            Debug.log "positionDelta" <|
+                abs
+                    pointData.position.y
+                    - (zoomState.position.y)
+
+        func point =
+            let
+                ( x, y ) =
+                    Point.toFloats point
+            in
+                Point.fromFloats ( (x) * scaleXDelta, (y) * scaleYDelta )
+    in
+        List.map func pointData.points
+
+
 pointListToLineOperations : List Point -> List DrawOp
 pointListToLineOperations points =
     case points of
@@ -577,9 +777,9 @@ checkAnswer model =
 
         submittedPoints =
             (List.foldr
-                (++)
+                (\pointData acc -> pointData.points ++ acc)
                 []
-                model.drawData.points
+                model.drawData.allPointData
             )
 
         amountOfCorrectPoints =

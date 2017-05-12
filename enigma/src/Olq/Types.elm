@@ -18,17 +18,31 @@ type alias OutlineQuestion =
     }
 
 
+type alias PointData =
+    { position : { x : Float, y : Float }
+    , scale : { x : Float, y : Float }
+    , points : List Point
+    }
+
+
 type alias DrawData =
-    { currentPoints : List Point
-    , points : List (List Point)
+    { currentPointData : PointData
+    , allPointData : List PointData
     , drawOps : List DrawOp
     }
 
 
 initDrawData : DrawData
 initDrawData =
-    { currentPoints = []
-    , points = []
+    { currentPointData =
+        { position = { x = 0.0, y = 0.0 }
+        , scale =
+            { x = 1.0
+            , y = 1.0
+            }
+        , points = []
+        }
+    , allPointData = []
     , drawOps = []
     }
 
@@ -88,6 +102,7 @@ type Msg
     | Noop
     | Load String
     | ToggleShowNewHighScore
+    | Zoom2
 
 
 type Mode
