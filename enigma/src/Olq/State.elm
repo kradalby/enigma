@@ -147,7 +147,7 @@ update msg model =
                         )
 
                 newDrawOps =
-                    concatDrawOps model.color lineDrawOps
+                    concatDrawOps model.color 3 lineDrawOps
             in
                 ( case model.currentQuestion of
                     Nothing ->
@@ -295,7 +295,7 @@ update msg model =
                         )
 
                 newDrawOps =
-                    concatDrawOps model.color lineDrawOps
+                    concatDrawOps model.color 3 lineDrawOps
             in
                 ( { model
                     | drawData =
@@ -398,7 +398,7 @@ update msg model =
                                         )
 
                                 newDrawOps =
-                                    concatDrawOps model.color lineDrawOps
+                                    concatDrawOps model.color 3 lineDrawOps
                             in
                                 ( { model
                                     | canvasZoomState = newState
@@ -428,7 +428,7 @@ update msg model =
                                         )
 
                                 newDrawOps =
-                                    concatDrawOps model.color lineDrawOps
+                                    concatDrawOps model.color 3 lineDrawOps
                             in
                                 ( { model
                                     | canvasZoomState = newState
@@ -476,7 +476,7 @@ update msg model =
                                         )
 
                                 newDrawOps =
-                                    concatDrawOps model.color lineDrawOps
+                                    concatDrawOps model.color 3 lineDrawOps
                             in
                                 ( { model
                                     | drawData =
@@ -514,7 +514,7 @@ update msg model =
                                 )
 
                         newDrawOps =
-                            concatDrawOps model.color lineDrawOps
+                            concatDrawOps model.color 3 lineDrawOps
 
                         newCurrentPointData =
                             { position = model.canvasZoomState.position
@@ -660,10 +660,10 @@ pointListToLineOperations points =
             [ MoveTo hd ] ++ (List.map (\point -> LineTo point) tl)
 
 
-concatDrawOps : Color.Color -> List DrawOp -> List DrawOp
-concatDrawOps color drawOps =
+concatDrawOps : Color.Color -> Float -> List DrawOp -> List DrawOp
+concatDrawOps color lineWidth drawOps =
     [ BeginPath
-    , LineWidth 3
+    , LineWidth lineWidth
     , StrokeStyle color
     , LineCap "round"
     ]
@@ -682,15 +682,22 @@ checkAnswer model =
                 GotCanvas canvas ->
                     let
                         imageSize =
-                            case model.imageSize of
-                                Nothing ->
-                                    Canvas.getSize canvas
+                            model.canvasZoomState.imageSize
 
-                                Just size ->
-                                    size
+                        aspectRatioWidthHeight =
+                            (toFloat imageSize.width) / (toFloat imageSize.height)
+
+                        canvasHeight =
+                            100
+
+                        canvasWidth =
+                            floor (canvasHeight * aspectRatioWidthHeight)
 
                         canvasSize =
-                            calculateImageSize imageSize.width imageSize.height model.windowWidth model.windowHeight
+                            { width = canvasWidth, height = canvasHeight }
+
+                        -- canvasSize =
+                        --     calculateImageSize imageSize.width imageSize.height model.windowWidth model.windowHeight
                     in
                         Canvas.initialize canvasSize
                             |> Canvas.batch [ (createDrawImage canvas canvasSize) ]
@@ -709,9 +716,37 @@ checkAnswer model =
 
                 canvasSize =
                     calculateImageSize imageSize.width imageSize.height model.windowWidth model.windowHeight
+
+                lineDrawOps =
+                    List.concat
+                        (List.map (\pointData -> calculateDrawOpsFromZoom pointData model.canvasZoomState)
+                            (model.drawData.currentPointData :: model.drawData.allPointData)
+                        )
+
+                newDrawOps =
+                    concatDrawOps model.color 1 lineDrawOps
+
+                aspectRatioWidthHeight =
+                    (toFloat imageSize.width) / (toFloat imageSize.height)
+
+                canvasHeight =
+                    100
+
+                canvasWidth =
+                    floor (canvasHeight * aspectRatioWidthHeight)
+
+                canvasSizeScaled =
+                    { width = canvasWidth, height = canvasHeight }
+
+                originalCanvas =
+                    Canvas.initialize canvasSize
+                        |> Canvas.batch newDrawOps
             in
-                Canvas.initialize canvasSize
-                    |> Canvas.batch model.drawData.drawOps
+                Canvas.initialize canvasSizeScaled
+                    |> Canvas.batch
+                        [ DrawImage originalCanvas
+                            (Scaled (Point.fromInts ( 0, 0 )) canvasSizeScaled)
+                        ]
                     |> Canvas.getPopulatedPoints (Point.fromInts ( 0, 0 )) canvasSize
 
         amountOfCorrectPoints =
