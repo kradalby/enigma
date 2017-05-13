@@ -84,7 +84,7 @@ canvas {
 }
 
 .overrideblue:hover{
-  background-color: rgba(56,	148,	223, 0.5);
+  background-color: rgba(56,	148,	223, 1);
 }
 
 
@@ -97,7 +97,7 @@ canvas {
 }
 
 .overrideyellow:hover{
-  background-color: rgba(255,	181,	8, 0.5);
+  background-color: rgba(255,	181,	8, 1);
 }
 
 
@@ -108,7 +108,7 @@ canvas {
   background-color: rgba(252,	34,	59, 1);
 }
 .overridered:hover{
-  background-color: rgba(252,	34,	59, 0.5);
+  background-color: rgba(252,	34,	59, 1);
 }
 
 .overridegreen{
@@ -116,7 +116,7 @@ canvas {
 }
 
 .overridegreen:hover{
-  background-color: rgba(85,	176,	45,	0.5);
+  background-color: rgba(85, 176, 45, 1);
 }
 
 .overridegreen:focus{
