@@ -102,7 +102,6 @@ type Msg
     | Noop
     | Load String
     | ToggleShowNewHighScore
-    | Zoom2
 
 
 type Mode

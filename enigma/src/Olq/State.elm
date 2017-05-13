@@ -1,4 +1,4 @@
-module Olq.State exposing (init, update, subscriptions, calculateDrawOpsFromZoom)
+module Olq.State exposing (init, update, subscriptions)
 
 import Types exposing (..)
 import Olq.Types exposing (..)
@@ -127,18 +127,46 @@ update msg model =
                         ( { nextModel | showAnswer = False }, Cmd.batch (getListOfLoadImageMessages nextModel.currentQuestion) )
 
         CalculateScore ->
-            ( case model.currentQuestion of
-                Nothing ->
-                    model
+            let
+                canvasZoomState =
+                    model.canvasZoomState
 
-                Just question ->
-                    { model
-                        | answeredQuestions = question :: model.answeredQuestions
-                        , scores = model.scores ++ [ (checkAnswer model) ]
-                        , showAnswer = True
+                newCanvasZoomState =
+                    { canvasZoomState
+                        | scale = { x = 1.0, y = 1.0 }
+                        , position = { x = 0.0, y = 0.0 }
                     }
-            , (delay (Time.second * showAnswerDelay) <| NextQuestion)
-            )
+
+                pointData =
+                    model.drawData.currentPointData
+
+                lineDrawOps =
+                    List.concat
+                        (List.map (\pointData -> calculateDrawOpsFromZoom pointData newCanvasZoomState)
+                            (pointData :: model.drawData.allPointData)
+                        )
+
+                newDrawOps =
+                    concatDrawOps model.color lineDrawOps
+            in
+                ( case model.currentQuestion of
+                    Nothing ->
+                        model
+
+                    Just question ->
+                        { model
+                            | answeredQuestions = question :: model.answeredQuestions
+                            , scores = model.scores ++ [ (checkAnswer model) ]
+                            , showAnswer = True
+                            , canvasZoomState = newCanvasZoomState
+                            , drawData =
+                                { currentPointData = model.drawData.currentPointData
+                                , drawOps = newDrawOps
+                                , allPointData = model.drawData.allPointData
+                                }
+                        }
+                , (delay (Time.second * showAnswerDelay) <| NextQuestion)
+                )
 
         GetOutlineQuestions ->
             ( model, getOutlineQuestions )
@@ -352,8 +380,8 @@ update msg model =
                                     h.page.y
 
                                 newState =
-                                    Debug.log "doMove" <|
-                                        CanvasZoom.doMove model.canvasZoomState relativeX relativeY
+                                    -- Debug.log "doMove" <|
+                                    CanvasZoom.doMove model.canvasZoomState relativeX relativeY
 
                                 pointData =
                                     model.drawData.currentPointData
@@ -381,9 +409,9 @@ update msg model =
                         h :: h2 :: [] ->
                             let
                                 newState =
-                                    Debug.log "doZoom" <|
-                                        CanvasZoom.doZoom <|
-                                            CanvasZoom.gesturePinchZoom model.canvasZoomState event.targetTouches
+                                    -- Debug.log "doZoom" <|
+                                    CanvasZoom.doZoom <|
+                                        CanvasZoom.gesturePinchZoom model.canvasZoomState event.targetTouches
 
                                 pointData =
                                     model.drawData.currentPointData
@@ -418,11 +446,17 @@ update msg model =
 
                         point :: [] ->
                             let
-                                debug =
-                                    Debug.log "Points" event.points
+                                ( x, y ) =
+                                    Point.toFloats point
+
+                                newPoint =
+                                    Point.fromFloats
+                                        ( x - model.canvasZoomState.position.x
+                                        , y - model.canvasZoomState.position.y
+                                        )
 
                                 newPoints =
-                                    model.drawData.currentPointData.points ++ [ point ]
+                                    model.drawData.currentPointData.points ++ [ newPoint ]
 
                                 pointData =
                                     model.drawData.currentPointData
@@ -514,44 +548,6 @@ update msg model =
         ToggleShowNewHighScore ->
             ( { model | showNewHighScore = not model.showNewHighScore }, Cmd.none )
 
-        Zoom2 ->
-            let
-                zoomState =
-                    model.canvasZoomState
-
-                newZoomState =
-                    { zoomState
-                        | scale =
-                            (if zoomState.scale == { x = 1.5, y = 1.5 } then
-                                { x = 1.0, y = 1.0 }
-                             else
-                                { x = 1.5, y = 1.5 }
-                            )
-                    }
-
-                pointData =
-                    model.drawData.currentPointData
-
-                lineDrawOps =
-                    List.concat
-                        (List.map (\pointData -> calculateDrawOpsFromZoom pointData newZoomState)
-                            (pointData :: model.drawData.allPointData)
-                        )
-
-                newDrawOps =
-                    concatDrawOps model.color lineDrawOps
-            in
-                ( { model
-                    | canvasZoomState = newZoomState
-                    , drawData =
-                        { currentPointData = model.drawData.currentPointData
-                        , drawOps = newDrawOps
-                        , allPointData = model.drawData.allPointData
-                        }
-                  }
-                , Cmd.none
-                )
-
 
 subscriptions : Model -> Sub Msg
 subscriptions model =
@@ -632,43 +628,19 @@ calculateDrawOpsFromZoom : PointData -> CanvasZoom.State -> List DrawOp
 calculateDrawOpsFromZoom pointData zoomState =
     let
         scaleFactorX =
-            (/) zoomState.scale.x pointData.scale.x
+            (/)
+                zoomState.scale.x
+                pointData.scale.x
 
         scaleFactorY =
-            (/) zoomState.scale.y pointData.scale.y
-
-        positionDeltaX =
-            (-)
-                zoomState.position.x
-                pointData.position.x
-
-        positionDeltaY =
-            (-)
-                zoomState.position.y
-                pointData.position.y
+            (/)
+                zoomState.scale.y
+                pointData.scale.y
 
         lineDrawOps =
             pointListToLineOperations pointData.points
-
-        d =
-            Debug.log "calculateDrawOpsFromZoom"
-                { scaleFactorX = scaleFactorX
-                , scaleFactorY = scaleFactorY
-                , positionDeltaX = positionDeltaX
-                , positionDeltaY = positionDeltaY
-                , pointDataScaleX = pointData.scale.x
-                , zoomStateScaleX = zoomState.scale.x
-                , points_before =
-                    (case pointData.points of
-                        [] ->
-                            Point.fromInts ( 0, 0 )
-
-                        h :: t ->
-                            h
-                    )
-                }
     in
-        [ SetTransform scaleFactorX 0 0 scaleFactorY positionDeltaX positionDeltaY ]
+        [ SetTransform scaleFactorX 0 0 scaleFactorY zoomState.position.x zoomState.position.y ]
             ++ lineDrawOps
             ++ [ SetTransform 1 0 0 1 0 0 ]
 
@@ -721,17 +693,29 @@ checkAnswer model =
             )
 
         submittedPoints =
-            (List.foldr
-                (\pointData acc -> pointData.points ++ acc)
-                []
-                model.drawData.allPointData
-            )
+            -- (List.foldr
+            --     (\pointData acc -> pointData.points ++ acc)
+            --     []
+            --     model.drawData.allPointData
+            -- )
+            let
+                imageSize =
+                    model.canvasZoomState.imageSize
+
+                canvasSize =
+                    calculateImageSize imageSize.width imageSize.height model.windowWidth model.windowHeight
+            in
+                Canvas.initialize canvasSize
+                    |> Canvas.batch model.drawData.drawOps
+                    |> Canvas.getPopulatedPoints (Point.fromInts ( 0, 0 )) canvasSize
 
         amountOfCorrectPoints =
-            Debug.log "correctPoints length" <| List.length correctPoints
+            Debug.log "correctPoints length" <|
+                List.length correctPoints
 
         amountOfSubmittedPoints =
-            Debug.log "submittedPoints length" <| List.length submittedPoints
+            Debug.log "submittedPoints length" <|
+                List.length submittedPoints
 
         pointAmountFactor =
             Debug.log "pointAmountFactor" <|
