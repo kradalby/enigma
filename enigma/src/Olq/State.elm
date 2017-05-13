@@ -126,7 +126,7 @@ update msg model =
                     _ ->
                         ( { nextModel | showAnswer = False }, Cmd.batch (getListOfLoadImageMessages nextModel.currentQuestion) )
 
-        CalculateScore ->
+        ShowAnswer ->
             let
                 canvasZoomState =
                     model.canvasZoomState
@@ -156,7 +156,6 @@ update msg model =
                     Just question ->
                         { model
                             | answeredQuestions = question :: model.answeredQuestions
-                            , scores = model.scores ++ [ (checkAnswer model) ]
                             , showAnswer = True
                             , canvasZoomState = newCanvasZoomState
                             , drawData =
@@ -165,8 +164,14 @@ update msg model =
                                 , allPointData = model.drawData.allPointData
                                 }
                         }
-                , (delay (Time.second * showAnswerDelay) <| NextQuestion)
+                , Cmd.batch
+                    [ (delay (Time.second * showAnswerDelay) <| NextQuestion)
+                    , (delay (Time.millisecond * 600) <| CalculateScore)
+                    ]
                 )
+
+        CalculateScore ->
+            ( { model | scores = model.scores ++ [ (checkAnswer model) ] }, Cmd.none )
 
         GetOutlineQuestions ->
             ( model, getOutlineQuestions )

@@ -96,6 +96,7 @@ type Msg
     | SetOneDoubleFingerTap Bool
     | Clear
     | ToggleZoomMode
+    | ShowAnswer
     | CalculateScore
     | Undo
     | ToggleZoomInfoModal

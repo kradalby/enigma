@@ -181,7 +181,7 @@ viewOutlineQuestion model olq =
                                     )
                                 ]
                             , div [ class "col s6" ]
-                                [ button [ class "btn-large overridegreen col s12 l6", onClick CalculateScore ]
+                                [ button [ class "btn-large overridegreen col s12 l6", onClick ShowAnswer ]
                                     [ i [ attribute "aria-hidden" "true", class "fa fa-paper-plane-o" ] [], text " Submit" ]
                                 ]
                             , div [ class "col s6" ]
