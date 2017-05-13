@@ -1,4 +1,4 @@
-module Olq.State exposing (init, update, subscriptions)
+module Olq.State exposing (init, update, subscriptions, calculateDrawOpsFromZoom)
 
 import Types exposing (..)
 import Olq.Types exposing (..)
@@ -255,12 +255,6 @@ update msg model =
                 newPointData =
                     { pointData | points = newPoints }
 
-                -- lineDrawOps =
-                --     List.concat
-                --         (List.map
-                --             (\pointData -> pointListToLineOperations (calculatePointsFromZoom pointData model.canvasZoomState))
-                --             (newPointData :: model.drawData.allPointData)
-                --         )
                 lineDrawOps =
                     List.concat
                         (List.map (\pointData -> calculateDrawOpsFromZoom pointData model.canvasZoomState)
@@ -301,19 +295,6 @@ update msg model =
                             ( model, Cmd.none )
 
                         point :: tl ->
-                            ( { model | draw = True }, Cmd.none )
-
-        TouchUp event ->
-            case model.zoomMode of
-                True ->
-                    ( model, Cmd.none )
-
-                False ->
-                    case event.points of
-                        [] ->
-                            ( model, Cmd.none )
-
-                        point :: [] ->
                             let
                                 drawData =
                                     model.drawData
@@ -327,16 +308,30 @@ update msg model =
 
                                 newDrawData =
                                     { drawData
-                                        | allPointData = model.drawData.currentPointData :: model.drawData.allPointData
+                                        | allPointData =
+                                            model.drawData.allPointData
+                                                ++ [ model.drawData.currentPointData ]
                                         , currentPointData = newCurrentPointData
                                     }
                             in
-                                ( { model
-                                    | draw = False
-                                    , drawData = newDrawData
-                                  }
-                                , Cmd.none
-                                )
+                                ( { model | draw = True, drawData = newDrawData }, Cmd.none )
+
+        TouchUp event ->
+            case model.zoomMode of
+                True ->
+                    ( model, Cmd.none )
+
+                False ->
+                    case event.points of
+                        [] ->
+                            ( model, Cmd.none )
+
+                        point :: [] ->
+                            ( { model
+                                | draw = False
+                              }
+                            , Cmd.none
+                            )
 
                         point :: tl ->
                             ( { model | draw = False }, Cmd.none )
@@ -363,12 +358,6 @@ update msg model =
                                 pointData =
                                     model.drawData.currentPointData
 
-                                -- lineDrawOps =
-                                --     List.concat
-                                --         (List.map
-                                --             (\pointData -> pointListToLineOperations (calculatePointsFromZoom pointData newState))
-                                --             (pointData :: model.drawData.allPointData)
-                                --         )
                                 lineDrawOps =
                                     List.concat
                                         (List.map (\pointData -> calculateDrawOpsFromZoom pointData newState)
@@ -399,15 +388,9 @@ update msg model =
                                 pointData =
                                     model.drawData.currentPointData
 
-                                -- lineDrawOps =
-                                --     List.concat
-                                --         (List.map
-                                --             (\pointData -> pointListToLineOperations (calculatePointsFromZoom pointData newState))
-                                --             (pointData :: model.drawData.allPointData)
-                                --         )
                                 lineDrawOps =
                                     List.concat
-                                        (List.map (\pointData -> calculateDrawOpsFromZoom pointData model.canvasZoomState)
+                                        (List.map (\pointData -> calculateDrawOpsFromZoom pointData newState)
                                             (pointData :: model.drawData.allPointData)
                                         )
 
@@ -447,12 +430,6 @@ update msg model =
                                 newPointData =
                                     { pointData | points = newPoints }
 
-                                -- lineDrawOps =
-                                --     List.concat
-                                --         (List.map
-                                --             (\pointData -> pointListToLineOperations (calculatePointsFromZoom pointData model.canvasZoomState))
-                                --             (newPointData :: model.drawData.allPointData)
-                                --         )
                                 lineDrawOps =
                                     List.concat
                                         (List.map (\pointData -> calculateDrawOpsFromZoom pointData model.canvasZoomState)
@@ -491,12 +468,6 @@ update msg model =
 
                 hd :: tl ->
                     let
-                        -- lineDrawOps =
-                        --     List.concat
-                        --         (List.map
-                        --             (\pointData -> pointListToLineOperations (calculatePointsFromZoom pointData model.canvasZoomState))
-                        --             (tl)
-                        --         )
                         lineDrawOps =
                             List.concat
                                 (List.map (\pointData -> calculateDrawOpsFromZoom pointData model.canvasZoomState)
@@ -661,71 +632,45 @@ calculateDrawOpsFromZoom : PointData -> CanvasZoom.State -> List DrawOp
 calculateDrawOpsFromZoom pointData zoomState =
     let
         scaleFactorX =
-            Debug.log "scaleFactorX" <|
-                abs (pointData.scale.x - (pointData.scale.x - zoomState.scale.x))
+            (/) zoomState.scale.x pointData.scale.x
 
         scaleFactorY =
-            Debug.log "scaleFactorY" <|
-                abs (pointData.scale.y - (pointData.scale.y - zoomState.scale.y))
+            (/) zoomState.scale.y pointData.scale.y
 
         positionDeltaX =
-            Debug.log "positionDeltaX" <|
-                abs <|
-                    zoomState.position.x
-                        - pointData.position.x
+            (-)
+                zoomState.position.x
+                pointData.position.x
 
         positionDeltaY =
-            Debug.log "positionDeltaY" <|
-                abs <|
-                    zoomState.position.y
-                        - pointData.position.y
-
-        func point =
-            let
-                ( x, y ) =
-                    Point.toFloats point
-            in
-                Point.fromFloats ( (x - positionDeltaX) / scaleFactorX, (y - positionDeltaY) / scaleFactorX )
-
-        points =
-            List.map func pointData.points
+            (-)
+                zoomState.position.y
+                pointData.position.y
 
         lineDrawOps =
-            pointListToLineOperations points
+            pointListToLineOperations pointData.points
+
+        d =
+            Debug.log "calculateDrawOpsFromZoom"
+                { scaleFactorX = scaleFactorX
+                , scaleFactorY = scaleFactorY
+                , positionDeltaX = positionDeltaX
+                , positionDeltaY = positionDeltaY
+                , pointDataScaleX = pointData.scale.x
+                , zoomStateScaleX = zoomState.scale.x
+                , points_before =
+                    (case pointData.points of
+                        [] ->
+                            Point.fromInts ( 0, 0 )
+
+                        h :: t ->
+                            h
+                    )
+                }
     in
-        [ Scale scaleFactorX scaleFactorY ] ++ lineDrawOps ++ [ SetTransform 1 0 0 1 0 0 ]
-
-
-calculatePointsFromZoom : PointData -> CanvasZoom.State -> List Point
-calculatePointsFromZoom pointData zoomState =
-    let
-        scaleXDelta =
-            Debug.log "scaleXDelta" <|
-                abs (pointData.scale.x - (pointData.scale.x - zoomState.scale.x))
-
-        positionXDelta =
-            Debug.log "positionDelta" <|
-                pointData.position.x
-                    - (zoomState.position.x)
-
-        scaleYDelta =
-            Debug.log "scaleYDelta" <|
-                abs (pointData.scale.y - (pointData.scale.y - zoomState.scale.y))
-
-        positionYDelta =
-            Debug.log "positionDelta" <|
-                abs
-                    pointData.position.y
-                    - (zoomState.position.y)
-
-        func point =
-            let
-                ( x, y ) =
-                    Point.toFloats point
-            in
-                Point.fromFloats ( (x) * scaleXDelta, (y) * scaleYDelta )
-    in
-        List.map func pointData.points
+        [ SetTransform scaleFactorX 0 0 scaleFactorY positionDeltaX positionDeltaY ]
+            ++ lineDrawOps
+            ++ [ SetTransform 1 0 0 1 0 0 ]
 
 
 pointListToLineOperations : List Point -> List DrawOp

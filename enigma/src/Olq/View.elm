@@ -245,23 +245,21 @@ viewCanvas model =
                     canvasSize =
                         calculateImageSize imageSize.width imageSize.height model.windowWidth model.windowHeight
 
-                    zoomModeChangeDrawOps =
-                        case model.zoomInfoModal of
-                            True ->
-                                case model.zoomMode of
-                                    True ->
-                                        modeTextOnCanvas "Zoom mode" canvasSize
-
-                                    False ->
-                                        modeTextOnCanvas "Draw mode" canvasSize
-
-                            False ->
-                                []
+                    -- zoomModeChangeDrawOps =
+                    --     case model.zoomInfoModal of
+                    --         True ->
+                    --             case model.zoomMode of
+                    --                 True ->
+                    --                     modeTextOnCanvas "Zoom mode" canvasSize
+                    --                 False ->
+                    --                     modeTextOnCanvas "Draw mode" canvasSize
+                    --         False ->
+                    --             []
                 in
                     initializeCanvasFromZoomState model.canvasZoomState canvas
                         |> Canvas.batch
                             (drawOps
-                                ++ zoomModeChangeDrawOps
+                             -- ++ zoomModeChangeDrawOps
                             )
                         |> (case model.showAnswer of
                                 False ->
