@@ -35,7 +35,6 @@ import Util
 import Canvas exposing (Size, Error, DrawOp(..), DrawImageParams(..), Canvas)
 import Canvas.Events as Events
 import Canvas.Point as Point
-import Color
 import Olq.CanvasZoom as CanvasZoom
 
 
@@ -181,18 +180,39 @@ viewOutlineQuestion model olq =
                                             ]
                                     )
                                 ]
-                            , div [ class "col s6" ] [ button [ class "btn-large overridegreen col s12 l6", onClick CalculateScore ] [ i [ attribute "aria-hidden" "true", class "fa fa-paper-plane-o" ] [], text " Submit" ] ]
-                            , div [ class "col s6" ] [ button [ class "btn-large overrideyellow col s12 l6 offset-l6", onClick Undo ] [ i [ attribute "aria-hidden" "true", class "fa fa-undo" ] [], text " Undo" ] ]
-                            , div [ class "col s6" ] [ button [ class "btn-large overridered col s12 l6", onClick Clear ] [ i [ attribute "aria-hidden" "true", class "fa fa-eraser" ] [], text " Clear" ] ]
+                            , div [ class "col s6" ]
+                                [ button [ class "btn-large overridegreen col s12 l6", onClick ShowAnswer ]
+                                    [ i [ attribute "aria-hidden" "true", class "fa fa-paper-plane-o" ] [], text " Submit" ]
+                                ]
+                            , div [ class "col s6" ]
+                                [ button [ class "btn-large overrideyellow col s12 l6 offset-l6", onClick Undo ]
+                                    [ i [ attribute "aria-hidden" "true", class "fa fa-undo" ] [], text " Undo" ]
+                                ]
+                            , div [ class "col s6" ]
+                                [ button [ class "btn-large overridered col s12 l6", onClick Clear ]
+                                    [ i [ attribute "aria-hidden" "true", class "fa fa-eraser" ] [], text " Clear" ]
+                                ]
                             ]
                         ]
 
                     True ->
                         [ div [ class "col s12" ]
-                            [ div [ class "col s6" ] [ button [ class "btn-large disabled col s12 l6 offset-l6" ] [ i [ attribute "aria-hidden" "true", class "fa fa-search" ] [], text " Zoom on" ] ]
-                            , div [ class "col s6" ] [ button [ class "btn-large disabled col s12 l6" ] [ i [ attribute "aria-hidden" "true", class "fa fa-paper-plane-o" ] [], text " Submit" ] ]
-                            , div [ class "col s6" ] [ button [ class "btn-large disabled col s12 l6 offset-l6" ] [ i [ attribute "aria-hidden" "true", class "fa fa-undo" ] [], text " Undo" ] ]
-                            , div [ class "col s6" ] [ button [ class "btn-large disabled col s12 l6" ] [ i [ attribute "aria-hidden" "true", class "fa fa-eraser" ] [], text " Clear" ] ]
+                            [ div [ class "col s6" ]
+                                [ button [ class "btn-large disabled col s12 l6 offset-l6" ]
+                                    [ i [ attribute "aria-hidden" "true", class "fa fa-search" ] [], text " Zoom on" ]
+                                ]
+                            , div [ class "col s6" ]
+                                [ button [ class "btn-large disabled col s12 l6" ]
+                                    [ i [ attribute "aria-hidden" "true", class "fa fa-paper-plane-o" ] [], text " Submit" ]
+                                ]
+                            , div [ class "col s6" ]
+                                [ button [ class "btn-large disabled col s12 l6 offset-l6" ]
+                                    [ i [ attribute "aria-hidden" "true", class "fa fa-undo" ] [], text " Undo" ]
+                                ]
+                            , div [ class "col s6" ]
+                                [ button [ class "btn-large disabled col s12 l6" ]
+                                    [ i [ attribute "aria-hidden" "true", class "fa fa-eraser" ] [], text " Clear" ]
+                                ]
                             ]
                         ]
                )
@@ -244,25 +264,10 @@ viewCanvas model =
 
                     canvasSize =
                         calculateImageSize imageSize.width imageSize.height model.windowWidth model.windowHeight
-
-                    zoomModeChangeDrawOps =
-                        case model.zoomInfoModal of
-                            True ->
-                                case model.zoomMode of
-                                    True ->
-                                        modeTextOnCanvas "Zoom mode" canvasSize
-
-                                    False ->
-                                        modeTextOnCanvas "Draw mode" canvasSize
-
-                            False ->
-                                []
                 in
                     initializeCanvasFromZoomState model.canvasZoomState canvas
                         |> Canvas.batch
-                            (drawOps
-                                ++ zoomModeChangeDrawOps
-                            )
+                            (drawOps)
                         |> (case model.showAnswer of
                                 False ->
                                     case model.zoomMode of
@@ -333,32 +338,3 @@ viewResult model =
         , div [ class "row" ] []
         , button [ class "btn btn-large s12 overrideblue", onClick (ChangeMode Start) ] [ text "Start new quiz" ]
         ]
-
-
-modeTextOnCanvas : String -> Size -> List DrawOp
-modeTextOnCanvas message size =
-    let
-        drawopSettings =
-            [ Font "20px Arial"
-            , FillStyle (Color.rgba 255 255 255 1)
-            ]
-
-        drawops =
-            List.foldl
-                (\y acc ->
-                    (List.foldl
-                        (\x acc2 ->
-                            if (x % 150 == 0) && (y % 50 == 0) then
-                                FillText message (Point.fromInts ( x, y )) :: acc2
-                            else
-                                acc2
-                        )
-                        []
-                        (List.range 0 size.width)
-                    )
-                        ++ acc
-                )
-                []
-                (List.range 0 size.height)
-    in
-        drawopSettings ++ drawops

@@ -21,9 +21,12 @@
     <title>enigma</title>
   </head>
   <body id="root">
-    <script>document.addEventListener('gesturestart', function (e) {
+    <script>
+      document.addEventListener('gesturestart', function (e) {
         e.preventDefault();
         });
+      var lastTouchEnd = 0;
+
     </script>
     <script src="./app.js"></script>
   </body>
