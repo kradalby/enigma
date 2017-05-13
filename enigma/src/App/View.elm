@@ -65,11 +65,11 @@ viewModeMenu =
         , hr [] []
         , div [ class "row" ] []
         , div [ class "row" ] []
-        , div [ class "card hoverable teal lighten-2 add-pointer", onClick (ChangeMode MultipleChoiceQuestions) ]
+        , div [ class "card hoverable main-button-color add-pointer", onClick (ChangeMode MultipleChoiceQuestions) ]
             [ div [ class "card-content white-text" ] [ div [ class "card-title" ] [ p [ class "center-align" ] [ text "Multiple Choice Questions" ] ] ] ]
-        , div [ class "card hoverable teal lighten-2 add-pointer", onClick (ChangeMode LandmarkQuestions) ]
+        , div [ class "card hoverable main-button-color add-pointer", onClick (ChangeMode LandmarkQuestions) ]
             [ div [ class "card-content white-text" ] [ div [ class "card-title" ] [ p [ class "center-align" ] [ text "Landmark Questions" ] ] ] ]
-        , div [ class "card hoverable teal lighten-2 add-pointer", onClick (ChangeMode OutlineQuestions) ]
+        , div [ class "card hoverable main-button-color add-pointer", onClick (ChangeMode OutlineQuestions) ]
             [ div [ class "card-content white-text" ] [ div [ class "card-title" ] [ p [ class "center-align" ] [ text "Outline Questions" ] ] ] ]
           {- [ h4 [ class "center-align" ] [ text "Choose game mode" ]
              , div [ class "row" ]
@@ -226,7 +226,7 @@ viewScore model =
 viewHeader : Model -> Html Msg
 viewHeader model =
     header []
-        [ nav [ class "blue" ]
+        [ nav [ class "nav-bar-color" ]
             [ div [ class "nav-wrapper container" ]
                 [ (case model.global.mode of
                     Main ->

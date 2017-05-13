@@ -4,7 +4,7 @@ import Types exposing (..)
 import Lmq.Types exposing (..)
 import Html exposing (..)
 import Html.Events exposing (onInput, onClick)
-import Html.Attributes exposing (type_, checked, name, disabled, value, class, src, id, selected, for, href, placeholder)
+import Html.Attributes exposing (type_, checked, name, disabled, value, class, src, id, selected, for, href, placeholder, attribute)
 import Util exposing (onEnter, viewErrorBox, viewSpinningLoader, viewProgressbar, calculateImageSize, percentageOfQuestionsLeft, createDrawImage, viewNewHighScore)
 import Canvas exposing (Size, Error, DrawOp(..), DrawImageParams(..), Canvas)
 import Canvas.Events as Events
@@ -63,7 +63,7 @@ viewStartQuiz model =
             []
         , viewNumberOfQuestionButtons model
         , button
-            [ class "btn-large"
+            [ class "btn-large overrideblue"
             , onClick (validateNumberOfQuestionsInputFieldAndCreateResponseMsg model)
             ]
             [ text "Start" ]
@@ -95,7 +95,7 @@ viewNumberOfQuestionButtons model =
     in
         div [ class "row" ] <|
             List.map
-                (\n -> button [ class "btn-large", onClick <| StartQuiz n ] [ text <| toString n ])
+                (\n -> button [ class "btn-large overrideblue", onClick <| StartQuiz n ] [ text <| toString n ])
                 buttonNumbers
 
 
@@ -134,10 +134,10 @@ viewLandmarkQuestion model lmq =
         , div [ class "row" ] [ viewCanvas model ]
         , (case model.showAnswer of
             False ->
-                button [ class "btn-large", onClick model.clickData.answerMsg ] [ text "Submit" ]
+                button [ class "btn-large overridegreen", onClick model.clickData.answerMsg ] [ i [ attribute "aria-hidden" "true", class "fa fa-paper-plane-o" ] [], text " Submit" ]
 
             True ->
-                button [ class "btn-large disabled" ] [ text "Submit" ]
+                button [ class "btn-large disabled" ] [ i [ attribute "aria-hidden" "true", class "fa fa-paper-plane-o" ] [], text " Submit" ]
           )
         ]
 
@@ -218,5 +218,5 @@ viewResult model =
         , div [ class "row" ] []
         , div [ class "row" ] []
         , div [ class "row" ] []
-        , button [ class "btn btn-large s12", onClick (ChangeMode Start) ] [ text "Start new quiz" ]
+        , button [ class "btn btn-large s12 overrideblue", onClick (ChangeMode Start) ] [ text "Start new quiz" ]
         ]

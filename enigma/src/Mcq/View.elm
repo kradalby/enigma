@@ -61,7 +61,7 @@ viewStartQuiz model =
             []
         , viewNumberOfQuestionButtons model
         , button
-            [ class "btn-large"
+            [ class "btn-large overrideblue"
             , onClick (validateNumberOfQuestionsInputFieldAndCreateResponseMsg model)
             ]
             [ text "Start" ]
@@ -93,7 +93,7 @@ viewNumberOfQuestionButtons model =
     in
         div [ class "row" ] <|
             List.map
-                (\n -> button [ class "btn-large", onClick <| StartQuiz n ] [ text <| toString n ])
+                (\n -> button [ class "btn-large overrideblue", onClick <| StartQuiz n ] [ text <| toString n ])
                 buttonNumbers
 
 
@@ -144,13 +144,13 @@ viewMultipleChoiceQuestionAlternaltives alternaltives correctAnswer showAnswer =
                     [ class
                         (case showAnswer of
                             False ->
-                                "card hoverable teal lighten-2 add-pointer"
+                                "card hoverable main-button-color add-pointer"
 
                             True ->
                                 (if i == correctAnswer then
-                                    "card green"
+                                    "card right-answer-color"
                                  else
-                                    "card red"
+                                    "card wrong-answer-color"
                                 )
                         )
                     , style [ ( "width", "100%" ) ]
@@ -226,5 +226,5 @@ viewResult model =
         , div [ class "row" ] []
         , div [ class "row" ] []
         , div [ class "row" ] []
-        , button [ class "btn-large", onClick (ChangeMode Start) ] [ text "Start new quiz" ]
+        , button [ class "btn-large overrideblue", onClick (ChangeMode Start) ] [ text "Start new quiz" ]
         ]

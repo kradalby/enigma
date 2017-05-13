@@ -92,7 +92,7 @@ viewStartQuiz model =
             []
         , viewNumberOfQuestionButtons model
         , button
-            [ class "btn-large"
+            [ class "btn-large overrideblue"
             , onClick (validateNumberOfQuestionsInputFieldAndCreateResponseMsg model)
             ]
             [ text "Start" ]
@@ -124,7 +124,7 @@ viewNumberOfQuestionButtons model =
     in
         div [ class "row" ] <|
             List.map
-                (\n -> button [ class "btn-large", onClick <| StartQuiz n ] [ text <| toString n ])
+                (\n -> button [ class "btn-large overrideblue", onClick <| StartQuiz n ] [ text <| toString n ])
                 buttonNumbers
 
 
@@ -164,33 +164,35 @@ viewOutlineQuestion model olq =
          ]
             ++ (case model.showAnswer of
                     False ->
-                        [ div [ class "center-align container" ]
-                            [ button [ class "btn-large overridepink col s6 btn-large-no-margin", onClick ToggleZoomMode ]
-                                (case model.zoomMode of
-                                    False ->
-                                        [ i [ attribute "aria-hidden" "true", class "fa fa-search" ]
-                                            []
-                                        , text " Zoom off"
-                                        ]
+                        [ div [ class "col s12" ]
+                            [ div [ class "col s6" ]
+                                [ button [ class "btn-large overrideblue col s12 l6 offset-l6", onClick ToggleZoomMode ]
+                                    (case model.zoomMode of
+                                        False ->
+                                            [ i [ attribute "aria-hidden" "true", class "fa fa-search" ]
+                                                []
+                                            , text " Zoom off"
+                                            ]
 
-                                    True ->
-                                        [ i [ attribute "aria-hidden" "true", class "fa fa-search" ]
-                                            []
-                                        , text " Zoom on"
-                                        ]
-                                )
-                            , button [ class "btn-large col s6 btn-large-no-margin", onClick CalculateScore ] [ i [ attribute "aria-hidden" "true", class "fa fa-paper-plane-o" ] [], text " Submit" ]
-                            , button [ class "btn-large overrideblue col s6 btn-large-no-margin", onClick Undo ] [ i [ attribute "aria-hidden" "true", class "fa fa-undo" ] [], text " Undo" ]
-                            , button [ class "btn-large overridered col s6 btn-large-no-margin", onClick Clear ] [ i [ attribute "aria-hidden" "true", class "fa fa-eraser" ] [], text " Clear" ]
+                                        True ->
+                                            [ i [ attribute "aria-hidden" "true", class "fa fa-search" ]
+                                                []
+                                            , text " Zoom on"
+                                            ]
+                                    )
+                                ]
+                            , div [ class "col s6" ] [ button [ class "btn-large overridegreen col s12 l6", onClick CalculateScore ] [ i [ attribute "aria-hidden" "true", class "fa fa-paper-plane-o" ] [], text " Submit" ] ]
+                            , div [ class "col s6" ] [ button [ class "btn-large overrideyellow col s12 l6 offset-l6", onClick Undo ] [ i [ attribute "aria-hidden" "true", class "fa fa-undo" ] [], text " Undo" ] ]
+                            , div [ class "col s6" ] [ button [ class "btn-large overridered col s12 l6", onClick Clear ] [ i [ attribute "aria-hidden" "true", class "fa fa-eraser" ] [], text " Clear" ] ]
                             ]
                         ]
 
                     True ->
-                        [ div [ class "center-align container" ]
-                            [ button [ class "btn-large disabled col s6 btn-large-no-margin" ] [ i [ attribute "aria-hidden" "true", class "fa fa-search" ] [], text " Zoom on" ]
-                            , button [ class "btn-large disabled col s6 btn-large-no-margin" ] [ i [ attribute "aria-hidden" "true", class "fa fa-paper-plane-o" ] [], text " Submit" ]
-                            , button [ class "btn-large disabled col s6 btn-large-no-margin" ] [ i [ attribute "aria-hidden" "true", class "fa fa-undo" ] [], text " Undo" ]
-                            , button [ class "btn-large disabled col s6 btn-large-no-margin" ] [ i [ attribute "aria-hidden" "true", class "fa fa-eraser" ] [], text " Clear" ]
+                        [ div [ class "col s12" ]
+                            [ div [ class "col s6" ] [ button [ class "btn-large disabled col s12 l6 offset-l6" ] [ i [ attribute "aria-hidden" "true", class "fa fa-search" ] [], text " Zoom on" ] ]
+                            , div [ class "col s6" ] [ button [ class "btn-large disabled col s12 l6" ] [ i [ attribute "aria-hidden" "true", class "fa fa-paper-plane-o" ] [], text " Submit" ] ]
+                            , div [ class "col s6" ] [ button [ class "btn-large disabled col s12 l6 offset-l6" ] [ i [ attribute "aria-hidden" "true", class "fa fa-undo" ] [], text " Undo" ] ]
+                            , div [ class "col s6" ] [ button [ class "btn-large disabled col s12 l6" ] [ i [ attribute "aria-hidden" "true", class "fa fa-eraser" ] [], text " Clear" ] ]
                             ]
                         ]
                )
@@ -329,7 +331,7 @@ viewResult model =
         , div [ class "row" ] []
         , div [ class "row" ] []
         , div [ class "row" ] []
-        , button [ class "btn btn-large s12", onClick (ChangeMode Start) ] [ text "Start new quiz" ]
+        , button [ class "btn btn-large s12 overrideblue", onClick (ChangeMode Start) ] [ text "Start new quiz" ]
         ]
 
 
