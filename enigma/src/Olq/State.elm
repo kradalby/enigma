@@ -695,9 +695,6 @@ checkAnswer model =
 
                         canvasSize =
                             { width = canvasWidth, height = canvasHeight }
-
-                        -- canvasSize =
-                        --     calculateImageSize imageSize.width imageSize.height model.windowWidth model.windowHeight
                     in
                         Canvas.initialize canvasSize
                             |> Canvas.batch [ (createDrawImage canvas canvasSize) ]
@@ -705,11 +702,6 @@ checkAnswer model =
             )
 
         submittedPoints =
-            -- (List.foldr
-            --     (\pointData acc -> pointData.points ++ acc)
-            --     []
-            --     model.drawData.allPointData
-            -- )
             let
                 imageSize =
                     model.canvasZoomState.imageSize
@@ -785,7 +777,7 @@ checkAnswer model =
                                                 in
                                                     new_mini
                                             )
-                                            4200
+                                            420
                                             correctPoints
 
                                     new_acc =
@@ -805,21 +797,29 @@ checkAnswer model =
                                 in
                                     ( new_acc, new_minii, new_maxii )
                             )
-                            ( 0, 4200, 0 )
+                            ( 0, 420, 0 )
                             submittedPoints
 
                 eucAvg =
                     Debug.log "Euc average" <|
-                        temp_acc
-                            / toFloat (List.length submittedPoints)
+                        case submittedPoints of
+                            [] ->
+                                100
+
+                            _ ->
+                                temp_acc
+                                    / toFloat (List.length submittedPoints)
             in
                 eucAvg
 
         score =
             Debug.log "score" <|
                 let
+                    adjustedAverage =
+                        eucleadianScore * 10
+
                     y =
-                        -10 / 4 * ((-40) + eucleadianScore)
+                        -10 / 6 * ((-60) + adjustedAverage)
                 in
                     if y <= 0 then
                         0
