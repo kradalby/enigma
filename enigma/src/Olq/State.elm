@@ -688,7 +688,7 @@ checkAnswer model =
                             (toFloat imageSize.width) / (toFloat imageSize.height)
 
                         canvasHeight =
-                            100
+                            200
 
                         canvasWidth =
                             floor (canvasHeight * aspectRatioWidthHeight)
@@ -716,13 +716,13 @@ checkAnswer model =
                         )
 
                 newDrawOps =
-                    concatDrawOps model.color 1 lineDrawOps
+                    concatDrawOps model.color 3 lineDrawOps
 
                 aspectRatioWidthHeight =
                     (toFloat imageSize.width) / (toFloat imageSize.height)
 
                 canvasHeight =
-                    100
+                    200
 
                 canvasWidth =
                     floor (canvasHeight * aspectRatioWidthHeight)
