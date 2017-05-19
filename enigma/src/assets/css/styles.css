@@ -127,15 +127,18 @@ canvas {
   background-color: rgba(3,	69,	132	, 1);	
 }
 
-.test{
-  color: fff;
-}
 
 h1, h2, h3, h4{
  font:bold 7.5vw/1.6 'Signika', sans-serif;
  user-select:none;
  color: #373737;
  text-shadow:2px 2px #dfdce3;
+}
+.text-color{
+  color: #373737
+}
+.text-size{
+  font:bold 1.3em/1.6 'Signika', sans-serif;
 }
 
 h2 span { display:inline-block; animation:float .2s ease-in-out infinite; }
@@ -194,4 +197,14 @@ h2 span:nth-child(14){ animation-delay:.65s; }
     -webkit-transform: translate(-50%, -50%);
     transform: translate(-50%, -50%);
 }
+
+ body {
+    display: flex;
+    min-height: 100vh;
+    flex-direction: column;
+  }
+
+  main {
+    flex: 1 0 auto;
+  }
 

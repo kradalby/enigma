@@ -35,7 +35,13 @@ root model =
                     ]
                 ]
             ]
-          -- , viewFooter model
+        , (case model.global.mode of
+            Main ->
+                viewFooter model
+
+            _ ->
+                text ""
+          )
         ]
 
 
@@ -83,6 +89,24 @@ viewModeMenu =
                  ]
           -}
         ]
+
+
+viewFooter : Model -> Html Msg
+viewFooter model =
+    footer [ class "page-footer grey lighten-2" ]
+        [ div [ class "container" ] [ div [ class "row" ] [] ]
+        , div [ class "footer-copyright" ]
+            [ div [ class "container center-align" ]
+                [ p [ class "text-color text-size" ] [ text "Please take the time to answer our ", a [ href "https://goo.gl/forms/8F67T2z8XC0P1c362" ] [ text "Survey" ] ]
+                ]
+            ]
+        ]
+
+
+
+{- div [ class "footer center-align " ]
+   [ a [ class "center-align", href "https://goo.gl/forms/8F67T2z8XC0P1c362" ] [ h5 [] [ text "Questionnaire" ] ] ]
+-}
 
 
 viewScore : Model -> Html Msg
