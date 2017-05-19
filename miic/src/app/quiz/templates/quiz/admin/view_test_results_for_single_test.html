@@ -173,7 +173,7 @@
 
 
             <td>
-                <button class="btn btn-primary" id="calculate_avg">Calculate average solution</button>
+                <button class="btn btn-primary calculate_avg">Calculate average solution</button>
             </td>
 
 
@@ -373,8 +373,8 @@
         var selectedUserIds = getSelectedUserIds(testUnitId);
 
         if (selectedUserIds.length != 0){
-             $("#calculate_avg").attr("disabled", true);
-             var target = document.getElementById("spinner_container");
+             $(".calculate_avg").attr("disabled", true);
+             var target = document.getElementById("average_img_"+testUnitId).previousElementSibling;
              spinner.spin(target);
                 $.ajax({
                     type: "POST",
@@ -399,7 +399,7 @@
 
                     },
                     complete: function () {
-                        $("#calculate_avg").attr("disabled", false);
+                        $(".calculate_avg").attr("disabled", false);
                         spinner.stop();
 
                     }
@@ -407,8 +407,9 @@
         }
     }
 
-    $( "#calculate_avg" ).click(function() {
+    $( ".calculate_avg" ).click(function() {
         var testUnitId = $('li.active').find('input').val();
+
         requestCalculateAverage(testUnitId);
 
     });
@@ -443,6 +444,7 @@
             $("a#previous").parent().addClass('disabled');
         }
         $("a#"+currentlyVisible.attr('id')+".navigation").parent().addClass('active');
+
     }
     
     $('div.test-result').hide().first().show();

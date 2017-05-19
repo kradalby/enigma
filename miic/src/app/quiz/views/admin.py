@@ -945,7 +945,7 @@ def get_closest_cord_dic2(ref_color_list, img_matrix):
 
     for ref_cord in ref_color_list:
         current_shortest_distance = 50000
-        for img_cord in get_neighbour_pixels(ref_cord, img_matrix, 20):
+        for img_cord in get_neighbour_pixels(ref_cord, img_matrix, 40):
             if ref_cord == img_cord:
                 dic_of_things[ref_cord] = img_cord
                 break
