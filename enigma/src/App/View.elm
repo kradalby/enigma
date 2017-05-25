@@ -260,7 +260,7 @@ viewHeader model =
                         i [ attribute "aria-hidden" "true", class "fa fa-chevron-left add-pointer", onClick (ChangeMode Main) ]
                             []
                   )
-                , a [ id "logo-container", onClick (ChangeMode Main), class "brand-logo center add-pointer" ] [ text "MIIGame" ]
+                , a [ id "logo-container", onClick (ChangeMode Main), class "brand-logo center add-pointer" ] [ text "MiiGame" ]
                 , a [ onClick (ChangeMode Score), class " right add-pointer" ] [ text "Score" ]
                   -- , ul [ class "right hide-on-med-and-down" ] [ li [] [ a [] [ text "derp" ] ] ]
                   -- , ul [ class "nav-mobile" ] [ li [] [ a [] [ text "derp" ] ] ]
