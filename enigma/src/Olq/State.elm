@@ -47,6 +47,7 @@ init initialSeed width height =
             , score = initQuestionScore
             , showNewHighScore = False
             , canvasZoomState = CanvasZoom.initialState
+            , imageMode = All
             }
     in
         model ! [ getOutlineQuestions ]
@@ -61,7 +62,7 @@ update msg model =
         StartQuiz number ->
             let
                 ( shuffeledQuestions, seed ) =
-                    Random.step (shuffle model.questions) model.seed
+                    Random.step (shuffle (getQuestions model)) model.seed
 
                 ( h, t ) =
                     case (List.take number shuffeledQuestions) of
@@ -552,6 +553,9 @@ update msg model =
 
         ToggleShowNewHighScore ->
             ( { model | showNewHighScore = not model.showNewHighScore }, Cmd.none )
+
+        ChangeImageMode imageMode ->
+            ( { model | imageMode = imageMode }, Cmd.none )
 
 
 subscriptions : Model -> Sub Msg

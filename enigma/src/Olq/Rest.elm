@@ -24,6 +24,7 @@ outlineQuestionDecoder : Decoder OutlineQuestion
 outlineQuestionDecoder =
     decode OutlineQuestion
         |> required "pk" int
+        |> required "question" string
         |> required "original_image" string
         |> required "outline_drawing" string
         |> required "outline_regions" (list outlineRegionDecoder)

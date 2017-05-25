@@ -8,10 +8,12 @@ import Canvas.Events exposing (Touch)
 import Color exposing (Color)
 import Types exposing (Region, canvasSize, wrongColor, Image, QuestionScore)
 import Olq.CanvasZoom as CanvasZoom
+import Regex
 
 
 type alias OutlineQuestion =
     { pk : Int
+    , question : String
     , original_image : String
     , outline_drawing : String
     , outline_regions : List Region
@@ -72,6 +74,7 @@ type alias Model =
     , score : QuestionScore
     , showNewHighScore : Bool
     , canvasZoomState : CanvasZoom.State
+    , imageMode : ImageMode
     }
 
 
@@ -103,9 +106,33 @@ type Msg
     | Noop
     | Load String
     | ToggleShowNewHighScore
+    | ChangeImageMode ImageMode
 
 
 type Mode
     = Start
     | Running
     | Result
+
+
+type ImageMode
+    = All
+    | CT
+    | MR
+    | US
+
+
+getQuestions : Model -> List OutlineQuestion
+getQuestions model =
+    case model.imageMode of
+        All ->
+            model.questions
+
+        CT ->
+            List.filter (\q -> Regex.contains (Regex.regex "CT") q.question) model.questions
+
+        US ->
+            List.filter (\q -> Regex.contains (Regex.regex "US") q.question) model.questions
+
+        MR ->
+            List.filter (\q -> Regex.contains (Regex.regex "MR") q.question) model.questions

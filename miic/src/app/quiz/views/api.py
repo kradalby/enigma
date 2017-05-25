@@ -158,6 +158,7 @@ class OutlineQuestionViewSet(viewsets.ViewSet):
         )
 
         serializer = OutlineQuestionSerializer(queryset, many=True)
+        print(serializer.data)
 
         return Response(serializer.data)
 

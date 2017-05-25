@@ -80,15 +80,7 @@ viewStartQuiz model =
         [ h4
             []
             [ text "How many questions?" ]
-        , input
-            [ id "wordInput"
-            , placeholder "Enter a number"
-            , type_ "number"
-            , onInput NumberOfQuestionsInput
-            , value model.numberOfQuestionsInputField
-            , onEnter (validateNumberOfQuestionsInputFieldAndCreateResponseMsg model)
-            ]
-            []
+        , viewImageModeSelection model
         , viewNumberOfQuestionButtons model
         , button
             [ class "btn-large overrideblue"
@@ -98,33 +90,119 @@ viewStartQuiz model =
         ]
 
 
+viewImageModeSelection : Model -> Html Msg
+viewImageModeSelection model =
+    div []
+        [ button
+            [ class
+                (case model.imageMode of
+                    All ->
+                        "btn toggled-button"
+
+                    _ ->
+                        "btn overrideblue"
+                )
+            , onClick (ChangeImageMode All)
+            ]
+            [ text "All" ]
+        , button
+            [ class
+                (case model.imageMode of
+                    CT ->
+                        "btn toggled-button"
+
+                    _ ->
+                        "btn overrideblue"
+                )
+            , onClick (ChangeImageMode CT)
+            ]
+            [ text "CT" ]
+        , button
+            [ class
+                (case model.imageMode of
+                    MR ->
+                        "btn toggled-button"
+
+                    _ ->
+                        "btn overrideblue"
+                )
+            , onClick (ChangeImageMode MR)
+            ]
+            [ text "MR" ]
+        , button
+            [ class
+                (case model.imageMode of
+                    US ->
+                        "btn toggled-button"
+
+                    _ ->
+                        "btn overrideblue"
+                )
+            , onClick (ChangeImageMode US)
+            ]
+            [ text "US" ]
+        ]
+
+
 viewNumberOfQuestionButtons : Model -> Html Msg
 viewNumberOfQuestionButtons model =
     let
         numberOfQuestions =
-            (List.length model.questions)
+            (List.length (getQuestions model))
 
         seperator =
-            if numberOfQuestions <= 3 then
-                1
-            else if numberOfQuestions <= 9 then
-                3
-            else if numberOfQuestions <= 15 then
-                5
-            else if numberOfQuestions <= 30 then
-                10
-            else if numberOfQuestions <= 75 then
+            if numberOfQuestions >= 75 then
                 25
-            else
+            else if numberOfQuestions >= 30 then
+                10
+            else if numberOfQuestions >= 15 then
+                5
+            else if numberOfQuestions >= 9 then
+                3
+            else if numberOfQuestions >= 6 then
+                2
+            else if numberOfQuestions >= 3 then
                 1
+            else
+                0
 
         buttonNumbers =
-            List.map (\n -> n * seperator) [ 1, 2, 3 ]
+            case numberOfQuestions of
+                0 ->
+                    []
+
+                1 ->
+                    [ 1 ]
+
+                2 ->
+                    [ 1, 2 ]
+
+                _ ->
+                    List.map (\n -> n * seperator) [ 1, 2, 3 ]
     in
-        div [ class "row" ] <|
-            List.map
-                (\n -> button [ class "btn-large overrideblue", onClick <| StartQuiz n ] [ text <| toString n ])
-                buttonNumbers
+        div []
+            [ (case numberOfQuestions of
+                0 ->
+                    text "No questions available"
+
+                _ ->
+                    div []
+                        [ input
+                            [ id "wordInput"
+                            , placeholder "Enter a number"
+                            , type_ "number"
+                            , onInput NumberOfQuestionsInput
+                            , value model.numberOfQuestionsInputField
+                            , onEnter (validateNumberOfQuestionsInputFieldAndCreateResponseMsg model)
+                            ]
+                            []
+                        ]
+              )
+            , div [ class "row" ] <|
+                List.map
+                    (\n -> button [ class "btn-large overrideblue", onClick <| StartQuiz n ] [ text <| toString n ])
+                    buttonNumbers
+            ]
 
 
 validateNumberOfQuestionsInputFieldAndCreateResponseMsg : Model -> Msg
