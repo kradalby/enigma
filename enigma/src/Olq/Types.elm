@@ -129,10 +129,43 @@ getQuestions model =
             model.questions
 
         CT ->
-            List.filter (\q -> Regex.contains (Regex.regex "CT") q.question) model.questions
+            List.filter
+                (\q ->
+                    let
+                        modality =
+                            "CT"
+                    in
+                        (Regex.contains (Regex.regex modality) (String.toUpper q.question)
+                            || Regex.contains (Regex.regex modality) (String.toUpper q.original_image)
+                            || Regex.contains (Regex.regex modality) (String.toUpper q.outline_drawing)
+                        )
+                )
+                model.questions
 
         US ->
-            List.filter (\q -> Regex.contains (Regex.regex "US") q.question) model.questions
+            List.filter
+                (\q ->
+                    let
+                        modality =
+                            "US"
+                    in
+                        (Regex.contains (Regex.regex modality) (String.toUpper q.question)
+                            || Regex.contains (Regex.regex modality) (String.toUpper q.original_image)
+                            || Regex.contains (Regex.regex modality) (String.toUpper q.outline_drawing)
+                        )
+                )
+                model.questions
 
         MR ->
-            List.filter (\q -> Regex.contains (Regex.regex "MR") q.question) model.questions
+            List.filter
+                (\q ->
+                    let
+                        modality =
+                            "MR"
+                    in
+                        (Regex.contains (Regex.regex modality) (String.toUpper q.question)
+                            || Regex.contains (Regex.regex modality) (String.toUpper q.original_image)
+                            || Regex.contains (Regex.regex modality) (String.toUpper q.outline_drawing)
+                        )
+                )
+                model.questions
