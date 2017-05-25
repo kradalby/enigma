@@ -6,6 +6,7 @@ import Canvas exposing (DrawOp, Canvas, Error, Size)
 import Canvas.Point exposing (Point)
 import Color
 import Types exposing (Region, canvasSize, wrongColor, Image, QuestionScore)
+import Regex
 
 
 type alias LandmarkQuestion =
@@ -49,6 +50,7 @@ type alias Model =
     , windowHeight : Int
     , score : Types.QuestionScore
     , showNewHighScore : Bool
+    , imageMode : ImageMode
     }
 
 
@@ -70,9 +72,33 @@ type Msg
     | Noop
     | Load String
     | ToggleShowNewHighScore
+    | ChangeImageMode ImageMode
 
 
 type Mode
     = Start
     | Running
     | Result
+
+
+type ImageMode
+    = All
+    | CT
+    | MR
+    | US
+
+
+getQuestions : Model -> List LandmarkQuestion
+getQuestions model =
+    case model.imageMode of
+        All ->
+            model.questions
+
+        CT ->
+            List.filter (\q -> Regex.contains (Regex.regex "CT") q.question) model.questions
+
+        US ->
+            List.filter (\q -> Regex.contains (Regex.regex "US") q.question) model.questions
+
+        MR ->
+            List.filter (\q -> Regex.contains (Regex.regex "MR") q.question) model.questions

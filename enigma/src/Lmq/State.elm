@@ -42,6 +42,7 @@ init initialSeed width height =
             , windowHeight = height
             , score = Types.initQuestionScore
             , showNewHighScore = False
+            , imageMode = All
             }
     in
         model ! [ getLandmarkQuestions, getFromStorage ]
@@ -56,7 +57,7 @@ update msg model =
         StartQuiz number ->
             let
                 ( shuffeledQuestions, seed ) =
-                    Random.step (shuffle model.questions) model.seed
+                    Random.step (shuffle (getQuestions model)) model.seed
 
                 ( h, t ) =
                     case (List.take number shuffeledQuestions) of
@@ -239,6 +240,9 @@ update msg model =
 
         ToggleShowNewHighScore ->
             ( { model | showNewHighScore = not model.showNewHighScore }, Cmd.none )
+
+        ChangeImageMode imageMode ->
+            ( { model | imageMode = imageMode }, Cmd.none )
 
 
 subscriptions : Model -> Sub Msg

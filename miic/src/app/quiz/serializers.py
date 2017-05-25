@@ -48,6 +48,7 @@ class OutlineRegionSerializer(serializers.Serializer):
 
 class OutlineQuestionSerializer(serializers.Serializer):
     pk = serializers.IntegerField()
+    question = serializers.CharField(max_length=255)
     original_image = serializers.URLField()
     outline_drawing = serializers.URLField()
     outline_regions = OutlineRegionSerializer(many=True, read_only=True)
