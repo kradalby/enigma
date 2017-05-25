@@ -32,6 +32,7 @@ initClickData =
 
 type alias Model =
     { questions : List LandmarkQuestion
+    , color : Color.Color
     , mode : Mode
     , unAnsweredQuestions :
         List LandmarkQuestion

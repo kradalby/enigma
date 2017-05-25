@@ -24,6 +24,7 @@ init initialSeed width height =
     let
         model =
             { questions = []
+            , color = Color.rgba 192 47 29 1
             , mode = Start
             , unAnsweredQuestions =
                 []
@@ -197,7 +198,7 @@ update msg model =
         CanvasClick position ->
             let
                 color =
-                    getColorFromRegion model
+                    model.color
 
                 ( p0, p1, p2, p3 ) =
                     getCoordinatesForCross position
