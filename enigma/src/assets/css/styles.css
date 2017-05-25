@@ -49,9 +49,10 @@ canvas {
 .btn-large {
   margin: 15px;
 }
-.btn-large:focus {
-  background-color: #26a69a;
+.btn{
+margin: 5px;
 }
+
 .btn-large-no-margin{
   margin: 0px;
 }
@@ -85,6 +86,16 @@ canvas {
 
 .overrideblue:hover{
   background-color: rgba(56,	148,	223, 1);
+}
+
+.toggled-button{
+  background-color: rgba(3,	69,	132	, 1);	
+}
+.toggled-button:focus{
+  background-color: rgba(3,	69,	132	, 1);	
+}
+.toggled-button:hover{
+  background-color: rgba(3,	69,	132	, 1);
 }
 
 

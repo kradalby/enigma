@@ -93,16 +93,53 @@ viewStartQuiz model =
 viewImageModeSelection : Model -> Html Msg
 viewImageModeSelection model =
     div []
-        [ button [ onClick (ChangeImageMode All) ]
+        [ button
+            [ class
+                (case model.imageMode of
+                    All ->
+                        "btn toggled-button"
+
+                    _ ->
+                        "btn overrideblue"
+                )
+            , onClick (ChangeImageMode All)
+            ]
             [ text "All" ]
         , button
-            [ onClick (ChangeImageMode CT) ]
+            [ class
+                (case model.imageMode of
+                    CT ->
+                        "btn toggled-button"
+
+                    _ ->
+                        "btn overrideblue"
+                )
+            , onClick (ChangeImageMode CT)
+            ]
             [ text "CT" ]
         , button
-            [ onClick (ChangeImageMode MR) ]
+            [ class
+                (case model.imageMode of
+                    MR ->
+                        "btn toggled-button"
+
+                    _ ->
+                        "btn overrideblue"
+                )
+            , onClick (ChangeImageMode MR)
+            ]
             [ text "MR" ]
         , button
-            [ onClick (ChangeImageMode US) ]
+            [ class
+                (case model.imageMode of
+                    US ->
+                        "btn toggled-button"
+
+                    _ ->
+                        "btn overrideblue"
+                )
+            , onClick (ChangeImageMode US)
+            ]
             [ text "US" ]
         ]
 
@@ -370,10 +407,9 @@ viewResult model =
 
             False ->
                 text ""
-
-        {- , h5 [] [ text ("Correct: " ++ (toString (List.length (List.filter (\s -> s > Types.olqCorrectThreshold) model.scores)))) ]
-           , h5 [] [ text ("Wrong: " ++ (toString (List.length (List.filter (\s -> s < Types.olqCorrectThreshold) model.scores)))) ]
-        -}
+          {- , h5 [] [ text ("Correct: " ++ (toString (List.length (List.filter (\s -> s > Types.olqCorrectThreshold) model.scores)))) ]
+             , h5 [] [ text ("Wrong: " ++ (toString (List.length (List.filter (\s -> s < Types.olqCorrectThreshold) model.scores)))) ]
+          -}
         , h5 [] [ text ("Score: " ++ (toString (List.sum model.scores))) ]
         , div [ class "row" ] []
         , div [ class "row" ] []
