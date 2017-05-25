@@ -43,3 +43,4 @@ type Mode
     | LandmarkQuestions
     | OutlineQuestions
     | Score
+    | About
