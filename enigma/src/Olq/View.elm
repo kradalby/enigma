@@ -108,15 +108,15 @@ viewImageModeSelection model =
         , button
             [ class
                 (case model.imageMode of
-                    CT ->
+                    US ->
                         "btn toggled-button"
 
                     _ ->
                         "btn overrideblue"
                 )
-            , onClick (ChangeImageMode CT)
+            , onClick (ChangeImageMode US)
             ]
-            [ text "CT" ]
+            [ text "US" ]
         , button
             [ class
                 (case model.imageMode of
@@ -132,15 +132,15 @@ viewImageModeSelection model =
         , button
             [ class
                 (case model.imageMode of
-                    US ->
+                    CT ->
                         "btn toggled-button"
 
                     _ ->
                         "btn overrideblue"
                 )
-            , onClick (ChangeImageMode US)
+            , onClick (ChangeImageMode CT)
             ]
-            [ text "US" ]
+            [ text "CT" ]
         ]
 
 

@@ -32,6 +32,9 @@ root model =
 
                         Score ->
                             viewScore model
+
+                        About ->
+                            viewAbout model
                     ]
                 ]
             ]
@@ -107,6 +110,17 @@ viewFooter model =
 {- div [ class "footer center-align " ]
    [ a [ class "center-align", href "https://goo.gl/forms/8F67T2z8XC0P1c362" ] [ h5 [] [ text "Questionnaire" ] ] ]
 -}
+
+
+viewAbout : Model -> Html Msg
+viewAbout model =
+    div []
+        [ div [] []
+        , h3 [ class "center-align" ] [ text "About" ]
+        , p [] [ text "This web-app was developed by NTNU students ", a [ href "https://kradalby.no", class "blue-text" ] [ text "Kristoffer Dalby " ], text "and ", a [ href "https://github.com/freboto", class "blue-text" ] [ text "Fredrik Borgen Tørnvall " ], text "as part of their master thesis at IDI." ]
+        , p [] [ text "The goal was to create a motivating game for improving the players medical image interpretation skills in collaboration with the national center for ultrasound and image guided therapy in Trondheim, Norway ", text "(", a [ href "http://www.usigt.org" ] [ text "http://www.usigt.org" ], text ")." ]
+        , p [] [ text "Frank Lindseth has been the supervisor for the project." ]
+        ]
 
 
 viewScore : Model -> Html Msg
@@ -254,13 +268,13 @@ viewHeader model =
             [ div [ class "nav-wrapper container" ]
                 [ (case model.global.mode of
                     Main ->
-                        text ""
+                        a [ onClick (ChangeMode About), class " left add-pointer" ] [ text "About" ]
 
                     _ ->
                         i [ attribute "aria-hidden" "true", class "fa fa-chevron-left add-pointer", onClick (ChangeMode Main) ]
                             []
                   )
-                , a [ id "logo-container", onClick (ChangeMode Main), class "brand-logo center add-pointer" ] [ text "MiiGame" ]
+                , a [ id "logo-container", onClick (ChangeMode Main), class "brand-logo center add-pointer" ] [ text "MIIG" ]
                 , a [ onClick (ChangeMode Score), class " right add-pointer" ] [ text "Score" ]
                   -- , ul [ class "right hide-on-med-and-down" ] [ li [] [ a [] [ text "derp" ] ] ]
                   -- , ul [ class "nav-mobile" ] [ li [] [ a [] [ text "derp" ] ] ]
