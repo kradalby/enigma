@@ -823,7 +823,7 @@ checkAnswer model =
                         eucleadianScore * 10
 
                     y =
-                        -10 / 6 * ((-60) + adjustedAverage)
+                        -10 / 10 * ((-100) + adjustedAverage)
                 in
                     if y <= 0 then
                         0
