@@ -1,4 +1,19 @@
-FROM python:3.6.1
+FROM node:10 as elmbuilder
+WORKDIR /app
+
+RUN yarn global add elm@0.18.0
+
+ADD enigma/package.json .
+RUN npm install
+
+ADD enigma/elm-package.json .
+RUN elm package install -y
+
+ADD enigma .
+
+RUN npm run build
+
+FROM python:3.7.0 as production
 MAINTAINER kradalby@kradalby.no
 
 ENV APP_DIR=/srv/app
@@ -14,7 +29,7 @@ RUN pip install -r $APP_DIR/prod.txt
 
 COPY miic/src/. $APP_DIR
 RUN mkdir -p $APP_DIR/enigma_app
-COPY enigma/dist/. $APP_DIR/enigma_app
+COPY --from=elmbuilder /app/dist/. $APP_DIR/enigma_app
 
 COPY docker-entrypoint.sh /docker-entrypoint.sh
 
