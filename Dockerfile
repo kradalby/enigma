@@ -13,7 +13,7 @@ ADD enigma .
 
 RUN npm run build
 
-FROM python:3.7.0 as production
+FROM python:3.6 as production
 MAINTAINER kradalby@kradalby.no
 
 ENV APP_DIR=/srv/app
