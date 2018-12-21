@@ -10,6 +10,7 @@ ADD enigma/elm-package.json .
 RUN elm package install -y
 
 ADD enigma .
+RUN make fix_module_canvas
 
 RUN npm run build
 
